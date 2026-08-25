@@ -1,15 +1,31 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import Din10220PipeCalculator from '@/components/engineering-calculator/Din10220PipeCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./Din10220PipeClient";
+import { BlockMath } from "react-katex";
 
-export default function Din10220PipePage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.din10220Pipe;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/din-10220-pipe", "engineering", "din-10220-pipe");
+}
+
+
+
+export default function Din10220PipePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const dict = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
+  const t = dict?.common?.din10220Pipe;
 
   const infoSection = {
     calculatorDescription: (
@@ -54,12 +70,12 @@ export default function Din10220PipePage() {
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-3">
             <div className="text-center">
               <p className="font-semibold text-xs text-muted-foreground mb-1">{L('파열 압력 (P_b)', 'Burst Pressure (P_b)')}</p>
-              <p className="font-mono text-lg text-red-600">P_b = (2 · S · t) / D</p>
+              <BlockMath math="P_b = \dfrac{2 S t}{D}" />
             </div>
             <div className="w-full border-t border-dashed my-1"></div>
             <div className="text-center">
               <p className="font-semibold text-xs text-muted-foreground mb-1">{L('허용 압력 (P_allow)', 'Allowable Pressure (P_allow)')}</p>
-              <p className="font-mono text-lg text-green-600">P_allow = P_b / FS</p>
+              <BlockMath math="P_{allow} = \dfrac{P_b}{FS}" />
             </div>
           </div>
         </div>
@@ -110,16 +126,5 @@ export default function Din10220PipePage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? 'DIN EN 10220 강관 파열 압력' : 'DIN EN 10220 Steel Tube Burst Pressure')}
-      description={t?.description || (ko ? 'DIN EN 10220 치수와 DIN 재질 등급 기준으로 강관의 허용·파열 압력을 계산합니다.' : 'Calculate allowable and burst pressure for seamless/welded steel tubes per DIN EN 10220 dimensions and DIN material grades.')}
-      icon={<span>🛡️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<Din10220PipeCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

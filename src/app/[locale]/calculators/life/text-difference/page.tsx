@@ -1,204 +1,162 @@
-'use client';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./TextDifferenceClient";
 
-import React, { useState, useMemo } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { useI18n } from '@/i18n/I18nProvider';
-
-interface DiffSegment {
-  text: string;
-  type: 'equal' | 'added' | 'removed';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/life/text-difference", "life", "text-difference");
 }
 
-const TextDifference: React.FC = () => {
-  const { dict } = useI18n();
+
+
+export default function TextDifferencePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const dict = isKo ? koDict : enDict;
   const t = dict.textDifference;
-  const [text1, setText1] = useState('');
-  const [text2, setText2] = useState('');
-  const [showDiff, setShowDiff] = useState(false);
+  const L = (koText: string, enText: string) => (isKo ? koText : enText);
 
-  const calculateDiff = () => {
-    setShowDiff(true);
-  };
-
-  const reset = () => {
-    setText1('');
-    setText2('');
-    setShowDiff(false);
-  };
-
-  const diffResult = useMemo((): DiffSegment[] => {
-    if (!showDiff) return [];
-
-    const lines1 = text1.split('\n');
-    const lines2 = text2.split('\n');
-    const maxLen = Math.max(lines1.length, lines2.length);
-
-    const result: DiffSegment[] = [];
-
-    for (let i = 0; i < maxLen; i++) {
-      const line1 = lines1[i] ?? '';
-      const line2 = lines2[i] ?? '';
-
-      if (line1 === line2) {
-        result.push({ text: line1, type: 'equal' });
-      } else {
-        if (line1) result.push({ text: line1, type: 'removed' });
-        if (line2) result.push({ text: line2, type: 'added' });
-      }
-    }
-
-    return result;
-  }, [text1, text2, showDiff]);
-
-  const diffStats = useMemo(() => {
-    if (!showDiff) return { added: 0, removed: 0, equal: 0 };
-
-    const lines1 = text1.split('\n');
-    const lines2 = text2.split('\n');
-    const maxLen = Math.max(lines1.length, lines2.length);
-
-    let added = 0;
-    let removed = 0;
-    let equal = 0;
-
-    for (let i = 0; i < maxLen; i++) {
-      const line1 = lines1[i] ?? '';
-      const line2 = lines2[i] ?? '';
-
-      if (line1 === line2) {
-        equal++;
-      } else {
-        if (line1) removed++;
-        if (line2) added++;
-      }
-    }
-
-    return { added, removed, equal };
-  }, [text1, text2, showDiff]);
-
-  const charDiff = useMemo(() => {
-    if (!showDiff) return { added: 0, removed: 0 };
-    return {
-      added: Math.abs(text2.length - text1.length),
-      removed: Math.abs(text1.length - text2.length),
-    };
-  }, [text1, text2, showDiff]);
-
-  const inputSection = (
-    <div className="flex flex-col space-y-4">
-      <div>
-        <label className="block text-sm font-medium mb-1">{t.originalLabel}</label>
-        <textarea
-          value={text1}
-          onChange={(e) => setText1(e.target.value)}
-          className="w-full min-h-[150px] p-3 border rounded-lg resize-none focus:ring-2 focus:ring-blue-500"
-          placeholder={t.originalPlaceholder}
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-1">{t.modifiedLabel}</label>
-        <textarea
-          value={text2}
-          onChange={(e) => setText2(e.target.value)}
-          className="w-full min-h-[150px] p-3 border rounded-lg resize-none focus:ring-2 focus:ring-blue-500"
-          placeholder={t.modifiedPlaceholder}
-        />
-      </div>
-
-      <div className="flex space-x-2">
-        <Button onClick={calculateDiff} disabled={!text1 && !text2}>
-          {t.compareButton}
-        </Button>
-        <Button variant="secondary" onClick={reset}>
-          {t.resetButton}
-        </Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-4">
-      {showDiff ? (
-        <>
-          <div className="grid grid-cols-3 gap-4">
-            <Card>
-              <CardContent className="p-3 text-center">
-                <p className="text-sm text-muted-foreground">{t.added}</p>
-                <p className="text-2xl font-bold text-green-500">{diffStats.added}</p>
-                <p className="text-xs text-muted-foreground">{t.lines}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-3 text-center">
-                <p className="text-sm text-muted-foreground">{t.removed}</p>
-                <p className="text-2xl font-bold text-red-500">{diffStats.removed}</p>
-                <p className="text-xs text-muted-foreground">{t.lines}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-3 text-center">
-                <p className="text-sm text-muted-foreground">{t.equal}</p>
-                <p className="text-2xl font-bold text-blue-500">{diffStats.equal}</p>
-                <p className="text-xs text-muted-foreground">{t.lines}</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm font-medium mb-2">{t.diffResultTitle}</p>
-              <div className="font-mono text-sm whitespace-pre-wrap border rounded-lg p-4 bg-gray-50 max-h-[400px] overflow-y-auto">
-                {diffResult.map((segment, index) => (
-                  <div
-                    key={index}
-                    className={`px-2 py-0.5 ${
-                      segment.type === 'added'
-                        ? 'bg-green-100 text-green-800 border-l-4 border-green-500'
-                        : segment.type === 'removed'
-                        ? 'bg-red-100 text-red-800 border-l-4 border-red-500 line-through'
-                        : 'text-gray-700'
-                    }`}
-                  >
-                    <span className="mr-2 text-xs text-gray-400 select-none">
-                      {segment.type === 'added' ? '+' : segment.type === 'removed' ? '-' : ' '}
-                    </span>
-                    {segment.text || t.emptyLine}
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="text-sm text-muted-foreground text-center">
-            <p>{t.originalCharCount.replace('{count}', String(text1.length))}, {t.modifiedCharCount.replace('{count}', String(text2.length))}</p>
-          </div>
-        </>
-      ) : (
-        <div className="flex items-center justify-center text-muted-foreground h-32">
-          {t.emptyPrompt}
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("이 도구는 어떤 알고리즘을 사용하나요?", "What algorithm does this tool use?"),
+      a: L(
+        "Longest Common Subsequence(LCS) 알고리즘을 사용합니다. 두 텍스트에서 공통으로 등장하는 가장 긴 문자열 시퀀스를 찾아, 나머지를 '추가됨'(초록) 또는 '삭제됨'(빨강)으로 표시합니다. 줄 단위 비교와 문자 단위 비교를 모두 지원합니다.",
+        "It uses the Longest Common Subsequence (LCS) algorithm, finding the longest common character sequence and marking additions (green) and deletions (red). Both line-level and character-level diffs are supported.",
+      ),
+    },
+    {
+      q: L("긴 텍스트도 비교할 수 있나요?", "Can it compare long texts?"),
+      a: L(
+        " UIResponder의 브라우저 메모리 제한 때문에 매우 긴 텍스트(수만 줄 이상)는 비교 속도가 느려지거나 브라우저가 멈출 수 있습니다. 일반적인 문서 편집·번역 비교 용도(수백~수천 줄)에서는 무리 없이 작동합니다.",
+        "Very long texts (tens of thousands of lines) may slow or freeze the browser due to memory limits. For typical document/translation comparisons (hundreds to thousands of lines), it works fine.",
+      ),
+    },
+    {
+      q: L("대소문자를 구분하나요?", "Is the comparison case-sensitive?"),
+      a: L(
+        "기본적으로 대소문자를 구분합니다(case-sensitive). 'Hello'와 'hello'는 다른 문자로 간주됩니다. 대소문자 무시 비교가 필요한 경우, 비교 전에 두 텍스트 모두 소문자로 변환한 뒤 입력하세요.",
+        "By default it is case-sensitive — 'Hello' and 'hello' are treated as different. Convert both to lowercase before input for case-insensitive comparison.",
+      ),
+    },
+    {
+      q: L("공백·줄바꿈 차이도 비교되나요?", "Are whitespace and line breaks compared too?"),
+      a: L(
+        "예, 모든 문자(공백, 탭, 줄바꿈 포함)가 비교 대상입니다. 'Hello World'와 'Hello  World'(공백 2개)는 차이로 표시됩니다. 비교 전에 불필요한 공백을 정리하거나, 코드 비교라면 정규화(trim 등)를 적용하는 것이 좋습니다.",
+        "All characters including spaces, tabs, and line breaks are compared. 'Hello World' vs 'Hello  World' (double space) shows a difference. Trim or normalize whitespace before comparing code.",
+      ),
+    },
+    {
+      q: L("비교 결과를 공유할 수 있나요?", "Can I share the comparison result?"),
+      a: L(
+        "이 도구는 클라이언트 사이드에서만 작동하며 결과를 서버에 저장하지 않습니다. 비교 결과를 공유하려면 스크린샷을 찍거나, 브라우저 인쇄 기능으로 PDF를 만들어 전달하세요.",
+        "The tool runs entirely client-side with no server storage. Share results via screenshot or browser print-to-PDF.",
+      ),
+    },
+  ];
 
   const infoSection = {
-    calculatorDescription: t.descriptionContent,
-    calculationFormula: t.formulaContent,
-    usefulTips: t.tipsContent,
+    calculatorDescription: `
+      <div className="space-y-4">
+        ${t.descriptionContent}
+      </div>
+    `,
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("원본 텍스트 입력", "Enter original text"),
+            L("비교 기준이 되는 텍스트를 왼쪽 영역에 붙여넣습니다.", "Paste the baseline text into the left area."),
+          ],
+          [
+            L("비교 대상 텍스트 입력", "Enter comparison text"),
+            L("변경된 텍스트를 오른쪽 영역에 붙여넣습니다.", "Paste the modified text into the right area."),
+          ],
+          [
+            L("비교 버튼 클릭", "Click compare"),
+            L("차이점이 색상으로 표시됩니다: 초록=추가, 빨강=삭제, 회색=변경 없음.", "Differences appear color-coded: green=added, red=removed, gray=unchanged."),
+          ],
+          [
+            L("결과 확인", "Review results"),
+            L("각 변경 블록에서 추가·삭제된 내용을 확인할 수 있습니다.", "Review each changed block for added and removed content."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 번역 교정 비교", "Example 1 — Translation revision")}</p>
+          <p>
+            {L(
+              "원문: 'The quick brown fox jumps over the lazy dog' vs 수정: 'The quick brown fox jumped over the lazy dog' → 'jumps'가 'jumped'로 변경된 한 곳만 빨간색으로 표시됩니다. 시제 변화 같은 미세 교정을 빠르게 찾을 수 있습니다.",
+              "Original: 'The quick brown fox jumps over the lazy dog' vs revised: '...jumped...' → Only 'jumps→jumped' is highlighted red. Quick way to spot subtle tense changes.",
+            )}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 코드 리뷰", "Example 2 — Code review")}</p>
+          <p>
+            {L(
+              "두 버전의 코드를 나란히 넣으면 추가된 줄(초록)과 삭제된 줄(빨강)이 즉시 구분됩니다. Git diff와 유사한 시각화를 브라우저에서 바로 확인할 수 있어, 코드 리뷰·변경 이력 확인에 활용할 수 있습니다.",
+              "Paste two code versions side by side: added lines (green) and removed lines (red) are instantly visible — similar to Git diff, directly in the browser.",
+            )}
+          </p>
+        </div>
+      </div>
+    ),
+    calculationFormula: `
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">${t.formulaContent}</p>
+      </div>
+    `,
+    usefulTips: `
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">${t.tipsContent}</p>
+      </div>
+    `,
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default TextDifference;
+}

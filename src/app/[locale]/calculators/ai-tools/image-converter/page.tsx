@@ -1,201 +1,56 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./ImageConverterClient";
+import FaqItem from "@/components/calculators/FaqItem";
 
-import { useState, useRef } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { Button } from '@/components/ui/button';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/ai-tools/image-converter", "ai-tools", "image-converter");
+}
 
-type OutputFormat = 'image/png' | 'image/jpeg' | 'image/webp';
+export default function ImageConverterPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
 
-const ImageConverter = () => {
-  const { dict, locale } = useI18n();
-  const t = dict.imageConverter;
-  const isKo = locale === 'ko';
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string>('');
-  const [outputFormat, setOutputFormat] = useState<OutputFormat>('image/png');
-  const [quality, setQuality] = useState<number>(92);
-  const [originalSize, setOriginalSize] = useState<number>(0);
-  const [convertedSize, setConvertedSize] = useState<number>(0);
-  const [convertedUrl, setConvertedUrl] = useState<string>('');
-  const [isConverting, setIsConverting] = useState(false);
-  const [error, setError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      setError(t.errorSelectFile);
-      return;
-    }
-
-    setError('');
-    setImageFile(file);
-    setOriginalSize(file.size);
-    setConvertedUrl('');
-    setConvertedSize(0);
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setPreview(event.target?.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const convert = () => {
-    if (!imageFile) return;
-
-    setIsConverting(true);
-    setError('');
-
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
-
-      const ctx = canvas.getContext('2d');
-      if (!ctx) {
-        setError(t.errorCanvas);
-        setIsConverting(false);
-        return;
-      }
-
-      if (outputFormat === 'image/jpeg') {
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-      }
-
-      ctx.drawImage(img, 0, 0);
-
-      canvas.toBlob(
-        (blob) => {
-          if (blob) {
-            const url = URL.createObjectURL(blob);
-            setConvertedUrl(url);
-            setConvertedSize(blob.size);
-          } else {
-            setError(t.errorConversion);
-          }
-          setIsConverting(false);
-        },
-        outputFormat,
-        outputFormat === 'image/jpeg' || outputFormat === 'image/webp' ? quality / 100 : undefined
-      );
-    };
-
-    img.onerror = () => {
-      setError(t.errorLoad);
-      setIsConverting(false);
-    };
-
-    img.src = preview;
-  };
-
-  const download = () => {
-    if (!convertedUrl) return;
-    const ext = outputFormat.split('/')[1];
-    const a = document.createElement('a');
-    a.href = convertedUrl;
-    a.download = `converted-image.${ext}`;
-    a.click();
-  };
-
-  const formatSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`;
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-  };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.uploadLabel}</label>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-        <Button variant="outline" onClick={() => fileInputRef.current?.click()} className="w-full">
-          {imageFile ? imageFile.name : t.chooseButton}
-        </Button>
-        {imageFile && (
-          <p className="text-xs text-muted-foreground text-center">
-            {t.convertedInfo.replace('{size}', formatSize(originalSize)).replace('{format}', imageFile.type.split('/')[1].toUpperCase())}
-          </p>
-        )}
-      </div>
-
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.formatLabel}</label>
-        <div className="flex gap-2">
-          {(['image/png', 'image/jpeg', 'image/webp'] as OutputFormat[]).map((fmt) => (
-            <Button
-              key={fmt}
-              variant={outputFormat === fmt ? 'default' : 'outline'}
-              onClick={() => setOutputFormat(fmt)}
-              className="flex-1"
-            >
-              {fmt.split('/')[1].toUpperCase()}
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      {(outputFormat === 'image/jpeg' || outputFormat === 'image/webp') && (
-        <div className="space-y-2">
-          <label className="text-sm font-medium">{t.qualityLabel.replace('{quality}', String(quality))}</label>
-          <input
-            type="range"
-            min={10}
-            max={100}
-            value={quality}
-            onChange={(e) => setQuality(parseInt(e.target.value))}
-            className="w-full"
-          />
-        </div>
-      )}
-
-      {error && (
-        <div className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 text-sm">
-          {error}
-        </div>
-      )}
-
-      <Button onClick={convert} disabled={!imageFile || isConverting} className="w-full">
-        {isConverting ? t.converting : t.convertButton}
-      </Button>
-    </div>
-  );
-
-  const resultSection = convertedUrl ? (
-    <div className="space-y-3">
-      <div className="text-xs text-muted-foreground text-center space-y-1">
-        <p>{t.convertedInfo.replace('{size}', formatSize(convertedSize)).replace('{format}', outputFormat.split('/')[1].toUpperCase())}</p>
-        <p>{t.savedInfo.replace('{size}', formatSize(Math.abs(originalSize - convertedSize))).replace('{percent}', String(Math.round((1 - convertedSize / originalSize) * 100)))}</p>
-      </div>
-      <Button variant="outline" size="sm" onClick={download} className="w-full">{t.downloadButton}</Button>
-      <div className="flex items-center justify-center bg-muted rounded-lg p-2">
-        <img src={convertedUrl} alt="Converted" className="max-h-[300px] object-contain rounded" />
-      </div>
-    </div>
-  ) : preview ? (
-    <div className="space-y-3">
-      <p className="text-xs text-muted-foreground text-center">{t.originalPreview}</p>
-      <div className="flex items-center justify-center bg-muted rounded-lg p-2">
-        <img src={preview} alt="Original" className="max-h-[300px] object-contain rounded" />
-      </div>
-    </div>
-  ) : (
-    <div className="flex items-center justify-center text-muted-foreground h-full">
-      {t.emptyPrompt}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: isKo ? "어떤 이미지 형식을 지원하나요?" : "Which image formats are supported?",
+      a: isKo
+        ? "PNG, JPEG, WebP 형식 간 변환을 지원합니다. PNG는 무손실·투명 배경, JPEG는 손실 압축으로 사진에 적합하며, WebP는 손실/무손실을 모두 지원해 같은 화질에서 JPEG보다 약 25~35% 더 작습니다. 브라우저에서 지원하는 다른 형식도 내부적으로 처리됩니다."
+        : "The converter supports PNG, JPEG, and WebP. PNG is lossless with transparency, JPEG uses lossy compression for photos, and WebP supports both lossy and lossless modes at roughly 25–35% smaller than JPEG at equal quality. Other browser-supported formats are also handled internally.",
+    },
+    {
+      q: isKo ? "품질 설정과 파일 크기는 어떤 관계인가요?" : "How does quality relate to file size?",
+      a: isKo
+        ? "JPEG와 WebP의 손실 모드에서는 품질 값이 높을수록 파일이 커지고, 낮을수록 작아집니다. 예를 들어 품질 90에서 85로 낮추면 화질 차이는 거의 느껴지지 않으면서 크기를 크게 줄일 수 있습니다. 사진에는 80~90 품질이 화질과 용량의 좋은 균형점입니다."
+        : "In lossy JPEG and WebP, higher quality values produce larger files and lower values produce smaller ones. Dropping from quality 90 to 85, for example, noticeably shrinks size with little visible difference. A 80–90 quality range is a good balance for photos.",
+    },
+    {
+      q: isKo ? "브라우저에서의 변환은 개인정보에 안전한가요?" : "Is browser-side conversion private?",
+      a: isKo
+        ? "네. 모든 변환은 사용자의 브라우저 안에서만 로컬로 처리되며, 이미지가 서버로 업로드되거나 외부로 전송되지 않습니다. 민감한 문서, 개인 사진, 서명 이미지 등을 안심하고 변환할 수 있습니다."
+        : "Yes. All conversion happens locally within your browser, and images are never uploaded to or transmitted to any server. You can safely convert sensitive documents, personal photos, or signature images.",
+    },
+    {
+      q: isKo ? "매우 큰 이미지도 변환할 수 있나요?" : "Can I convert very large images?",
+      a: isKo
+        ? "가능하지만 브라우저 메모리와 기기 성능의 영향을 받습니다. 매우 큰 이미지는 처리 속도가 느려지고 메모리 부족으로 중단될 수 있습니다. 이 경우 미리 해상도를 낮추거나, 긴 변이 몇 천 픽셀 이하가 되도록 축소한 뒤 변환하는 것을 권장합니다."
+        : "Yes, but it depends on browser memory and device performance. Very large images process more slowly and may run out of memory. Consider downscaling to a few thousand pixels on the long side before converting.",
+    },
+    {
+      q: isKo ? "PNG의 투명 배경을 JPG로 바꾸면 어떻게 되나요?" : "What happens to a transparent background when converting PNG to JPG?",
+      a: isKo
+        ? "JPEG는 투명도를 지원하지 않으므로, 투명 영역은 흰색(또는 지정된 배경색)으로 채워집니다. 만약 투명 배경을 유지해야 한다면 PNG 또는 WebP(무손실 모드)를 사용하는 것이 적합합니다."
+        : "JPEG does not support transparency, so transparent areas are filled with white (or a chosen background color). If you need to keep the transparency, use PNG or lossless WebP instead.",
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -244,18 +99,79 @@ const ImageConverter = () => {
         </ul>
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            isKo ? "이미지 업로드" : "Upload an image",
+            isKo ? "변환할 이미지 파일을 선택하거나 끌어다 놓습니다. 모든 처리는 브라우저에서 로컬로 이루어집니다." : "Select or drag and drop the image file to convert. All processing happens locally in your browser.",
+          ],
+          [
+            isKo ? "출력 형식 선택" : "Choose the output format",
+            isKo ? "PNG, JPG, WebP 중 원하는 대상 형식을 선택합니다." : "Choose the target format: PNG, JPG, or WebP.",
+          ],
+          [
+            isKo ? "변환" : "Convert",
+            isKo ? "필요하면 품질을 조정한 뒤 변환 버튼을 눌러 이미지를 새 형식으로 변환합니다." : "Adjust the quality if needed, then press convert to produce the image in the new format.",
+          ],
+          [
+            isKo ? "다운로드" : "Download",
+            isKo ? "변환된 이미지를 다운로드해 사용합니다." : "Download the converted image for your use.",
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{isKo ? "예시 1 — PNG에서 JPG로 용량 줄이기" : "Example 1 — Reducing size from PNG to JPG"}</p>
+          <p>
+            {isKo
+              ? "예를 들어 1200×800px 사진이 PNG로 2.5MB라면, 동일한 이미지를 JPG(품질 85)로 변환하면 대개 300~400KB 수준으로 줄어듭니다. 투명 배경이 필요 없는 사진이라면 JPG로 바꾸는 것이 웹 로딩 속도에 크게 도움이 됩니다."
+              : "A 1200×800px photo at 2.5MB as PNG typically drops to roughly 300–400KB when converted to JPG at quality 85. For photos that don't need transparency, converting to JPG significantly improves web loading speed."}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{isKo ? "예시 2 — WebP와 PNG 용량 비교" : "Example 2 — WebP vs PNG size comparison"}</p>
+          <p>
+            {isKo
+              ? "같은 로고 이미지가 PNG로 500KB라면, WebP(무손실)로 변환하면 약 350KB, 손실 모드로는 그보다 더 작게 줄어듭니다. WebP는 같은 화질에서 PNG나 JPEG보다 평균 25~35% 작아 현대 웹사이트에서 자주 권장됩니다."
+              : "The same logo at 500KB as PNG becomes roughly 350KB in lossless WebP, and even smaller in lossy mode. WebP is on average 25–35% smaller than PNG or JPEG at the same quality, making it a common recommendation for modern websites."}
+          </p>
+        </div>
+      </div>
+    ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-      variant="split"
-     />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default ImageConverter;
+}

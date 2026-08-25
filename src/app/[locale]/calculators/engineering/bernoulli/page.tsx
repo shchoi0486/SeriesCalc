@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import BernoulliCalculator from '@/components/engineering-calculator/BernoulliCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./BernoulliClient";
+import { BlockMath } from "react-katex";
 
-export default function BernoulliPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.bernoulli;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/bernoulli", "engineering", "bernoulli");
+}
+
+
+
+export default function BernoulliPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function BernoulliPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">P₁ + ½ρv₁² + ρgh₁ = P₂ + ½ρv₂² + ρgh₂</p>
+            <BlockMath math="P_1 + \tfrac{1}{2}\rho v_1^2 + \rho g h_1 = P_2 + \tfrac{1}{2}\rho v_2^2 + \rho g h_2" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -103,16 +115,5 @@ export default function BernoulliPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '베르누이 방정식 계산기' : 'Bernoulli Equation Calculator')}
-      description={t?.description || (ko ? '베르누이 원리로 유체의 유속과 압력을 계산합니다.' : "Calculate fluid flow using Bernoulli's principle.")}
-      icon={<span>💧</span>}
-      visualizationComponent={<></>}
-      resultComponent={<BernoulliCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

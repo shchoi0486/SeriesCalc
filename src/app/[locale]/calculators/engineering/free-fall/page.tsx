@@ -1,16 +1,33 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import FreeFallCalculator from '@/components/engineering-calculator/FreeFallCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./FreeFallClient";
+import { BlockMath } from "react-katex";
 
-export default function FreeFallCalculatorPage() {
-  const { dict, locale, unitSystem } = useI18n();
-  const t = dict?.freeFall;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/free-fall", "engineering", "free-fall");
+}
+
+
+
+export default function FreeFallPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const dict = isKo ? koDict : enDict;
+  const unitSystem: string = "metric";
+  const imperial = unitSystem === "imperial";
   const L = (koText: string, enText: string) => (ko ? koText : enText);
-  const imperial = unitSystem === 'imperial';
+  const t = dict?.freeFall;
   const velUnit = imperial ? 'ft/s' : 'm/s';
   const lenUnit = imperial ? 'ft' : 'm';
   const gVal = imperial ? '32.174 ft/s²' : '9.80665 m/s²';
@@ -56,8 +73,8 @@ export default function FreeFallCalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">v = v₀ + g · t</p>
-            <p className="font-mono text-lg text-center">s = v₀ · t + ½ · g · t²</p>
+            <BlockMath math="v = v_0 + g t" />
+            <BlockMath math="s = v_0 t + \tfrac{1}{2} g t^{2}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -106,16 +123,5 @@ export default function FreeFallCalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || L('자유 낙하 계산기', 'Free Fall Calculator')}
-      description={t?.description || L('초기 속도와 낙하 시간으로 최종 속도와 이동 거리를 계산합니다.', 'Calculate final velocity and distance from initial velocity and fall time.')}
-      icon={<span>🍎</span>}
-      visualizationComponent={<></>}
-      resultComponent={<FreeFallCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

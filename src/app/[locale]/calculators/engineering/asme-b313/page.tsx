@@ -1,15 +1,31 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import AsmeB313Calculator from '@/components/engineering-calculator/AsmeB313Calculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./AsmeB313Client";
+import { BlockMath } from "react-katex";
 
-export default function AsmeB313Page() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.asmeB313;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/asme-b313", "engineering", "asme-b313");
+}
+
+
+
+export default function AsmeB313Page({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const dict = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
+  const t = dict?.common?.asmeB313;
 
   const infoSection = {
     calculatorDescription: (
@@ -52,8 +68,8 @@ export default function AsmeB313Page() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-blue-600">t = (P × D) / (2 × (S × E + P × Y))</p>
-            <p className="font-mono text-lg text-green-600">P = (2 × t × S × E) / (D − 2 × t × Y)</p>
+            <BlockMath math="t = \dfrac{P D}{2(SE + PY)}" />
+            <BlockMath math="P = \dfrac{2 t S E}{D - 2 t Y}" />
           </div>
           <p className="text-sm mt-2">
             {L(
@@ -112,16 +128,5 @@ export default function AsmeB313Page() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? 'ASME B31.3 배관 계산기' : 'ASME B31.3 Pipe Calculator')}
-      description={t?.description || (ko ? 'ASME B31.3 코드 기반으로 배관의 허용 압력 또는 필요 벽 두께를 계산합니다.' : 'Calculate allowable pressure or required wall thickness of a pipe.')}
-      icon={<span>🔧</span>}
-      visualizationComponent={<></>}
-      resultComponent={<AsmeB313Calculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

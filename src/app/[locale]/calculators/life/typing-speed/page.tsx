@@ -1,274 +1,162 @@
-'use client';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./TypingSpeedClient";
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/life/typing-speed", "life", "typing-speed");
+}
 
-const TypingSpeed: React.FC = () => {
-  const { dict, locale } = useI18n();
+
+
+export default function TypingSpeedPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const dict = isKo ? koDict : enDict;
   const t = dict.typingSpeed;
-  const isKo = locale === 'ko';
+  const L = (koText: string, enText: string) => (isKo ? koText : enText);
 
-  const sampleTexts = isKo
-    ? [
-        "오늘 날씨가 정말 좋습니다. 산책하기 딱 좋은 날씨네요.",
-        "프로그래밍은 논리적 사고력과 문제 해결 능력을 키워줍니다.",
-        "타이핑 속도를 높이려면 정확성부터 연습하는 것이 좋습니다.",
-        "인공지능 기술이 우리의 일상생활을 점점 더 많이 변화시키고 있습니다.",
-        "좋은 습관은 성공을 향한 첫 번째 단계입니다.",
-        "배움에는 끝이 없습니다. 끊임없이 성장하는 것이 중요합니다.",
-        "오늘도 최선을 다하는 하루가 되길 바랍니다.",
-        "건강한 몸과 마음은 행복한 삶의 기초입니다.",
-        "기술의 발전은 인류의 삶을 더욱 편리하게 만들어 줍니다.",
-        "협동과 소통은 팀 성공의 핵심 요소입니다.",
-      ]
-    : [
-        "The weather is really nice today. It is a perfect day for a walk.",
-        "Programming builds logical thinking and problem solving skills.",
-        "To improve typing speed, practice accuracy first.",
-        "Artificial intelligence is gradually changing our daily lives.",
-        "Good habits are the first step toward success.",
-        "Learning never ends. Keep growing constantly.",
-        "Hope you have a day where you do your best.",
-        "A healthy body and mind are the foundation of a happy life.",
-        "Technology makes human life more convenient.",
-        "Cooperation and communication are key to team success.",
-      ];
-  const [text, setText] = useState('');
-  const [userInput, setUserInput] = useState('');
-  const [startTime, setStartTime] = useState<number | null>(null);
-  const [endTime, setEndTime] = useState<number | null>(null);
-  const [isStarted, setIsStarted] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
-  const [wpm, setWpm] = useState(0);
-  const [accuracy, setAccuracy] = useState(100);
-  const [correctChars, setCorrectChars] = useState(0);
-  const [totalKeystrokes, setTotalKeystrokes] = useState(0);
-  const [elapsedTime, setElapsedTime] = useState(0);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const startTest = () => {
-    const randomText = sampleTexts[Math.floor(Math.random() * sampleTexts.length)];
-    setText(randomText);
-    setUserInput('');
-    setStartTime(null);
-    setEndTime(null);
-    setIsStarted(true);
-    setIsFinished(false);
-    setWpm(0);
-    setAccuracy(100);
-    setCorrectChars(0);
-    setTotalKeystrokes(0);
-    setElapsedTime(0);
-    inputRef.current?.focus();
-  };
-
-  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (!isStarted || isFinished) return;
-
-    const value = e.target.value;
-    setUserInput(value);
-
-    if (!startTime) {
-      setStartTime(Date.now());
-      timerRef.current = setInterval(() => {
-        setElapsedTime(Math.floor((Date.now() - (startTime || Date.now())) / 1000));
-      }, 1000);
-    }
-
-    setTotalKeystrokes(prev => prev + 1);
-
-    let correct = 0;
-    for (let i = 0; i < value.length; i++) {
-      if (value[i] === text[i]) {
-        correct++;
-      }
-    }
-    setCorrectChars(correct);
-
-    if (value.length === text.length || value.endsWith('\n')) {
-      finishTest();
-    }
-  };
-
-  const finishTest = useCallback(() => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-
-    const end = Date.now();
-    setEndTime(end);
-    setIsFinished(true);
-
-    const timeInMinutes = (end - (startTime || end)) / 60000;
-    const wordsTyped = text.split(' ').length;
-    const calculatedWpm = timeInMinutes > 0 ? Math.round(wordsTyped / timeInMinutes) : 0;
-
-    let correct = 0;
-    for (let i = 0; i < userInput.length; i++) {
-      if (userInput[i] === text[i]) {
-        correct++;
-      }
-    }
-    const calculatedAccuracy = text.length > 0 ? Math.round((correct / text.length) * 100) : 0;
-
-    setWpm(calculatedWpm);
-    setAccuracy(calculatedAccuracy);
-    setCorrectChars(correct);
-  }, [startTime, text, userInput]);
-
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
-
-  const getCharClass = (index: number): string => {
-    if (index >= userInput.length) return 'text-gray-400';
-    if (userInput[index] === text[index]) return 'text-green-600 bg-green-50';
-    return 'text-red-600 bg-red-50 line-through';
-  };
-
-  const inputSection = (
-    <div className="flex flex-col space-y-4">
-      {!isStarted ? (
-        <div className="text-center py-8">
-          <p className="text-lg mb-4">{t.description}</p>
-          <Button onClick={startTest} size="lg" className="px-8">
-            {t.startButton}
-          </Button>
-        </div>
-      ) : (
-        <>
-          <Card className="p-4">
-            <div className="text-lg leading-relaxed tracking-wide">
-              {text.split('').map((char, index) => (
-                <span key={index} className={getCharClass(index)}>
-                  {char}
-                </span>
-              ))}
-            </div>
-          </Card>
-
-          <textarea
-            ref={inputRef}
-            value={userInput}
-            onChange={handleInput}
-            disabled={isFinished}
-            className="w-full min-h-[120px] p-4 text-lg border rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
-            placeholder={t.typingPrompt}
-          />
-
-          <div className="flex justify-between items-center">
-            <p className="text-sm text-muted-foreground">
-              {isFinished ? t.testComplete : t.charInput.replace('{current}', String(userInput.length)).replace('{total}', String(text.length))}
-            </p>
-            <div className="space-x-2">
-              {isFinished && (
-                <Button onClick={startTest} variant="outline">
-                  {t.retake}
-                </Button>
-              )}
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-4">
-      {isFinished ? (
-        <>
-          <div className="grid grid-cols-2 gap-4">
-            <Card>
-              <CardContent className="p-4 text-center">
-                <p className="text-sm text-muted-foreground">{t.wpmLabel}</p>
-                <p className="text-4xl font-bold text-blue-500">{wpm}</p>
-                <p className="text-xs text-muted-foreground">{t.wpmUnit}</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-4 text-center">
-                <p className="text-sm text-muted-foreground">{t.accuracyLabel}</p>
-                <p className="text-4xl font-bold text-green-500">{accuracy}%</p>
-                <p className="text-xs text-muted-foreground">{t.accuracyUnit}</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <p className="text-sm text-muted-foreground">{t.elapsedTime}</p>
-                  <p className="text-xl font-bold">{elapsedTime}{isKo ? '초' : 's'}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{t.totalChars}</p>
-                  <p className="text-xl font-bold">{text.length}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{t.correctChars}</p>
-                  <p className="text-xl font-bold">{correctChars}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm font-medium mb-2">{t.speedRating}</p>
-              <p className="text-lg">
-                {wpm >= 60
-                  ? t.veryFast
-                  : wpm >= 40
-                  ? t.fast
-                  : wpm >= 20
-                  ? t.average
-                  : t.slow}
-              </p>
-            </CardContent>
-          </Card>
-        </>
-      ) : isStarted ? (
-        <div className="space-y-4">
-          <Card>
-            <CardContent className="p-4 text-center">
-              <p className="text-sm text-muted-foreground">{t.testInProgress}</p>
-              <p className="text-4xl font-bold text-blue-500">{elapsedTime}{isKo ? '초' : 's'}</p>
-              <p className="text-xs text-muted-foreground">{t.elapsedTime}</p>
-            </CardContent>
-          </Card>
-        </div>
-      ) : (
-        <div className="flex items-center justify-center text-muted-foreground h-32">
-          {t.startPrompt}
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("WPM은 어떻게 계산되나요?", "How is WPM calculated?"),
+      a: L(
+        "WPM(Words Per Minute) = (입력한 문자 수 ÷ 5) ÷ 경과 시간(분)입니다. '1단어 = 5글자'라는 산업 표준을 따릅니다. 예: 250자를 1분에 입력하면 250÷5 = 50 WPM. 정확도가 100%가 아니면 유효 WPM(Net WPM)은 이 값에서 오타 비율을 차감합니다.",
+        "WPM = (characters typed ÷ 5) ÷ elapsed minutes. 1 word = 5 characters is the industry standard. E.g., 250 chars in 1 min = 50 WPM. With errors, Net WPM deducts the error rate.",
+      ),
+    },
+    {
+      q: L("정확도는 어떻게 측정하나요?", "How is accuracy measured?"),
+      a: L(
+        "정확도(%) = ((총 입력字符 - 오타 수) ÷ 총 입력字符) × 100입니다. 오타는 목표 텍스트와 다른 문자를 입력했을 때 카운트됩니다. 대소문자·공백도 오타에 포함됩니다. 95% 이상이면 보통, 98% 이상이면 우수, 99% 이상이면 전문가 수준입니다.",
+        "Accuracy % = ((total chars − errors) ÷ total chars) × 100. Errors include wrong characters (case-sensitive, spaces included). 95%+ is average, 98%+ is good, 99%+ is expert.",
+      ),
+    },
+    {
+      q: L("한글 타자와 영어 타자의 WPM 차이는?", "How do Korean and English WPM differ?"),
+      a: L(
+        "한글 자판은 1키 1음절(초성+중성+종성 조합)로, 영어 대비 동일 WPM이라도 실제 정보 전달률이 높습니다. 또한 한글은 오타 교정이 더 어려우므로, 이 도구에서 한글·영어 각각 별도로 연습하는 것이 좋습니다. 일반적으로 숙련자의 한글 타자 속도는 분당 400~600타(약 80~120 WPM) 수준입니다.",
+        "Korean keys produce one syllable each, conveying more information per WPM than English. Error correction is harder in Korean, so practice both languages separately. Typists typically reach 400–600 keystrokes/min (≈80–120 WPM) in Korean.",
+      ),
+    },
+    {
+      q: L("타자 속도를 높이는 방법은?", "How can I improve typing speed?"),
+      a: L(
+        "가장 효과적인 방법은 정확한 자세에서 반복 연습입니다. ① 10-Finger(양손 열 손가락) 자세를 유지하고, ② 화면을 보지 않고 키보드를 치는(블라인드 타이핑) 연습을 하고, ③ 매일 10~15분씩 꾸준히 하는 것이 중요합니다. 속도보다 정확도를 먼저 늘리면, 장기적으로 속도도 함께 오릅니다.",
+        "The most effective method: maintain proper 10-finger posture, practice blind typing (without looking at the keyboard), and train 10–15 min daily. Improving accuracy first leads to sustained speed gains.",
+      ),
+    },
+    {
+      q: L("이 도구는 서버에 데이터를 저장하나요?", "Does this tool store data on a server?"),
+      a: L(
+        "아닙니다. 타이핑 텍스트와 결과는 모두 브라우저 메모리에서만 처리되며, 서버로 전송되거나 저장되지 않습니다. 새로운 테스트를 시작하면 이전 데이터는 사라집니다.",
+        "No. All typing text and results are processed in browser memory only — nothing is sent to or stored on a server. Previous data is lost when a new test starts.",
+      ),
+    },
+  ];
 
   const infoSection = {
-    calculatorDescription: t.descriptionContent,
-    calculationFormula: t.formulaContent,
-    usefulTips: t.tipsContent,
+    calculatorDescription: `
+      <div className="space-y-4">
+        ${t.descriptionContent}
+      </div>
+    `,
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("텍스트 선택", "Choose text"),
+            L("제공되는 샘플 텍스트 중 하나를 선택하거나, 직접 텍스트를 입력합니다.", "Select a provided sample or enter your own text."),
+          ],
+          [
+            L("타이핑 시작", "Start typing"),
+            L("텍스트 입력란에 포커스되면 자동으로 타이머가 시작됩니다.", "The timer starts automatically when you focus on the input area."),
+          ],
+          [
+            L("실시간 피드백", "Real-time feedback"),
+            L("입력 중 올바른 글자(초록), 오타(빨강)가 실시간으로 표시됩니다.", "Correct characters (green) and errors (red) are shown in real time."),
+          ],
+          [
+            L("결과 확인", "Check results"),
+            L("WPM(분당 단어 수), 정확도(%), 총 입력 시간이 표시됩니다.", "WPM, accuracy (%), and total time are displayed."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 영어 타자 테스트", "Example 1 — English typing test")}</p>
+          <p>
+            {L(
+              "샘플 텍스트 'The quick brown fox jumps over the lazy dog' (35글자)를 20초에 입력 → WPM = (35÷5)÷(20÷60) = 7×3 = 21 WPM. 오타 2개 → 정확도 = (35−2)÷35×100 = 94.3%.",
+              "Sample text (35 chars) typed in 20 sec → WPM = (35/5)/(20/60) = 21 WPM. 2 errors → accuracy = 94.3%.",
+            )}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 숙련자 기준", "Example 2 — Proficient typist")}</p>
+          <p>
+            {L(
+              "1분 동안 500자를 오타 없이 입력 → WPM = (500÷5)÷1 = 100 WPM, 정확도 100%. 이 수준은 전문 타이피스트·데이터 입력 직업군의 상위권 성적입니다.",
+              "500 chars in 1 minute, no errors → WPM = 100, accuracy 100%. This is the upper range for professional typists and data-entry roles.",
+            )}
+          </p>
+        </div>
+      </div>
+    ),
+    calculationFormula: `
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">${t.formulaContent}</p>
+      </div>
+    `,
+    usefulTips: `
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">${t.tipsContent}</p>
+      </div>
+    `,
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default TypingSpeed;
+}

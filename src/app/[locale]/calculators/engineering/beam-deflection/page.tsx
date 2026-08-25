@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import BeamDeflectionCalculator from '@/components/engineering-calculator/BeamDeflectionCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./BeamDeflectionClient";
+import { BlockMath } from "react-katex";
 
-export default function BeamDeflectionPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.beamDeflection;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/beam-deflection", "engineering", "beam-deflection");
+}
+
+
+
+export default function BeamDeflectionPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function BeamDeflectionPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-blue-600">δ = (P × L³) / (3 × E × I)</p>
+            <BlockMath math="\delta = \dfrac{P L^3}{3 E I}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -104,16 +116,5 @@ export default function BeamDeflectionPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '보 처짐 계산기' : 'Beam Deflection Calculator')}
-      description={t?.description || (ko ? '외팔보의 최대 처짐을 계산합니다.' : 'Calculate the maximum deflection of a cantilever beam.')}
-      icon={<span>🏗️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<BeamDeflectionCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

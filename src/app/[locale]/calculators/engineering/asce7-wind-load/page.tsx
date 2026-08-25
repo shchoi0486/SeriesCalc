@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import Asce7WindLoadCalculator from '@/components/engineering-calculator/Asce7WindLoadCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./Asce7WindLoadClient";
+import { BlockMath } from "react-katex";
 
-export default function Asce7WindLoadPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.asce7WindLoad;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/asce7-wind-load", "engineering", "asce7-wind-load");
+}
+
+
+
+export default function Asce7WindLoadPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -54,13 +66,13 @@ export default function Asce7WindLoadPage() {
           <div className="p-4 bg-muted rounded-lg flex flex-col space-y-4">
             <div>
               <p className="font-semibold text-sm text-muted-foreground mb-1">{L('속도압 (q_z)', 'Velocity Pressure (q_z)')}</p>
-              <p className="font-mono text-lg text-blue-600">Imperial: q_z = 0.00256 · K_z · K_zt · K_d · V²</p>
-              <p className="font-mono text-lg text-blue-600 mt-1">Metric: q_z = 0.613 · K_z · K_zt · K_d · V²</p>
+              <BlockMath math="\text{Imperial:}\;\; q_z = 0.00256\,K_z K_{zt} K_d V^{2}" />
+              <BlockMath math="\text{Metric:}\;\; q_z = 0.613\,K_z K_{zt} K_d V^{2}" />
             </div>
             <div className="border-t border-dashed my-2"></div>
             <div>
               <p className="font-semibold text-sm text-muted-foreground mb-1">{L('풍압 노출 계수 (K_z)', 'Velocity Pressure Exposure Coefficient (K_z)')}</p>
-              <p className="font-mono text-lg text-teal-600">K_z = 2.01 · (z / z_g) ^ (2 / α)</p>
+              <BlockMath math="K_z = 2.01\left(\dfrac{z}{z_g}\right)^{2/\alpha}" />
             </div>
           </div>
           <p className="text-sm mt-2">
@@ -121,16 +133,5 @@ export default function Asce7WindLoadPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? 'ASCE 7-16 풍하중 계산기' : 'ASCE 7-16 Wind Load Calculator')}
-      description={t?.description || (ko ? 'ASCE 7-16 기준의 속도압(풍하중)을 계산합니다.' : 'Calculate velocity pressure based on ASCE 7-16 standard for structural wind load design.')}
-      icon={<span>🌪️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<Asce7WindLoadCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

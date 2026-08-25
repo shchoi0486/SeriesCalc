@@ -1,113 +1,46 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./YamlGeneratorClient";
 
-import { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useI18n } from '@/i18n/I18nProvider';
-
-const randomNames = ['John', 'Jane', 'Alex', 'Sam', 'Chris', 'Pat', 'Morgan', 'Taylor', 'Jordan', 'Casey'];
-const randomCities = ['Seoul', 'Tokyo', 'New York', 'London', 'Paris', 'Berlin', 'Sydney', 'Toronto'];
-
-function generateRandomValue(key: string): string | number | boolean {
-  const lower = key.toLowerCase();
-  if (lower.includes('name')) return randomNames[Math.floor(Math.random() * randomNames.length)];
-  if (lower.includes('age') || lower.includes('year')) return Math.floor(Math.random() * 60) + 18;
-  if (lower.includes('email')) return `user${Math.floor(Math.random() * 1000)}@example.com`;
-  if (lower.includes('city') || lower.includes('location')) return randomCities[Math.floor(Math.random() * randomCities.length)];
-  if (lower.includes('price') || lower.includes('amount')) return Math.floor(Math.random() * 10000) + 100;
-  if (lower.includes('id')) return Math.floor(Math.random() * 10000) + 1;
-  if (lower.includes('active') || lower.includes('enabled')) return Math.random() > 0.3;
-  return Math.floor(Math.random() * 1000);
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/ai-tools/yaml-generator", "ai-tools", "yaml-generator");
 }
 
-function yamlValue(val: string | number | boolean): string {
-  if (typeof val === 'string') return val.includes(':') || val.includes('#') ? `"${val}"` : val;
-  return String(val);
-}
+export default function YamlGeneratorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
 
-const YamlGenerator = () => {
-  const { dict, locale } = useI18n();
-  const t = dict.yamlGenerator;
-  const isKo = locale === 'ko';
-  const [itemCount, setItemCount] = useState<number>(3);
-  const [keyNames, setKeyNames] = useState('name, age, email, city, active');
-  const [result, setResult] = useState('');
-
-  const generate = () => {
-    const keys = keyNames.split(',').map(k => k.trim()).filter(k => k.length > 0);
-    if (keys.length === 0) {
-      alert(t.alertMessage);
-      return;
-    }
-
-    let yaml = '---\nitems:\n';
-
-    for (let i = 0; i < itemCount; i++) {
-      yaml += `  - id: ${i + 1}\n`;
-      keys.forEach(key => {
-        const value = generateRandomValue(key);
-        yaml += `    ${key}: ${yamlValue(value)}\n`;
-      });
-    }
-
-    yaml += '...\n';
-    setResult(yaml);
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(result);
-  };
-
-  const downloadYAML = () => {
-    const blob = new Blob([result], { type: 'text/yaml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'generated-data.yaml';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.itemCountLabel}</label>
-        <Input
-          type="number"
-          min={1}
-          max={100}
-          value={itemCount}
-          onChange={(e) => setItemCount(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))}
-        />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.keyNamesLabel}</label>
-        <Input
-          value={keyNames}
-          onChange={(e) => setKeyNames(e.target.value)}
-          placeholder="name, age, email, city"
-        />
-      </div>
-      <Button onClick={generate} className="w-full">{t.button}</Button>
-    </div>
-  );
-
-  const resultSection = result ? (
-    <div className="space-y-3">
-      <div className="flex gap-2">
-        <Button variant="outline" size="sm" onClick={copyToClipboard} className="flex-1">{t.copyButton}</Button>
-        <Button variant="outline" size="sm" onClick={downloadYAML} className="flex-1">{t.downloadButton}</Button>
-      </div>
-      <Textarea readOnly value={result} className="min-h-[300px] font-mono text-xs" />
-    </div>
-  ) : (
-    <div className="flex items-center justify-center text-muted-foreground h-full">
-      {t.emptyPrompt}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: "What are the differences between YAML and JSON?",
+      a: "YAML is designed to be human-readable and relies on indentation instead of braces and brackets, so it has no commas or closing characters. JSON is a strict subset of YAML, meaning valid JSON is also valid YAML, but YAML adds features like comments, anchors, and unquoted strings that JSON lacks.",
+    },
+    {
+      q: "Why is indentation so important in YAML?",
+      a: "YAML defines structure purely through indentation, not braces. Because of this, you must use spaces (never tabs) and keep consistent indentation at each nesting level. A single misplaced space can change the meaning of the document or cause a parse error.",
+    },
+    {
+      q: "What are anchors and aliases in YAML?",
+      a: "Anchors (marked with &) let you name a value once, and aliases (marked with *) let you reuse it elsewhere in the same document. This avoids repeating the same block of data, which is useful for sharing common configuration across multiple entries.",
+    },
+    {
+      q: "Does YAML support comments?",
+      a: "Yes. Any line starting with a # is treated as a comment and ignored when parsing. Comments are a key advantage over JSON and make YAML well suited for configuration files where you want to document settings next to their values.",
+    },
+    {
+      q: "When should I use YAML instead of JSON?",
+      a: "Use YAML for human-maintained configuration files—such as Docker Compose, Kubernetes manifests, GitHub Actions, and CI/CD pipelines—where readability and comments matter. Prefer JSON when you need a strict, machine-oriented format or are exchanging data over APIs.",
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -122,6 +55,68 @@ const YamlGenerator = () => {
           { term: 'YAML', desc: isKo ? 'YAML은 사람이 읽기 쉬운 데이터 직렬화 형식입니다. 들여쓰기를 기준으로 계층 구조를 표현하며 주로 설정 파일과 데이터 교환에 사용됩니다.' : 'YAML is a human-readable data serialization format. It expresses hierarchical structure through indentation and is mainly used for configuration files and data exchange.' },
           { term: 'CI/CD', desc: isKo ? '지속적 통합(Continuous Integration)과 지속적 배포(Continuous Delivery)를 뜻하며, 코드 변경을 자동으로 빌드·테스트·배포하는 파이프라인입니다. YAML로 설정 파일을 작성하는 경우가 많습니다.' : 'Short for Continuous Integration and Continuous Delivery—a pipeline that automatically builds, tests, and deploys code changes. Configuration is often written in YAML.' },
         ]} />
+      </div>
+    ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">1</span>
+          <div>
+            <p className="font-semibold text-foreground">Choose your structure</p>
+            <p className="mt-1">Decide on the shape you need, such as a list of records or nested key-value groups, and define the fields you want to generate.</p>
+          </div>
+        </li>
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">2</span>
+          <div>
+            <p className="font-semibold text-foreground">Input your values</p>
+            <p className="mt-1">Set the field names and the number of records. The generator infers appropriate values from the keys.</p>
+          </div>
+        </li>
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">3</span>
+          <div>
+            <p className="font-semibold text-foreground">Generate YAML</p>
+            <p className="mt-1">Press generate to produce properly indented YAML with document start (---) and end (...) markers.</p>
+          </div>
+        </li>
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">4</span>
+          <div>
+            <p className="font-semibold text-foreground">Copy the output</p>
+            <p className="mt-1">Copy the generated YAML into your config file, pipeline definition, or Kubernetes manifest.</p>
+          </div>
+        </li>
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">Example 1 — Simple key-value pair</p>
+          <p>
+            A basic record with scalar values generates clean, readable YAML using indentation instead of braces:
+          </p>
+          <pre className="mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg font-mono text-xs whitespace-pre overflow-x-auto">{`---
+name: John
+age: 28
+active: true
+...`}</pre>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">Example 2 — Nested list</p>
+          <p>
+            Generating multiple records under a list key produces a nested YAML sequence where each item is indented and each field is a separate key-value pair:
+          </p>
+          <pre className="mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg font-mono text-xs whitespace-pre overflow-x-auto">{`---
+items:
+  - id: 1
+    name: John
+    age: 28
+  - id: 2
+    name: Alice
+    age: 31
+...`}</pre>
+        </div>
       </div>
     ),
     calculationFormula: (
@@ -157,18 +152,32 @@ items:
         </ul>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-      variant="split"
-     />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default YamlGenerator;
+}

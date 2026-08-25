@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import SensibleHeatCalculator from '@/components/engineering-calculator/SensibleHeatCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./SensibleHeatClient";
+import { BlockMath } from "react-katex";
 
-export default function SensibleHeatPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.sensibleHeat;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/sensible-heat", "engineering", "sensible-heat");
+}
+
+
+
+export default function SensibleHeatPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function SensibleHeatPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">Q = m × C_p × (T₂ − T₁)</p>
+            <BlockMath math="Q = m C_p\left(T_2 - T_1\right)" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -113,16 +125,5 @@ export default function SensibleHeatPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '현열 계산기' : 'Sensible Heat Calculator')}
-      description={t?.description || (ko ? '온도 변화에 필요한 현열 부하를 계산합니다.' : 'Calculate the sensible heat load required to change temperature.')}
-      icon={<span>❄️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<SensibleHeatCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

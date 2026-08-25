@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import IdealGasCalculator from '@/components/engineering-calculator/IdealGasCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./IdealGasClient";
+import { BlockMath } from "react-katex";
 
-export default function IdealGasCalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.idealGas;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/ideal-gas", "engineering", "ideal-gas");
+}
+
+
+
+export default function IdealGasPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function IdealGasCalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex justify-center">
-            <p className="font-mono text-xl tracking-widest text-center">P · V = n · R · T</p>
+            <BlockMath math="P V = n R T" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -102,16 +114,5 @@ export default function IdealGasCalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || L('이상기체 법칙 계산기', 'Ideal Gas Law Calculator')}
-      description={t?.description || L('압력, 부피, 몰수, 온도의 관계를 이상기체 법칙으로 계산합니다.', 'Solve for pressure, volume, moles, or temperature using the ideal gas law.')}
-      icon={<span>🧪</span>}
-      visualizationComponent={<></>}
-      resultComponent={<IdealGasCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

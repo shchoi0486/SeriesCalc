@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import OhmsLawCalculator from '@/components/engineering-calculator/OhmsLawCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./OhmsLawClient";
+import { BlockMath } from "react-katex";
 
-export default function OhmsLawCalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.ohmsLaw;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/ohms-law", "engineering", "ohms-law");
+}
+
+
+
+export default function OhmsLawPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +64,8 @@ export default function OhmsLawCalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">V = I × R</p>
-            <p className="font-mono text-sm text-muted-foreground">I = V / R&nbsp;&nbsp;&nbsp;R = V / I</p>
+            <BlockMath math="V = I R" />
+            <BlockMath math="I = \dfrac{V}{R} \qquad R = \dfrac{V}{I}" />
           </div>
         </div>
         <div>
@@ -61,8 +73,8 @@ export default function OhmsLawCalculatorPage() {
             {L('전력 (Electric Power)', 'Electric Power')}
           </h4>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">P = V × I</p>
-            <p className="font-mono text-sm text-muted-foreground">P = I² × R = V² / R</p>
+            <BlockMath math="P = V I" />
+            <BlockMath math="P = I^{2} R = \dfrac{V^{2}}{R}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -112,16 +124,5 @@ export default function OhmsLawCalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || "Ohm's Law Calculator"}
-      description={t?.description || "Calculate voltage, current, resistance and power."}
-      icon={<span>⚡</span>}
-      visualizationComponent={<></>}
-      resultComponent={<OhmsLawCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

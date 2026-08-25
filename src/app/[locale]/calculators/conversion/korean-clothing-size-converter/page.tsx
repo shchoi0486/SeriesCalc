@@ -1,42 +1,19 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import FaqItem from "@/components/calculators/FaqItem";
 
-import { useState, useCallback } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./KoreanClothingSizeConverterClient";
 
-const krSizes = [85, 90, 95, 100, 105, 110, 115, 120];
-const usSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
-
-function krToUs(kr: number): string {
-  const idx = krSizes.indexOf(kr);
-  if (idx !== -1) return usSizes[idx];
-  if (kr < 85) return 'XS';
-  if (kr > 120) return '4XL+';
-  const closest = krSizes.reduce((prev, curr) => Math.abs(curr - kr) < Math.abs(prev - kr) ? curr : prev);
-  return usSizes[krSizes.indexOf(closest)];
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/conversion/korean-clothing-size-converter", "conversion", "korean-clothing-size-converter");
 }
 
-function usToKr(us: string): number {
-  const idx = usSizes.indexOf(us.toUpperCase());
-  return idx !== -1 ? krSizes[idx] : 100;
-}
 
-function krToEu(kr: number): number {
-  return Math.round((kr - 10) * 0.5);
-}
-
-function krToChestCm(kr: number): string {
-  return `${kr - 10}~${kr - 5}`;
-}
-
-function krToWaistCm(kr: number): string {
-  return `${kr - 20}~${kr - 15}`;
-}
 
 const refTable = [
   { kr: 85, chest: '80~85', waist: '65~70', us: 'XS', eu: '38' },
@@ -49,141 +26,46 @@ const refTable = [
   { kr: 120, chest: '115~120', waist: '100~105', us: '4XL', eu: '52' },
 ];
 
-export default function KoreanClothingSizeConverterPage() {
-  const { locale } = useI18n();
-  const isKo = locale === 'ko';
+export default function KoreanClothingSizeConverterPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
   const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  const [mode, setMode] = useState<'krToUs' | 'usToKr' | 'krToBody'>('krToUs');
-  const [krSize, setKrSize] = useState('100');
-  const [usSize, setUsSize] = useState('L');
-  const [result, setResult] = useState<any>(null);
+  const faqs = [
+    {
+      q: L('한국 의류 사이즈 숫자 체계는 어떻게 되나요?', 'How does the Korean clothing size numbering system work?'),
+      a: L('한국 의류 사이즈는 가슴둘레(cm)를 기준으로 85에서 120까지 5단위로 표시됩니다. 예를 들어 100호는 가슴둘레 약 95~100cm에 해당합니다.', 'Korean clothing sizes are based on chest circumference (cm) and range from 85 to 120 in increments of 5. For example, size 100 corresponds to a chest of about 95~100 cm.'),
+    },
+    {
+      q: L('정확한 사이즈를 위해 어떻게 측정하나요?', 'How do I measure myself for accurate sizing?'),
+      a: L('상의는 가슴둘레를, 하의는 허리둘레와 엉덩이둘레를 줄자로 측정하세요. 측정 시 몸에 밀착되지 않게 여유를 두고, 측정값을 사이즈표와 비교해 선택하는 것이 좋습니다.', 'Measure chest circumference for tops, and waist and hip circumference for bottoms with a tape measure. Leave a little slack rather than pulling tight, then compare your measurements to the size chart.'),
+    },
+    {
+      q: L('상의와 하의 사이즈 변환이 다른가요?', 'Do top and bottom size conversions differ?'),
+      a: L('네. 상의 사이즈는 가슴둘레를 기준으로 하고, 하의 사이즈는 허리둘레를 기준으로 합니다. 따라서 같은 숫자(예: 100)라도 상의와 하의가 나타내는 신체 치수가 다를 수 있습니다.', 'Yes. Top sizes are based on chest circumference while bottom sizes are based on waist circumference. So the same number (e.g., 100) can represent different body measurements for tops versus bottoms.'),
+    },
+    {
+      q: L('한국 의류 사이즈가 작게 나오는 이유는 무엇인가요?', 'Why do Korean clothing sizes run smaller?'),
+      a: L('한국 사이즈는 가슴둘레 기준의 타이트한 핏 체계를 따르는 경우가 많고, 브랜드마다 여유분이 달라 미국이나 유럽 사이즈보다 작게 느껴질 수 있습니다. 구매 전 브랜드의 사이즈표를 반드시 확인하세요.', 'Korean sizes often follow a tighter fit based on chest circumference, and allowances vary by brand, so they can feel smaller than US or European sizes. Always check the brand\'s size chart before buying.'),
+    },
+    {
+      q: L('남녀공용과 성별 구분 사이즈는 어떻게 다른가요?', 'How do unisex and gender-specific sizing differ?'),
+      a: L('남녀공용(유니섹스) 사이즈는 주로 가슴둘레와 체형의 중간값을 기준으로 합니다. 여성 의류는 브랜드마다 사이즈 차이가 크고, 남성 의류는 비교적 표준화되어 있습니다. 성별에 따라 동일 숫자라도 실제 착용감이 다를 수 있습니다.', 'Unisex sizes are based on a middle value of chest circumference and body shape. Women\'s clothing varies greatly between brands, while men\'s clothing is relatively standardized. The same number can fit differently depending on gender.'),
+    },
+  ];
 
-  const convert = useCallback(() => {
-    if (mode === 'krToUs') {
-      const kr = parseInt(krSize);
-      if (isNaN(kr)) { setResult(null); return; }
-      setResult({
-        type: 'krToUs',
-        kr,
-        us: krToUs(kr),
-        eu: krToEu(kr),
-        chest: krToChestCm(kr),
-        waist: krToWaistCm(kr),
-      });
-    } else if (mode === 'usToKr') {
-      const kr = usToKr(usSize);
-      setResult({
-        type: 'usToKr',
-        kr,
-        us: usSize.toUpperCase(),
-        eu: krToEu(kr),
-        chest: krToChestCm(kr),
-        waist: krToWaistCm(kr),
-      });
-    } else {
-      const kr = parseInt(krSize);
-      if (isNaN(kr)) { setResult(null); return; }
-      setResult({
-        type: 'krToBody',
-        kr,
-        us: krToUs(kr),
-        eu: krToEu(kr),
-        chest: krToChestCm(kr),
-        waist: krToWaistCm(kr),
-      });
-    }
-  }, [mode, krSize, usSize]);
-
-  const reset = () => { setKrSize('100'); setUsSize('L'); setResult(null); };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div>
-        <Label>{L('변환 모드', 'Conversion Mode')}</Label>
-        <Select value={mode} onValueChange={(v) => setMode(v as any)}>
-          <SelectTrigger><SelectValue /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="krToUs">{L('한국 사이즈 → 미국/유럽', 'Korean Size → US/EU')}</SelectItem>
-            <SelectItem value="usToKr">{L('미국 사이즈 → 한국', 'US Size → Korean')}</SelectItem>
-            <SelectItem value="krToBody">{L('한국 사이즈 → 체형 정보', 'Korean Size → Body Measurements')}</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      {(mode === 'krToUs' || mode === 'krToBody') && (
-        <div>
-          <Label>{L('한국 의류 사이즈', 'Korean Clothing Size')}</Label>
-          <Select value={krSize} onValueChange={setKrSize}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              {krSizes.map(s => (
-                <SelectItem key={s} value={String(s)}>{s}호</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
-      {mode === 'usToKr' && (
-        <div>
-          <Label>{L('미국 의류 사이즈', 'US Clothing Size')}</Label>
-          <Select value={usSize} onValueChange={setUsSize}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              {usSizes.map(s => (
-                <SelectItem key={s} value={s}>{s}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
-      <div className="flex space-x-2">
-        <Button onClick={convert} className="flex-1">{L('변환', 'Convert')}</Button>
-        <Button onClick={reset} variant="outline" className="flex-1">{L('초기화', 'Reset')}</Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div>
-      {result ? (
-        <div className="space-y-4">
-          <div className="p-4 bg-muted rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">{L('변환 결과', 'Conversion Result')}</p>
-            <div className="flex items-center justify-center space-x-4 mt-2">
-              <div>
-                <p className="text-xs text-muted-foreground">KR</p>
-                <p className="text-2xl font-bold">{result.kr}호</p>
-              </div>
-              <span className="text-xl">→</span>
-              <div>
-                <p className="text-xs text-muted-foreground">US</p>
-                <p className="text-2xl font-bold">{result.us}</p>
-              </div>
-              <span className="text-xl">→</span>
-              <div>
-                <p className="text-xs text-muted-foreground">EU</p>
-                <p className="text-2xl font-bold">{result.eu}</p>
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-muted rounded-lg text-center">
-              <p className="text-xs text-muted-foreground">{L('가슴둘레 (cm)', 'Chest (cm)')}</p>
-              <p className="font-bold">{result.chest}</p>
-            </div>
-            <div className="p-3 bg-muted rounded-lg text-center">
-              <p className="text-xs text-muted-foreground">{L('허리둘레 (cm)', 'Waist (cm)')}</p>
-              <p className="font-bold">{result.waist}</p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="text-center py-8">
-          <p className="text-lg text-muted-foreground">{isKo ? '사이즈를 입력하세요' : 'Enter a size to convert'}</p>
-        </div>
-      )}
-    </div>
-  );
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
 
   const infoSection = {
     calculatorDescription: (
@@ -263,16 +145,48 @@ export default function KoreanClothingSizeConverterPage() {
         </div>
       </div>
     ),
+    howToUse: (
+      <div className="space-y-4">
+        <ol className="list-decimal list-inside space-y-2">
+          <li>{L('카테고리를 선택하세요 (상의 또는 하의).', 'Select a category (top or bottom).')}</li>
+          <li>{L('한국 의류 사이즈를 선택하세요.', 'Select a Korean clothing size.')}</li>
+          <li>{L('미국/유럽/영국 등가 사이즈가 표시됩니다.', 'See the equivalent US/EU/UK sizes.')}</li>
+          <li>{L('또는 직접 신체 치수를 입력해 권장 사이즈를 확인할 수 있습니다.', 'Alternatively, input your measurements to check the recommended size.')}</li>
+        </ol>
+      </div>
+    ),
+    workedExamples: (
+      <div className="space-y-4">
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
+          <h4 className="font-bold text-base mb-2">{L('상의 95호', 'Top size 95')}</h4>
+          <p className="text-sm">{L('한국 상의 95호는 미국 L 사이즈에 해당하며, EU 약 52에 가깝습니다.', 'Korean top size 95 is equivalent to US L, approximately EU 52.')}</p>
+        </div>
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
+          <h4 className="font-bold text-base mb-2">{L('하의 30', 'Bottom size 30')}</h4>
+          <p className="text-sm">{L('한국 하의 30은 허리 30인치(약 76cm)에 해당합니다.', 'Korean bottom size 30 corresponds to a 30-inch (about 76 cm) waist.')}</p>
+        </div>
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
+          <h4 className="font-bold text-base mb-2">{L('상의 105호', 'Top size 105')}</h4>
+          <p className="text-sm">{L('한국 상의 105호는 미국 XL 사이즈에 해당합니다.', 'Korean top size 105 is equivalent to US XL.')}</p>
+        </div>
+      </div>
+    ),
+    faq: (
+      <div className="space-y-4">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
   };
 
   return (
-    <CalculatorsLayout
-      title={isKo ? '한국 의류 사이즈 변환기' : 'Korean Clothing Size Converter'}
-      description={isKo ? '한국(95, 100, 105...), 미국(S, M, L...), 유럽 의류 사이즈를 상호 변환합니다.' : 'Convert between Korean (95, 100, 105...), US (S, M, L...), and EU clothing sizes.'}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
 }

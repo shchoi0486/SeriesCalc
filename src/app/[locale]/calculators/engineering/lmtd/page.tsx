@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import LMTDCalculator from '@/components/engineering-calculator/LMTDCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./LmtdClient";
+import { BlockMath } from "react-katex";
 
-export default function LMTDPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.lmtd;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/lmtd", "engineering", "lmtd");
+}
+
+
+
+export default function LmtdPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function LMTDPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex justify-center">
-            <p className="font-mono text-lg text-center">LMTD = (ΔT₁ − ΔT₂) / ln(ΔT₁ / ΔT₂)</p>
+            <BlockMath math="\text{LMTD} = \dfrac{\Delta T_1 - \Delta T_2}{\ln\!\left(\dfrac{\Delta T_1}{\Delta T_2}\right)}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -101,16 +113,5 @@ export default function LMTDPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || L('대수평균온도차(LMTD) 계산기', 'LMTD Calculator')}
-      description={t?.description || L('열교환기의 대수평균온도차(LMTD)를 계산합니다.', 'Calculate the Logarithmic Mean Temperature Difference for heat exchangers.')}
-      icon={<span>🌡️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<LMTDCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

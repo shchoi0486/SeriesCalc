@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import PumpAffinityCalculator from '@/components/engineering-calculator/PumpAffinityCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./PumpAffinityClient";
+import { BlockMath } from "react-katex";
 
-export default function PumpAffinityPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.pumpAffinity;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/pump-affinity", "engineering", "pump-affinity");
+}
+
+
+
+export default function PumpAffinityPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,9 +64,9 @@ export default function PumpAffinityPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-blue-600">Q₂ = Q₁ × (N₂ / N₁)</p>
-            <p className="font-mono text-lg text-center text-orange-600">H₂ = H₁ × (N₂ / N₁)²</p>
-            <p className="font-mono text-lg text-center text-red-500">P₂ = P₁ × (N₂ / N₁)³</p>
+            <BlockMath math="Q_2 = Q_1\left(\dfrac{N_2}{N_1}\right)" />
+            <BlockMath math="H_2 = H_1\left(\dfrac{N_2}{N_1}\right)^{2}" />
+            <BlockMath math="P_2 = P_1\left(\dfrac{N_2}{N_1}\right)^{3}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -113,16 +125,5 @@ export default function PumpAffinityPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '펌프 상사법칙 계산기' : 'Pump Affinity Laws Calculator')}
-      description={t?.description || (ko ? '회전수 변화에 따른 펌프 성능 변화를 계산합니다.' : "Calculate pump performance changes using affinity laws.")}
-      icon={<span>🔄</span>}
-      visualizationComponent={<></>}
-      resultComponent={<PumpAffinityCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

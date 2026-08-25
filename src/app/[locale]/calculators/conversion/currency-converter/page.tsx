@@ -1,113 +1,65 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import TermGlossary from "@/components/calculators/TermGlossary";
+import FaqItem from "@/components/calculators/FaqItem";
 
-import React, { useState, useEffect } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { Input } from '@/components/ui/input';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./CurrencyConverterClient";
 
-import { useRouter, usePathname } from 'next/navigation';
-
-const currencies = ['USD', 'EUR', 'JPY', 'CNY', 'KRW', 'GBP'] as const;
-type Currency = typeof currencies[number];
-
-const currencySymbols: Record<Currency, string> = {
-  USD: '$',
-  EUR: '€',
-  JPY: '¥',
-  CNY: '¥',
-  KRW: '₩',
-  GBP: '£',
-};
-
-// Approximate exchange rates (as of 2024, relative to USD)
-const toUSD: Record<Currency, number> = {
-  USD: 1,
-  EUR: 1.08,
-  JPY: 0.0067,
-  CNY: 0.14,
-  KRW: 0.00074,
-  GBP: 1.27,
-};
-
-function convertCurrency(value: number, fromCurrency: Currency): Record<Currency, number> {
-  const usd = value * toUSD[fromCurrency];
-  const result: Record<string, number> = {};
-  currencies.forEach((c) => {
-    result[c] = usd / toUSD[c];
-  });
-  return result as Record<Currency, number>;
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/conversion/currency-converter", "conversion", "currency-converter");
 }
 
-function formatCurrency(value: number, currency: Currency): string {
-  const symbol = currencySymbols[currency];
-  if (currency === 'KRW' || currency === 'JPY') {
-    return `${symbol}${Math.round(value).toLocaleString()}`;
-  }
-  return `${symbol}${value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
-}
 
-function formatNumber(n: number): string {
-  if (n === 0) return '0';
-  return n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
 
-export default function CurrencyConverter() {
-  const { dict } = useI18n();
+export default function CurrencyConverterPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const dict = isKo ? koDict : enDict;
   const t = dict.currencyConverter;
-  const pathname = usePathname();
-  const isKo = pathname.startsWith('/ko');
 
-  const [value, setValue] = useState('1');
-  const [fromCurrency, setFromCurrency] = useState<Currency>(isKo ? 'KRW' : 'USD');
-  const [results, setResults] = useState<Record<Currency, number>>({} as Record<Currency, number>);
+  const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  useEffect(() => {
-    const num = parseFloat(value);
-    if (!isNaN(num)) {
-      setResults(convertCurrency(num, fromCurrency));
-    } else {
-      const empty: Record<string, number> = {};
-      currencies.forEach((c) => { empty[c] = 0; });
-      setResults(empty as Record<Currency, number>);
-    }
-  }, [value, fromCurrency]);
+  const faqs = [
+    {
+      q: L('환율은 어디에서 가져오며 얼마나 자주 갱신되나요?', 'Where does the exchange rate come from and how often is it updated?'),
+      a: L('이 계산기는 참고용 환율을 사용합니다. 실제 시장 환율은 경제 상황, 금리, 수급 등 다양한 요인으로 실시간으로 변동되므로, 실제 거래 전에는 은행이나 금융기관이 제공하는 최신 환율을 확인하세요.', 'This calculator uses reference exchange rates. Real market rates fluctuate in real time due to factors such as economic conditions, interest rates, and supply and demand, so check the latest rate from a bank or financial institution before an actual transaction.'),
+    },
+    {
+      q: L('환율이 고정값인가요, 실시간인가요?', 'Is the exchange rate static or live?'),
+      a: L('이 계산기의 환율은 예시용 고정값입니다. 실시간 시장 환율을 반영하지 않으므로, 변환 결과는 대략적인 참고용으로만 사용해 주세요.', 'The rates in this calculator are static sample values. They do not reflect real-time market rates, so the conversion result should only be used as an approximate reference.'),
+    },
+    {
+      q: L('반대 방향 환율은 어떻게 구하나요?', 'How do I get the inverse exchange rate?'),
+      a: L('반대 방향 환율은 1을 원래 환율로 나누면 됩니다. 예를 들어 1 USD = 1,350 KRW라면 1 KRW = 1 / 1,350 ≈ 0.00074 USD입니다.', 'Divide 1 by the original rate to get the inverse. For example, if 1 USD = 1,350 KRW, then 1 KRW = 1 / 1,350 ≈ 0.00074 USD.'),
+    },
+    {
+      q: L('통화 기호(₩, $, €)는 어떻게 표시되나요?', 'How are currency symbols (₩, $, €) shown?'),
+      a: L('국제적으로 통용되는 통화 코드(예: KRW, USD, EUR)와 기호가 함께 사용됩니다. KRW(원화)는 ₩, USD(달러)는 $, EUR(유로)는 € 기호로 표시되며, 지역에 따라 표기 방식이 다를 수 있습니다.', 'Internationally recognized currency codes (e.g., KRW, USD, EUR) are used together with symbols. KRW uses ₩, USD uses $, and EUR uses €, though notation can vary by region.'),
+    },
+    {
+      q: L('은행 환율과 왜 다른가요?', 'Why does the result differ from the bank rate?'),
+      a: L('은행은 매매 기준율, 환전 수수료, 송금 수수료 등이 반영된 환율을 적용합니다. 이 계산기는 중간 기준 환율(참고용)만 사용하므로 실제 은행 환율과 차이가 있을 수 있습니다.', 'Banks apply rates that include the base trading rate, exchange commissions, and transfer fees. This calculator only uses a mid-market reference rate, so it can differ from the actual bank rate.'),
+    },
+  ];
 
-  const inputSection = (
-    <div className="flex flex-col space-y-4">
-      <div className="flex items-center space-x-2">
-        <label htmlFor="currencyValue" className="w-24">{t.inputLabel}</label>
-        <Input
-          id="currencyValue"
-          type="number"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={t.inputPlaceholder}
-          className="flex-grow"
-        />
-        <select
-          value={fromCurrency}
-          onChange={(e) => setFromCurrency(e.target.value as Currency)}
-          className="border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
-        >
-          {currencies.map((c) => (
-            <option key={c} value={c}>{c}</option>
-          ))}
-        </select>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-3">
-      {currencies.map((c) => (
-        <div key={c} className="flex items-center justify-between p-3 bg-muted rounded-md">
-          <span className="text-sm font-medium">{t.currencyNames[c]}</span>
-          <span className="text-sm font-bold text-primary">{formatCurrency(results[c] ?? 0, c)}</span>
-        </div>
-      ))}
-    </div>
-  );
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
 
   const infoSection = {
     calculatorDescription: (
@@ -182,16 +134,44 @@ export default function CurrencyConverter() {
         </div>
       </div>
     ),
+    howToUse: (
+      <div className="space-y-4">
+        <ol className="list-decimal list-inside space-y-2">
+          <li>{L('변환할 통화(출발 통화)를 선택하세요 (예: USD).', 'Select the source currency you want to convert from (e.g., USD).')}</li>
+          <li>{L('변환 후의 통화(도착 통화)를 선택하세요 (예: KRW).', 'Select the target currency you want to convert to (e.g., KRW).')}</li>
+          <li>{L('변환할 금액을 입력하세요.', 'Enter the amount to convert.')}</li>
+          <li>{L('변환 버튼을 누르면 결과가 표시됩니다. 환율은 참고용 고정값일 수 있습니다.', 'Press convert to see the result. Note that rates may be static sample values.')}</li>
+        </ol>
+      </div>
+    ),
+    workedExamples: (
+      <div className="space-y-4">
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
+          <h4 className="font-bold text-base mb-2">{L('USD → KRW 변환', 'USD → KRW Conversion')}</h4>
+          <p className="text-sm">{L('환율 1 USD = 1,350 KRW일 때, 100 USD는 100 × 1,350 = 135,000 KRW입니다.', 'At an exchange rate of 1 USD = 1,350 KRW, 100 USD equals 100 × 1,350 = 135,000 KRW.')}</p>
+        </div>
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
+          <h4 className="font-bold text-base mb-2">{L('KRW → USD 변환', 'KRW → USD Conversion')}</h4>
+          <p className="text-sm">{L('환율 1 USD = 1,350 KRW일 때, 1,000,000 KRW는 1,000,000 ÷ 1,350 ≈ 740.74 USD입니다.', 'At an exchange rate of 1 USD = 1,350 KRW, 1,000,000 KRW equals 1,000,000 ÷ 1,350 ≈ 740.74 USD.')}</p>
+        </div>
+      </div>
+    ),
+    faq: (
+      <div className="space-y-4">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      variant="split"
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
 }

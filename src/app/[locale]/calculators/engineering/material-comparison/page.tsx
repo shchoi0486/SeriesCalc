@@ -1,1427 +1,220 @@
-'use client';
+import type { Metadata } from "next";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import FaqItem from "@/components/calculators/FaqItem";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./MaterialComparisonClient";
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { Plus, X, Download, RotateCcw, Loader2, Search, ChevronLeft } from 'lucide-react';
-import { useRouter, usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { translateDescription, getKoreanSummary } from '@/utils/translateDescription';
-import { useI18n } from '@/i18n/I18nProvider';
-
-// // import CorrosionCompatibility from '../corrosion/CorrosionCompatibility';
-
-interface MakeItFromMaterial {
-  names: string[];
-  properties: Array<{
-    name: string;
-    scalars: string;
-    units?: string;
-  }>;
-  composition?: Array<{
-    element: string;
-    actualWeightPercent: string;
-  }>;
-  category: string;
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/material-comparison", "engineering", "material-comparison");
 }
 
-interface MaterialItem {
-  name: string;
-  selectable: boolean;
-  makeitfrom_names: Array<{
-    name: string;
-    similarity_score: number;
-  }>;
-}
+export default function Page({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const t = (ko: string, en: string) => (isKo ? ko : en);
 
-interface SelectedMaterial {
-  id: string; // Add id field
-  name: string;
-  properties: { [key: string]: { value: string; unit?: string } };
-  composition: { [key: string]: string };
-  basePrice?: { value: string; unit?: string };
-  active: boolean;
-}
+  const faqs = isKo
+    ? [
+        {
+          q: "이 데이터의 출처는 무엇이며 얼마나 신뢰할 수 있나요?",
+          a: "재료공학 오픈 데이터베이스(MakeItFrom 계열)의 공개 자료를 기반으로 하며, 각 재료의 대표적인 물성 범위를 정리해 둔 것입니다. 금속은 열처리 상태, 판·봉·주물 등 제품 형태, 시험 방향에 따라 물성이 달라지므로 데이터베이스 값은 '대표값 또는 규격 범위'로 이해해야 합니다. 최종 설계에는 해당 재료의 밀(Mill) 시험성적서나 국가규격(KS D, ASTM 등) 원문으로 확정하세요.",
+        },
+        {
+          q: "같은 재료 이름인데 검색 결과가 여러 개 나오는 이유는?",
+          a: "동일 강종이라도 열처리 조건(어닐링, 담금질·템퍼링), 제품 형태(판, 봉, 파이프), 그리고 출처 규격별로 항목이 분리되어 있기 때문입니다. 예컨대 알루미늄 6061은 일반형과 T6 열처리형의 항복강도가 몇 배 차이가 납니다. 비교하려는 부품의 실제 조달 조건(열처리·형태)과 일치하는 항목을 고르는 것이 정확한 비교의 첫걸음입니다.",
+        },
+        {
+          q: "물성값에 '18 ~ 20'처럼 범위로 표시되는 것은 무슨 뜻인가요?",
+          a: "규격이 허용하는 최소~최대 범위입니다. 화학 성분(예: 크롬 18~20%)은 제조사가 목표치 안에서 배합한다는 뜻이고, 물성에서는 재료 등급 내 변동 폭을 보여줍니다. 범위 값의 하한이 설계에 중요합니다. 항복강도 같은 값은 최소보증치가 구조계산의 기준이 되고, 열전도도처럼 낮은 게 유리한 성질은 상한이 불리한 쪽입니다.",
+        },
+        {
+          q: "CSV 다운로드는 어떤 용도로 쓰면 좋나요?",
+          a: "선택한 재료들의 물성표를 스프레드시트로 내려받는 기능입니다. 사내 표준 자재 선정 회의 자료 만들기, 여러 후보 강종의 조건부 서식 비교(최소값 강조), 설계 계산서 입력용 데이터 정리 등에 유용합니다. 다운로드 파일에는 비교 테이블에 표시된 것과 동일한 물성·단위가 들어가므로, 보고서 첨부 전에 단위와 범위 표기를 한 번 더 확인하면 좋습니다.",
+        },
+        {
+          q: "'비강도(Strength to Weight Ratio)' 항목은 언제 봐야 하나요?",
+          a: "무게가 설계 변수인 경우 — 항공·운송기기·휴대기기 구조물, 로봇 암, 장비 이동성이 중요한 브래킷 등 — 에 핵심 지표입니다. 예컨대 강철 대비 알루미늄 6061-T6는 절대 강도는 낮지만 밀도가 약 1/3이라 비강도에서 역전될 수 있습니다. 다만 비강도만 보고 선정하면 강성(탄성계수) 부족으로 처짐이 커지는 함정이 있으므로, 하중 종류에 따라 탄성계수·피로강도를 함께 비교해야 합니다.",
+        },
+      ]
+    : [
+        {
+          q: "Where does this data come from and how reliable is it?",
+          a: "It builds on public materials-engineering databases of the MakeItFrom family, summarizing representative property ranges per material. Because metal properties shift with heat treatment, product form (plate, bar, casting), and test direction, treat these figures as typical values or specification ranges. Final design should be pinned down by mill test certificates or the original national standards (KS D, ASTM, etc.).",
+        },
+        {
+          q: "Why do multiple entries appear under the same material name?",
+          a: "One grade splits into several records by heat treatment (annealed versus quenched-and-tempered), product form, or source specification. Aluminium 6061 plain versus T6 differ in yield strength by several-fold. Match the entry to how your part will actually be procured — that is step one of an honest comparison.",
+        },
+        {
+          q: "What does a range like '18 ~ 20' mean?",
+          a: "The minimum-to-maximum band the specification allows. For chemistry it is the batch window manufacturers must hit; for properties it reflects within-grade variation. The lower bound usually matters most: yield strength designs to the guaranteed minimum, while for properties where lower is better (thermal conductivity) the upper bound is the pessimistic case.",
+        },
+        {
+          q: "What is the CSV download good for?",
+          a: "It exports the comparison table for spreadsheet work — building internal standard-material selection documents, conditional-formatting candidate alloys (highlight minimums), or feeding values into calculation sheets. The file mirrors exactly what the table shows, including units and ranges, so double-check those before attaching it to reports.",
+        },
+        {
+          q: "When should I look at 'Strength to Weight Ratio'?",
+          a: "Whenever mass is a design variable: aerospace and vehicle structures, robot arms, portable-equipment brackets. Against steel, 6061-T6 aluminium loses on absolute strength but can win specific strength thanks to roughly one-third the density. Beware the trap of selecting on specific strength alone — low stiffness (elastic modulus) means larger deflections, so compare modulus and fatigue strength alongside depending on load type.",
+        },
+      ];
 
-// 한국어 물성명 매핑
-const propertyKoreanNames: { [key: string]: { korean: string; description: string } } = {
-  'Density': { korean: '밀도', description: '재료의 단위 부피당 질량' },
-  'Yield Strength': { korean: '항복강도', description: '재료가 소성변형을 시작하는 응력' },
-  'Ultimate Strength': { korean: '인장강도', description: '재료가 견딜 수 있는 최대 인장응력' },
-  'Elongation': { korean: '연신율', description: '파단 시까지의 변형률' },
-  'Modulus of Elasticity': { korean: '탄성계수', description: '재료의 탄성변형에 대한 저항' },
-  "Poisson's Ratio": { korean: '푸아송비', description: '축방향 변형률 대비 횡방향 변형률의 비' },
-  'Maximum Service Temperature': { korean: '최대사용온도', description: '재료가 안전하게 사용할 수 있는 최대 온도' },
-  'Coefficient of Thermal Expansion': { korean: '열팽창계수', description: '온도 변화에 따른 치수 변화율' },
-  'Elastic (Young\'s, Tensile) Modulus': { korean: '탄성계수', description: '재료의 탄성변형에 대한 저항' },
-  'Tensile Strength: Ultimate (UTS)': { korean: '인장강도', description: '재료가 견딜 수 있는 최대 인장응력' },
-  'Tensile Strength: Yield (Proof)': { korean: '항복강도', description: '재료가 소성변형을 시작하는 응력' },
-  'Brinell Hardness': { korean: '브리넬 경도', description: '재료의 경도를 측정하는 방법 중 하나' },
-  'Bismuth (Bi)': { korean: '비스무트', description: '화학 원소 Bi' },
-  'Elongation at Break': { korean: '연신율', description: '파단 시까지의 변형률' },
-  'Electrical Conductivity': { korean: '전기전도도', description: '전기를 전도하는 능력' },
-  'Electrical Resistivity Order of Magnitude': { korean: '전기저항률', description: '전기 전도에 대한 저항' },
-  'Thermal Conductivity': { korean: '열전도도', description: '열을 전도하는 능력' },
-  'Thermal Expansion': { korean: '열팽창계수', description: '온도 변화에 따른 치수 변화율' },
-  'Specific Heat Capacity': { korean: '비열', description: '단위 질량당 온도를 1도 올리는데 필요한 열량' },
-  'Melting Onset (Solidus)': { korean: '융점', description: '고체에서 액체로 변하기 시작하는 온도' },
-  'Shear Modulus': { korean: '전단탄성계수', description: '전단변형에 대한 저항' },
-  'Strength to Weight Ratio': { korean: '비강도', description: '강도 대비 무게의 비율' },
-  'Modulus of Resilience (Unit Resilience)': { korean: '복원탄성계수', description: '탄성한계까지 저장할 수 있는 에너지' },
-  'Unit Rupture Work (Ultimate Resilience)': { korean: '파괴인성', description: '파괴까지 흡수할 수 있는 에너지' },
-  'Thermal Diffusivity': { korean: '열확산율', description: '열이 확산되는 속도' },
-  'Calomel Potential': { korean: '칼로멜 전위', description: '전기화학적 부식 전위' },
-  'Base Metal Price': { korean: '기본 금속 가격', description: '재료의 상대적 가격 지수' },
-  // 누락된 물성들 추가
-  'Dielectric Constant (Relative Permittivity) At 1 Hz': { korean: '유전상수 (1 Hz)', description: '1 Hz에서의 상대 유전율' },
-  'Dielectric Constant (Relative Permittivity) At 1 MHz': { korean: '유전상수 (1 MHz)', description: '1 MHz에서의 상대 유전율' },
-  'Dielectric Strength (Breakdown Potential)': { korean: '절연파괴강도', description: '절연체가 파괴되는 전계강도' },
-  'Flexural Modulus': { korean: '굽힘탄성계수', description: '굽힘 변형에 대한 저항' },
-  'Compressive (Crushing) Strength': { korean: '압축강도', description: '재료가 압축 하중을 견딜 수 있는 능력' },
-  'Flexural Strength': { korean: '굴곡강도', description: '재료가 굽힘 하중을 견딜 수 있는 능력' },
-  'Glass Transition Temperature': { korean: '유리 전이 온도', description: '비정질 고체가 유리 상태에서 고무 상태로 변하는 온도' },
-  'Heat Deflection Temperature At 1.82 MPa (264 psi)': { korean: '열변형온도 (1.82 MPa)', description: '1.82 MPa 하중에서의 열변형 온도' },
-  'Heat Deflection Temperature At 455 kPa (66 psi)': { korean: '열변형온도 (455 kPa)', description: '455 kPa 하중에서의 열변형 온도' },
-  'Impact Strength: Notched Izod': { korean: '아이조드 충격강도', description: '노치 시편의 충격 저항' },
-  'Limiting Oxygen Index (LOI)': { korean: '한계산소지수', description: '연소를 유지하는데 필요한 최소 산소농도' },
-  'Water Absorption After 24 Hours': { korean: '24시간 흡수율', description: '24시간 후 물 흡수율' },
-  'Water Absorption At Saturation': { korean: '포화 수분 흡수율', description: '포화 상태에서의 물 흡수율' },
-  // 사용자가 지적한 누락된 물성들 추가
-  'Fatigue Strength': { korean: '피로강도', description: '반복 하중에 대한 저항 강도' },
-  'Reduction in Area': { korean: '단면수축률', description: '인장 시험에서 파단 후 단면적 감소율' },
-  'Rockwell C Hardness': { korean: '로크웰 C 경도', description: '로크웰 C 스케일로 측정한 경도' },
-  'Latent Heat of Fusion': { korean: '융해잠열', description: '고체에서 액체로 상변화 시 필요한 열량' },
-  'Melting Completion (Liquidus)': { korean: '완전용융온도', description: '고체가 완전히 액체로 변하는 온도' },
-  'Electrical Conductivity: Equal Volume': { korean: '전기전도도 (동일부피)', description: '동일 부피 기준 전기 전도도' },
-  'Electrical Conductivity: Equal Weight (Specific)': { korean: '전기전도도 (동일중량)', description: '동일 중량 기준 전기 전도도' },
-  'Embodied Carbon': { korean: '내재탄소', description: '재료 생산 과정에서 배출되는 탄소량' },
-  'Embodied Energy': { korean: '내재에너지', description: '재료 생산 과정에서 소비되는 에너지량' },
-  'Embodied Water': { korean: '내재수자원', description: '재료 생산 과정에서 사용되는 물의 양' },
-  'Maximum Temperature: Mechanical': { korean: '최대사용온도 (기계적)', description: '기계적 성질을 유지할 수 있는 최대 온도' },
-  'Shear Strength': { korean: '전단강도', description: '재료가 전단 하중에 견딜 수 있는 능력' },
-  'Maximum Temperature: Decomposition': { korean: '최대 분해 온도', description: '재료가 분해되기 시작하는 최대 온도' },
-  'Vicat Softening Temperature': { korean: '비카트 연화 온도', description: '열가소성 플라스틱의 연화점' },
-  'Curie Temperature': { korean: '큐리 온도', description: '강자성체가 상자성체로 변하는 온도' }
-};
+  const sections = [
+    {
+      value: "description",
+      title: t("계산기 설명", "Calculator Description"),
+      content: (
+        <div className="space-y-3 text-sm text-muted-foreground">
+          <p>
+            <strong className="text-foreground">{t("재료 물성 비교 도구", "Material Property Comparison Tool")}</strong>
+            {isKo
+              ? " 는 금속·폴리머·세라믹 데이터베이스에서 재료를 선택해 밀도, 항복강도, 인장강도, 열전도도, 전기전도도 등 수십 가지 물성을 나란히 비교하는 도구입니다. 기계·구조 설계에서 자재 후보를 좁히거나, 대체 재료 검토, 사양서 작성, 견적 대응 자료 준비에 사용하세요."
+              : " pulls materials from a metals/polymers/ceramics database and lines up dozens of properties — density, yield strength, tensile strength, thermal conductivity, electrical conductivity — side by side. Use it to narrow candidate materials in mechanical and structural design, evaluate substitutions, draft specifications, or prepare quotation support data."}
+          </p>
+          <p>
+            {isKo
+              ? "비교 테이블은 기계적 → 열적 → 전기적 순서로 물성을 정렬하고, 한국어 물성명과 영문 원항목을 함께 보여줍니다. 합금 성분조성(C, Cr, Ni…)도 별도 섹션으로 표시되며, 각 재료는 스위치로 표시/숨김을 전환할 수 있어 많은 재료를 넣었다 빼면서 비교하기 편합니다."
+              : "Properties sort mechanically → thermally → electrically, shown with Korean names beside the English source items. Alloy compositions (C, Cr, Ni…) appear in their own section, and each material has a visibility switch so you can juggle many candidates at once."}
+          </p>
+        </div>
+      ),
+    },
+    {
+      value: "how-to-use",
+      title: t("사용 방법", "How to Use"),
+      content: (
+        <ol className="space-y-4 text-sm text-muted-foreground">
+          {[
+            [
+              t("재료 찾기", "Find materials"),
+              t("카테고리(대분류→중분류→소분류→재료)로 드릴다운하거나, 검색창에 강종명(예: SUS304, A36, 6061)을 직접 입력하세요.", "Drill through categories, or type a grade name such as SUS304, A36, or 6061 into the search box."),
+            ],
+            [
+              t("비교 대상 추가", "Add comparators"),
+              t("추가 버튼으로 비교할 재료를 모두 올립니다. 이미 추가된 재료는 중복 등록되지 않습니다.", "Load every candidate with the add button; duplicates are blocked automatically."),
+            ],
+            [
+              t("물성표 읽기", "Read the property table"),
+              t("기계적 → 열적 → 전기적 순서로 정렬된 표에서 항목별 차이를 확인합니다. 범위 값(~)은 규격 허용 범위입니다.", "Scan rows sorted mechanical → thermal → electrical. Range values (~) are specification bands."),
+            ],
+            [
+              t("CSV로 내보내기", "Export if needed"),
+              t("다운로드 버튼으로 스프레드시트 파일을 받아 보고서나 추가 분석에 활용하세요.", "Hit download for a spreadsheet copy usable in reports or further analysis."),
+            ],
+          ].map(([title, body], i) => (
+            <li key={i} className="flex gap-3">
+              <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+              <div>
+                <p className="font-semibold text-foreground">{title}</p>
+                <p className="mt-1">{body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      ),
+    },
+    {
+      value: "worked-examples",
+      title: t("예시로 이해하기", "Worked Examples"),
+      content: (
+        <div className="space-y-6 text-sm text-muted-foreground">
+          <p>
+            {t(
+              "아래 수치는 널리 인용되는 대표값(데이터 소스에 따라 ±수% 오차 가능)으로, 도구에서 세 재료를 나란히 놓으면 이런 그림이 그려집니다.",
+              "Figures below are widely cited representative values (±a few percent depending on source); loading these three materials shows exactly this picture.",
+            )}
+          </p>
+          <div>
+            <p className="font-semibold text-foreground mb-2">{t("예시 1 — 구조용 강재 vs 스테인리스 vs 알루미늄", "Example 1 — structural steel vs stainless vs aluminium")}</p>
+            <p>
+              {t(
+                "A36 탄소강, SUS304, 6061-T6 알루미늄을 비교하면: 밀도는 약 7,850 / 8,000 / 2,700 kg/m³, 항복강도는 약 250 / 230~290 / 276 MPa, 열전도도는 약 52 / 16 / 167 W/m·K 수준입니다. 눈에 띄는 교차점은 두 가지입니다. 첫째, 스테인리스는 탄소강보다 강도가 비슷하거나 높으면서도 열전도도가 1/3 수준이라 열전달 부품에는 부적합하지만 보온·단열 구조에는 유리합니다. 둘째, 알루미늄은 절대 강도가 비슷해도 밀도가 약 1/3이라 무게당 성능(비강도)에서 앞서며, 탄성계수(약 69 GPa vs 강재 약 200 GPa)가 낮다는 점이 처짐·좌굴 검토의 함정이 됩니다.",
+                "Compare A36 carbon steel, SUS304, and 6061-T6 aluminium: density ≈ 7,850 / 8,000 / 2,700 kg/m³; yield ≈ 250 / 230–290 / 276 MPa; thermal conductivity ≈ 52 / 16 / 167 W/m·K. Two crossovers stand out. First, stainless matches or beats carbon steel on strength while conducting only one-third the heat — poor for heat exchangers but handy where thermal isolation helps. Second, aluminium reaches similar strength at one-third density, winning strength-to-weight, yet its modulus (~69 GPa vs ~200 GPa) makes deflection and buckling the classic trap.",
+              )}
+            </p>
+          </div>
+          <div>
+            <p className="font-semibold text-foreground mb-2">{t("예시 2 — 성분조성으로 강종 구분하기", "Example 2 — telling grades apart by composition")}</p>
+            <p>
+              {t(
+                "SUS304와 SUS316을 나란히 놓으면 성분조성 섹션에서 차이가 바로 드러납니다. 316은 304보다 크롬이 약간 적은 대신 몰리브덴 2~3%가 들어가 있습니다. 이 한 항목 차이가 염화물 환경(바닷물, 염수 분무)에서의 내식성 격차를 만들고, 재료 가격 차이로도 이어집니다. 카탈로그상 물성이 비슷한 강종들을 구분할 때 성분표가 가장 빠른 판별책입니다.",
+                "Place SUS304 next to SUS316 and the composition section reveals the difference instantly: 316 trades a touch of chromium for 2–3% molybdenum. That single row drives the chloride-resistance gap — seawater, salt spray — and the price gap too. When datasheet numbers look identical, composition is the fastest fingerprint.",
+              )}
+            </p>
+            <p className="mt-2 text-xs opacity-80">
+              * {t("실제 조회 결과의 수치가 위 대표값과 조금씩 다를 수 있습니다. 도구의 값은 데이터베이스 원문 기준입니다.", "Your query results may differ slightly from these representative figures; the tool follows its source database verbatim.")}
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      value: "tips",
+      title: t("유용한 팁", "Useful Tips"),
+      content: (
+        <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+          <li>{t("열처리 조건을 먼저 확인하세요. 같은 강종이라도 어닐링 상태와 T6 열처리 상태는 항복강도가 몇 배 차이 납니다.", "Check heat treatment first — the same grade can vary several-fold in yield strength between annealed and T6 conditions.")}</li>
+          <li>{t("설계에는 범위의 최소보증값을 쓰세요. 평균값으로 설계했다가 하한 재료 로트에서 문제가 생기는 사례가 잦습니다.", "Design to the guaranteed minimum of a range, not the average — mid-range assumptions fail on low-end lots.")}</li>
+          <li>{t("단일 물성으로 판단하지 마세요. 해양 환경이면 피로강도·Cl 저항, 고온이면 최대사용온도·열팽창, 전장품이면 전기전도도처럼 용도별 핵심 항목이 다릅니다.", "Never judge on one row. Marine service cares about fatigue and chloride resistance; high temperature about max service temperature and expansion; electrical parts about conductivity.")}</li>
+          <li>{t("접촉하는 두 금속은 전위차(갈바닉 부식)도 생각하세요. 칼로멜 전위 항목이 있는 재료는 이 검토의 단서가 됩니다.", "For touching dissimilar metals, mind galvanic potential — the Calomel Potential row hints at this risk.")}</li>
+          <li>{t("최종 선정은 밀 시험성적서와 규격 원문으로 확정하고, 중요 부재는 담당 재료엔지니어의 검토를 거치세요. 이 도구는 1차 스크리닝용입니다.", "Finalize selections with mill certificates and standards documents, and route critical members past a materials engineer — this tool is first-pass screening.")}</li>
+        </ul>
+      ),
+    },
+    {
+      value: "faq",
+      title: t("자주 묻는 질문", "Frequently Asked Questions"),
+      content: (
+        <div className="space-y-5 text-sm text-muted-foreground">
+          {faqs.map((f, i) => (
+            <FaqItem key={i} q={f.q} a={f.a} />
+          ))}
+        </div>
+      ),
+    },
+  ];
 
-// 원소의 한국어 이름 매핑
-const elementKoreanNames: { [key: string]: string } = {
-  'C': '탄소',
-  'Cr': '크롬',
-  'Ni': '니켈',
-  'Mo': '몰리브덴',
-  'Mn': '망간',
-  'Si': '규소',
-  'Fe': '철',
-  'V': '바나듐',
-  'Ti': '티타늄',
-  'Nb': '니오븀',
-  'Al': '알루미늄',
-  'Co': '코발트',
-  'Cu': '구리',
-  'W': '텅스텐',
-  'P': '인',
-  'S': '황',
-  'N': '질소',
-  'O': '산소',
-  'B': '붕소',
-  'Ca': '칼슘',
-  'Mg': '마그네슘',
-  'Zn': '아연',
-  'Pb': '납',
-  'Bi': '비스무트',
-  'Sn': '주석',
-  'Zr': '지르코늄',
-  'Ta': '탄탈럼',
-  'Hf': '하프늄',
-  'Re': '레늄',
-  'Ru': '루테늄',
-  'Rh': '로듐',
-  'Pd': '팔라듐',
-  'Ag': '은',
-  'Cd': '카드뮴',
-  'In': '인듐',
-  'Sb': '안티몬',
-  'Te': '텔루륨',
-  'I': '요오드',
-  'Cs': '세슘',
-  'Ba': '바륨',
-  'La': '란타넘',
-  'Ce': '세륨',
-  'Pr': '프라세오디뮴',
-  'Nd': '네오디뮴',
-  'Pm': '프로메튬',
-  'Sm': '사마륨',
-  'Eu': '유로퓸',
-  'Gd': '가돌리늄',
-  'Tb': '테르븀',
-  'Dy': '디스프로슘',
-  'Ho': '홀뮴',
-  'Er': '에르븀',
-  'Tm': '툴륨',
-  'Yb': '이테르븀',
-  'Lu': '루테튬',
-  'Y': '이트륨',
-  'Sc': '스칸듐',
-  'Be': '베릴륨',
-  'Li': '리튬',
-  'Na': '나트륨',
-  'K': '칼륨',
-  'Rb': '루비듐',
-  'Fr': '프랑슘',
-  'Ra': '라듐',
-  'Ac': '악틀늄',
-  'Th': '토륨',
-  'Pa': '프로트악틀늄',
-  'U': '우라늄',
-  'Np': '넵투늄',
-  'Pu': '플루토늄',
-  'Am': '아메리슘',
-  'Cm': '큐륨',
-  'Bk': '버클륨',
-  'Cf': '캘리포늄',
-  'Es': '아인슈타이늄',
-  'Fm': '페르뮴',
-  'Md': '멘델레븀',
-  'No': '노벨륨',
-  'Lr': '로렌슘',
-  'res.': '잔량'
-};
-
-// 단위 표시 함수
-const formatUnit = (unit?: string): string => {
-  if (!unit) return '';
-  
-  // LaTeX 수학 기호를 HTML로 변환
-  return unit
-    .replace(/\$\^\{([^}]+)\}\$/g, '<sup>$1</sup>')
-    .replace(/\$\_\{([^}]+)\}\$/g, '<sub>$1</sub>')
-    .replace(/\$\^\{\\circ\}\$/g, '°')
-    .replace(/\$\^\{([^}]+)\}\$/g, '<sup>$1</sup>')
-    .replace(/\$\\mu\$/g, 'μ')
-    .replace(/\$\\Omega\$/g, 'Ω')
-    .replace(/\$\^\{x\}\$/g, '<sup>x</sup>')
-    .replace(/\$\^\{\\circ\}\$/g, '°')
-    .replace(/\$\^\{3\}\$/g, '³')
-    .replace(/\$\^\{2\}\$/g, '²')
-    .replace(/\$\\#circ\$/g, '°')
-    .replace(/\$/g, '');
-};
-
-// 범위 표시를 'to' 대신 '~'로 변경하는 함수
-const formatRangeValue = (value: string): string => {
-  if (!value) return value;
-  
-  // 숫자 to 숫자 패턴을 숫자 ~ 숫자로 변경
-  return value.replace(/(\d+\.?\d*)\s+to\s+(\d+\.?\d*)/g, '$1 ~ $2');
-};
-
-// 물성 순서 정의 (기계적 → 열적 → 전기적)
-const propertyOrder: { [key: string]: number } = {
-  // 1) 기계적 물성 (Mechanical Properties)
-  'Density': 1,
-  'Strength to Weight Ratio': 2,
-  'Tensile Strength: Yield (Proof)': 3,
-  'Tensile Strength: Ultimate (UTS)': 4,
-  'Yield Strength': 5,
-  'Ultimate Strength': 6,
-  'Brinell Hardness': 7,
-  'Rockwell C Hardness': 8,
-  'Elongation at Break': 9,
-  'Elongation': 10,
-  'Reduction in Area': 11,
-  'Elastic (Young\'s, Tensile) Modulus': 12,
-  'Modulus of Elasticity': 13,
-  'Shear Modulus': 14,
-  'Poisson\'s Ratio': 15,
-  'Fatigue Strength': 16,
-  'Unit Rupture Work (Ultimate Resilience)': 17,
-  'Modulus of Resilience (Unit Resilience)': 18,
-  'Impact Strength: Notched Izod': 19,
-  'Compressive (Crushing) Strength': 20,
-  'Flexural Strength': 21,
-  'Flexural Modulus': 22,
-
-  // 2) 열적 물성 (Thermal Properties)
-  'Thermal Conductivity': 23,
-  'Thermal Diffusivity': 24,
-  'Coefficient of Thermal Expansion': 25,
-  'Thermal Expansion': 26,
-  'Specific Heat Capacity': 27,
-  'Melting Onset (Solidus)': 28,
-  'Melting Completion (Liquidus)': 29,
-  'Latent Heat of Fusion': 30,
-  'Maximum Service Temperature': 31,
-  'Maximum Temperature: Mechanical': 32,
-  'Glass Transition Temperature': 33,
-  'Heat Deflection Temperature At 1.82 MPa (264 psi)': 34,
-  'Heat Deflection Temperature At 455 kPa (66 psi)': 35,
-
-  // 3) 전기적 물성 (Electrical Properties)
-  'Electrical Conductivity': 36,
-  'Electrical Conductivity: Equal Volume': 37,
-  'Electrical Conductivity: Equal Weight (Specific)': 38,
-  'Electrical Resistivity Order of Magnitude': 39,
-  'Dielectric Constant (Relative Permittivity) At 1 Hz': 40,
-  'Dielectric Constant (Relative Permittivity) At 1 MHz': 41,
-  'Dielectric Strength (Breakdown Potential)': 42,
-
-  // 4) 기타 물성
-  'Calomel Potential': 43,
-  'Embodied Carbon': 44,
-  'Embodied Energy': 45,
-  'Embodied Water': 46,
-  'Limiting Oxygen Index (LOI)': 47,
-  'Water Absorption After 24 Hours': 48,
-  'Water Absorption At Saturation': 49
-};
-
-// 물성 정렬 함수
-const sortPropertiesByOrder = (properties: string[]): string[] => {
-  return properties.sort((a, b) => {
-    const orderA = propertyOrder[a] || 999; // 정의되지 않은 물성은 맨 뒤로
-    const orderB = propertyOrder[b] || 999;
-    return orderA - orderB;
-  });
-};
-
-// 성분조성 순서 정의 (C, Cr, Ni, Mo, Mn, Si, Fe, V, Ti, Nb, Al, Cu, Co, W, P, S, N, O)
-const elementOrder: { [key: string]: number } = {
-  'C': 1,
-  'Cr': 2,
-  'Ni': 3,
-  'Mo': 4,
-  'Mn': 5,
-  'Si': 6,
-  'Fe': 7,
-  'V': 8,
-  'Ti': 9,
-  'Nb': 10,
-  'Al': 11,
-  'Cu': 12,
-  'Co': 13,
-  'W': 14,
-  'P': 15,
-  'S': 16,
-  'N': 17,
-  'O': 18,
-  'res.': 1000
-};
-
-// 성분조성 정렬 함수
-const sortElementsByOrder = (elements: string[]): string[] => {
-  return elements.sort((a, b) => {
-    const orderA = elementOrder[a] || 999; // 정의되지 않은 원소는 맨 뒤로
-    const orderB = elementOrder[b] || 999;
-    return orderA - orderB;
-  });
-};
-
-// 새로운 데이터 구조에 맞는 인터페이스
-interface NewMaterialProperty {
-  name: string;
-  scalars: string;
-  units?: string;
-}
-
-interface NewMaterialData {
-  name: string;
-  url: string;
-  category: string;
-  description: string;
-  properties: NewMaterialProperty[];
-}
-
-// 4-level 구조: Major > Middle > Minor > Materials[]
-// 3-level 구조: Major > Middle > materials[]
-interface CategoryStructure {
-  [majorCategory: string]: {
-    [middleCategory: string]: {
-      [minorCategory: string]: NewMaterialData[] | { materials: NewMaterialData[] };
-    } | { materials: NewMaterialData[] };
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
-}
-
-function MaterialComparisonPage() {
-  const { locale, dict } = useI18n();
-  const isKo = locale === 'ko';
-  const t = dict.materialComparison;
-
-  const router = useRouter();
-  const pathname = usePathname();
-  const handleBackClick = () => {
-    const seg = (pathname || '').split('/').filter(Boolean);
-    router.push(seg.length > 1 ? '/' + seg.slice(0, -1).join('/') : '/');
-  };
-
-  const [allData, setAllData] = useState<CategoryStructure>({});
-  const [selectedMajor, setSelectedMajor] = useState<string>('');
-  const [selectedMiddle, setSelectedMiddle] = useState<string>('');
-  const [selectedSub, setSelectedSub] = useState<string>('');
-  const [selectedDetail, setSelectedDetail] = useState<string>('');
-  const [selectedMaterials, setSelectedMaterials] = useState<SelectedMaterial[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  // 검색 기능을 위한 상태
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [showSearchResults, setShowSearchResults] = useState<boolean>(false);
-
-  useEffect(() => {
-    setSelectedMaterials([]);
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch('/api/materials/properties');
-        const data = await response.json();
-        setAllData(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, []);
-
-  // 카테고리별 옵션 추출
-  const majorCategories = Object.keys(allData);
-  const middleCategories = selectedMajor ? Object.keys(allData[selectedMajor] || {}) : [];
-  
-  // 소분류 추출 (3-level vs 4-level 구조 처리)
-  const subCategories = selectedMajor && selectedMiddle ? (() => {
-    const middleData = allData[selectedMajor]?.[selectedMiddle];
-    if (!middleData) return [];
-    
-    // 3-level 구조인지 확인 (materials 키가 있는지)
-    if ('materials' in middleData) {
-      return []; // 3-level 구조에서는 소분류가 없음
-    }
-    
-    // 4-level 구조
-    return Object.keys(middleData);
-  })() : [];
-  
-  // 재료 목록 추출
-  const availableMaterials: NewMaterialData[] = (() => {
-    if (!selectedMajor || !selectedMiddle) return [];
-    
-    const middleData = allData[selectedMajor]?.[selectedMiddle];
-    if (!middleData) return [];
-    
-    // 3-level 구조 - materials 속성이 있는 경우
-    if ('materials' in middleData && Array.isArray(middleData.materials)) {
-      return middleData.materials;
-    }
-    
-    // 4-level 구조
-    if (selectedSub) {
-      const subData = (middleData as any)[selectedSub];
-      if (Array.isArray(subData)) {
-        return subData;
-      }
-      if (subData && typeof subData === 'object' && 'materials' in subData && Array.isArray(subData.materials)) {
-        return subData.materials;
-      }
-    }
-    
-    return [];
-  })();
-
-  // 전체 재료 목록을 검색하기 위한 함수
-  const getAllMaterials = useMemo((): NewMaterialData[] => {
-    const materials: NewMaterialData[] = [];
-    
-    Object.entries(allData).forEach(([majorKey, majorValue]) => {
-      Object.entries(majorValue).forEach(([middleKey, middleValue]) => {
-        if ('materials' in middleValue && Array.isArray(middleValue.materials)) {
-          // 3-level 구조
-          materials.push(...middleValue.materials);
-        } else {
-          // 4-level 구조
-          Object.entries(middleValue).forEach(([subKey, subValue]) => {
-            if (Array.isArray(subValue)) {
-              materials.push(...subValue);
-            } else if (subValue && typeof subValue === 'object' && 'materials' in subValue && Array.isArray(subValue.materials)) {
-              materials.push(...subValue.materials);
-            }
-          });
-        }
-      });
-    });
-    
-    return materials;
-  }, [allData]);
-
-  // 검색 결과 필터링
-  const searchResults = useMemo((): NewMaterialData[] => {
-    if (!searchQuery.trim()) return [];
-    
-    const query = searchQuery.toLowerCase().trim();
-    return getAllMaterials.filter(material => 
-      material.name.toLowerCase().includes(query) ||
-      material.category.toLowerCase().includes(query)
-    ).slice(0, 20); // 최대 20개 결과만 표시
-  }, [searchQuery, getAllMaterials]);
-
-  // 검색에서 재료 추가
-  const handleAddMaterialFromSearch = (material: NewMaterialData) => {
-    // 이미 추가된 재료인지 확인
-    if (selectedMaterials.some(m => m.name === material.name)) return;
-
-    // 물성 데이터 변환
-    const properties: { [key: string]: { value: string; unit?: string } } = {};
-    let basePrice: { value: string; unit?: string } | undefined;
-    let composition: { [key: string]: string } = {};
-
-    material.properties.forEach(prop => {
-      if (prop.name === 'Base Metal Price') {
-        basePrice = {
-          value: prop.scalars,
-          unit: prop.units
-        };
-      } else if (prop.name === 'Alloy Composition') {
-        composition['Composition'] = prop.scalars;
-      } else {
-        properties[prop.name] = {
-          value: prop.scalars,
-          unit: prop.units
-        };
-      }
-    });
-
-    const newMaterial: SelectedMaterial = {
-      id: material.name,
-      name: material.name,
-      properties,
-      composition,
-      basePrice,
-      active: true,
-    };
-
-    setSelectedMaterials(prev => [...prev, newMaterial]);
-    setSearchQuery('');
-    setShowSearchResults(false);
-  };
-
-  // 재료 추가
-  const handleAddMaterial = () => {
-    if (!selectedDetail) return;
-
-    // 선택된 재료 찾기
-    const material = availableMaterials.find(m => m.name === selectedDetail);
-    if (!material) return;
-
-    // 이미 추가된 재료인지 확인
-    if (selectedMaterials.some(m => m.name === selectedDetail)) return;
-
-    // 물성 데이터 변환
-    const properties: { [key: string]: { value: string; unit?: string } } = {};
-    let basePrice: { value: string; unit?: string } | undefined;
-    let composition: { [key: string]: string } = {};
-
-    material.properties.forEach(prop => {
-      if (prop.name === 'Base Metal Price') {
-        basePrice = {
-          value: prop.scalars,
-          unit: prop.units
-        };
-      } else if (prop.name === 'Alloy Composition') {
-        // Composition은 텍스트 형태로 저장되어 있음
-        composition['Composition'] = prop.scalars;
-      } else {
-        properties[prop.name] = {
-          value: prop.scalars,
-          unit: prop.units
-        };
-      }
-    });
-
-    const newMaterial: SelectedMaterial = {
-      id: selectedDetail,
-      name: selectedDetail,
-      properties,
-      composition,
-      basePrice,
-      active: true,
-    };
-
-    setSelectedMaterials(prev => [...prev, newMaterial]);
-  };
-
-  // 재료 제거
-  const handleRemoveMaterial = (materialId: string) => {
-    setSelectedMaterials(prev => prev.filter(m => m.id !== materialId));
-  };
-
-  const handleToggleMaterialActive = (materialId: string, active: boolean) => {
-    setSelectedMaterials(prev =>
-      prev.map(m => (m.id === materialId ? { ...m, active } : m))
-    );
-  };
-
-  // 모든 재료 제거
-  const handleClearAll = () => {
-    setSelectedMaterials([]);
-  };
-
-  // CSV 다운로드
-  const handleDownload = () => {
-    if (selectedMaterials.length === 0) return;
-
-    const allProperties = new Set<string>();
-    selectedMaterials.forEach(material => {
-      Object.keys(material.properties).forEach(prop => allProperties.add(prop));
-    });
-
-    const csvData = [
-      [t.property, 'Unit', ...selectedMaterials.map(m => m.name)],
-      ...Array.from(allProperties).map(prop => [
-        prop,
-        selectedMaterials[0]?.properties[prop]?.unit || '',
-        ...selectedMaterials.map(m => m.properties[prop]?.value || '')
-      ])
-    ];
-
-    const csvContent = csvData.map(row => row.join(',')).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = isKo ? '재료_물성_비교.csv' : 'material_property_comparison.csv';
-    link.click();
-  };
-
-  // 카테고리 선택 초기화
-  const resetSelections = (level: 'major' | 'middle' | 'sub') => {
-    if (level === 'major') {
-      setSelectedMiddle('');
-      setSelectedSub('');
-      setSelectedDetail('');
-    } else if (level === 'middle') {
-      setSelectedSub('');
-      setSelectedDetail('');
-    } else if (level === 'sub') {
-      setSelectedDetail('');
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin" />
-        <span className="ml-2">{t.loadingData}</span>
-      </div>
-    );
-  }
 
   return (
-    <div>
-        <Button variant="outline" size="icon" onClick={handleBackClick} className="mb-4">
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <div className="space-y-4">
-      {/* 재료 선택 섹션 */}
-      <Card>
-        <CardHeader className="p-6 pb-1">
-          <div className="flex items-center gap-3 mb-0">
-            <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
-            <h2 className="text-xl sm:text-2xl font-semibold leading-none tracking-tight">{t.title}</h2>
-          </div>
-          <div className="text-xs text-gray-500 py-2 ml-4 flex items-center">
-            - {t.source}
-            <br />
-            - {t.description}
-          </div>
-        </CardHeader>
-        <CardContent className="overflow-hidden">
-          {/* 드롭다운 선택 섹션 */}
-          <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3 mb-4">
-            {/* 대분류 선택 */}
-            <div className="w-full sm:flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
-                대분류를 선택하세요
-              </label>
-              <Select
-                value={selectedMajor}
-                onValueChange={(value) => {
-                  setSelectedMajor(value);
-                  resetSelections('major');
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t.majorCategory} />
-                </SelectTrigger>
-                <SelectContent>
-                  {majorCategories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* 중분류 선택 */}
-            <div className="w-full sm:flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
-                중분류를 선택하세요
-              </label>
-              <Select
-                value={selectedMiddle}
-                onValueChange={(value) => {
-                  setSelectedMiddle(value);
-                  resetSelections('middle');
-                }}
-                disabled={!selectedMajor}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t.middleCategory} />
-                </SelectTrigger>
-                <SelectContent>
-                  {middleCategories.map((category) => (
-                    <SelectItem key={category} value={category}>
-                      {category}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* 소분류 선택 */}
-            {subCategories.length > 0 && (
-              <div className="w-full sm:flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
-                  소분류 선택
-                </label>
-                <Select
-                  value={selectedSub}
-                  onValueChange={(value) => {
-                    setSelectedSub(value);
-                    resetSelections('sub');
-                  }}
-                  disabled={!selectedMiddle}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder={t.subCategory} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {subCategories.map((category) => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-
-            {/* 재료 선택 */}
-            <div className="w-full sm:flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
-                재료 선택
-              </label>
-              <Select
-                value={selectedDetail}
-                onValueChange={(value) => setSelectedDetail(value)}
-                disabled={!selectedMiddle || (subCategories.length > 0 && !selectedSub)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t.material} />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableMaterials.map((material) => (
-                    <SelectItem key={material.name} value={material.name}>
-                      {material.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* 재료 추가 버튼 - 가장 오른쪽에 배치 */}
-            <div className="ml-auto">
-              <button
-                onClick={handleAddMaterial}
-                disabled={!selectedDetail}
-                className="w-[120px] h-8 bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed text-xs"
-              >
-                {t.addMaterial}
-              </button>
-            </div>
-          </div>
-
-          {/* 검색 섹션 */}
-          <div className="mb-4 relative">
-            <div className="flex items-center gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  type="text"
-                  placeholder={t.searchPlaceholder}
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                    setShowSearchResults(e.target.value.trim().length > 0);
-                  }}
-                  className="pl-10 h-8 text-sm"
-                />
-              </div>
-              {searchQuery && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setSearchQuery('');
-                    setShowSearchResults(false);
-                  }}
-                  className="h-10"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-            
-            {/* 검색 결과 */}
-            {showSearchResults && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
-                {searchResults.map((material, index) => (
-                  <div
-                    key={`${material.name}-${index}`}
-                    className="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-                    onClick={() => handleAddMaterialFromSearch(material)}
-                  >
-                    <div className="font-medium text-sm text-gray-900">{material.name}</div>
-                    <div className="text-xs text-gray-500 mt-1">{material.category}</div>
-                    {material.description && (
-                      <div className="text-xs text-gray-400 mt-1 truncate">{isKo ? getKoreanSummary(material.description) : material.description}</div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-            
-            {showSearchResults && searchQuery && searchResults.length === 0 && (
-              <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-200 rounded-md shadow-lg p-3">
-                <div className="text-sm text-gray-500 text-center">{t.noResults}</div>
-              </div>
-            )}
-          </div>
-
-          {/* 선택된 재료 목록 */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {selectedMaterials.map(material => (
-              <div key={material.id} className="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 rounded-md border border-gray-200 text-xs">
-                <button
-                  title={`Toggle visibility of ${material.name}`}
-                  aria-label={`Toggle visibility of ${material.name}`}
-                  onClick={() => handleToggleMaterialActive(material.id, !material.active)}
-                  className={`relative inline-flex h-3 w-6 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 ${material.active ? 'bg-blue-500' : 'bg-gray-200'}`}
-                >
-                  <span
-                    className={`inline-block h-2 w-2 transform rounded-full bg-white transition-transform duration-200 ${material.active ? 'translate-x-3' : 'translate-x-0.5'}`}
-                  ></span>
-                </button>
-                <label
-                  data-slot="label"
-                  className="flex items-center gap-2 select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 text-xs font-medium text-gray-700 cursor-pointer max-w-[150px] sm:max-w-[150px] truncate"
-                  title={material.name}
-                >
-                  {material.name}
-                </label>
-                <button
-                  onClick={() => handleRemoveMaterial(material.id)}
-                  className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-md h-4 w-4 p-0 hover:bg-red-100 hover:text-red-600 text-gray-400"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* 물성 비교 섹션 */}
-      {selectedMaterials.length > 0 && (
-        <Card>
-          <CardHeader>
-            
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {/* PROPERTIES 섹션 */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-blue-600 border-b border-blue-200 pb-2">
-                  PROPERTIES
-                </h3>
-                
-                {/* 모바일에서는 카드 레이아웃, 데스크톱에서는 테이블 */}
-                <div className="block sm:hidden">
-                  {/* 모바일 카드 레이아웃 */}
-                  <div className="space-y-4">
-                    {(() => {
-                      // 모든 재료의 물성 키를 수집 (Alloy Composition과 Base Metal Price 제외)
-                      const allPropertyKeys = new Set<string>();
-                      selectedMaterials.filter(m => m.active).forEach(material => {
-                        Object.keys(material.properties || {}).forEach(key => {
-                          if (key !== 'Alloy Composition' && key !== 'Base Metal Price') {
-                            allPropertyKeys.add(key);
-                          }
-                        });
-                      });
-                      
-                      return sortPropertiesByOrder(Array.from(allPropertyKeys)).map((propertyKey) => {
-                        const koreanInfo = propertyKoreanNames[propertyKey];
-                        const firstMaterial = selectedMaterials.find(m => m.active && m.properties[propertyKey]);
-                        const unit = firstMaterial?.properties[propertyKey]?.unit;
-                        
-                        return (
-                          <div key={propertyKey} className="bg-white border border-gray-200 rounded-lg p-4">
-                            <div className="mb-3">
-                              <h4 className="text-sm font-semibold text-gray-900">
-                                {isKo ? (koreanInfo?.korean || propertyKey) : propertyKey}
-                              </h4>
-                              <p className="text-xs text-gray-500 mt-1">
-                                {propertyKey} {unit && (
-                                  <span className="font-mono">
-                                    (<span dangerouslySetInnerHTML={{ __html: formatUnit(unit) }} />)
-                                  </span>
-                                )}
-                              </p>
-                            </div>
-                            <div className="space-y-2">
-                              {selectedMaterials.filter(m => m.active).map((material, index) => (
-                                <div key={index} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
-                                  <span className="text-sm font-medium text-gray-700 truncate max-w-[60%]">
-                                    {material.name}
-                                  </span>
-                                  <span className="text-sm font-semibold text-gray-900">
-                                    {formatRangeValue(material.properties[propertyKey]?.value || '-')}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        );
-                      });
-                    })()}
-                  </div>
-                </div>
-
-                {/* 데스크톱 테이블 레이아웃 */}
-                <div className="hidden sm:block overflow-x-auto">
-                  <table className="w-full border-collapse table-fixed">
-                    {/* 헤더 */}
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                  <th 
-                           className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
-                           style={{ width: '300px' }}
-                         >
-                           {t.property}
-                         </th>
-                         <th 
-                             className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
-                             style={{ width: '100px' }}
-                           >
-                             {t.unit}
-                           </th>
-                        {selectedMaterials.filter(m => m.active).map((material, index) => (
-                          <th 
-                            key={index} 
-                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-blue-50"
-                            style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
-                          >
-                            <div className="truncate" title={material.name}>
-                              {material.name}
-                            </div>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    
-                    {/* 물성 데이터 */}
-                     <tbody>
-                       {(() => {
-                         // 모든 재료의 물성 키를 수집 (Alloy Composition과 Base Metal Price 제외)
-                         const allPropertyKeys = new Set<string>();
-                         selectedMaterials.filter(m => m.active).forEach(material => {
-                           Object.keys(material.properties || {}).forEach(key => {
-                             if (key !== 'Alloy Composition' && key !== 'Base Metal Price') {
-                               allPropertyKeys.add(key);
-                             }
-                           });
-                         });
-                         
-                         return sortPropertiesByOrder(Array.from(allPropertyKeys)).map((propertyKey) => {
-                           const koreanInfo = propertyKoreanNames[propertyKey];
-                           // 첫 번째 재료에서 단위 정보 가져오기
-                           const firstMaterial = selectedMaterials.find(m => m.active && m.properties[propertyKey]);
-                           const unit = firstMaterial?.properties[propertyKey]?.unit;
-                           
-                           return (
-                             <tr key={propertyKey} className="border-b border-gray-100 hover:bg-gray-50">
-                                <td className="py-1 px-3">
-                                  <div className="text-xs font-medium text-gray-900 leading-tight">
-                                    {isKo ? (koreanInfo?.korean ? `${koreanInfo.korean} (${propertyKey})` : propertyKey) : propertyKey}
-                                  </div>
-                                </td>
-                               <td className="py-1 px-3 text-center">
-                                 <div className="text-xs text-gray-600 font-mono">
-                                   {unit ? <span dangerouslySetInnerHTML={{ __html: formatUnit(unit) }} /> : '-'}
-                                 </div>
-                               </td>
-                               {selectedMaterials.filter(m => m.active).map((material, index) => (
-                                 <td key={index} className="py-1 px-3 text-center">
-                                   <div className="text-xs font-medium text-gray-900">
-                                     {formatRangeValue(material.properties[propertyKey]?.value || '-')}
-                                   </div>
-                                 </td>
-                               ))}
-                             </tr>
-                           );
-                         });
-                       })()}
-                     </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* COMPOSITION 섹션 */}
-              {(() => {
-                // 안전한 composition 데이터 파싱 함수
-                const parseCompositionData = (compositionString: string): Array<{symbol: string, percentage: string}> => {
-                  if (!compositionString) return [];
-                  
-                  try {
-                    // JSON 형태로 파싱 시도
-                    const parsed = JSON.parse(compositionString);
-                    if (Array.isArray(parsed)) {
-                      return parsed.filter(item => item.symbol && item.percentage);
-                    }
-                  } catch (error) {
-                    // JSON 파싱 실패 시 텍스트 파싱 시도
-                    console.warn('JSON 파싱 실패, 텍스트 파싱 시도:', error);
-                    
-                    // 텍스트에서 원소와 퍼센트 추출 시도
-                    // 예: "C: 0.08%, Cr: 18-20%, Ni: 8-10.5%" 형태
-                    const elements: Array<{symbol: string, percentage: string}> = [];
-                    
-                    // 쉼표로 분리하여 각 원소 처리
-                    const parts = compositionString.split(',');
-                    for (const part of parts) {
-                      const trimmed = part.trim();
-                      // "원소명: 퍼센트%" 패턴 매칭
-                      const match = trimmed.match(/([A-Za-z]+)\s*:\s*([0-9.-]+(?:\s*to\s*[0-9.-]+)?)\s*%?/);
-                      if (match) {
-                        elements.push({
-                          symbol: match[1],
-                          percentage: match[2] + '%'
-                        });
-                      }
-                    }
-                    
-                    if (elements.length > 0) {
-                      return elements;
-                    }
-                  }
-                  
-                  return [];
-                };
-
-                // 모든 재료의 합금 원소를 수집
-                const allElements = new Set<string>();
-                selectedMaterials.filter(m => m.active && m.composition).forEach(material => {
-                  if (material.composition?.Composition) {
-                    const compositionData = parseCompositionData(material.composition.Composition);
-                    compositionData.forEach(element => {
-                      allElements.add(element.symbol);
-                    });
-                  }
-                });
-
-                const sortedElements = sortElementsByOrder(Array.from(allElements));
-
-                if (sortedElements.length === 0) return null;
-
-                return (
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-green-600 border-b border-green-200 pb-2">
-                      Chemical Composition
-                    </h3>
-                    
-                    {/* 모바일에서는 카드 레이아웃, 데스크톱에서는 테이블 */}
-                    <div className="block sm:hidden">
-                      {/* 모바일 카드 레이아웃 */}
-                      <div className="space-y-4">
-                        {sortedElements.map((symbol, elementIndex) => (
-                          <div key={elementIndex} className="bg-white border border-gray-200 rounded-lg p-4">
-                            <div className="mb-3">
-                              <h4 className="text-sm font-semibold text-gray-900">
-                                {isKo ? (elementKoreanNames[symbol] || symbol) : symbol}
-                              </h4>
-                              <p className="text-xs text-gray-500 mt-1">
-                                {symbol} (%)
-                              </p>
-                            </div>
-                            <div className="space-y-2">
-                              {selectedMaterials.filter(m => m.active).map((material, materialIndex) => {
-                                // 해당 재료의 composition 데이터 파싱
-                                const compositionData = material.composition?.Composition 
-                                  ? parseCompositionData(material.composition.Composition)
-                                  : [];
-                                
-                                // 해당 원소의 데이터 찾기
-                                const elementData = compositionData.find(element => element.symbol === symbol);
-                                
-                                const value = elementData 
-                                  ? elementData.percentage.replace(/ to /g, '~').replace(/%/g, '')
-                                  : '-';
-
-                                return (
-                                  <div key={materialIndex} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
-                                    <span className="text-sm font-medium text-gray-700 truncate max-w-[60%]">
-                                      {material.name}
-                                    </span>
-                                    <span className="text-sm font-semibold text-gray-900">
-                                      {value}
-                                    </span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* 데스크톱 테이블 레이아웃 */}
-                    <div className="hidden sm:block overflow-x-auto">
-                      <table className="w-full border-collapse table-fixed">
-                        {/* 헤더 */}
-                        <thead>
-                          <tr className="border-b border-gray-200">
-                            <th 
-                              className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
-                              style={{ width: '300px' }}
-                            >
-                              {t.element}
-                            </th>
-                              <th 
-                                className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
-                                style={{ width: '100px' }}
-                              >
-                                {isKo ? '단위' : 'Unit'}
-                              </th>
-                              {selectedMaterials.filter(m => m.active).map((material, index) => (
-                                <th 
-                                  key={index} 
-                                  className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-green-50"
-                                style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
-                              >
-                                <div className="truncate" title={material.name}>
-                                  {material.name}
-                                </div>
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        
-                        {/* 원소별 데이터 */}
-                        <tbody>
-                          {sortedElements.map((symbol, elementIndex) => (
-                            <tr key={elementIndex} className="border-b border-gray-100 hover:bg-gray-50">
-                                <td className="py-1 px-3">
-                                  <div className="text-xs font-medium text-gray-900 leading-tight">
-                                    {isKo ? (elementKoreanNames[symbol] ? `${elementKoreanNames[symbol]}(${symbol})` : symbol) : symbol}
-                                  </div>
-                                </td>
-                              <td className="py-1 px-3 text-center">
-                                <div className="text-xs text-gray-600 font-mono">
-                                  %
-                                </div>
-                              </td>
-                              {selectedMaterials.filter(m => m.active).map((material, materialIndex) => {
-                                // 해당 재료의 composition 데이터 파싱
-                                const compositionData = material.composition?.Composition 
-                                  ? parseCompositionData(material.composition.Composition)
-                                  : [];
-                                
-                                // 해당 원소의 데이터 찾기
-                                const elementData = compositionData.find(element => element.symbol === symbol);
-                                
-                                const value = elementData 
-                                  ? elementData.percentage.replace(/ to /g, '~').replace(/%/g, '')
-                                  : '-';
-
-                                return (
-                                  <td key={materialIndex} className="py-1 px-3 text-center">
-                                    <div className="text-xs font-medium text-gray-900">
-                                      {value}
-                                    </div>
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* BASE PRICE 섹션 */}
-              {selectedMaterials.some(material => material.basePrice) && (
-                <div>
-                  <h3 className="text-lg font-semibold mb-3 text-purple-600 border-b border-purple-200 pb-2">
-                    Reference Price
-                  </h3>
-                  
-                  {/* 모바일에서는 카드 레이아웃, 데스크톱에서는 테이블 */}
-                  <div className="block sm:hidden">
-                    {/* 모바일 카드 레이아웃 */}
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
-                      <div className="mb-3">
-                        <h4 className="text-sm font-semibold text-gray-900">
-                          {isKo ? '기본 금속 가격' : 'Base Metal Price'}
-                        </h4>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Base Metal Price ({selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit === '%' ? '%rel' : selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit || '-'})
-                        </p>
-                      </div>
-                      <div className="space-y-2">
-                        {selectedMaterials.filter(m => m.active).map((material, index) => (
-                          <div key={index} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
-                            <span className="text-sm font-medium text-gray-700 truncate max-w-[60%]">
-                              {material.name}
-                            </span>
-                            <span className="text-sm font-semibold text-gray-900">
-                              {material.basePrice ? formatRangeValue(material.basePrice.value) : '-'}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 데스크톱 테이블 레이아웃 */}
-                  <div className="hidden sm:block overflow-x-auto">
-                    <table className="w-full border-collapse table-fixed">
-                      {/* 헤더 */}
-                      <thead>
-                        <tr className="border-b border-gray-200">
-                          <th 
-                            className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
-                            style={{ width: '300px' }}
-                          >
-                            {isKo ? '가격 지수' : 'Price Index'}
-                          </th>
-                          <th 
-                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
-                            style={{ width: '100px' }}
-                          >
-                            {isKo ? '단위' : 'Unit'}
-                          </th>
-                          {selectedMaterials.filter(m => m.active).map((material, index) => (
-                            <th 
-                              key={index} 
-                              className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-blue-50"
-                              style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
-                            >
-                              <div className="truncate" title={material.name}>
-                                {material.name}
-                              </div>
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      
-                      {/* 가격 데이터 */}
-                      <tbody>
-                        <tr className="border-b border-gray-100 hover:bg-gray-50">
-                            <td className="py-2 px-3">
-                              <div className="text-xs font-medium text-gray-900">
-                                {isKo ? '기본 금속 가격' : 'Base Metal Price'}
-                              </div>
-                            <div className="text-xs text-gray-500">
-                              Base Metal Price
-                            </div>
-                          </td>
-                          <td className="py-2 px-3 text-center">
-                            <div className="text-xs text-gray-600">
-                              {selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit === '%' ? '%rel' : selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit || '-'}
-                            </div>
-                          </td>
-                          {selectedMaterials.filter(m => m.active).map((material, index) => (
-                            <td key={index} className="py-2 px-3 text-center">
-                              <div className="text-xs text-gray-700">
-                                {material.basePrice ? formatRangeValue(material.basePrice.value) : '-'}
-                              </div>
-                            </td>
-                          ))}
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* 빈 상태 메시지 */}
-      {selectedMaterials.length === 0 && (
-        <Card>
-          <CardContent className="text-center py-12">
-            <div className="text-gray-500">
-              <Plus className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-medium mb-2">{isKo ? '재질을 선택해주세요' : 'Please select a material'}</p>
-              <p className="text-sm">
-                  {isKo ? '위에서 재질을 선택하면 물성 정보를 비교할 수 있습니다.' : 'Select materials above to compare their properties.'}
-                </p>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {isLoading && (
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin mr-2" />
-          <span>{isKo ? '데이터를 로드하는 중...' : 'Loading data...'}</span>
-        </div>
-      )}
-
-      {/* 도구 소개 및 참고 정보 */}
-      <div className="mt-8 space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">
-              {isKo ? '도구 소개' : 'About This Tool'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-sm text-muted-foreground leading-relaxed">
-            <p>
-              {isKo
-                ? '재질 물성 비교 도구는 금속, 합금, 세라믹, 고분자 등 다양한 공학 재료의 물리적·기계적·열적·전기적 특성을 한 화면에서 비교할 수 있는 데이터베이스입니다. 밀도, 인장강도, 탄성계수, 열전도도, 전기전도도 등 핵심 물성을 나란히 확인해 설계에 가장 적합한 재료를 빠르게 선정할 수 있습니다.'
-                : 'The Material Property Comparison tool is a database that lets you compare the physical, mechanical, thermal, and electrical properties of a wide range of engineering materials — metals, alloys, ceramics, and polymers — on a single screen. View key properties such as density, tensile strength, elastic modulus, thermal conductivity, and electrical conductivity side by side to quickly select the best material for your design.'}
-            </p>
-            <p>
-              {isKo
-                ? '동일 카테고리 내 유사 재료를 비교할 때 특히 유용합니다. 예를 들어 304 스테인리스와 316 스테인리스의 내식성 차이, 알루미늄 합금 간 강도 대비 무게(비강도) 비교 등 실무에 바로 활용할 수 있는 정보를 제공합니다. 위에서 재료를 선택하거나 검색해 최대 여러 개를 동시에 비교해 보세요.'
-                : 'It is especially useful when comparing similar materials within the same category — for example, the difference in corrosion resistance between 304 and 316 stainless steel, or the strength-to-weight (specific strength) comparison among aluminum alloys. Select or search for materials above to compare several at once.'}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">
-              {isKo ? '핵심 물성 지표' : 'Key Property Indices'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '밀도 (Density)' : 'Density'}</span>
-              {' — '}{isKo ? 'ρ = m/V (질량/부피), 단위: kg/m³ 또는 g/cm³' : 'ρ = m/V (mass/volume), unit: kg/m³ or g/cm³'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '인장강도 (UTS)' : 'Tensile Strength (UTS)'}</span>
-              {' — '}{isKo ? '재료가 파단까지 견딜 수 있는 최대 응력, 단위: MPa' : 'the maximum stress a material can withstand before fracture, unit: MPa'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '항복강도 (Yield Strength)' : 'Yield Strength'}</span>
-              {' — '}{isKo ? '영구 소성 변형이 시작되는 응력, 단위: MPa' : 'the stress at which permanent plastic deformation begins, unit: MPa'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '탄성계수 (Elastic Modulus)' : 'Elastic Modulus'}</span>
-              {' — '}{isKo ? '탄성 영역에서의 응력-변형률 비율(재료의 강성), 단위: GPa' : 'the stress-to-strain ratio in the elastic region (material stiffness), unit: GPa'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '비강도 (Specific Strength)' : 'Specific Strength'}</span>
-              {' — '}{isKo ? '인장강도 ÷ 밀도. 가벼우면서 강한 재료를 평가하는 지표로 항공우주·자동차 분야에서 특히 중요합니다.' : 'tensile strength ÷ density. An indicator for evaluating lightweight yet strong materials, especially important in aerospace and automotive.'}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">
-              {isKo ? '재료 선택 기준' : 'Material Selection Criteria'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '기계적 하중' : 'Mechanical Load'}</span>
-              {' — '}{isKo ? '예상 응력에 대해 충분한 강도와 피로 강도 확보' : 'ensure sufficient strength and fatigue resistance for the expected stress'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '온도 조건' : 'Temperature Conditions'}</span>
-              {' — '}{isKo ? '최대/최소 작동 온도에서의 물성 유지' : 'maintain properties at maximum/minimum operating temperatures'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '내식성' : 'Corrosion Resistance'}</span>
-              {' — '}{isKo ? '작동 환경에서의 부식 저항성' : 'resistance to corrosion in the operating environment'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '가공성' : 'Machinability'}</span>
-              {' — '}{isKo ? '절단·용접·성형 등 제작 공정의 용이성' : 'ease of fabrication such as cutting, welding, and forming'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '비용' : 'Cost'}</span>
-              {' — '}{isKo ? '원자재비·가공비·유지보수비를 종합 고려' : 'consider material, processing, and maintenance costs together'}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">
-              {isKo ? '적용 분야별 권장 재료' : 'Recommended Materials by Application'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '항공우주' : 'Aerospace'}</span>
-              {' — '}Ti-6Al-4V, Al 7075-T6, Inconel 718
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '자동차' : 'Automotive'}</span>
-              {' — '}{isKo ? 'DP강, 알루미늄 6061, 마그네슘 AZ91' : 'DP steel, aluminum 6061, magnesium AZ91'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '화학 설비' : 'Chemical Equipment'}</span>
-              {' — '}{isKo ? '316L 스테인리스, Hastelloy C-276' : '316L stainless steel, Hastelloy C-276'}
-            </div>
-            <div className="border-l-4 border-border pl-3">
-              <span className="font-semibold text-foreground">{isKo ? '건축' : 'Construction'}</span>
-              {' — '}{isKo ? 'SM400, 알루미늄 6063, 구리' : 'SM400, aluminum 6063, copper'}
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="rounded-lg border-l-4 border-amber-500 bg-amber-50 dark:bg-amber-900/20 p-4">
-          <p className="font-semibold text-sm text-amber-800 dark:text-amber-200">
-            {isKo ? '⚠️ 주의사항' : '⚠️ Note'}
-          </p>
-          <p className="text-xs mt-1 text-amber-800/90 dark:text-amber-200/90 leading-relaxed">
-            {isKo
-              ? '데이터베이스의 물성값은 일반적인 참고용이며, 실제 재료는 제조 공정·열처리 조건·합금 원소 함량 등에 따라 달라질 수 있습니다. 중요한 설계에서는 반드시 실제 시험 데이터를 확인하시기 바랍니다.'
-              : 'The property values in this database are for general reference only. Actual material properties may vary depending on manufacturing process, heat treatment conditions, and alloying element content. For critical designs, always verify against actual test data.'}
-          </p>
-        </div>
-      </div>
-
-    </div>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient />
+      <Accordion type="multiple" defaultValue={sections.map(s => s.value)} className="w-full max-w-5xl mx-auto px-4 space-y-4 mt-8">
+        {sections.map(s => (
+          <AccordionItem key={s.value} value={s.value} className="border rounded-lg bg-card">
+            <AccordionTrigger className="text-lg font-semibold hover:no-underline p-4 data-[state=open]:bg-accent/20 rounded-lg px-4">
+              <span className="text-left">{s.title}</span>
+            </AccordionTrigger>
+            <AccordionContent className="px-6 pb-6 pt-2">
+              <div className="accordion-content-optimized">{s.content}</div>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </>
   );
 }
-
-export default MaterialComparisonPage;

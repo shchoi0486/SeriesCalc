@@ -1,151 +1,51 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import FaqItem from "@/components/calculators/FaqItem";
 
-import { useState, useCallback } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./TriangleCalculatorClient";
+import { BlockMath } from "react-katex";
 
-export default function TriangleCalculatorPage() {
-  const { locale } = useI18n();
-  const isKo = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/science/triangle-calculator", "science", "triangle-calculator");
+}
+
+
+
+export default function TriangleCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
   const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  const [mode, setMode] = useState('SAS');
-  const [inputs, setInputs] = useState<Record<string, string>>({});
-  const [result, setResult] = useState<any>(null);
-
-  const update = (key: string, val: string) => setInputs(prev => ({ ...prev, [key]: val }));
-
-  const calculate = useCallback(() => {
-    const v = (key: string) => parseFloat(inputs[key] || '');
-    const deg2rad = (d: number) => (d * Math.PI) / 180;
-    const rad2deg = (r: number) => (r * 180) / Math.PI;
-
-    let sides: Record<string, number> = {};
-    let angles: Record<string, number> = {};
-    let area = 0;
-
-    if (mode === 'SAS') {
-      const a = v('a'), b = v('b'), C = v('C');
-      if (isNaN(a) || isNaN(b) || isNaN(C)) { setResult(null); return; }
-      const Crad = deg2rad(C);
-      const c = Math.sqrt(a * a + b * b - 2 * a * b * Math.cos(Crad));
-      const A = rad2deg(Math.asin((a * Math.sin(Crad)) / c));
-      const B = 180 - A - C;
-      sides = { a, b, c }; angles = { A, B, C };
-      area = 0.5 * a * b * Math.sin(Crad);
-    } else if (mode === 'ASA') {
-      const A = v('A'), b = v('b'), B = v('B');
-      if (isNaN(A) || isNaN(b) || isNaN(B)) { setResult(null); return; }
-      const C = 180 - A - B;
-      if (C <= 0) { setResult(null); return; }
-      const Arad = deg2rad(A), Brad = deg2rad(B), Crad = deg2rad(C);
-      const a = (b * Math.sin(Arad)) / Math.sin(Crad);
-      const c = (b * Math.sin(Crad)) / Math.sin(Crad);
-      sides = { a, b, c }; angles = { A, B, C };
-      area = 0.5 * a * b * Math.sin(Crad);
-    } else if (mode === 'SSS') {
-      const a = v('a'), b = v('b'), c = v('c');
-      if (isNaN(a) || isNaN(b) || isNaN(c)) { setResult(null); return; }
-      if (a + b <= c || b + c <= a || a + c <= b) { setResult(null); return; }
-      const A = rad2deg(Math.acos((b * b + c * c - a * a) / (2 * b * c)));
-      const B = rad2deg(Math.acos((a * a + c * c - b * b) / (2 * a * c)));
-      const C = 180 - A - B;
-      const s = (a + b + c) / 2;
-      area = Math.sqrt(s * (s - a) * (s - b) * (s - c));
-      sides = { a, b, c }; angles = { A, B, C };
-    } else if (mode === 'AAS') {
-      const A = v('A'), B = v('B'), a = v('a');
-      if (isNaN(A) || isNaN(B) || isNaN(a)) { setResult(null); return; }
-      const C = 180 - A - B;
-      if (C <= 0) { setResult(null); return; }
-      const Arad = deg2rad(A), Crad = deg2rad(C);
-      const b = (a * Math.sin(deg2rad(B))) / Math.sin(Arad);
-      const c = (a * Math.sin(Crad)) / Math.sin(Arad);
-      sides = { a, b, c }; angles = { A, B, C };
-      area = 0.5 * a * b * Math.sin(Crad);
-    }
-    setResult({ sides, angles, area });
-  }, [mode, inputs]);
-
-  const reset = () => { setInputs({}); setResult(null); };
-
-  const inputFields: Record<string, { ko: string; en: string }[]> = {
-    SAS: [{ ko: '변 a', en: 'Side a' }, { ko: '변 b', en: 'Side b' }, { ko: '각 C (도)', en: 'Angle C (°)' }],
-    ASA: [{ ko: '각 A (도)', en: 'Angle A (°)' }, { ko: '변 b', en: 'Side b' }, { ko: '각 B (도)', en: 'Angle B (°)' }],
-    SSS: [{ ko: '변 a', en: 'Side a' }, { ko: '변 b', en: 'Side b' }, { ko: '변 c', en: 'Side c' }],
-    AAS: [{ ko: '각 A (도)', en: 'Angle A (°)' }, { ko: '각 B (도)', en: 'Angle B (°)' }, { ko: '변 a', en: 'Side a' }],
-  };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div>
-        <Label>{L('계산 모드', 'Calculation Mode')}</Label>
-        <Tabs value={mode} onValueChange={setMode}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="SAS">SAS</TabsTrigger>
-            <TabsTrigger value="ASA">ASA</TabsTrigger>
-            <TabsTrigger value="SSS">SSS</TabsTrigger>
-            <TabsTrigger value="AAS">AAS</TabsTrigger>
-          </TabsList>
-        </Tabs>
-        <p className="text-xs text-muted-foreground mt-1">
-          {mode === 'SAS' && L('양변 + 포합각: 두 변과 그 사이 각', 'Two sides + included angle')}
-          {mode === 'ASA' && L('양각 + 포합변: 두 각과 그 사이 변', 'Two angles + included side')}
-          {mode === 'SSS' && L('삼변: 세 변의 길이', 'Three sides')}
-          {mode === 'AAS' && L('양각 + 비포합변: 두 각과 한 변', 'Two angles + a non-included side')}
-        </p>
-      </div>
-      {inputFields[mode].map((field) => (
-        <div key={field.en}>
-          <Label>{isKo ? field.ko : field.en}</Label>
-          <Input type="number" value={inputs[field.en] || ''} onChange={e => update(field.en, e.target.value)} placeholder="0" />
-        </div>
-      ))}
-      <div className="flex space-x-2">
-        <Button onClick={calculate} className="flex-1">{L('계산', 'Calculate')}</Button>
-        <Button onClick={reset} variant="outline" className="flex-1">{L('초기화', 'Reset')}</Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div>
-      {result ? (
-        <div className="space-y-4">
-          <div className="p-4 bg-muted rounded-lg">
-            <h4 className="font-semibold mb-2">{L('변의 길이', 'Side Lengths')}</h4>
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="p-2 bg-card rounded"><p className="text-xs text-muted-foreground">a</p><p className="font-bold">{result.sides.a.toFixed(4)}</p></div>
-              <div className="p-2 bg-card rounded"><p className="text-xs text-muted-foreground">b</p><p className="font-bold">{result.sides.b.toFixed(4)}</p></div>
-              <div className="p-2 bg-card rounded"><p className="text-xs text-muted-foreground">c</p><p className="font-bold">{result.sides.c.toFixed(4)}</p></div>
-            </div>
-          </div>
-          <div className="p-4 bg-muted rounded-lg">
-            <h4 className="font-semibold mb-2">{L('각의 크기', 'Angle Measures')}</h4>
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="p-2 bg-card rounded"><p className="text-xs text-muted-foreground">A</p><p className="font-bold">{result.angles.A.toFixed(2)}°</p></div>
-              <div className="p-2 bg-card rounded"><p className="text-xs text-muted-foreground">B</p><p className="font-bold">{result.angles.B.toFixed(2)}°</p></div>
-              <div className="p-2 bg-card rounded"><p className="text-xs text-muted-foreground">C</p><p className="font-bold">{result.angles.C.toFixed(2)}°</p></div>
-            </div>
-          </div>
-          <div className="p-4 bg-muted rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">{L('넓이', 'Area')}</p>
-            <p className="text-2xl font-bold">{result.area.toFixed(4)}</p>
-            <p className="text-xs text-muted-foreground mt-1">= 0.5 × a × b × sin(C)</p>
-          </div>
-        </div>
-      ) : (
-        <div className="text-center py-8">
-          <p className="text-lg text-muted-foreground">{isKo ? ' 값을 입력하세요' : 'Enter values to calculate'}</p>
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("삼각형의 세 각의 합은 항상 180°인가요?", "Do the three angles of a triangle always add up to 180°?"),
+      a: L("네, 평면 기하에서 삼각형의 세 내각의 합은 항상 180°입니다. 따라서 두 각을 알면 나머지 각은 180°에서 두 각의 합을 빼서 구할 수 있습니다. 예: 두 각이 36.87°와 53.13°라면 세 번째 각은 180 − 36.87 − 53.13 = 90°입니다.", "Yes, in Euclidean geometry the sum of the three interior angles of a triangle is always 180°. So given two angles, the third is 180° minus their sum. Example: if two angles are 36.87° and 53.13°, the third is 180 − 36.87 − 53.13 = 90°."),
+    },
+    {
+      q: L("피타고라스 정리는 무엇인가요?", "What is the Pythagorean theorem?"),
+      a: L("직각삼각형에서 빗변(가장 긴 변, c)의 제곱은 다른 두 변의 제곱의 합과 같습니다: a² + b² = c². 예: 3-4-5 직각삼각형에서 3² + 4² = 9 + 16 = 25 = 5² 입니다. 이 정리는 직각삼각형에서 변의 길이를 구할 때 사용합니다.", "In a right triangle, the square of the hypotenuse (longest side, c) equals the sum of the squares of the other two sides: a² + b² = c². Example: in a 3-4-5 right triangle, 3² + 4² = 9 + 16 = 25 = 5². It is used to find side lengths in right triangles."),
+    },
+    {
+      q: L("헤론의 공식은 무엇인가요?", "What is Heron's formula?"),
+      a: L("헤론의 공식은 세 변의 길이만 알면 삼각형의 넓이를 구하는 공식입니다. 반둘레 s = (a + b + c) / 2라 할 때, 넓이 = √(s(s−a)(s−b)(s−c))입니다. 예: 세 변이 3, 4, 5이면 s = 6이고 넓이 = √(6×3×2×1) = √36 = 6입니다.", "Heron's formula gives the area of a triangle from its three side lengths alone. With semiperimeter s = (a + b + c) / 2, area = √(s(s−a)(s−b)(s−c)). Example: sides 3, 4, 5 give s = 6 and area = √(6×3×2×1) = √36 = 6."),
+    },
+    {
+      q: L("삼각형 부등식이란 무엇인가요?", "What is the triangle inequality?"),
+      a: L("삼각형이 성립하려면 임의의 두 변의 길이의 합이 나머지 한 변보다 반드시 커야 합니다. 예: 2, 3, 6은 2 + 3 = 5 < 6이므로 삼각형을 만들 수 없습니다. 이 계산기는 이 조건을 만족하지 않는 입력에 대해 오류를 표시합니다.", "For a triangle to exist, the sum of any two side lengths must be greater than the third. Example: sides 2, 3, and 6 cannot form a triangle because 2 + 3 = 5 < 6. This calculator shows an error for inputs that violate this condition."),
+    },
+    {
+      q: L("삼각형의 넓이는 어떻게 구하나요?", "How do you calculate the area of a triangle?"),
+      a: L("가장 기본적인 공식은 넓이 = ½ × 밑변 × 높이입니다. 밑변과 높이를 모를 때는 사인 공식 넓이 = ½ × a × b × sin(C)(두 변과 끼인 각) 또는 세 변만 알 때 헤론의 공식을 사용합니다.", "The most basic formula is area = ½ × base × height. If base and height are unknown, use the sine rule: area = ½ × a × b × sin(C) (two sides and the included angle), or Heron's formula when only the three sides are known."),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -172,28 +72,74 @@ export default function TriangleCalculatorPage() {
         ]} />
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("계산 모드 선택", "Choose a calculation mode"),
+            L("주어진 정보에 맞는 모드를 선택합니다: SSS(세 변), SAS(두 변 + 끼인 각), ASA(두 각 + 끼인 변), AAS(두 각 + 비포함 변).", "Choose the mode that matches your known data: SSS (three sides), SAS (two sides + included angle), ASA (two angles + included side), AAS (two angles + non-included side)."),
+          ],
+          [
+            L("값 입력", "Enter your values"),
+            L("선택한 모드에 맞는 변의 길이와 각도를 입력합니다. 각도는 도(°) 단위로 입력합니다.", "Enter the side lengths and angles required by the selected mode. Angles are entered in degrees (°)."),
+          ],
+          [
+            L("계산하기", "Calculate"),
+            L("계산 버튼을 눌러 삼각형을 해석합니다. 계산기는 알려진 정보로 나머지 모든 변과 각을 구합니다.", "Press the calculate button to solve the triangle. The calculator derives all remaining sides and angles from the known data."),
+          ],
+          [
+            L("결과 읽기", "Read the results"),
+            L("구해진 각(세 각의 합 180° 확인)과 넓이를 확인합니다. 예: 직각삼각형이면 빗변과 한 각도 함께 표시됩니다.", "Review the computed angles (the three should sum to 180°) and the area. For a right triangle, the hypotenuse and each angle are also shown."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 3-4-5 직각삼각형", "Example 1 — 3-4-5 right triangle")}</p>
+          <p>
+            {L("세 변이 3, 4, 5인 SSS 모드를 입력하면: 두 예각은 각각 약 36.87°와 53.13°이고, 나머지 각은 90°입니다. 넓이는 ½ × 3 × 4 = 6입니다.", "Entering SSS mode with sides 3, 4, 5 gives: the two acute angles are about 36.87° and 53.13°, and the remaining angle is 90°. The area is ½ × 3 × 4 = 6.")}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 정삼각형 (한 변 6)", "Example 2 — Equilateral triangle (side 6)")}</p>
+          <p>
+            {L("한 변이 6인 정삼각형(SSS: 6, 6, 6)을 입력하면 세 각은 모두 60°이고, 넓이는 (√3/4) × 6² = 9√3 ≈ 15.588입니다.", "Entering an equilateral triangle with sides 6, 6, 6 gives three 60° angles and an area of (√3/4) × 6² = 9√3 ≈ 15.588.")}
+          </p>
+        </div>
+      </div>
+    ),
     calculationFormula: (
       <div className="space-y-6">
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-green-500 pl-3">{L('코사인 법칙 (Law of Cosines)', 'Law of Cosines')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-lg font-bold">c² = a² + b² - 2ab·cos(C)</p>
+            <BlockMath math="c^{2} = a^{2} + b^{2} - 2ab\cos(C)" />
           </div>
           <p className="text-sm">{L('세 번째 변을 구할 때 사용합니다.', 'Used to find the third side.')}</p>
         </div>
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-yellow-500 pl-3">{L('사인 법칙 (Law of Sines)', 'Law of Sines')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-lg font-bold">a/sin(A) = b/sin(B) = c/sin(C)</p>
+            <BlockMath math="\dfrac{a}{\sin(A)} = \dfrac{b}{\sin(B)} = \dfrac{c}{\sin(C)}" />
           </div>
           <p className="text-sm">{L(' 알려진 변-각 쌍을 이용해 나머지를 구할 때 사용합니다.', 'Used to find the remaining parts using a known side-angle pair.')}</p>
         </div>
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-purple-500 pl-3">{L('넓이 공식', 'Area Formulas')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center space-y-2">
-            <p className="font-mono text-lg font-bold">Area = 0.5 × a × b × sin(C)</p>
-            <p className="font-mono text-sm">= √(s(s-a)(s-b)(s-c))  {L('(헤론의 공식)', "(Heron's formula)")}</p>
-            <p className="text-xs text-muted-foreground">s = (a + b + c) / 2</p>
+            <BlockMath math="\text{Area} = \tfrac{1}{2}\,a\,b\sin(C)" />
+            <div><BlockMath math="= \sqrt{s(s-a)(s-b)(s-c)}" /><p className="text-sm">{L('(헤론의 공식)', "(Heron's formula)")}</p></div>
+            <BlockMath math="s = \dfrac{a + b + c}{2}" />
           </div>
         </div>
       </div>
@@ -220,16 +166,32 @@ export default function TriangleCalculatorPage() {
         </div>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={isKo ? '삼각형 계산기' : 'Triangle Calculator'}
-      description={isKo ? 'SAS, ASA, SSS, AAS 모드로 삼각형의 모든 변과 각, 넓이를 계산합니다.' : 'Calculate all sides, angles, and area of a triangle using SAS, ASA, SSS, or AAS modes.'}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
 }

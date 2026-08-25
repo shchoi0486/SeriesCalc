@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import TankCalculator from '@/components/engineering-calculator/TankCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./TankClient";
+import { BlockMath } from "react-katex";
 
-export default function TankCalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict.tankCalculator;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/tank", "engineering", "tank");
+}
+
+
+
+export default function TankPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -47,7 +59,7 @@ export default function TankCalculatorPage() {
             {L('원통형 탱크 (수직)', 'Cylindrical Tank (Vertical)')}
           </h4>
           <div className="p-4 bg-muted rounded-lg">
-            <p className="text-center font-mono text-lg">V = π × r² × h</p>
+            <BlockMath math="V = \pi r^{2} h" />
           </div>
           <ul className="mt-4 space-y-2 text-sm">
             <li><strong className="font-semibold">V</strong> — {L('부피 [m³ 또는 L 등]', 'Volume [m³ or L, etc.]')}</li>
@@ -61,7 +73,7 @@ export default function TankCalculatorPage() {
             {L('직사각형 탱크', 'Rectangular Tank')}
           </h4>
           <div className="p-4 bg-muted rounded-lg">
-            <p className="text-center font-mono text-lg">V = Length × Width × Height</p>
+            <BlockMath math="V = \text{Length} \times \text{Width} \times \text{Height}" />
           </div>
         </div>
         <div>
@@ -69,7 +81,7 @@ export default function TankCalculatorPage() {
             {L('원추형 탱크', 'Conical Tank')}
           </h4>
           <div className="p-4 bg-muted rounded-lg">
-            <p className="text-center font-mono text-lg">V = (1/3) × π × r² × h</p>
+            <BlockMath math="V = \dfrac{1}{3}\,\pi r^{2} h" />
           </div>
         </div>
         <div>
@@ -124,16 +136,5 @@ export default function TankCalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t.title}
-      description={t.description}
-      icon={<span>🛢️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<TankCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

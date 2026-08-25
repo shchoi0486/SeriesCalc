@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import CentrifugeCalculator from '@/components/engineering-calculator/CentrifugeCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./CentrifugeClient";
+import { BlockMath } from "react-katex";
 
-export default function CentrifugePage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.centrifuge;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/centrifuge", "engineering", "centrifuge");
+}
+
+
+
+export default function CentrifugePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function CentrifugePage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">RCF = 1.118 × 10⁻⁵ × r × N²</p>
+            <BlockMath math="\text{RCF} = 1.118 \times 10^{-5}\,r N^{2}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -101,16 +113,5 @@ export default function CentrifugePage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '원심분리기(RCF) 계산기' : 'Centrifuge (RCF) Calculator')}
-      description={t?.description || (ko ? '로터 반경과 RPM으로 상대 원심력(g-force)을 계산합니다.' : 'Calculate the Relative Centrifugal Force (g-force) based on rotor radius and RPM.')}
-      icon={<span>🔄</span>}
-      visualizationComponent={<></>}
-      resultComponent={<CentrifugeCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

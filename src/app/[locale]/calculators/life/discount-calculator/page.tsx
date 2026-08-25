@@ -1,133 +1,69 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import TermGlossary from "@/components/calculators/TermGlossary";
 
-import React, { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./DiscountCalculatorClient";
 
-const DiscountCalculator = () => {
-  const { dict, locale } = useI18n();
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/life/discount-calculator", "life", "discount-calculator");
+}
+
+
+
+export default function DiscountCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const dict = isKo ? koDict : enDict;
   const t = dict.discountCalculator;
-  const isKo = locale === 'ko';
-  const [originalPrice, setOriginalPrice] = useState('');
-  const [discountRate, setDiscountRate] = useState('');
-  const [salePrice, setSalePrice] = useState('');
-  const [mode, setMode] = useState<'forward' | 'reverse'>('forward');
-  const [result, setResult] = useState<{
-    discountAmount: number;
-    finalPrice: number;
-    savedPercent?: number;
-  } | null>(null);
+  const L = (koText: string, enText: string) => (isKo ? koText : enText);
 
-  const calculateDiscount = () => {
-    if (mode === 'forward') {
-      const original = parseFloat(originalPrice);
-      const discount = parseFloat(discountRate);
-
-      if (isNaN(original) || isNaN(discount) || original <= 0 || discount < 0 || discount > 100) {
-        alert(t.alerts.invalidForward);
-        return;
-      }
-
-      const discountAmount = original * (discount / 100);
-      const finalPrice = original - discountAmount;
-
-      setResult({
-        discountAmount: parseFloat(discountAmount.toFixed(0)),
-        finalPrice: parseFloat(finalPrice.toFixed(0)),
-      });
-    } else {
-      const original = parseFloat(originalPrice);
-      const sale = parseFloat(salePrice);
-
-      if (isNaN(original) || isNaN(sale) || original <= 0 || sale < 0) {
-        alert(t.alerts.invalidReverse);
-        return;
-      }
-
-      if (sale > original) {
-        alert(t.alerts.saleTooHigh);
-        return;
-      }
-
-      const discountAmount = original - sale;
-      const discountPercent = ((discountAmount / original) * 100);
-
-      setResult({
-        discountAmount: parseFloat(discountAmount.toFixed(0)),
-        finalPrice: sale,
-        savedPercent: parseFloat(discountPercent.toFixed(1)),
-      });
-    }
-  };
-
-  const inputSection = (
-    <div className="flex flex-col space-y-4">
-      <div className="flex items-center space-x-4">
-        <label className="w-32">{t.inputs.calculationMode}:</label>
-        <div className="flex space-x-2">
-          <Button
-            variant={mode === 'forward' ? 'default' : 'outline'}
-            onClick={() => { setMode('forward'); setResult(null); }}
-          >
-            {t.inputs.calculateDiscount}
-          </Button>
-          <Button
-            variant={mode === 'reverse' ? 'default' : 'outline'}
-            onClick={() => { setMode('reverse'); setResult(null); }}
-          >
-            {t.inputs.reverseDiscountRate}
-          </Button>
-        </div>
-      </div>
-      <div className="flex items-center space-x-4">
-        <label className="w-32">{t.inputs.originalPrice}:</label>
-        <Input type="number" value={originalPrice} onChange={(e) => setOriginalPrice(e.target.value)} placeholder={t.placeholders.originalPrice} />
-      </div>
-      {mode === 'forward' ? (
-        <div className="flex items-center space-x-4">
-          <label className="w-32">{t.inputs.discountRate}:</label>
-          <Input type="number" value={discountRate} onChange={(e) => setDiscountRate(e.target.value)} placeholder={t.placeholders.discountRate} />
-        </div>
-      ) : (
-        <div className="flex items-center space-x-4">
-          <label className="w-32">{t.inputs.salePrice}:</label>
-          <Input type="number" value={salePrice} onChange={(e) => setSalePrice(e.target.value)} placeholder={t.placeholders.salePrice} />
-        </div>
-      )}
-      <div className="flex space-x-2">
-        <Button onClick={calculateDiscount}>{t.inputs.calculate}</Button>
-        <Button variant="secondary" onClick={() => setResult(null)}>{t.inputs.reset}</Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="h-full">
-      {result && (
-        <div className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span>{t.results.discountAmount}:</span>
-              <strong className="text-lg text-primary">{result.discountAmount.toLocaleString()}{isKo ? ' 원' : ' KRW'}</strong>
-          </div>
-          <div className="flex justify-between items-center">
-            <span>{t.results.salePrice}:</span>
-              <strong className="text-2xl">{result.finalPrice.toLocaleString()}{isKo ? ' 원' : ' KRW'}</strong>
-          </div>
-          {result.savedPercent !== undefined && (
-            <div className="flex justify-between items-center">
-              <span>{t.results.discountRate}:</span>
-              <span className="px-3 py-1 rounded-full text-sm font-semibold bg-primary/10 text-primary">
-                {result.savedPercent}% {t.results.discountSuffix}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("여러 할인을 중복으로 적용할 수 있나요?", "Can I stack multiple discounts?"),
+      a: L(
+        "이 계산기는 하나의 할인율만 적용합니다. 실제 매장에서는 '30% 할인 + 추가 쿠폰 10%'처럼 여러 할인을 순차 적용하는 경우가 많습니다. 이때 최종 할인율은 단순 합(40%)이 아니라 순차 적용한 값(0.70 × 0.90 = 0.63, 즉 37% 할인)이 됩니다. 여러 할인을 순차 적용하려면, 첫 번째 결과 금액을 다시 원래가격으로 넣고 다음 할인율을 적용하세요.",
+        "This calculator applies one discount at a time. In practice, multiple discounts (e.g., 30% off + 10% coupon) apply sequentially, yielding 0.70 × 0.90 = 0.63 (37% off), not 40%. For stacked discounts, enter the first result back as the new original price.",
+      ),
+    },
+    {
+      q: L("할인된 가격에서 원래 가격을 구하는 공식은?", "How do I find the original price from a sale price?"),
+      a: L(
+        "원래가격 = 할인판매가 ÷ (1 − 할인율/100)입니다. 예: 77,000원에 30% 할인出售→ 원래가격 = 77,000 ÷ 0.70 = 110,000원. 이 계산기의 '역산' 모드가 이 공식을 자동으로 수행합니다.",
+        "Original = sale price ÷ (1 − rate/100). Example: ₩77,000 at 30% off → ₩77,000 ÷ 0.70 = ₩110,000. The calculator's reverse mode does this automatically.",
+      ),
+    },
+    {
+      q: L("세금 포함 가격도 이 계산기로 계산할 수 있나요?", "Can I calculate tax-inclusive prices with this tool?"),
+      a: L(
+        "이 계산기는 할인율만 다룹니다(부가세 별도). 할인 적용 후 세금을 더하려면, 먼저 이 계산기로 할인된 금액을 구하고, 그 결과에 부가세율(한국 10%)을 적용하면 됩니다. 예: 100,000원의 20% 할인 후 → 80,000원, 여기에 부가세 10% → 88,000원(합계).",
+        "This calculator handles discount only (tax separate). For tax-inclusive: compute the discounted price here, then apply VAT (Korea: 10%). E.g., ₩100,000 at 20% off → ₩80,000, plus 10% VAT → ₩88,000 total.",
+      ),
+    },
+    {
+      q: L("할인율 역산 시 소수점이 발생하면 어떻게 하나요?", "What about decimals when reversing the discount rate?"),
+      a: L(
+        "원래가격을 역산할 때 소수점이 나오는 경우가 빈번합니다. 실무에서는 통상 1원 단위로 반올림합니다. 다만 카드 결제·현금영수증 처리 시 1원 오차가 누적될 수 있으므로, 대량 거래에서는 역산 공식 대신 원래가격 기준으로 할인 금액을 직접 계산해 맞추는 것이 정확합니다.",
+        "Reverse calculations often produce fractional won. Round to 1 won in practice. For bulk transactions, compute the discount amount from the original price instead of reversing, to avoid cumulative 1-won rounding errors.",
+      ),
+    },
+    {
+      q: L("'최대 할인'과 '평균 할인'은 어떻게 다른가요?", "What's the difference between maximum and average discount?"),
+      a: L(
+        "여러 상품의 할인율을 비교할 때 단순 평균(평균 할인율)과 금액 기준 가중평균(실질 절감율)이 다릅니다. 비싼 상품의 할인율이 낮고 저렴한 상품의 할인율이 높으면, 평균 할인율은 높아도 실제 절약하는 금액 비율은 낮을 수 있습니다. 장바구니 전체 할인율을 비교할 때는 '총 절약액 ÷ 총 원래가격'으로 계산하세요.",
+        "Average discount rate and weighted-average (by price) can differ significantly. If expensive items have low discounts and cheap items high, the average rate looks generous but actual savings percentage is lower. Compare basket-level savings as total saved ÷ total original price.",
+      ),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -145,6 +81,58 @@ const DiscountCalculator = () => {
           {t.descriptionContent.p3}
         </p>
         <TermGlossary items={t.glossary} />
+      </div>
+    ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("모드 선택", "Choose mode"),
+            L("'정방향'은 원래가격에서 할인가를 구할 때, '역산'은 할인판매가에서 원래가격을 찾을 때 사용합니다.", "Use 'forward' for sale price from original; 'reverse' for original price from sale price."),
+          ],
+          [
+            L("가격·할인율 입력", "Enter price and rate"),
+            L("정방향: 원래가격과 할인율(%). 역산: 원래가격(알 때)과 할인판매가를 입력합니다.", "Forward: enter original price and discount %. Reverse: enter both original and sale price."),
+          ],
+          [
+            L("결과 확인", "Check results"),
+            L("할인액, 최종가, 할인율이 함께 표시됩니다. 역산 모드에서는 절약한 비율(%)이 추가로 표시됩니다.", "Discount amount, final price, and rate appear. Reverse mode also shows the savings percentage."),
+          ],
+          [
+            L("실무 활용", "Practical use"),
+            L("장바구니 전체 할인율을 비교할 때는 총 절약액을 총 원래가격으로 나눈 값이 가장 정확합니다.", "For basket-level comparison, total saved ÷ total original price is the most accurate metric."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 정방향: 200,000원의 30% 할인", "Example 1 — Forward: 30% off ₩200,000")}</p>
+          <p>
+            {L(
+              "원래가격 ₩200,000에 할인율 30% → 할인액 = 200,000 × 0.30 = ₩60,000, 최종가 = 200,000 − 60,000 = ₩140,000. 세금 별도로 이 가격에서 부가세 10%를 붙이면 ₩154,000입니다.",
+              "Original ₩200,000 at 30% → discount ₩60,000, final ₩140,000. With 10% VAT added separately: ₩154,000.",
+            )}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 역산: 154,000원 구매 → 몇 % 할인?", "Example 2 — Reverse: ₩154,000 purchased → what % off?")}</p>
+          <p>
+            {L(
+              "원래가격 ₩200,000에서 ₩140,000에 구매(세금 별도) → 절약액 = ₩60,000 → 할인율 = 60,000 ÷ 200,000 × 100 = 30%. 이 계산기의 역산 모드가 이 값을 자동 계산합니다.",
+              "Bought at ₩140,000 from ₩200,000 original → saved ₩60,000 → rate = 30%. The reverse mode computes this automatically.",
+            )}
+          </p>
+        </div>
       </div>
     ),
     calculationFormula: (
@@ -196,18 +184,32 @@ const DiscountCalculator = () => {
         </div>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default DiscountCalculator;
+}

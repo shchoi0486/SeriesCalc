@@ -1,108 +1,46 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./JsonGeneratorClient";
 
-import { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useI18n } from '@/i18n/I18nProvider';
-
-const randomNames = ['John', 'Jane', 'Alex', 'Sam', 'Chris', 'Pat', 'Morgan', 'Taylor', 'Jordan', 'Casey'];
-const randomCities = ['Seoul', 'Tokyo', 'New York', 'London', 'Paris', 'Berlin', 'Sydney', 'Toronto', 'Mumbai', 'Dubai'];
-const randomEmails = ['user', 'test', 'demo', 'admin', 'hello', 'info', 'contact', 'support', 'sales', 'dev'];
-
-function generateRandomValue(key: string): any {
-  const lower = key.toLowerCase();
-  if (lower.includes('name') || lower.includes('first')) return randomNames[Math.floor(Math.random() * randomNames.length)];
-  if (lower.includes('last')) return randomNames[Math.floor(Math.random() * randomNames.length)];
-  if (lower.includes('email')) return `${randomEmails[Math.floor(Math.random() * randomEmails.length)]}@example.com`;
-  if (lower.includes('age') || lower.includes('year')) return Math.floor(Math.random() * 60) + 18;
-  if (lower.includes('city') || lower.includes('location')) return randomCities[Math.floor(Math.random() * randomCities.length)];
-  if (lower.includes('price') || lower.includes('amount') || lower.includes('salary')) return Math.floor(Math.random() * 100000) + 1000;
-  if (lower.includes('id')) return Math.floor(Math.random() * 10000) + 1;
-  if (lower.includes('active') || lower.includes('enabled')) return Math.random() > 0.3;
-  if (lower.includes('date') || lower.includes('time')) return new Date(Date.now() - Math.floor(Math.random() * 365 * 24 * 60 * 60 * 1000)).toISOString().split('T')[0];
-  if (lower.includes('score') || lower.includes('rating')) return Math.floor(Math.random() * 100);
-  if (lower.includes('status')) return ['active', 'inactive', 'pending'][Math.floor(Math.random() * 3)];
-  return Math.floor(Math.random() * 1000);
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/ai-tools/json-generator", "ai-tools", "json-generator");
 }
 
-const JsonGenerator = () => {
-  const { dict, locale } = useI18n();
-  const t = dict.jsonGenerator;
-  const isKo = locale === 'ko';
-  const [itemCount, setItemCount] = useState<number>(3);
-  const [keyNames, setKeyNames] = useState('name, age, email, city');
-  const [result, setResult] = useState('');
+export default function JsonGeneratorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
 
-  const generate = () => {
-    const keys = keyNames.split(',').map(k => k.trim()).filter(k => k.length > 0);
-    if (keys.length === 0) {
-      alert(t.alertMessage);
-      return;
-    }
-    const items = Array.from({ length: itemCount }, (_, i) => {
-      const obj: Record<string, any> = {};
-      keys.forEach(key => {
-        obj[key] = generateRandomValue(key);
-      });
-      return obj;
-    });
-    setResult(JSON.stringify(items, null, 2));
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(result);
-  };
-
-  const downloadJSON = () => {
-    const blob = new Blob([result], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'generated-data.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.itemCountLabel}</label>
-        <Input
-          type="number"
-          min={1}
-          max={100}
-          value={itemCount}
-          onChange={(e) => setItemCount(Math.max(1, Math.min(100, parseInt(e.target.value) || 1)))}
-        />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.keyNamesLabel}</label>
-        <Input
-          value={keyNames}
-          onChange={(e) => setKeyNames(e.target.value)}
-          placeholder="name, age, email, city"
-        />
-      </div>
-      <Button onClick={generate} className="w-full">{t.button}</Button>
-    </div>
-  );
-
-  const resultSection = result ? (
-    <div className="space-y-3">
-      <div className="flex gap-2">
-        <Button variant="outline" size="sm" onClick={copyToClipboard} className="flex-1">{t.copyButton}</Button>
-        <Button variant="outline" size="sm" onClick={downloadJSON} className="flex-1">{t.downloadButton}</Button>
-      </div>
-      <Textarea readOnly value={result} className="min-h-[300px] font-mono text-xs" />
-    </div>
-  ) : (
-    <div className="flex items-center justify-center text-muted-foreground h-full">
-      {t.emptyPrompt}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: "What does a JSON generator do?",
+      a: "A JSON generator creates realistic random JSON data based on the field names and structure you define. Instead of typing sample records by hand, you specify keys like name, age, or email and the tool produces multiple objects with plausible random values ready for testing or prototyping.",
+    },
+    {
+      q: "Can I create custom schemas or field types?",
+      a: "The generator infers data types from key names—keys containing 'age' produce numbers, 'email' produces addresses, 'name' produces person names, and so on. You can combine any number of fields and control the number of objects to shape a custom schema that fits your data model.",
+    },
+    {
+      q: "Is this useful for generating sample data during development?",
+      a: "Yes. It is ideal for filling mock databases, seeding test environments, prototyping API responses, and populating UI components. Generating realistic sample data this way saves time compared to hand-writing fixtures and covers a wider range of values.",
+    },
+    {
+      q: "Is the generated output valid JSON?",
+      a: "Yes. The output is always formatted as a valid JSON array with properly quoted keys, correct value types, and standard indentation. It can be parsed directly by JSON.parse or any other JSON parser without modification.",
+    },
+    {
+      q: "How does type randomization work?",
+      a: "Each field is assigned a type based on its name, then a random value is generated for that type on every record. For example, an 'age' key yields a different integer each time and an 'email' key yields a different address, so every generated object varies while staying realistic.",
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -117,6 +55,66 @@ const JsonGenerator = () => {
           { term: 'JSON', desc: isKo ? 'JavaScript Object Notation의 약자로, 키와 값의 쌍으로 데이터를 표현하는 가벼운 텍스트 기반 데이터 형식입니다. API 통신과 설정 파일에 널리 쓰입니다.' : 'Short for JavaScript Object Notation, a lightweight text-based data format that represents data as key-value pairs. Widely used for API communication and configuration files.' },
           { term: isKo ? '키-값 쌍(Key-Value Pair)' : 'Key-Value Pair', desc: isKo ? 'JSON에서 데이터를 표현하는 기본 단위입니다. "name": "John"처럼 고유한 키에 해당하는 값을 묶어 데이터의 의미를 정의합니다.' : 'The basic unit of data in JSON. It binds a value to a unique key—like "name": "John"—to define the meaning of the data.' },
         ]} />
+      </div>
+    ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">1</span>
+          <div>
+            <p className="font-semibold text-foreground">Choose your data types and fields</p>
+            <p className="mt-1">Define the keys you want, such as name, age, and email. The generator detects each field's type from its name.</p>
+          </div>
+        </li>
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">2</span>
+          <div>
+            <p className="font-semibold text-foreground">Set the number of objects</p>
+            <p className="mt-1">Choose how many records to generate so you get enough sample data for your tests or prototype.</p>
+          </div>
+        </li>
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">3</span>
+          <div>
+            <p className="font-semibold text-foreground">Generate</p>
+            <p className="mt-1">Press the generate button to create a valid JSON array filled with realistic random values.</p>
+          </div>
+        </li>
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">4</span>
+          <div>
+            <p className="font-semibold text-foreground">Copy your result</p>
+            <p className="mt-1">Copy the output directly or download it as a .json file to use in your project.</p>
+          </div>
+        </li>
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">Example 1 — User objects</p>
+          <p>
+            Generating 3 user records with the fields <code className="font-mono text-xs">name</code>, <code className="font-mono text-xs">age</code>, and <code className="font-mono text-xs">email</code> produces an array of three distinct objects, each with a random name, a random integer age, and a unique email address.
+          </p>
+          <pre className="mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg font-mono text-xs whitespace-pre overflow-x-auto">{`[
+  { "name": "Alice", "age": 29, "email": "alice@example.com" },
+  { "name": "Bob", "age": 34, "email": "bob@example.com" },
+  { "name": "Carol", "age": 25, "email": "carol@example.com" }
+]`}</pre>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">Example 2 — Nested object</p>
+          <p>
+            Defining a field like <code className="font-mono text-xs">address</code> that itself contains <code className="font-mono text-xs">city</code> and <code className="font-mono text-xs">zip</code> generates a nested object inside each record, mirroring more complex real-world data structures.
+          </p>
+          <pre className="mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg font-mono text-xs whitespace-pre overflow-x-auto">{`{
+  "name": "Dave",
+  "address": {
+    "city": "Seoul",
+    "zip": "04524"
+  }
+}`}</pre>
+        </div>
       </div>
     ),
     calculationFormula: (
@@ -145,18 +143,32 @@ const JsonGenerator = () => {
         </ul>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-      variant="split"
-     />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default JsonGenerator;
+}

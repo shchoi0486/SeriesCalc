@@ -1,199 +1,57 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import { BlockMath } from "react-katex";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./NetSalaryCalculatorClient";
 
-import { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { formatNumber, parseNumber } from '@/utils/formatNumber';
-
-const NATIONAL_PENSION_RATE = 0.045;
-const NATIONAL_PENSION_MIN = 370000;
-const NATIONAL_PENSION_MAX = 5900000;
-const HEALTH_INSURANCE_RATE = 0.03545;
-const LONG_TERM_CARE_RATE = 0.1281;
-const EMPLOYMENT_INSURANCE_RATE = 0.009;
-
-const INCOME_TAX_BRACKETS: { max: number; rate: number; deduction: number }[] = [
-  { max: 14000000, rate: 0.06, deduction: 0 },
-  { max: 50000000, rate: 0.15, deduction: 1260000 },
-  { max: 88000000, rate: 0.24, deduction: 5760000 },
-  { max: 150000000, rate: 0.35, deduction: 14960000 },
-  { max: 300000000, rate: 0.38, deduction: 19460000 },
-  { max: 500000000, rate: 0.40, deduction: 25460000 },
-  { max: 1000000000, rate: 0.42, deduction: 35460000 },
-  { max: Infinity, rate: 0.45, deduction: 65460000 },
-];
-
-function calcIncomeTax(annualTaxableIncome: number): number {
-  const bracket = INCOME_TAX_BRACKETS.find((b) => annualTaxableIncome <= b.max);
-  if (!bracket) return 0;
-  return Math.max(0, annualTaxableIncome * bracket.rate - bracket.deduction);
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/finance/net-salary-calculator", "finance", "net-salary-calculator");
 }
 
-export default function NetSalaryCalculator() {
-  const { locale } = useI18n();
-  const isKo = locale === 'ko';
+export default function NetSalaryCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
 
-  const [monthlySalary, setMonthlySalary] = useState('500');
-  const [nonTaxable, setNonTaxable] = useState('20');
-  const [result, setResult] = useState<{
-    nationalPension: number;
-    healthInsurance: number;
-    longTermCare: number;
-    employmentInsurance: number;
-    totalInsurance: number;
-    incomeTax: number;
-    localIncomeTax: number;
-    totalDeductions: number;
-    netSalary: number;
-  } | null>(null);
-
-  const handleCalculate = () => {
-    const salaryManWon = parseNumber(monthlySalary);
-    const nonTaxableManWon = parseNumber(nonTaxable);
-    const salary = salaryManWon * 10000;
-    const nonTaxableAmt = nonTaxableManWon * 10000;
-
-    const pensionBase = Math.max(NATIONAL_PENSION_MIN, Math.min(salary, NATIONAL_PENSION_MAX));
-    const nationalPension = pensionBase * NATIONAL_PENSION_RATE;
-
-    const healthInsurance = salary * HEALTH_INSURANCE_RATE;
-    const longTermCare = healthInsurance * LONG_TERM_CARE_RATE;
-    const employmentInsurance = salary * EMPLOYMENT_INSURANCE_RATE;
-    const totalInsurance = nationalPension + healthInsurance + longTermCare + employmentInsurance;
-
-    const annualTaxable = Math.max(0, (salary - nonTaxableAmt) * 12);
-    const annualIncomeTax = calcIncomeTax(annualTaxable);
-    const monthlyIncomeTax = annualIncomeTax / 12;
-    const localIncomeTax = monthlyIncomeTax * 0.1;
-
-    const totalDeductions = totalInsurance + monthlyIncomeTax + localIncomeTax;
-    const netSalary = salary - totalDeductions;
-
-    setResult({
-      nationalPension,
-      healthInsurance,
-      longTermCare,
-      employmentInsurance,
-      totalInsurance,
-      incomeTax: monthlyIncomeTax,
-      localIncomeTax,
-      totalDeductions,
-      netSalary,
-    });
-  };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="monthlySalary">{isKo ? '월급 (만원)' : 'Monthly Salary (10K KRW)'}</Label>
-        <Input
-          id="monthlySalary"
-          value={monthlySalary}
-          onChange={(e) => setMonthlySalary(e.target.value)}
-          placeholder="500"
-          className="text-right"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="nonTaxable">{isKo ? '비과세 (만원)' : 'Non-taxable (10K KRW)'}</Label>
-        <Input
-          id="nonTaxable"
-          value={nonTaxable}
-          onChange={(e) => setNonTaxable(e.target.value)}
-          placeholder="20"
-          className="text-right"
-        />
-      </div>
-      <Button onClick={handleCalculate} className="w-full">
-        {isKo ? '계산하기' : 'Calculate'}
-      </Button>
-    </div>
-  );
-
-  const resultSection = result ? (
-    <Card>
-      <CardHeader>
-        <CardTitle>{isKo ? '실수령액 결과' : 'Net Salary Result'}</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="text-center">
-          <p className="text-muted-foreground">{isKo ? '월 실수령액' : 'Monthly Net Salary'}</p>
-          <p className="text-3xl font-bold text-primary">{formatNumber(Math.round(result.netSalary))}{isKo ? '원' : ' KRW'}</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            {isKo ? '연 실수령액: ' : 'Annual Net: '}{formatNumber(Math.round(result.netSalary * 12))}{isKo ? '원' : ' KRW'}
-          </p>
-        </div>
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-muted-foreground">{isKo ? '총 공제액' : 'Total Deductions'}</span>
-          <span className="font-semibold text-destructive">{formatNumber(Math.round(result.totalDeductions))}{isKo ? '원' : ' KRW'}</span>
-        </div>
-      </CardContent>
-    </Card>
-  ) : (
-    <div className="flex items-center justify-center h-40 text-muted-foreground">
-      {isKo ? '정보 입력 후 계산하기 버튼을 눌러주세요.' : 'Enter values and click Calculate.'}
-    </div>
-  );
-
-  const fullWidthSection = result ? (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>{isKo ? '공제 항목' : 'Deduction Item'}</TableHead>
-          <TableHead className="text-right">{isKo ? '비율' : 'Rate'}</TableHead>
-          <TableHead className="text-right">{isKo ? '금액 (월)' : 'Amount (Monthly)'}</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell>{isKo ? '국민연금' : 'National Pension'}</TableCell>
-          <TableCell className="text-right">4.5%</TableCell>
-          <TableCell className="text-right">{formatNumber(Math.round(result.nationalPension))}{isKo ? '원' : ' KRW'}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>{isKo ? '건강보험' : 'Health Insurance'}</TableCell>
-          <TableCell className="text-right">3.545%</TableCell>
-          <TableCell className="text-right">{formatNumber(Math.round(result.healthInsurance))}{isKo ? '원' : ' KRW'}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>{isKo ? '장기요양보험' : 'Long-term Care Insurance'}</TableCell>
-          <TableCell className="text-right">12.81%<span className="text-xs text-muted-foreground">{isKo ? '(건강보험 대비)' : '(of health ins.)'}</span></TableCell>
-          <TableCell className="text-right">{formatNumber(Math.round(result.longTermCare))}{isKo ? '원' : ' KRW'}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>{isKo ? '고용보험' : 'Employment Insurance'}</TableCell>
-          <TableCell className="text-right">0.9%</TableCell>
-          <TableCell className="text-right">{formatNumber(Math.round(result.employmentInsurance))}{isKo ? '원' : ' KRW'}</TableCell>
-        </TableRow>
-        <TableRow className="font-semibold bg-muted/50">
-          <TableCell>{isKo ? '4대보험 합계' : 'Total 4 Insurances'}</TableCell>
-          <TableCell />
-          <TableCell className="text-right">{formatNumber(Math.round(result.totalInsurance))}{isKo ? '원' : ' KRW'}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>{isKo ? '소득세' : 'Income Tax'}</TableCell>
-          <TableCell className="text-right">{isKo ? '간이세표' : 'Simplified'}</TableCell>
-          <TableCell className="text-right">{formatNumber(Math.round(result.incomeTax))}{isKo ? '원' : ' KRW'}</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>{isKo ? '지방소득세' : 'Local Income Tax'}</TableCell>
-          <TableCell className="text-right">10%</TableCell>
-          <TableCell className="text-right">{formatNumber(Math.round(result.localIncomeTax))}{isKo ? '원' : ' KRW'}</TableCell>
-        </TableRow>
-        <TableRow className="text-lg font-bold bg-muted">
-          <TableCell>{isKo ? '총 공제액' : 'Total Deductions'}</TableCell>
-          <TableCell />
-          <TableCell className="text-right">{formatNumber(Math.round(result.totalDeductions))}{isKo ? '원' : ' KRW'}</TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
-  ) : null;
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: isKo ? "실제 급여명세서와 결과가 다른데 어느 쪽이 맞나요?" : "My payslip differs from this result — which is right?",
+      a: isKo
+        ? "급여명세서가 맞습니다. 이 계산기는 소득세를 과세소득 × 세율 − 누진공제로만 잡는 단순화 모델이라, 근로소득공제(연 500만~1억 구간에서 최대 740만원), 인적공제, 표준세액공제 13만원, 개인연금 세액공제 등이 빠져 있습니다. 그래서 소득세가 실제보다 높게 나오고 실수령액은 낮게 나옵니다. 공제 구조를 반영한 정밀 견적이 필요하면 국세청 간이세액표나 회사 인사팀의 원천징수 기준을 따르세요."
+        : "Trust your payslip. This simplified model omits earned-income deductions (up to 7.4 million won), personal deductions, the standard 130,000-won credit, and pension credits — so it overstates tax and understates take-home. For precise figures use the NTS withholding table or your HR team's basis.",
+    },
+    {
+      q: isKo ? "월급이 높은데 국민연금이 더 안 늘어나요. 왜죠?" : "Why does my National Pension stop growing at high salaries?",
+      a: isKo
+        ? "국민연금에는 기준소득월액 상하한이 있습니다(현재 하한 37만원, 상한 590만원). 월급이 590만원을 넘으면 초과분에는 연금료가 붙지 않아 보험료가 고정됩니다. 덕분에 고연봉자일수록 전체 공제 중 보험료 비중이 상대적으로 작아지는 특성이 있으며, 반대로 저임금 근로자는 하한 37만원 기준으로 최소 보험료를 냅니다."
+        : "National Pension premiums apply only between a floor and a ceiling on pensionable income (370K–5.9M won monthly). Above the cap no further premium accrues, so high earners see a smaller insurance share of total deductions, while very low earners pay the floor amount.",
+    },
+    {
+      q: isKo ? "비과세 수당을 입력하면 얼마나 유리해지나요?" : "How much do non-taxable allowances actually save?",
+      a: isKo
+        ? "이 계산기 기준으로는 소득세 절감 효과가 직접 나타납니다. 예를 들어 월급 300만원 중 20만원을 비과세 식대로 바꾸면 연 과세소득이 360만원 줄어 연 소득세가 396,000원 감소해 월 실수령이 약 33,000원 늘어납니다. 실무에서는 건강보험료 산정에서도 비과세가 일부 제외되므로 실제 절감은 여기보다 다소 더 큽니다. 단, 비과세는 회사 급여 체계가 해당 항목을 지급해야 적용됩니다."
+        : "In this calculator the saving shows up as income tax: converting 200,000 of a 3-million salary into a non-taxable meal allowance cuts annual taxable income by 2.4 million, reducing yearly tax by 396,000 — about 33,000 more per month. Real-world payroll also trims health-insurance assessment on such allowances, so actual savings run slightly higher. It only works if your employer structures pay that way.",
+    },
+    {
+      q: isKo ? "고용보험료율이 사람마다 다르다고 들었는데요?" : "Isn't the employment-insurance rate different for some people?",
+      a: isKo
+        ? "일반 근로자는 0.9%(실업급여 포함)가 표준입니다. 다만 65세 이상 고용 근로자는 실업급여 대상에서 빠져 0.25%, 60~64세는 0.8% 등 연령별·유형별로 다른 요율이 적용될 수 있습니다. 이 계산기는 가장 흔한 일반 근로자 기준 0.9%를 사용합니다."
+        : "Standard workers pay 0.9%. Reduced rates apply to older workers — roughly 0.25% past 65 (outside unemployment benefits) and about 0.8% for ages 60–64 — among other categories. This calculator uses the standard 0.9%.",
+    },
+    {
+      q: isKo ? "이 결과와 연말정산은 어떤 관계인가요?" : "How does this relate to year-end settlement?",
+      a: isKo
+        ? "매달 빠지는 소득세는 '예납'에 가깝고, 연말정산에서 공제·세액감면을 반영해 최종 확정됩니다. 그래서 의료비·교육비·기부금·개인연금 공제를 잘 챙기면 이 계산기가 보여주는 월 세금보다 실질 세부담이 낮아지고 환급으로 돌아옵니다. 즉 이 도구의 실수령액은 공제 전 순수 급여 기준 추정치이며, 연말정산 결과가 좋을수록 실제 체감 수령액은 이보다 유리해집니다."
+        : "Monthly withholding is essentially a prepayment; year-end settlement finalizes the true bill after deductions and credits. Good documentation of medical, education, donation, and pension contributions means your real burden lands below what any monthly estimate shows, with the difference refunded. Treat this tool's figure as a deduction-free baseline that settlement can only improve.",
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -211,6 +69,61 @@ export default function NetSalaryCalculator() {
         ]} />
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            isKo ? "월급여 입력" : "Enter monthly salary",
+            isKo ? "세전 월급여를 만원 단위로 입력합니다. 연봉이라면 12으로 나눈 금액을 넣으세요." : "Gross monthly pay in 10K-won units — divide your annual figure by twelve first.",
+          ],
+          [
+            isKo ? "비과세 수당 입력(있으면)" : "Add non-taxable allowances if any",
+            isKo ? "식대·자가운전보조·육아급여 등 비과세 항목의 월 합계를 입력하면 과세 대상에서 빠집니다." : "Meal, vehicle, and childcare allowances are removed from the taxable base.",
+          ],
+          [
+            isKo ? "공제 내역 확인" : "Review the deduction breakdown",
+            isKo ? "국민연금·건강보험·장기요양·고용보험과 소득세·지방소득세가 항목별로 표시되고 실수령액이 계산됩니다." : "Each premium and tax line is itemized alongside the resulting net salary.",
+          ],
+          [
+            isKo ? "시나리오로 비교" : "Compare scenarios",
+            isKo ? "비과세 금액을 바꿔 가며 계산해 보면 회사와 급여 체계를 협의할 때 절세 규모를 수치로 제시할 수 있습니다." : "Varying the allowance field quantifies the case for negotiating pay structure.",
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-1">{isKo ? "예시 1 — 월급 300만원, 비과세 없음" : "Example 1 — 3 million monthly, no non-taxable items"}</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>{isKo ? "4대보험: 국민연금 135,000 + 건강보험 106,350 + 장기요양 13,623 + 고용보험 27,000 = 월 281,973원" : "Insurances: pension 135,000 + health 106,350 + long-term care 13,623 + employment 27,000 = 281,973/mo"}</li>
+            <li>{isKo ? "소득세: 연 과세소득 3,600만원 × 15% − 누진공제 126만원 = 414만원 → 월 345,000원, 지방소득세 34,500원" : "Income tax: 36M taxable × 15% − 1.26M quick deduction = 4.14M/yr → 345,000/mo, plus local 34,500"}</li>
+            <li>{isKo ? "실수령액: 3,000,000 − 661,473 ≈ 2,338,527원 (실수령률 약 78%)" : "Net: 3,000,000 − 661,473 ≈ 2,338,527 won (about 78% of gross)"}</li>
+          </ul>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-1">{isKo ? "예시 2 — 같은 조건에 비과세 식대 20만원 추가" : "Example 2 — same salary with a 200,000 non-taxable meal allowance"}</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>{isKo ? "연 과세소득이 3,360만원으로 줄어 소득세는 연 378만원(월 315,000원), 지방세 31,500원" : "Taxable income drops to 33.6M: income tax falls to 3,780,000/yr (315,000/mo), local 31,500"}</li>
+            <li>{isKo ? "보험료는 이 모델에서 그대로(월 281,973원)" : "Insurance stays at 281,973 in this model"}</li>
+            <li>{isKo ? "실수령액 약 2,371,527원 → 매달 약 33,000원 절약" : "Net rises to ≈ 2,371,527 — a saving of about 33,000 every month"}</li>
+          </ul>
+        </div>
+        <p>
+          {isKo
+            ? "두 예시의 차이가 곧 비과세 설계의 가치입니다. 같은 총액이라도 어떻게 나눠 지급하느냐에 따라 세후 수령액이 달라지므로, 채용 협상 때 '비과세 포함 여부'를 반드시 확인하세요."
+            : "The gap between the two examples is the value of structuring pay: same total, different net. Always ask whether an offer's figures include non-taxable allowances."}
+        </p>
+      </div>
+    ),
     calculationFormula: (
       <div className="text-base leading-relaxed space-y-6">
         <p className="font-semibold">{isKo ? '실수령액 계산 공식 (2024년 기준)' : 'Net Salary Calculation Formula (2024)'}</p>
@@ -225,18 +138,12 @@ export default function NetSalaryCalculator() {
         </div>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '2. 소득세 및 지방소득세' : '2. Income Tax & Local Income Tax'}</h3>
-          <p className="font-mono p-3 bg-card rounded-md text-sm shadow-sm">
-            {isKo ? '소득세 = 간이세표 적용 (연간 과세소득 기준 누진세율)' : 'Income Tax = Simplified tax table (progressive rates on annual taxable income)'}
-          </p>
-          <p className="font-mono p-3 bg-card rounded-md text-sm shadow-sm mt-2">
-            {isKo ? '지방소득세 = 소득세 × 10%' : 'Local Income Tax = Income Tax × 10%'}
-          </p>
+          <BlockMath math={isKo ? "\\text{소득세} = \\text{간이세표 적용}\\ (\\text{연간 과세소득 기준 누진세율})" : "\\text{Income Tax} = \\text{Simplified tax table (progressive, annual taxable income)}"} />
+          <BlockMath math={isKo ? "\\text{지방소득세} = \\text{소득세} \\times 10\\%" : "\\text{Local Income Tax} = \\text{Income Tax} \\times 10\\%"} />
         </div>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '3. 실수령액' : '3. Net Salary'}</h3>
-          <p className="font-mono p-3 bg-card rounded-md text-sm shadow-sm">
-            {isKo ? '실수령액 = 월급 - 4대보험 - 소득세 - 지방소득세' : 'Net Salary = Monthly Salary - 4 Insurances - Income Tax - Local Income Tax'}
-          </p>
+          <BlockMath math={isKo ? "\\text{실수령액} = \\text{월급} - \\text{4대보험} - \\text{소득세} - \\text{지방소득세}" : "\\text{Net Salary} = \\text{Monthly Salary} - \\text{4 Insurances} - \\text{Income Tax} - \\text{Local Income Tax}"} />
         </div>
       </div>
     ),
@@ -257,17 +164,32 @@ export default function NetSalaryCalculator() {
         </div>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={isKo ? '실수령액 계산기' : 'Net Salary Calculator'}
-      description={isKo ? '월급에서 4대보험과 세금을 제외한 실수령액을 계산합니다.' : 'Calculate your net take-home pay after 4 insurances and taxes.'}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      fullWidthSection={fullWidthSection}
-      fullWidthTitle={isKo ? '상세 공제 내역' : 'Deduction Breakdown'}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
 }

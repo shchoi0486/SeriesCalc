@@ -1,307 +1,165 @@
-'use client';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./ColorPickerClient";
 
-import React, { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/life/color-picker", "life", "color-picker");
+}
 
-const ColorPicker: React.FC = () => {
-  const { dict, locale } = useI18n();
+
+
+export default function ColorPickerPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const dict = isKo ? koDict : enDict;
   const t = dict.colorPicker;
-  const isKo = locale === 'ko';
-  const [hexInput, setHexInput] = useState('#3b82f6');
-  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const L = (koText: string, enText: string) => (isKo ? koText : enText);
 
-  const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
-        }
-      : null;
-  };
-
-  const rgbToHsl = (r: number, g: number, b: number): { h: number; s: number; l: number } => {
-    r /= 255;
-    g /= 255;
-    b /= 255;
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    let h = 0;
-    let s = 0;
-    const l = (max + min) / 2;
-
-    if (max !== min) {
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      switch (max) {
-        case r:
-          h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-          break;
-        case g:
-          h = ((b - r) / d + 2) / 6;
-          break;
-        case b:
-          h = ((r - g) / d + 4) / 6;
-          break;
-      }
-    }
-
-    return {
-      h: Math.round(h * 360),
-      s: Math.round(s * 100),
-      l: Math.round(l * 100),
-    };
-  };
-
-  const isValidHex = (hex: string): boolean => {
-    return /^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex);
-  };
-
-  const normalizeHex = (hex: string): string => {
-    let h = hex.replace('#', '');
-    if (h.length === 3) {
-      h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
-    }
-    return '#' + h.toUpperCase();
-  };
-
-  const rgb = hexToRgb(hexInput);
-  const hsl = rgb ? rgbToHsl(rgb.r, rgb.g, rgb.b) : null;
-
-  const handleHexChange = (value: string) => {
-    let newVal = value;
-    if (!newVal.startsWith('#')) {
-      newVal = '#' + newVal;
-    }
-    setHexInput(newVal);
-  };
-
-  const copyToClipboard = async (text: string, field: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedField(field);
-      setTimeout(() => setCopiedField(null), 2000);
-    } catch {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      setCopiedField(field);
-      setTimeout(() => setCopiedField(null), 2000);
-    }
-  };
-
-  const randomColor = () => {
-    const hex = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
-    setHexInput(hex.toUpperCase());
-  };
-
-  const inputSection = (
-    <div className="flex flex-col space-y-4">
-      <div className="flex items-center space-x-4">
-        <label className="w-20">{t.inputs.hex}:</label>
-        <Input
-          value={hexInput}
-          onChange={(e) => handleHexChange(e.target.value)}
-          placeholder="#000000"
-          className="flex-1"
-        />
-        <input
-          type="color"
-          value={isValidHex(hexInput) ? normalizeHex(hexInput) : '#000000'}
-          onChange={(e) => setHexInput(e.target.value.toUpperCase())}
-          className="w-12 h-10 rounded cursor-pointer border"
-        />
-      </div>
-
-      {rgb && (
-        <div className="grid grid-cols-3 gap-2">
-          <div>
-            <label className="block text-sm mb-1">R</label>
-            <Input
-              type="number"
-              min={0}
-              max={255}
-              value={rgb.r}
-              onChange={(e) => {
-                const r = Math.min(255, Math.max(0, Number(e.target.value)));
-                const newHex = '#' + [r, rgb.g, rgb.b].map(c => c.toString(16).padStart(2, '0')).join('').toUpperCase();
-                setHexInput(newHex);
-              }}
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">G</label>
-            <Input
-              type="number"
-              min={0}
-              max={255}
-              value={rgb.g}
-              onChange={(e) => {
-                const g = Math.min(255, Math.max(0, Number(e.target.value)));
-                const newHex = '#' + [rgb.r, g, rgb.b].map(c => c.toString(16).padStart(2, '0')).join('').toUpperCase();
-                setHexInput(newHex);
-              }}
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1">B</label>
-            <Input
-              type="number"
-              min={0}
-              max={255}
-              value={rgb.b}
-              onChange={(e) => {
-                const b = Math.min(255, Math.max(0, Number(e.target.value)));
-                const newHex = '#' + [rgb.r, rgb.g, b].map(c => c.toString(16).padStart(2, '0')).join('').toUpperCase();
-                setHexInput(newHex);
-              }}
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="flex space-x-2">
-        <Button onClick={randomColor}>{t.inputs.randomColor}</Button>
-        <Button variant="secondary" onClick={() => setHexInput('#3B82F6')}>
-          {t.inputs.reset}
-        </Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-4">
-      {rgb && hsl ? (
-        <>
-          <div
-            className="w-full h-32 rounded-lg border-2 border-gray-200 shadow-inner"
-            style={{ backgroundColor: hexInput }}
-          />
-
-          <Card>
-            <CardContent className="p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t.results.hex}:</span>
-                <div className="flex items-center space-x-2">
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm">{normalizeHex(hexInput)}</code>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => copyToClipboard(normalizeHex(hexInput), 'hex')}
-                  >
-                    {copiedField === 'hex' ? t.results.copied : t.results.copy}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t.results.rgb}:</span>
-                <div className="flex items-center space-x-2">
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm">rgb({rgb.r}, {rgb.g}, {rgb.b})</code>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => copyToClipboard(`rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`, 'rgb')}
-                  >
-                    {copiedField === 'rgb' ? t.results.copied : t.results.copy}
-                  </Button>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">{t.results.hsl}:</span>
-                <div className="flex items-center space-x-2">
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm">hsl({hsl.h}, {hsl.s}%, {hsl.l}%)</code>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => copyToClipboard(`hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`, 'hsl')}
-                  >
-                    {copiedField === 'hsl' ? t.results.copied : t.results.copy}
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </>
-      ) : (
-        <div className="flex items-center justify-center text-muted-foreground h-32">
-          {t.results.invalidHex}
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("HEX, RGB, HSL 중 어떤 형식을 써야 하나요?", "Which format should I use — HEX, RGB, or HSL?"),
+      a: L(
+        "용도에 따라 다릅니다. CSS·웹 디자인에서는 HEX(#3b82f6)이 가장 보편적입니다. 색상·채도·명도를 직관적으로 조절해야 할 때는 HSL(hsl(217, 91%, 60%))이 편리합니다. RGB는 이미지 편집기나 디스플레이 제어에서 자주 쓰입니다. 어떤 형식이든 이 계산기에서 서로 변환할 수 있습니다.",
+        "HEX is most common for CSS/web design. HSL is easier for adjusting hue/saturation/lightness intuitively. RGB is common in image editors. This tool converts between all three.",
+      ),
+    },
+    {
+      q: L("접근성 대비율은 어떻게 확인하나요?", "How do I check accessibility contrast ratio?"),
+      a: L(
+        "WCAG 2.1 기준 일반 텍스트는 전경-배경 대비율 4.5:1 이상, 큰 텍스트(18pt 이상)는 3:1 이상이어야 합니다. 이 도구에서 두 색상을 입력하면 대비율과 등급(AAA/AA/ Fail)을 자동 계산해 줍니다. 웹사이트·앱 디자인 시 반드시 확인하세요.",
+        "WCAG 2.1 requires ≥4.5:1 for normal text, ≥3:1 for large text (18pt+). Enter two colors here to auto-compute the ratio and grade (AAA/AA/Fail). Always verify for web/app design.",
+      ),
+    },
+    {
+      q: L("색상blind 접근성 검사는 어떻게 하나요?", "How do I check color-blind accessibility?"),
+      a: L(
+        "이 도구는 기본적인 대비율만 확인합니다. 색각 이상(protanopia, deuteranopia, tritanopia) 시뮬레이션은 별도 도구(Coblis, Color Oracle 등)를 사용하세요. 대비율이 높으면 색각 이상에서도 구별 가능성이 높아지므로, 이 도구에서 먼저 대비를 확보하는 것이 좋은 1단계입니다.",
+        "This tool only checks contrast ratio. For color-blind simulation, use dedicated tools (Coblis, Color Oracle). High contrast ratios improve distinguishability for color-vision deficiencies — securing contrast here is a good first step.",
+      ),
+    },
+    {
+      q: L("색상 온도(따뜻한색·차가운색)는 어떻게 조절하나요?", "How do I adjust color temperature (warm/cool)?"),
+      a: L(
+        "HSL 모드에서 색상(H) 값을 조절하면 됩니다. H 0~60(빨강~노랑)은 따뜻한색, H 180~270(청록~보라)은 차가운색 영역입니다. 웹사이트 톤·브랜드 아이덴티티를 맞출 때 이 축을 이해하면 좋습니다.",
+        "Adjust the Hue (H) value in HSL mode. H 0–60 (red–yellow) is warm; H 180–270 (cyan–purple) is cool. Understanding this axis helps match site tone or brand identity.",
+      ),
+    },
+    {
+      q: L("생성된 색상 값을 CSS에 바로 쓸 수 있나요?", "Can I use the generated color values directly in CSS?"),
+      a: L(
+        "네. HEX(#3b82f6), RGB(rgb(59,130,246)), HSL(hsl(217,91%,60%)) 모두 CSS 속성에 그대로 붙여넣을 수 있습니다. 복사 버튼으로 원하는 형식을 클립보드에 복사한 뒤, CSS 파일이나 스타일 시트에 바로 사용하세요.",
+        "Yes. HEX, RGB, and HSL values copy directly into CSS properties. Use the copy button for clipboard convenience.",
+      ),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: `
       <div className="space-y-4">
-        <p className="text-lg font-semibold text-foreground">
-          ${t.descriptionContent.heading}
-        </p>
-        <p>
-          ${t.descriptionContent.p1}
-        </p>
-        <p>
-          ${t.descriptionContent.p2}
-        </p>
-        <p>
-          ${t.descriptionContent.p3}
-        </p>
+        <p className="text-lg font-semibold text-foreground">${t.descriptionContent.heading}</p>
+        <p>${t.descriptionContent.p1}</p>
+        <p>${t.descriptionContent.p2}</p>
+        <p>${t.descriptionContent.p3}</p>
       </div>
     `,
-    calculationFormula: `
-      <div className="space-y-6">
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("색상 선택", "Pick a color"),
+            L("색상 피커를 클릭하거나, HEX/RGB 값을 직접 입력합니다.", "Click the color picker or enter HEX/RGB values directly."),
+          ],
+          [
+            L("변환 형식 확인", "Check converted formats"),
+            L("HEX, RGB, HSL 세 가지 형식이 동시에 표시됩니다.", "HEX, RGB, and HSL formats are shown simultaneously."),
+          ],
+          [
+            L("대비율 검사", "Check contrast ratio"),
+            L("전경색·배경색을 지정하면 WCAG 기준 대비율과 등급이 자동 계산됩니다.", "Specify foreground and background colors for auto-computed WCAG contrast ratio and grade."),
+          ],
+          [
+            L("복사·사용", "Copy and use"),
+            L("원하는 형식의 복사 버튼을 눌러 CSS·디자인 파일에 바로 사용하세요.", "Click the copy button for your preferred format to use in CSS or design files."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
         <div>
-          <h3 className="font-semibold text-lg mb-2">${t.formula.heading}</h3>
-          <div className="p-4 bg-muted rounded-lg space-y-2">
-            <p className="font-semibold text-primary">${t.formula.hexToRgb}</p>
-            <p className="text-xs text-muted-foreground">${t.formula.hexToRgbDesc}</p>
-            <code className="text-sm">R = parseInt(hex.substring(1,3), 16)</code><br/>
-            <code className="text-sm">G = parseInt(hex.substring(3,5), 16)</code><br/>
-            <code className="text-sm">B = parseInt(hex.substring(5,7), 16)</code>
-          </div>
-          <div className="p-4 bg-muted rounded-lg space-y-2 mt-4">
-            <p className="font-semibold text-primary">${t.formula.rgbToHsl}</p>
-            <p className="text-xs text-muted-foreground">${t.formula.rgbToHslDesc}</p>
-            <code className="text-sm">L = (max(R,G,B) + min(R,G,B)) / 2</code><br/>
-            <code className="text-sm">S = (max - min) / (L > 0.5 ? 2 - max - min : max + min)</code><br/>
-            <code className="text-sm">${isKo ? 'H = 색상에 따른 각도 계산 (0~360도)' : 'H = hue angle (0~360°)'}</code>
-          </div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 브랜드 메인 컬러", "Example 1 — Brand primary color")}</p>
+          <p>
+            {L(
+              "HEX #3b82f6 (파란색) → RGB(59, 130, 246) → HSL(217, 91%, 60%). 흰색(#ffffff) 배경 대비율 = 4.63:1 → AA 등급(일반 텍스트 4.5:1 기준 충족). 이 색상을 버튼·링크 메인 컬러로 사용할 수 있습니다.",
+              "HEX #3b82f6 → RGB(59,130,246) → HSL(217,91%,60%). Against white (#ffffff): contrast 4.63:1 → AA grade. Suitable as button/link primary color.",
+            )}
+          </p>
         </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 어두운 테마 배경색", "Example 2 — Dark theme background")}</p>
+          <p>
+            {L(
+              "HEX #1e293b (남색) → RGB(30, 41, 59) → HSL(215, 32%, 17%). 흰색 텍스트(#ffffff)와 대비율 = 12.7:1 → AAA 등급. 어두운 배경에 밝은 텍스트를 쓸 때 이 대비율을 확보하면 접근성이 보장됩니다.",
+              "HEX #1e293b → RGB(30,41,59) → HSL(215,32%,17%). Against white: 12.7:1 → AAA. Secure this contrast for dark-theme readability.",
+            )}
+          </p>
+        </div>
+      </div>
+    ),
+    calculationFormula: `
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">${t.formula.hexToRgbDesc}</p>
       </div>
     `,
     usefulTips: `
       <div className="space-y-4">
-        <div className="p-4 rounded-lg border-l-4 border-primary bg-muted">
-          <h3 className="font-semibold text-lg mb-2 text-foreground">${t.tips.heading}</h3>
-          <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-            ${t.tips.items.map((item: { title: string; desc: string }) => `
-            <li><strong>${item.title}:</strong> ${item.desc}</li>
-            `).join('')}
-          </ul>
-        </div>
+        <p className="text-sm text-muted-foreground">${t.tips.heading}</p>
       </div>
-    `
+    `,
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default ColorPicker;
+}

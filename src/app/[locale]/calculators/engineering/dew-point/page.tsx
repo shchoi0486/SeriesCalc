@@ -1,14 +1,29 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import DewPoint from '@/components/engineering-calculator/DewPoint';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import { BlockMath } from "react-katex";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./DewPointClient";
 
-export default function CalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.calculatorNames;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/dew-point", "engineering", "dew-point");
+}
+
+
+
+export default function DewPointPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const d = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,12 +67,8 @@ export default function CalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">
-              T<sub>d</sub> = (b × α(T, RH)) / (a − α(T, RH))
-            </p>
-            <p className="font-mono text-lg text-center text-purple-600">
-              α(T, RH) = (a × T) / (b + T) + ln(RH/100)
-            </p>
+            <BlockMath math="T_d = \dfrac{b\,\alpha(T, RH)}{a - \alpha(T, RH)}" />
+            <BlockMath math="\alpha(T, RH) = \dfrac{a T}{b + T} + \ln\!\left(\dfrac{RH}{100}\right)" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -70,9 +81,7 @@ export default function CalculatorPage() {
         <div>
           <h4 className="font-bold text-base mb-2">{L('포화 수증기압 공식', 'Saturation vapor pressure formula')}</h4>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">
-              e<sub>s</sub>(T) = 6.1078 × exp(17.27 × T / (237.7 + T))
-            </p>
+            <BlockMath math="e_s(T) = 6.1078\,\exp\!\left(\dfrac{17.27\,T}{237.7 + T}\right)" />
           </div>
           <p className="text-sm mt-2">
             {L(
@@ -84,15 +93,8 @@ export default function CalculatorPage() {
         <div>
           <h4 className="font-bold text-base mb-2">{L('습구 온도 근사 (Stull)', 'Wet-bulb temperature approximation (Stull)')}</h4>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">
-              T<sub>w</sub> ≈ T × arctan(0.151977 × √(RH + 8.313659))
-            </p>
-            <p className="font-mono text-lg text-center text-purple-600">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ arctan(T + RH) − arctan(RH − 1.676331)
-            </p>
-            <p className="font-mono text-lg text-center text-purple-600">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 0.00391838 × RH^(3/2) × arctan(0.023101 × RH) − 4.686035
-            </p>
+            <BlockMath math="T_w \approx T\,\arctan\!\left(0.151977\sqrt{RH + 8.313659}\right) + \arctan(T + RH) - \arctan(RH - 1.676331)" />
+            <BlockMath math="+\; 0.00391838\,RH^{3/2}\arctan(0.023101\,RH) - 4.686035" />
           </div>
         </div>
       </div>
@@ -119,16 +121,5 @@ export default function CalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.['dew-point'] || (ko ? '이슬점 계산기' : 'Dew Point Calculator')}
-      description={t?.['dew-point'] || (ko ? '이슬점, 습구 온도 및 절대 습도를 계산합니다' : 'Calculate dew point, wet bulb, absolute humidity')}
-      icon={<span>🌡️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<DewPoint />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

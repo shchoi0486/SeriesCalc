@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import RadiationHeatCalculator from '@/components/engineering-calculator/RadiationHeatCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./RadiationHeatClient";
+import { BlockMath } from "react-katex";
 
-export default function RadiationHeatPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.radiationHeat;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/radiation-heat", "engineering", "radiation-heat");
+}
+
+
+
+export default function RadiationHeatPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function RadiationHeatPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">q = ε × σ × A × (T₁⁴ − T₂⁴)</p>
+            <BlockMath math="q = \varepsilon\,\sigma\,A\left(T_1^4 - T_2^4\right)" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -113,16 +125,5 @@ export default function RadiationHeatPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '복사 열전달 계산기' : 'Radiation Heat Calculator')}
-      description={t?.description || (ko ? '슈테판-볼츠만 법칙으로 물체와 주위 사이의 순 복사 열전달량을 계산합니다.' : 'Calculate the net radiation heat transfer between an object and its surroundings using the Stefan-Boltzmann Law.')}
-      icon={<span>☀️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<RadiationHeatCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

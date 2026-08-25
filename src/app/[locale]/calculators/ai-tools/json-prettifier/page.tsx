@@ -1,76 +1,46 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./JsonPrettifierClient";
 
-import { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/ai-tools/json-prettifier", "ai-tools", "json-prettifier");
+}
 
-const JsonPrettifier = () => {
-  const { dict, locale } = useI18n();
-  const t = dict.jsonPrettifier;
-  const isKo = locale === 'ko';
-  const [input, setInput] = useState('');
-  const [indent, setIndent] = useState<number>(2);
-  const [result, setResult] = useState('');
-  const [error, setError] = useState('');
+export default function JsonPrettifierPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
 
-  const prettify = () => {
-    setError('');
-    try {
-      const parsed = JSON.parse(input);
-      setResult(JSON.stringify(parsed, null, indent));
-    } catch (e: any) {
-      setError(`${t.invalidJson} ${e.message}`);
-      setResult('');
-    }
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(result);
-  };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.inputLabelMinified}</label>
-        <Textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder='{"name":"John","age":30,"scores":[1,2,3]}'
-          className="min-h-[150px] font-mono text-xs"
-        />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.inputLabelIndent}</label>
-        <Input
-          type="number"
-          min={1}
-          max={8}
-          value={indent}
-          onChange={(e) => setIndent(Math.max(1, Math.min(8, parseInt(e.target.value) || 2)))}
-        />
-      </div>
-      <Button onClick={prettify} className="w-full">{t.button}</Button>
-    </div>
-  );
-
-  const resultSection = error ? (
-    <div className="p-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300">
-      {error}
-    </div>
-  ) : result ? (
-    <div className="space-y-3">
-      <Button variant="outline" size="sm" onClick={copyToClipboard} className="w-full">{t.copyButton}</Button>
-      <Textarea readOnly value={result} className="min-h-[200px] font-mono text-xs" />
-    </div>
-  ) : (
-    <div className="flex items-center justify-center text-muted-foreground h-full">
-      {t.emptyPrompt}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: "What does prettifying a JSON do?",
+      a: "Prettifying (also called formatting) converts a compact, single-line JSON string into a multi-line, indented structure. It adds spaces, newlines, and indentation to reveal the hierarchy of objects and arrays, making the data much easier to read and debug without changing its meaning.",
+    },
+    {
+      q: "What indent size should I choose?",
+      a: "The most common choices are 2 or 4 spaces. Two spaces keeps deeply nested data compact and fits more on screen, while four spaces is more visually separated and common in some code style guides. Choose whichever matches your team's convention—the tool supports any size from 1 to 8 spaces.",
+    },
+    {
+      q: "What happens if I paste invalid JSON?",
+      a: "The tool parses your input with JSON.parse before formatting. If the JSON is malformed—such as having a trailing comma, missing quotes on keys, or single quotes instead of double quotes—you get a clear error message describing the problem so you can fix it.",
+    },
+    {
+      q: "Can it handle very large JSON files?",
+      a: "Yes, in most cases. Formatting is performed entirely in your browser, so there is no server round-trip or size limit. Very large files are processed quickly, though extremely large payloads may take a moment to render in the output box.",
+    },
+    {
+      q: "Why is the key order preserved after prettifying?",
+      a: "JavaScript objects preserve the insertion order of their keys (except for integer-like keys, which are sorted first). Since prettifying only re-adds whitespace and never reorders keys, the output keeps the exact same key sequence as your input—only the formatting changes.",
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -85,6 +55,54 @@ const JsonPrettifier = () => {
           { term: 'JSON', desc: isKo ? 'JavaScript Object Notation의 약자로, 키와 값의 쌍으로 데이터를 표현하는 가벼운 텍스트 기반 데이터 형식입니다. API 통신과 설정 파일에 널리 쓰입니다.' : 'Short for JavaScript Object Notation, a lightweight text-based data format that represents data as key-value pairs. Widely used for API communication and configuration files.' },
           { term: isKo ? '들여쓰기(Indentation)' : 'Indentation', desc: isKo ? '중첩된 데이터 구조를 사람이 읽기 쉽게 계층별로 공백을 추가해 정렬하는 방식입니다. 보통 2칸 또는 4칸 공백을 사용합니다.' : 'Adding spaces per level so nested data structures are easy for humans to read. Usually 2 or 4 spaces are used per level.' },
         ]} />
+      </div>
+    ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">1</span>
+          <div>
+            <p className="font-semibold text-foreground">Paste minified JSON</p>
+            <p className="mt-1">Copy your compact, single-line JSON and paste it into the input box.</p>
+          </div>
+        </li>
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">2</span>
+          <div>
+            <p className="font-semibold text-foreground">Click Format</p>
+            <p className="mt-1">Optionally set your preferred indent size, then press the Format button to validate and reformat the JSON.</p>
+          </div>
+        </li>
+        <li className="flex gap-3">
+          <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">3</span>
+          <div>
+            <p className="font-semibold text-foreground">View the indented output</p>
+            <p className="mt-1">Read the result or copy it for use in code editors, documentation, or logs.</p>
+          </div>
+        </li>
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">Example 1 — Object with array</p>
+          <p>
+            Starting from the minified input <code className="font-mono text-xs">{'{"name":"John","scores":[1,2]}'}</code>, prettifying with a 2-space indent produces a readable multi-line structure:
+          </p>
+          <pre className="mt-2 p-3 bg-gray-100 dark:bg-gray-800 rounded-lg font-mono text-xs whitespace-pre overflow-x-auto">{`{
+  "name": "John",
+  "scores": [
+    1,
+    2
+  ]
+}`}</pre>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">Example 2 — Nested profile</p>
+          <p>
+            The compact object <code className="font-mono text-xs">{'{"user":{"name":"Alice","age":30,"active":true}}'}</code> becomes a clearly indented hierarchy where the nesting level of each property is immediately visible.
+          </p>
+        </div>
       </div>
     ),
     calculationFormula: (
@@ -114,18 +132,32 @@ const JsonPrettifier = () => {
         </ul>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-      variant="split"
-     />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default JsonPrettifier;
+}

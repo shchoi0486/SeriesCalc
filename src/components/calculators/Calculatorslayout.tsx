@@ -4,7 +4,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRouter, usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, HelpCircle, Sigma, Lightbulb } from 'lucide-react';
+import { ChevronLeft, HelpCircle, Sigma, Lightbulb, ListChecks, BookOpenCheck, MessagesSquare } from 'lucide-react';
 import {
   Accordion,
   AccordionContent,
@@ -23,9 +23,12 @@ interface CalculatorsLayoutProps {
   resultSection: React.ReactNode;
   infoSection: {
     calculatorDescription: React.ReactNode;
+    howToUse?: React.ReactNode;
+    workedExamples?: React.ReactNode;
     calculationFormula: React.ReactNode;
     containerSpecifications?: React.ReactNode;
     usefulTips: React.ReactNode;
+    faq?: React.ReactNode;
   };
   /**
    * split   : 입력 | 결과 두 열 (기본값, 범용)
@@ -76,6 +79,22 @@ const CalculatorsLayout: React.FC<CalculatorsLayoutProps> = ({
       content: infoSection.calculatorDescription,
       icon: <HelpCircle className="w-5 h-5" />,
     },
+    ...(infoSection.howToUse
+      ? [{
+          value: 'how-to-use',
+          title: dict.calculatorLayout.howToUse,
+          content: infoSection.howToUse,
+          icon: <ListChecks className="w-5 h-5" />,
+        }]
+      : []),
+    ...(infoSection.workedExamples
+      ? [{
+          value: 'worked-examples',
+          title: dict.calculatorLayout.examples,
+          content: infoSection.workedExamples,
+          icon: <BookOpenCheck className="w-5 h-5" />,
+        }]
+      : []),
     {
       value: 'formula',
       title: dict.calculatorLayout.formula,
@@ -88,6 +107,14 @@ const CalculatorsLayout: React.FC<CalculatorsLayoutProps> = ({
       content: infoSection.usefulTips,
       icon: <Lightbulb className="w-5 h-5" />,
     },
+    ...(infoSection.faq
+      ? [{
+          value: 'faq',
+          title: dict.calculatorLayout.faq,
+          content: infoSection.faq,
+          icon: <MessagesSquare className="w-5 h-5" />,
+        }]
+      : []),
   ];
 
   const gridClass =

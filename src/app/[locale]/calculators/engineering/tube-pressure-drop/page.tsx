@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import TubePressureDropCalculator from '@/components/engineering-calculator/TubePressureDropCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./TubePressureDropClient";
+import { BlockMath } from "react-katex";
 
-export default function TubePressureDropPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.tubePressureDrop;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/tube-pressure-drop", "engineering", "tube-pressure-drop");
+}
+
+
+
+export default function TubePressureDropPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +64,8 @@ export default function TubePressureDropPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-xl">ΔP = f · (L/D) · (ρv²/2)</p>
-            <p className="font-mono text-lg mt-2">h_f = f · (L/D) · (v²/2g)</p>
+            <BlockMath math="\Delta P = f\,\dfrac{L}{D}\,\dfrac{\rho v^{2}}{2}" />
+            <BlockMath math="h_f = f\,\dfrac{L}{D}\,\dfrac{v^{2}}{2g}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -104,16 +116,5 @@ export default function TubePressureDropPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '튜브 압력 강하 계산기' : 'Tube Pressure Drop Calculator')}
-      description={t?.description || (ko ? 'Darcy-Weisbach 식으로 튜브 내 압력 강하를 계산합니다.' : 'Calculate pressure drop in tubes.')}
-      icon={<span>💧</span>}
-      visualizationComponent={<></>}
-      resultComponent={<TubePressureDropCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

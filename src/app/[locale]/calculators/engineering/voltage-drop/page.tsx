@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import VoltageDropCalculator from '@/components/engineering-calculator/VoltageDropCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./VoltageDropClient";
+import { BlockMath } from "react-katex";
 
-export default function VoltageDropPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.voltageDrop;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/voltage-drop", "engineering", "voltage-drop");
+}
+
+
+
+export default function VoltageDropPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,9 +64,9 @@ export default function VoltageDropPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg space-y-2">
-            <p className="text-center font-mono text-lg">단상: V_drop = 2 × I × R</p>
-            <p className="text-center font-mono text-lg">삼상: V_drop = √3 × I × R</p>
-            <p className="text-center font-mono text-lg text-blue-600">R = ρ × L / A</p>
+            <BlockMath math="\text{단상:}\; V_{drop} = 2 I R" />
+            <BlockMath math="\text{삼상:}\; V_{drop} = \sqrt{3}\,I R" />
+            <BlockMath math="R = \dfrac{\rho L}{A}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -114,16 +126,5 @@ export default function VoltageDropPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '전압 강하 계산기' : 'Voltage Drop Calculator')}
-      description={t?.description || (ko ? '전기 회로의 전압 강하를 계산합니다.' : 'Calculate the voltage drop in an electrical circuit.')}
-      icon={<span>⚡</span>}
-      visualizationComponent={<></>}
-      resultComponent={<VoltageDropCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

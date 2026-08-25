@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import Api650TankCalculator from '@/components/engineering-calculator/Api650TankCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./Api650TankClient";
+import { BlockMath } from "react-katex";
 
-export default function Api650TankPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.api650Tank;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/api-650-tank", "engineering", "api-650-tank");
+}
+
+
+
+export default function Api650TankPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -54,14 +66,14 @@ export default function Api650TankPage() {
           <div className="p-4 bg-muted rounded-lg flex flex-col space-y-4">
             <div>
               <p className="font-semibold text-sm text-muted-foreground mb-1">{L('설계 두께 (t_d)', 'Design Thickness (t_d)')}</p>
-              <p className="font-mono text-lg text-blue-600">Imperial: t_d = [2.6 · D · (H - 1) · G] / S_d + CA</p>
-              <p className="font-mono text-lg text-blue-600 mt-1">Metric: t_d = [4.9 · D · (H - 0.3) · G] / S_d + CA</p>
+              <BlockMath math="\text{Imperial:}\;\; t_d = \dfrac{2.6\,D\,(H-1)\,G}{S_d} + CA" />
+              <BlockMath math="\text{Metric:}\;\; t_d = \dfrac{4.9\,D\,(H-0.3)\,G}{S_d} + CA" />
             </div>
             <div className="border-t border-dashed my-2"></div>
             <div>
               <p className="font-semibold text-sm text-muted-foreground mb-1">{L('수압 시험 두께 (t_t)', 'Hydrostatic Test Thickness (t_t)')}</p>
-              <p className="font-mono text-lg text-teal-600">Imperial: t_t = [2.6 · D · (H - 1)] / S_t</p>
-              <p className="font-mono text-lg text-teal-600 mt-1">Metric: t_t = [4.9 · D · (H - 0.3)] / S_t</p>
+              <BlockMath math="\text{Imperial:}\;\; t_t = \dfrac{2.6\,D\,(H-1)}{S_t}" />
+              <BlockMath math="\text{Metric:}\;\; t_t = \dfrac{4.9\,D\,(H-0.3)}{S_t}" />
             </div>
           </div>
         </div>
@@ -113,16 +125,5 @@ export default function Api650TankPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? 'API 650 탱크 두께 계산기' : 'API 650 Tank Thickness Calculator')}
-      description={t?.description || (ko ? "API 650에 따른 육상 강재 저장탱크의 최소 shell 두께를 계산합니다." : "Calculate the minimum required shell thickness for welded steel storage tanks per API 650.")}
-      icon={<span>🏭</span>}
-      visualizationComponent={<></>}
-      resultComponent={<Api650TankCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

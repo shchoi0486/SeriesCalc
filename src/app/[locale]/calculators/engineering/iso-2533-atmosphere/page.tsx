@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import Iso2533AtmosphereCalculator from '@/components/engineering-calculator/Iso2533AtmosphereCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./Iso2533AtmosphereClient";
+import { BlockMath } from "react-katex";
 
-export default function Iso2533AtmospherePage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.iso2533Atmosphere;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/iso-2533-atmosphere", "engineering", "iso-2533-atmosphere");
+}
+
+
+
+export default function Iso2533AtmospherePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,10 +64,10 @@ export default function Iso2533AtmospherePage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-3">
-            <p className="font-mono text-base text-center">T = T₀ + (L · h)</p>
-            <p className="font-mono text-base text-center">P = P₀ · [1 + (L · h / T₀)] ^ (−g / (R · L))</p>
-            <p className="font-mono text-base text-center">ρ = P / (R · T)</p>
-            <p className="font-mono text-base text-center">a = √(γ · R · T)</p>
+            <BlockMath math="T = T_0 + L h" />
+            <BlockMath math="P = P_0\left[1 + \dfrac{L h}{T_0}\right]^{-g/(RL)}" />
+            <BlockMath math="\rho = \dfrac{P}{RT}" />
+            <BlockMath math="a = \sqrt{\gamma R T}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -107,16 +119,5 @@ export default function Iso2533AtmospherePage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || L('ISO 2533 표준 대기', 'ISO 2533 Standard Atmosphere')}
-      description={t?.description || L('ISO 2533 표준 모델로 고도별 대기 물성을 계산합니다.', 'Calculate atmospheric properties at various altitudes based on the ISO 2533 standard model.')}
-      icon={<span>☁️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<Iso2533AtmosphereCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

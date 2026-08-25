@@ -1,144 +1,62 @@
-'use client';
+import { BlockMath } from "react-katex";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./DsrCalculatorClient";
 
-import { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { useI18n } from '@/i18n/I18nProvider';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/finance/dsr-calculator", "finance", "dsr-calculator");
+}
 
-const DsrCalculator: React.FC = () => {
-  const { dict: d, locale } = useI18n();
-  const isKo = locale === 'ko';
+export default function DsrCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const W = (ko: string, en: string) => (isKo ? ko : en);
 
-  const [annualIncome, setAnnualIncome] = useState<number>(5000);
-  const [monthlyPrincipal, setMonthlyPrincipal] = useState<number>(150);
-  const [monthlyInterest, setMonthlyInterest] = useState<number>(100);
-  const [otherLoanPayment, setOtherLoanPayment] = useState<number>(50);
-
-  const [dsr, setDsr] = useState<number | null>(null);
-
-  const calculate = () => {
-    if (annualIncome <= 0) return;
-    const monthlyIncome = annualIncome / 12;
-    const totalMonthly = monthlyPrincipal + monthlyInterest + otherLoanPayment;
-    const result = (totalMonthly / monthlyIncome) * 100;
-    setDsr(Math.round(result * 100) / 100);
-  };
-
-  const getDsrColor = (value: number) => {
-    if (value < 30) return { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', label: isKo ? '양호' : 'Good' };
-    if (value <= 40) return { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200', label: isKo ? '주의' : 'Caution' };
-    return { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', label: isKo ? '위험' : 'Risk' };
-  };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-1">
-        <Label htmlFor="annualIncome">{isKo ? '연소득 (만원)' : 'Annual Income (10K won)'}</Label>
-        <Input
-          id="annualIncome"
-          type="number"
-          value={annualIncome}
-          onChange={(e) => setAnnualIncome(Number(e.target.value))}
-          className="text-right"
-        />
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="monthlyPrincipal">{isKo ? '월 원금상환액 (만원)' : 'Monthly Principal (10K won)'}</Label>
-        <Input
-          id="monthlyPrincipal"
-          type="number"
-          value={monthlyPrincipal}
-          onChange={(e) => setMonthlyPrincipal(Number(e.target.value))}
-          className="text-right"
-        />
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="monthlyInterest">{isKo ? '월 이자상환액 (만원)' : 'Monthly Interest (10K won)'}</Label>
-        <Input
-          id="monthlyInterest"
-          type="number"
-          value={monthlyInterest}
-          onChange={(e) => setMonthlyInterest(Number(e.target.value))}
-          className="text-right"
-        />
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor="otherLoanPayment">{isKo ? '기타대출 월 상환액 (만원)' : 'Other Loan Monthly (10K won)'}</Label>
-        <Input
-          id="otherLoanPayment"
-          type="number"
-          value={otherLoanPayment}
-          onChange={(e) => setOtherLoanPayment(Number(e.target.value))}
-          className="text-right"
-        />
-      </div>
-      <Button onClick={calculate} className="w-full">{d.common.calculate}</Button>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-5">
-      {dsr !== null ? (
-        <>
-          <div className="text-center p-5 rounded-xl border-2" style={{ borderColor: getDsrColor(dsr).text.replace('text-', '').includes('green') ? '#22c55e' : dsr <= 40 ? '#eab308' : '#ef4444' }}>
-            <p className="text-sm text-muted-foreground">{isKo ? 'DSR 비율' : 'DSR Ratio'}</p>
-            <p className={`text-5xl font-extrabold mt-1 ${getDsrColor(dsr).text}`}>{dsr}%</p>
-            <span className={`inline-block mt-2 px-3 py-1 rounded-full text-sm font-medium ${getDsrColor(dsr).bg} ${getDsrColor(dsr).text} ${getDsrColor(dsr).border} border`}>
-              {getDsrColor(dsr).label}
-            </span>
-          </div>
-
-          <div className="rounded-lg border border-border overflow-hidden">
-            <table className="w-full text-sm border-collapse">
-              <thead className="bg-muted">
-                <tr className="border-b border-border">
-                  <th className="px-4 py-2.5 text-left font-medium text-muted-foreground">{isKo ? '항목' : 'Item'}</th>
-                  <th className="px-4 py-2.5 text-right font-medium text-muted-foreground">{isKo ? '금액 (만원)' : 'Amount (10K won)'}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-border">
-                  <td className="px-4 py-2.5 text-muted-foreground">{isKo ? '월 원금상환' : 'Monthly Principal'}</td>
-                  <td className="px-4 py-2.5 text-right font-medium">{monthlyPrincipal.toLocaleString()}</td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="px-4 py-2.5 text-muted-foreground">{isKo ? '월 이자상환' : 'Monthly Interest'}</td>
-                  <td className="px-4 py-2.5 text-right font-medium">{monthlyInterest.toLocaleString()}</td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="px-4 py-2.5 text-muted-foreground">{isKo ? '기타대출 월 상환' : 'Other Loan Monthly'}</td>
-                  <td className="px-4 py-2.5 text-right font-medium">{otherLoanPayment.toLocaleString()}</td>
-                </tr>
-                <tr className="border-b border-border bg-muted/50 font-semibold">
-                  <td className="px-4 py-2.5">{isKo ? '월 총 상환액' : 'Total Monthly Payment'}</td>
-                  <td className="px-4 py-2.5 text-right">{(monthlyPrincipal + monthlyInterest + otherLoanPayment).toLocaleString()}</td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="px-4 py-2.5 text-muted-foreground">{isKo ? '월 소득 (연소득/12)' : 'Monthly Income (Annual/12)'}</td>
-                  <td className="px-4 py-2.5 text-right font-medium">{(annualIncome / 12).toLocaleString(undefined, { maximumFractionDigits: 1 })}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {dsr > 40 && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-              {isKo
-                ? '⚠️ DSR 40%를 초과합니다. 총대출 1억원 이상인 경우 DSR 40% 규제가 적용되어 대출이 제한될 수 있습니다.'
-                : '⚠️ DSR exceeds 40%. Loans may be restricted under the 40% DSR regulation when total loans exceed 100 million won.'}
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-2">
-          <p>{isKo ? '값을 입력하고 계산하기를 눌러주세요.' : 'Enter values and press Calculate.'}</p>
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: W("DSR과 DTI의 실질적 차이는 무엇인가요?", "What is the practical difference between DSR and DTI?"),
+      a: W(
+        "DTI(총부채상환비율)는 주택담보대출 원리금에 다른 대출은 '이자만' 더하는 구식 지표이고, DSR은 모든 대출의 원리금 전체를 잡습니다. 예컨대 월 50만원씩 갚는 학자금 대출이 있다면 DTI 계산에는 그 이자 몇만 원만 반영되지만 DSR 계산에는 50만원 전체가 들어갑니다. 그래서 같은 사람의 DTI는 30%인데 DSR은 42%로 규제선을 넘는 일이 생기고, 현재 은행 심사는 DSR을 기준으로 합니다.",
+        "DTI counts mortgage principal-and-interest plus only the interest on other debts — an older, narrower gauge. DSR captures full principal and interest of every loan. A student loan costing 500,000 a month barely registers under DTI but counts fully under DSR. That is why someone can show 30% DTI yet breach the line at 42% DSR — and banks now judge by DSR.",
+      ),
+    },
+    {
+      q: W("계산 결과가 '위험' 구간이면 대출이 아예 안 되나요?", "If my result shows 'Risk', can I not borrow at all?"),
+      a: W(
+        "꼭 그렇지는 않습니다. 총대출 1억원 이하 차주에게는 예외·완화 규정이 적용되는 경우가 있고(1억원 이하 신규 대출 시 DSR 산제외 등 상품별 상이), 비은행권은 규제 강도가 다릅니다. 다만 '빌릴 수 있으니 괜찮다'와 '감당할 수 있다'는 별개 문제입니다. 위험 구간이라면 금융기관 승인 여부보다 먼저 금리 인상 시 월 현금흐름이 버티는지를 점검하세요. 스트레스 DSR 개념처럼 금리 +1%p를 가정해 보는 것이 좋습니다.",
+        "Not necessarily. Borrowers with total debt under one hundred million may fall under exceptions or lighter rules depending on product and lender type. But being able to borrow is different from being able to afford it. In the risk zone, test whether your cash flow survives a rate hike before worrying about approval — stress-test at +1 percentage point.",
+      ),
+    },
+    {
+      q: W("DSR을 낮추려면 무엇부터 해야 하나요?", "What should I do first to lower my DSR?"),
+      a: W(
+        "효과 순서는 다음과 같습니다. ① 고금리 소액 대출부터 상환해 기타 월 상환액을 없애기 ② 남은 대출의 만기를 연장해 월 납부액 자체를 낮추기(단, 총이자는 늘어남) ③ 대환대출로 금리를 낮춰 이자분 축소. 반대로 소득 인정 범위도 넓힐 수 있습니다. 연소득에는 상여금·부업소득 중 증빙 가능한 항목이 포함될 수 있으므로, 급여통장 하나로만 계산하지 말고 금융사와 소득 인정 범위를 상담해 보세요.",
+        "In order of impact: pay off small high-rate loans to delete whole monthly payments; extend remaining terms to lower each payment (accepting more lifetime interest); refinance rates down. On the other side of the fraction, certified income matters too — bonuses and documented side income can count, so discuss income recognition with your bank rather than assuming salary alone.",
+      ),
+    },
+    {
+      q: W("스트레스 DSR 때문에 실제보다 한도가 덜 나오는데 정상인가요?", "Stress DSR reduces my limit below what this shows — is that normal?"),
+      a: W(
+        "정상입니다. 가계대출 심사에는 변동금리 대출에 가산금리(연 0.6~1.75%p, 주택담보대출 기준 단계별 적용)를 얹어 미래 금리 인상 가능성을 미리 반영합니다. 이 계산기는 현재 금리 기준의 DSR을 보여주므로, 실제 은행 한도는 여기서 나온 값보다 작게 나올 수 있습니다. 특히 만기일시상환 구조의 신용·전세대출은 스트레스 DSR에서 원리금균등 환산으로 잡히며 한도가 크게 줄어드는 요인이 됩니다.",
+        "Yes. Lenders layer an add-on rate (roughly 0.6–1.75 percentage points for variable-rate mortgages, tiered by product) onto future-looking assessments. This calculator shows today's-rate DSR, so real bank limits can come out smaller. Bullet-repayment loans in particular get converted into amortizing equivalents under stress rules, shrinking limits substantially.",
+      ),
+    },
+    {
+      q: W("월 원금과 월 이자를 따로 입력하는 이유가 있나요?", "Why enter principal and interest separately?"),
+      a: W(
+        "두 입력란은 사실 DSR 계산에서는 합쳐져 동일하게 처리됩니다(원리금 = 원금 + 이자). 분리해 둔 것은 대출 명세서에서 두 항목이 따로 표시되는 실무 편의 때문입니다. 만기일시상환 대출이라면 매달 내는 돈이 전부 이자이므로 원금 0, 이자에 해당 월 이자액을 넣으면 됩니다.",
+        "For the DSR arithmetic itself they are simply summed — principal plus interest equals your payment. The separation mirrors how loan statements list them. For bullet-repayment loans where you pay interest only, put zero in principal and the monthly interest amount in its field.",
+      ),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -171,14 +89,83 @@ const DsrCalculator: React.FC = () => {
         </div>
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            W("연소득 입력", "Enter annual income"),
+            W("세전 연소득을 만원 단위로 입력합니다. 계산기가 자동으로 월소득으로 나눠 처리합니다.", "Gross annual income in 10K-won units — the tool divides by twelve internally."),
+          ],
+          [
+            W("모든 대출의 월 상환액 합산", "List every loan payment"),
+            W("주담대·전세대출·학자금·차량·신용대출 등 매달 나가는 원리금을 모두 더해 각 입력란에 배분하세요. 카드 할인수수료나 리스료는 DSR 산정 대상이 아닙니다.", "Sum the principal-and-interest of mortgage, jeonse, student, auto, and credit loans. Card installments and leases fall outside DSR."),
+          ],
+          [
+            W("계산 후 등급 확인", "Calculate and read the grade"),
+            W("결과는 30% 미만 양호(초록), 30~40% 주의(노랑), 40% 초과 위험(빨강)으로 색상 표시됩니다.", "Below 30% shows green (good), 30–40% yellow (caution), above 40% red (risk)."),
+          ],
+          [
+            W("시나리오 비교", "Compare scenarios"),
+            W("새 대출을 받기 전에 그 월 상환액을 기타 상환액에 더해 다시 계산해 보세요. 승인 가능성과 내 현금흐름의 여유가 동시에 보입니다.", "Before a new loan, add its payment to the 'other' field and recalculate — approval odds and cash-flow slack appear at once."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <p>
+          {W(
+            "월소득 500만원(연 6,000만원) 직장인이 대출을 하나씩 추가할 때마다 DSR이 어떻게 움직이는지 추적해 보겠습니다.",
+            "Follow a salaried worker earning 5 million won monthly (60 million yearly) as each new loan moves the needle:",
+          )}
+        </p>
+        {[
+          {
+            title: W("① 시작 — 주택담보대출만 있는 경우", "Step 1 — mortgage only"),
+            body: W(
+              "월 원금 80만원 + 이자 40만원 + 기타(자동차) 20만원 = 총 140만원. DSR = 140 ÷ 500 × 100 = 28.00% → 양호(초록).",
+              "80 principal + 40 interest + 20 auto = 140 total. DSR = 140 ÷ 500 × 100 = 28.00% → Good (green).",
+            ),
+          },
+          {
+            title: W("② 전세자금대출 추가", "Step 2 — add a jeonse loan"),
+            body: W(
+              "월 50만원씩 내는 전세대출이 추가되면 총 상환액은 190만원. DSR = 190 ÷ 500 × 100 = 38.00% → 주의(노랑). 아직 규제선 안쪽이지만 여유는 얇아졌습니다.",
+              "Adding a jeonse loan costing 50 brings the total to 190. DSR = 38.00% → Caution (yellow): inside the cap, but the margin is thin.",
+            ),
+          },
+          {
+            title: W("③ 신용대출까지 추가", "Step 3 — add a credit loan"),
+            body: W(
+              "월 30만원짜리 신용대출까지 받으면 총 220만원. DSR = 220 ÷ 500 × 100 = 44.00% → 위험(빨강). 규제선 40%를 넘어 은행권 신규 대출이 사실상 막히고, 금리 인상 시 연체 위험 구간에 진입합니다.",
+              "A final credit loan of 30 lands at 220. DSR = 44.00% → Risk (red): past the 40% line, bank lending effectively closed, and any rate hike pushes toward delinquency territory.",
+            ),
+          },
+        ].map((s, i) => (
+          <div key={i}>
+            <p className="font-semibold text-foreground mb-1">{s.title}</p>
+            <p>{s.body}</p>
+          </div>
+        ))}
+        <p>
+          {W(
+            "같은 예시를 역으로 쓰면 한도 계산도 됩니다. DSR 40% 허용 시 최대 월 상환액은 500 × 0.4 = 200만원이고, 현재 220만원이므로 20만원분을 줄여야 규제 안으로 돌아옵니다.",
+            "Read backwards it becomes a limit check: at 40% DSR the maximum monthly service is 200, so being at 220 means trimming 20 to re-enter compliance.",
+          )}
+        </p>
+      </div>
+    ),
     calculationFormula: (
       <div className="space-y-3 text-sm text-muted-foreground">
-        <div className="font-mono p-4 bg-card border border-border rounded-lg text-sm">
-          <strong className="text-primary">DSR = (월 원금 + 월 이자 + 기타 대출 월 상환) / (연소득 / 12) × 100</strong>
-        </div>
-        <div className="font-mono p-4 bg-card border border-border rounded-lg text-sm">
-          <strong className="text-primary">DSR = (Monthly Principal + Monthly Interest + Other Loan Monthly) / (Annual Income / 12) × 100</strong>
-        </div>
+        <BlockMath math={isKo ? "\\text{DSR} = \\dfrac{\\text{월 원금} + \\text{월 이자} + \\text{기타 대출 월 상환}}{\\text{연소득}/12} \\times 100" : "\\text{DSR} = \\dfrac{\\text{Monthly Principal} + \\text{Monthly Interest} + \\text{Other Loan Monthly}}{\\text{Annual Income}/12} \\times 100"} />
         <p className="mt-3">
           {isKo
             ? '예시: 연소득 5,000만원, 월 원금 150만원, 월 이자 100만원, 기타 대출 50만원인 경우'
@@ -223,18 +210,32 @@ const DsrCalculator: React.FC = () => {
         </div>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={isKo ? 'DSR 계산기' : 'DSR Calculator'}
-      description={isKo ? '총부채원리금상환비율(DSR)을 계산합니다' : 'Calculate your Debt Service Ratio'}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default DsrCalculator;
+}

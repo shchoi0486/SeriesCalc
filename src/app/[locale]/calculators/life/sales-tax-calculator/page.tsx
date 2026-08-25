@@ -1,185 +1,65 @@
-'use client';
 
-import React, { useState, useMemo } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { useI18n } from '@/i18n/I18nProvider';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./SalesTaxCalculatorClient";
+import { BlockMath } from "react-katex";
 
-type InputMode = 'supply' | 'vat' | 'total';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/life/sales-tax-calculator", "life", "sales-tax-calculator");
+}
 
-const SalesTaxCalculator: React.FC = () => {
-  const { locale } = useI18n();
-  const isKo = locale === 'ko';
+
+
+export default function SalesTaxCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
   const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  const [mode, setMode] = useState<InputMode>('supply');
-  const [supplyAmount, setSupplyAmount] = useState<string>('');
-  const [vatAmount, setVatAmount] = useState<string>('');
-  const [totalAmount, setTotalAmount] = useState<string>('');
-
-  const handleReset = () => {
-    setMode('supply');
-    setSupplyAmount('');
-    setVatAmount('');
-    setTotalAmount('');
-  };
-
-  const results = useMemo(() => {
-    let supply = 0;
-    let vat = 0;
-    let total = 0;
-
-    if (mode === 'supply') {
-      const val = parseFloat(supplyAmount);
-      if (isNaN(val) || val < 0) return null;
-      supply = val;
-      vat = Math.round(supply * 0.1);
-      total = supply + vat;
-    } else if (mode === 'vat') {
-      const val = parseFloat(vatAmount);
-      if (isNaN(val) || val < 0) return null;
-      vat = val;
-      supply = Math.round(vat / 0.1);
-      total = supply + vat;
-    } else {
-      const val = parseFloat(totalAmount);
-      if (isNaN(val) || val < 0) return null;
-      total = val;
-      supply = Math.round(total / 1.1);
-      vat = total - supply;
-    }
-
-    return { supply, vat, total };
-  }, [mode, supplyAmount, vatAmount, totalAmount]);
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-3 gap-2">
-        {([
-          { key: 'supply' as InputMode, label: L('공급가액 입력', 'Supply Amount') },
-          { key: 'vat' as InputMode, label: L('부가세 입력', 'VAT Amount') },
-          { key: 'total' as InputMode, label: L('합계금액 입력', 'Total Amount') },
-        ]).map((item) => (
-          <Button
-            key={item.key}
-            variant={mode === item.key ? 'default' : 'outline'}
-            onClick={() => {
-              setMode(item.key);
-              setSupplyAmount('');
-              setVatAmount('');
-              setTotalAmount('');
-            }}
-            className="text-xs sm:text-sm"
-          >
-            {item.label}
-          </Button>
-        ))}
-      </div>
-
-      {mode === 'supply' && (
-        <div className="space-y-2">
-          <Label htmlFor="supplyInput">{L('공급가액 (원)', 'Supply Amount (KRW)')}</Label>
-          <Input
-            id="supplyInput"
-            type="text"
-            inputMode="numeric"
-            value={supplyAmount}
-            onChange={(e) => setSupplyAmount(e.target.value.replace(/[^0-9.]/g, ''))}
-            placeholder={L('공급가액 입력', 'Enter supply amount')}
-            className="text-right"
-          />
-        </div>
-      )}
-
-      {mode === 'vat' && (
-        <div className="space-y-2">
-          <Label htmlFor="vatInput">{L('부가세 (원)', 'VAT Amount (KRW)')}</Label>
-          <Input
-            id="vatInput"
-            type="text"
-            inputMode="numeric"
-            value={vatAmount}
-            onChange={(e) => setVatAmount(e.target.value.replace(/[^0-9.]/g, ''))}
-            placeholder={L('부가세 입력', 'Enter VAT amount')}
-            className="text-right"
-          />
-        </div>
-      )}
-
-      {mode === 'total' && (
-        <div className="space-y-2">
-          <Label htmlFor="totalInput">{L('합계금액 (원)', 'Total Amount (KRW)')}</Label>
-          <Input
-            id="totalInput"
-            type="text"
-            inputMode="numeric"
-            value={totalAmount}
-            onChange={(e) => setTotalAmount(e.target.value.replace(/[^0-9.]/g, ''))}
-            placeholder={L('합계금액 입력', 'Enter total amount')}
-            className="text-right"
-          />
-        </div>
-      )}
-
-      <Button onClick={handleReset} className="w-full" variant="outline">
-        {L('초기화', 'Reset')}
-      </Button>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-4">
-      {!results ? (
-        <p className="text-muted-foreground text-center py-8">
-          {L('값을 입력하면 결과가 표시됩니다.', 'Enter a value to see results.')}
-        </p>
-      ) : (
-        <>
-          <div className="space-y-3">
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('공급가액', 'Supply Amount')}</span>
-              <span className="font-mono font-semibold">{results.supply.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
-            </div>
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('부가세 (10%)', 'VAT (10%)')}</span>
-              <span className="font-mono font-semibold">{results.vat.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
-            </div>
-            <div className="flex justify-between p-3 border-2 border-primary rounded-lg">
-              <span className="font-bold">{L('합계금액', 'Total Amount')}</span>
-              <span className="font-mono font-bold text-lg">{results.total.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
-            </div>
-          </div>
-
-          {results.total > 0 && (
-            <div className="mt-4">
-              <div className="text-sm text-muted-foreground mb-2">{L('금액 비율', 'Amount Breakdown')}</div>
-              <div className="w-full h-8 rounded-lg overflow-hidden flex">
-                <div
-                  className="bg-blue-500 dark:bg-blue-600 flex items-center justify-center text-white text-xs font-medium"
-                  style={{ width: `${(results.supply / results.total) * 100}%` }}
-                >
-                  {((results.supply / results.total) * 100).toFixed(1)}%
-                </div>
-                <div
-                  className="bg-orange-500 dark:bg-orange-600 flex items-center justify-center text-white text-xs font-medium"
-                  style={{ width: `${(results.vat / results.total) * 100}%` }}
-                >
-                  {((results.vat / results.total) * 100).toFixed(1)}%
-                </div>
-              </div>
-              <div className="flex justify-between mt-1 text-xs text-muted-foreground">
-                <span>{L('공급가액', 'Supply')}</span>
-                <span>{L('부가세', 'VAT')}</span>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("합계금액에서 공급가액을 구할 때 왜 원래대로 돌아가지 않나요?", "Why doesn't supply → total → supply return to the original?"),
+      a: L(
+        "합계에서 공급가액을 역산할 때 ÷1.10 연산에서 소수점이 발생하고, 반올림 과정에서 1원 오차가 생길 수 있습니다. 예: 공급가액 10,001원 → 부가세 1,000.1원 → 합계 11,001원(반올림). 이 합계에서 역산하면 11,001 ÷ 1.10 = 10,000.9원 → 10,001원이 됩니다. 다만 모든 경우에 such 귀환을 보장하지는 않으므로, 중요한 장부 기장에서는 원래 공급가액 기준으로 검증하세요.",
+        "Division by 1.10 produces fractional won that round, causing 1-won discrepancies on round-trip. E.g., supply ₩10,001 → VAT ₩1,000 → total ₩11,001; reverse: ₩11,001 ÷ 1.10 ≈ ₩10,001. Not all cases return exactly — verify critical bookkeeping against the original supply figure.",
+      ),
+    },
+    {
+      q: L("간이과세자의 부가세율은 어떻게 다른가요?", "How do simplified-taxpayer VAT rates differ?"),
+      a: L(
+        "간이과세자(연 매출 8,000만원 미만)는 세율이 5%(일반 간이과세) 또는 1.5%(소규모 간이과세, 연 매출 4,800만원 미만)로 일반 사업자(10%)보다 낮습니다. 다만 간이과세자는 매입세액공제를 받을 수 없는 경우가 많으므로, 실제 부담하는 세율은 단순 비교가 어렵습니다. 이 계산기는 일반세율(10%) 기준이므로, 간이과세자라면 직접 해당 세율을 적용해야 합니다.",
+        "Simplified taxpayers (annual sales < ₩80M) pay 5% or 1.5% (under ₩48M) instead of 10%, but input tax credits are often unavailable. This calculator uses the standard 10% rate; simplified taxpayers must apply their own rate manually.",
+      ),
+    },
+    {
+      q: L("부가세가 면제되는 거래가 있나요?", "Are there VAT-exempt transactions?"),
+      a: L(
+        "부가가치세법 제26조에 따라 의료·교육·금융·보험·부동산 임대 등 일정 서비스는 면세입니다. 또한 수출은 영세율(0%)이 적용되어 매출세액이 0이 되지만, 매입세액공제는 가능합니다. 면세 거래의 경우 이 계산기 결과와 실적이 다르므로, 면세 여부를 먼저 확인하세요.",
+        "Medical, educational, financial, insurance, and real-estate rental services are exempt under VAT Act Article 26. Exports are zero-rated (0%), allowing input tax credits. This calculator does not account for exemptions or zero-rating — verify exemption status first.",
+      ),
+    },
+    {
+      q: L("카드결제 할인과 부가세는 어떻게 적용되나요?", "How do card-payment discounts interact with VAT?"),
+      a: L(
+        "카드사 프로모션(예: 카드사 10% 할인)은 통상 가맹점 대금에서 카드사가 할인분을 부담하므로, 사업자의 매출세액에는 영향을 주지 않습니다. 즉 고객이 카드 할인을 받아 실제 지불액이 줄어도, 사업자의 부가세 신고는 원래 공급가액 기준으로 합니다. 다만 '가맹점 부담 할인'은 매출이 줄어 부가세에도 영향이 있으니 구분이 중요합니다.",
+        "Card-issuer promotions reduce the customer's payment but the merchant's VAT declaration remains based on the original supply amount. Merchant-borne discounts, however, reduce reported sales and thus VAT — distinguishing the two is critical.",
+      ),
+    },
+    {
+      q: L("세금계산서 발급 기준 금액은?", "What is the threshold for issuing a tax invoice?"),
+      a: L(
+        "사업자간 거래(B2B)에서는 공급가액 100원 이상이면 세금계산서 발급 의무가 있습니다. 개인 소비자 대상(B2C)에서는 현금영수증 발급 대상(연 500만원 이상 현금 거래 등)과 별개로, 사업자가 요청하면 세금계산서를 발급해야 합니다. 적격증빙 없이 지출한 비용은 매입세액공제를 받을 수 없으므로 주의하세요.",
+        "B2B: tax invoices are mandatory for transactions of ₩100 or more. B2C: cash receipts are required for cash transactions ≥ ₩5M annually; otherwise tax invoices are issued on request. Expenses without qualifying evidence cannot claim input tax credits.",
+      ),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -200,6 +80,61 @@ const SalesTaxCalculator: React.FC = () => {
         </div>
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("모드 선택", "Choose mode"),
+            L("알고 있는 값을 기준으로 공급가액/부가세/합계 중 하나를 입력 모드로 선택합니다.", "Select which figure you know: supply, VAT, or total."),
+          ],
+          [
+            L("금액 입력", "Enter amount"),
+            L("선택한 모드의 입력란에 금액을 넣으면 나머지 두 값이 자동 계산됩니다.", "Enter the known amount; the other two values are computed automatically."),
+          ],
+          [
+            L("결과 확인", "Check results"),
+            L("공급가액, 부가세, 합계금액이 모두 표시됩니다. 계산된 합계가 다른 항목과 일치하는지 교차 검증하세요.", "Supply, VAT, and total are all displayed. Cross-verify the computed total against other figures."),
+          ],
+          [
+            L("적용", "Apply"),
+            L("견적서·세금계산서 작성 시 공급가액과 부가세를 따로 표기해야 하므로, 이 결과를 그대로 활용할 수 있습니다.", "Quotation and tax invoices require supply and VAT listed separately — use the two figures directly."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 공급가액에서 합계 계산", "Example 1 — From supply amount")}</p>
+          <p>
+            {L(
+              "공급가액 ₩500,000 → 부가세 = 500,000 × 0.10 = ₩50,000, 합계 = 500,000 + 50,000 = ₩550,000. 고객에게 청구할 총금액은 ₩550,000이며, 이 중 ₩50,000은 사업자가 국세청에 납부하는 부가세입니다.",
+              "Supply ₩500,000 → VAT ₩50,000, total ₩550,000. The customer pays ₩550,000; of that, ₩50,000 is remitted to the NTS by the business.",
+            )}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 합계에서 공급가액 역산", "Example 2 — Reverse from total")}</p>
+          <p>
+            {L(
+              "카드 전표 합계 ₩330,000 → 공급가액 = 330,000 ÷ 1.10 = ₩300,000, 부가세 = 330,000 − 300,000 = ₩30,000. 카드 전표 합계만 보고 원래 물건값을 역산할 때 이 공식을 씁니다.",
+              "Card slip total ₩330,000 → supply = ₩300,000, VAT = ₩30,000. Use this reverse formula when recovering the original price from a card receipt total.",
+            )}
+          </p>
+        </div>
+        <p className="text-xs opacity-80">
+          * {L("위 예시는 일반과세자 기준(10%)이며, 간이과세자·면세 사업자·수출(영세율)은 적용 세율이 다릅니다.", "Examples assume standard-rate taxpayer (10%); simplified, exempt, and export (zero-rate) cases differ.")}
+        </p>
+      </div>
+    ),
     calculationFormula: (
       <div className="space-y-6 leading-relaxed">
         <div>
@@ -209,13 +144,13 @@ const SalesTaxCalculator: React.FC = () => {
           <div className="p-4 bg-muted rounded-lg space-y-3">
             <div>
               <p className="text-sm font-semibold mb-1">{L('1. 공급가액에서 계산', '1. From Supply Amount')}</p>
-              <p className="text-center font-mono text-blue-600">부가세 = 공급가액 × 0.10</p>
-              <p className="text-center font-mono text-blue-600">합계 = 공급가액 × 1.10</p>
+              <BlockMath math="\text{부가세} = \text{공급가액} \times 0.10" />
+              <BlockMath math="\text{합계} = \text{공급가액} \times 1.10" />
             </div>
             <div>
               <p className="text-sm font-semibold mb-1">{L('2. 합계금액에서 계산', '2. From Total Amount')}</p>
-              <p className="text-center font-mono text-blue-600">공급가액 = 합계 ÷ 1.10</p>
-              <p className="text-center font-mono text-blue-600">부가세 = 합계 - 공급가액</p>
+              <BlockMath math="\text{공급가액} = \text{합계} \div 1.10" />
+              <BlockMath math="\text{부가세} = \text{합계} - \text{공급가액}" />
             </div>
           </div>
         </div>
@@ -252,21 +187,32 @@ const SalesTaxCalculator: React.FC = () => {
         </div>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={L('부가세 포함 가격 계산기', 'Sales Tax (VAT) Calculator')}
-      description={L(
-        '공급가액·부가세·합계금액을 상호 변환합니다.',
-        'Convert between supply amount, VAT, and total amount.'
-      )}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default SalesTaxCalculator;
+}

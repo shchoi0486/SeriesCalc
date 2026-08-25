@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import WaterHammerCalculator from '@/components/engineering-calculator/WaterHammerCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./WaterHammerClient";
+import { BlockMath } from "react-katex";
 
-export default function WaterHammerPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.waterHammer;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/water-hammer", "engineering", "water-hammer");
+}
+
+
+
+export default function WaterHammerPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function WaterHammerPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg space-y-2">
-            <p className="text-center font-mono text-lg text-red-500">ΔP = ρ × a × Δv</p>
+            <BlockMath math="\Delta P = \rho a \Delta v" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -112,16 +124,5 @@ export default function WaterHammerPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '수격 현상(압력 서지) 계산기' : 'Water Hammer (Pressure Surge) Calculator')}
-      description={t?.description || (ko ? '밸브 급폐쇄로 인한 최대 압력 서지를 계산합니다.' : 'Calculate maximum pressure surge from water hammer.')}
-      icon={<span>💥</span>}
-      visualizationComponent={<></>}
-      resultComponent={<WaterHammerCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

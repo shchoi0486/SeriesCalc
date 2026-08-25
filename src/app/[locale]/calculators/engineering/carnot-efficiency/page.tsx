@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import CarnotEfficiencyCalculator from '@/components/engineering-calculator/CarnotEfficiencyCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./CarnotEfficiencyClient";
+import { BlockMath } from "react-katex";
 
-export default function CarnotEfficiencyPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.carnotEfficiency;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/carnot-efficiency", "engineering", "carnot-efficiency");
+}
+
+
+
+export default function CarnotEfficiencyPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function CarnotEfficiencyPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">η = 1 − (T_C / T_H)</p>
+            <BlockMath math="\eta = 1 - \dfrac{T_C}{T_H}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -101,16 +113,5 @@ export default function CarnotEfficiencyPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '카르노 효율 계산기' : 'Carnot Efficiency Calculator')}
-      description={t?.description || (ko ? '열기관의 이론적 최대 효율을 계산합니다.' : 'Calculate the maximum theoretical efficiency of a heat engine.')}
-      icon={<span>🔥</span>}
-      visualizationComponent={<></>}
-      resultComponent={<CarnotEfficiencyCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

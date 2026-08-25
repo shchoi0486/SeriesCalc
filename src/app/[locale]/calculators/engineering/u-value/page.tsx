@@ -1,14 +1,29 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import UValueCalculator from '@/components/engineering-calculator/UValueCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./UValueClient";
+import { BlockMath } from "react-katex";
 
-export default function UValuePage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.uValue;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/u-value", "engineering", "u-value");
+}
+
+
+
+export default function UValuePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const d = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +67,8 @@ export default function UValuePage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg space-y-2">
-            <p className="text-center font-mono text-lg text-blue-600">R_t = 1/h_i + (d₁/k₁) + (d₂/k₂) + ... + 1/h_o</p>
-            <p className="text-center font-mono text-lg text-red-500">U = 1 / R_t</p>
+            <BlockMath math="R_t = \dfrac{1}{h_i} + \dfrac{d_1}{k_1} + \dfrac{d_2}{k_2} + \cdots + \dfrac{1}{h_o}" />
+            <BlockMath math="U = \dfrac{1}{R_t}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -103,16 +118,5 @@ export default function UValuePage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '열관류율(U-Value) 계산기' : 'Thermal Transmittance (U-Value) Calculator')}
-      description={t?.description || (ko ? '다층 벽의 열관류율과 열저항을 계산합니다.' : 'Calculate U-Value and thermal resistance.')}
-      icon={<span>🧱</span>}
-      visualizationComponent={<></>}
-      resultComponent={<UValueCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

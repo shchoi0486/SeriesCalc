@@ -1,15 +1,31 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import BarlowsFormulaCalculator from '@/components/engineering-calculator/BarlowsFormulaCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./BarlowsFormulaClient";
+import { BlockMath } from "react-katex";
 
-export default function BarlowsFormulaPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.barlowsFormula;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/barlows-formula", "engineering", "barlows-formula");
+}
+
+
+
+export default function BarlowsFormulaPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const dict = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
+  const t = dict?.common?.barlowsFormula;
 
   const infoSection = {
     calculatorDescription: (
@@ -52,9 +68,9 @@ export default function BarlowsFormulaPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-orange-600">P_y = (2 × S_y × t) / D_o</p>
-            <p className="font-mono text-lg text-red-500">P_t = (2 × S_t × t) / D_o</p>
-            <p className="font-mono text-lg text-blue-600">P_a = (2 × S_y × F_d × F_e × F_t × t) / D_o</p>
+            <BlockMath math="P_y = \dfrac{2\,S_y\,t}{D_o}" />
+            <BlockMath math="P_t = \dfrac{2\,S_t\,t}{D_o}" />
+            <BlockMath math="P_a = \dfrac{2\,S_y F_d F_e F_t\,t}{D_o}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -107,16 +123,5 @@ export default function BarlowsFormulaPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? "Barlow 공식 계산기" : "Barlow's Formula Calculator")}
-      description={t?.description || (ko ? '강관의 내압·허용압·파열압을 계산합니다.' : "Calculate the internal, allowable, and ultimate burst pressure of a pipe.")}
-      icon={<span>🛢️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<BarlowsFormulaCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

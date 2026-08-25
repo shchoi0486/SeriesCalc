@@ -1,217 +1,66 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
 
-import { useState, useCallback } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Card } from '@/components/ui/card';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./HoursCalculatorClient";
+import { BlockMath } from "react-katex";
 
-function timeToMinutes(time: string): number {
-  const parts = time.split(':').map(Number);
-  if (parts.length >= 2 && parts.every(p => !isNaN(p))) {
-    return parts[0] * 60 + parts[1] + (parts.length === 3 ? parts[2] / 60 : 0);
-  }
-  return NaN;
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/life/hours-calculator", "life", "hours-calculator");
 }
 
-function formatMinutes(mins: number, isKo: boolean = true): string {
-  const h = Math.floor(Math.abs(mins) / 60);
-  const m = Math.round(Math.abs(mins) % 60);
-  return isKo ? `${h}시간 ${m}분` : `${h}h ${m}m`;
-}
 
-export default function HoursCalculatorPage() {
-  const { locale } = useI18n();
-  const isKo = locale === 'ko';
+
+export default function HoursCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
   const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  const [clockIn, setClockIn] = useState('09:00');
-  const [clockOut, setClockOut] = useState('18:00');
-  const [breakMinutes, setBreakMinutes] = useState('60');
-  const [workDays, setWorkDays] = useState('5');
-  const [holidayHours, setHolidayHours] = useState('');
-  const [nightStart, setNightStart] = useState('22:00');
-  const [nightEnd, setNightEnd] = useState('06:00');
-  const [baseHourlyWage, setBaseHourlyWage] = useState('10030');
-  const [result, setResult] = useState<any>(null);
-
-  const calculate = useCallback(() => {
-    const inMin = timeToMinutes(clockIn);
-    const outMin = timeToMinutes(clockOut);
-    const brk = parseFloat(breakMinutes) || 0;
-    const days = parseInt(workDays) || 0;
-    const nightS = timeToMinutes(nightStart);
-    const nightE = timeToMinutes(nightEnd);
-    const hourlyWage = parseFloat(baseHourlyWage) || 10030;
-    const holidayMinInput = parseFloat(holidayHours) || 0;
-
-    if (isNaN(inMin) || isNaN(outMin) || days <= 0) { setResult(null); return; }
-
-    let totalMin = outMin - inMin;
-    if (totalMin < 0) totalMin += 24 * 60;
-    totalMin -= brk;
-
-    const dailyBaseLimit = 8 * 60;
-    const dailyOvertimeLimit = 4 * 60;
-
-    let baseMin = Math.min(totalMin, dailyBaseLimit);
-    let overtimeMin = Math.min(Math.max(0, totalMin - dailyBaseLimit), dailyOvertimeLimit);
-
-    let nightMin = 0;
-    if (nightS !== nightE && totalMin > 0) {
-      const nightStartMin = nightS;
-      const nightEndMin = nightE;
-      if (nightStartMin > nightEndMin) {
-        if (inMin < nightStartMin && outMin > nightStartMin) {
-          nightMin = Math.min(outMin, nightEndMin + 24 * 60) - nightStartMin;
-        } else if (inMin >= nightStartMin || outMin <= nightEndMin) {
-          nightMin = outMin > nightStartMin ? Math.min(outMin, nightEndMin + 24 * 60) - nightStartMin : 0;
-        }
-      } else {
-        if (inMin < nightEndMin && outMin > nightStartMin) {
-          nightMin = Math.min(outMin, nightEndMin) - nightStartMin;
-        }
-      }
-      nightMin = Math.max(0, Math.min(nightMin, totalMin));
-    }
-
-    const dailyHolidayMin = holidayMinInput;
-    const weeklyBaseMin = baseMin * days;
-    const weeklyOvertimeMin = overtimeMin * days;
-    const weeklyTotalMin = totalMin * days;
-    const weeklyHolidayMin = dailyHolidayMin * days;
-
-    const basePay = Math.round((baseMin / 60) * hourlyWage);
-    const overtimePay = Math.round((overtimeMin / 60) * hourlyWage * 1.5);
-    const nightPay = Math.round((nightMin / 60) * hourlyWage * 0.5);
-    const holidayPay = Math.round((dailyHolidayMin / 60) * hourlyWage * 2.0);
-    const totalPay = basePay + overtimePay + nightPay + holidayPay;
-    const weeklyPay = totalPay * days;
-
-    setResult({
-      dailyBase: formatMinutes(baseMin, isKo),
-      dailyOvertime: formatMinutes(overtimeMin, isKo),
-      dailyNight: formatMinutes(nightMin, isKo),
-      dailyHoliday: formatMinutes(dailyHolidayMin, isKo),
-      dailyTotal: formatMinutes(totalMin, isKo),
-      weeklyBase: formatMinutes(weeklyBaseMin, isKo),
-      weeklyOvertime: formatMinutes(weeklyOvertimeMin, isKo),
-      weeklyHoliday: formatMinutes(weeklyHolidayMin, isKo),
-      weeklyTotal: formatMinutes(weeklyTotalMin, isKo),
-      basePay,
-      overtimePay,
-      nightPay,
-      holidayPay,
-      totalPay,
-      weeklyPay,
-      baseMin,
-      overtimeMin,
-      nightMin,
-      holidayMin: dailyHolidayMin,
-      days,
-    });
-  }, [clockIn, clockOut, breakMinutes, workDays, holidayHours, nightStart, nightEnd, baseHourlyWage]);
-
-  const reset = () => { setClockIn('09:00'); setClockOut('18:00'); setBreakMinutes('60'); setWorkDays('5'); setHolidayHours(''); setResult(null); };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <Label>{L('출근 시간', 'Clock In')}</Label>
-          <Input type="time" value={clockIn} onChange={e => setClockIn(e.target.value)} />
-        </div>
-        <div>
-          <Label>{L('퇴근 시간', 'Clock Out')}</Label>
-          <Input type="time" value={clockOut} onChange={e => setClockOut(e.target.value)} />
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <Label>{L('휴게시간 (분)', 'Break (min)')}</Label>
-          <Input type="number" value={breakMinutes} onChange={e => setBreakMinutes(e.target.value)} placeholder="60" />
-        </div>
-        <div>
-          <Label>{L('근무일수 (주)', 'Work Days/Week')}</Label>
-          <Input type="number" value={workDays} onChange={e => setWorkDays(e.target.value)} min="1" max="7" placeholder="5" />
-        </div>
-      </div>
-      <div className="p-3 bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-500 rounded-r-lg">
-        <p className="text-sm font-semibold">{L('휴일근무 시간 (일)', 'Holiday Hours (daily)')}</p>
-        <p className="text-xs text-muted-foreground mt-1">
-          {L('공휴일이나 유급휴일에 근무하는 경우 하루 기준 시간을 입력하세요. 휴일수당(200%)이 적용됩니다.', 'Enter daily hours worked on public/paid holidays. Holiday premium (200%) applies.')}
-        </p>
-        <Input type="number" value={holidayHours} onChange={e => setHolidayHours(e.target.value)} placeholder="0" className="mt-2" />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <Label>{L('야간 시작', 'Night Start')}</Label>
-          <Input type="time" value={nightStart} onChange={e => setNightStart(e.target.value)} />
-        </div>
-        <div>
-          <Label>{L('야간 종료', 'Night End')}</Label>
-          <Input type="time" value={nightEnd} onChange={e => setNightEnd(e.target.value)} />
-        </div>
-      </div>
-      <div>
-        <Label>{L('기본 시급 (원)', 'Base Hourly Wage (KRW)')}</Label>
-        <Input type="number" value={baseHourlyWage} onChange={e => setBaseHourlyWage(e.target.value)} placeholder="10030" />
-      </div>
-      <div className="flex space-x-2">
-        <Button onClick={calculate} className="flex-1">{L('계산', 'Calculate')}</Button>
-        <Button onClick={reset} variant="outline" className="flex-1">{L('초기화', 'Reset')}</Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div>
-      {result ? (
-        <div className="space-y-4">
-          <div className="p-4 bg-muted rounded-lg">
-            <h4 className="font-semibold mb-2">{L('일간 근무시간', 'Daily Working Hours')}</h4>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="flex justify-between"><span>{L('기본근무', 'Regular')}:</span><span className="font-mono">{result.dailyBase}</span></div>
-              <div className="flex justify-between"><span>{L('연장근무', 'Overtime')}:</span><span className="font-mono">{result.dailyOvertime}</span></div>
-              <div className="flex justify-between"><span>{L('야간근무', 'Night')}:</span><span className="font-mono">{result.dailyNight}</span></div>
-              <div className="flex justify-between"><span>{L('휴일근무', 'Holiday')}:</span><span className="font-mono">{result.dailyHoliday}</span></div>
-              <div className="flex justify-between font-bold"><span>{L('총 근무시간', 'Total')}:</span><span className="font-mono">{result.dailyTotal}</span></div>
-            </div>
-          </div>
-          <div className="p-4 bg-muted rounded-lg">
-            <h4 className="font-semibold mb-2">{L('주간 근무시간', 'Weekly Working Hours')}</h4>
-            <div className="grid grid-cols-2 gap-2 text-sm">
-              <div className="flex justify-between"><span>{L('기본근무', 'Regular')}:</span><span className="font-mono">{result.weeklyBase}</span></div>
-              <div className="flex justify-between"><span>{L('연장근무', 'Overtime')}:</span><span className="font-mono">{result.weeklyOvertime}</span></div>
-              <div className="flex justify-between"><span>{L('휴일근무', 'Holiday')}:</span><span className="font-mono">{result.weeklyHoliday}</span></div>
-              <div className="flex justify-between font-bold"><span>{L('총 근무시간', 'Total')}:</span><span className="font-mono">{result.weeklyTotal}</span></div>
-            </div>
-          </div>
-          <div className="p-4 bg-muted rounded-lg">
-            <h4 className="font-semibold mb-2">{L('예상 급여 (일간)', 'Estimated Pay (Daily)')}</h4>
-            <div className="space-y-1 text-sm">
-              <div className="flex justify-between"><span>{L('기본급', 'Base')}:</span><span>₩{result.basePay.toLocaleString()}</span></div>
-              <div className="flex justify-between"><span>{L('연장수당 (150%)', 'Overtime (150%)')}:</span><span>₩{result.overtimePay.toLocaleString()}</span></div>
-              {result.nightPay > 0 && <div className="flex justify-between"><span>{L('야간수당 (50%)', 'Night (50%)')}:</span><span>₩{result.nightPay.toLocaleString()}</span></div>}
-              {result.holidayPay > 0 && <div className="flex justify-between"><span>{L('휴일수당 (200%)', 'Holiday (200%)')}:</span><span>₩{result.holidayPay.toLocaleString()}</span></div>}
-              <div className="flex justify-between font-bold border-t pt-1"><span>{L('일일 총급여', 'Daily Total')}:</span><span>₩{result.totalPay.toLocaleString()}</span></div>
-            </div>
-          </div>
-          <div className="p-3 bg-primary/10 rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">{L('주간 예상 급여', 'Weekly Estimated Pay')}</p>
-            <p className="text-2xl font-bold text-primary">₩{result.weeklyPay.toLocaleString()}</p>
-          </div>
-        </div>
-      ) : (
-        <div className="text-center py-8">
-          <p className="text-lg text-muted-foreground">{isKo ? '출퇴근 시간을 입력하세요' : 'Enter work hours to calculate'}</p>
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("야간근무수당과 연장근무수당이 동시에 적용되나요?", "Do night premium and overtime premium stack?"),
+      a: L(
+        "예. 야간(22:00~06:00)에 연장근무를 하면 기본 150%(연장) + 50%(야간 추가가산) = 200%가 적용됩니다. 휴일 야간근무는 200%(휴일) + 50%(야간) = 250%입니다. 이 계산기는 각 항목을 따로 계산한 뒤 합산하므로, 실제 급여 명세서와 비교할 때 각 가산율이 올바르게 반영되었는지 확인하세요.",
+        "Yes. Overtime during night hours (22:00–06:00) gets 150% (overtime) + 50% (night surcharge) = 200%. Holiday night work reaches 200% + 50% = 250%. The calculator computes each component separately then sums — verify each rate matches your payslip.",
+      ),
+    },
+    {
+      q: L("2024년 최저시급은 얼마인가요?", "What is the 2024 minimum wage?"),
+      a: L(
+        "2024년 기준 최저시급은 ₩10,030입니다. 주 40시간 근무 기준 월 약 2,099,220원(소정근로 209시간 기준)이며, 여기에 주휴수당이 별도로 붙습니다. 이 계산기의 시급 입력란에 현재 적용받는 시급을 넣으면 정확한 월급여를 계산할 수 있습니다.",
+        "The 2024 minimum hourly wage is ₩10,030. At 40h/week, monthly pay is approximately ₩2,099,220 (209 hours), with weekly holiday allowance added separately. Enter your applicable hourly wage in the calculator for accurate monthly totals.",
+      ),
+    },
+    {
+      q: L("주휴수당은 어떻게 계산하나요?", "How is the weekly holiday allowance calculated?"),
+      a: L(
+        "주 15시간 이상 근무하고 주 1회 유급휴일이 보장되면, 시급 × 유급휴일 근무시간(보통 8시간)이 주휴수당으로 지급됩니다. 예: 시급 ₩10,030 × 8시간 = ₩80,240/주. 월 4.3주 기준 약 ₩345,032가 월급에 추가됩니다. 이 계산기는 주휴수당을 별도 항목으로 포함하고 있지 않으므로, 월 총급여 산정 시 별도로 더해야 합니다.",
+        "If you work 15+ hours per week with at least one paid day off, weekly holiday pay = hourly wage × paid holiday hours (typically 8). E.g., ₩10,030 × 8 = ₩80,240/week ≈ ₩345,032/month. This calculator does not include weekly holiday pay separately — add it manually for total monthly compensation.",
+      ),
+    },
+    {
+      q: L("휴게시간은 어떻게 입력하나요?", "How do I enter break time?"),
+      a: L(
+        "근로기준법 제54조에 따라 4시간 근무 시 30분, 8시간 근무 시 1시간 이상의 휴게시간을 부여해야 합니다. 계산기의 '휴게시간' 칸에 실제 쉰 시간(분)을 넣으면, 총 근무시간에서 자동 차감됩니다. 휴게시간은 근로시간에 포함되지 않으므로 급여 계산에서도 빠집니다.",
+        "Under Korean Labor Standards Act Article 54, 30-min break for 4-hour shifts and 60-min for 8-hour shifts is mandatory. Enter actual break minutes; the calculator subtracts them from total hours. Breaks are excluded from working hours and thus from pay.",
+      ),
+    },
+    {
+      q: L("이 계산기 결과가 실제 급여와 다르면 어떻게 하나요?", "What if this result differs from my actual pay?"),
+      a: L(
+        "이 도구는 법정 기본 가산율만 반영한 참고용 계산기입니다. 실제 급여는 고용계약서, 단체협약, 회사 복리후생 규정, 특별근로계약에 따라 달라질 수 있습니다. 예를 들어 기본급 외에 직급수당·식대·교통비가 포함되거나, 특정 사업장은 법정 최소보다 높은 가산율을 적용할 수 있습니다. 정확한 확인은 인사팀과 상담하세요.",
+        "This is a reference tool reflecting only statutory minimum premiums. Actual pay varies by employment contract, collective agreement, and company policies — some workplaces add allowances or exceed statutory rates. Consult HR for confirmed figures.",
+      ),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -239,9 +88,9 @@ export default function HoursCalculatorPage() {
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-green-500 pl-3">{L('근무시간 계산', 'Working Hours Calculation')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg space-y-2">
-            <p className="font-mono text-sm">총 근무시간 = 퇴근시간 - 출근시간 - 휴게시간</p>
-            <p className="font-mono text-sm">기본근무 = min(총 근무시간, 8시간)</p>
-            <p className="font-mono text-sm">연장근무 = max(0, 총 근무시간 - 8시간), 최대 4시간</p>
+            <BlockMath math="\text{총 근무시간} = \text{퇴근시간} - \text{출근시간} - \text{휴게시간}" />
+            <BlockMath math="\text{기본근무} = \min(\text{총 근무시간},\ 8\,\text{시간})" />
+            <BlockMath math="\text{연장근무} = \max(0,\ \text{총 근무시간} - 8\,\text{시간}),\ \text{최대 } 4\,\text{시간}" />
           </div>
         </div>
         <div>
@@ -249,19 +98,19 @@ export default function HoursCalculatorPage() {
           <div className="my-4 p-4 bg-muted rounded-lg space-y-3">
             <div className="p-2 bg-card rounded">
               <p className="font-semibold text-sm">{L('기본급', 'Base Pay')}</p>
-              <p className="font-mono text-xs">기본근무시간 × 시급 × 100%</p>
+              <BlockMath math="\text{기본근무시간} \times \text{시급} \times 100\%" />
             </div>
             <div className="p-2 bg-card rounded">
               <p className="font-semibold text-sm">{L('연장근무수당', 'Overtime Pay')}</p>
-              <p className="font-mono text-xs">연장근무시간 × 시급 × 150%</p>
+              <BlockMath math="\text{연장근무시간} \times \text{시급} \times 150\%" />
             </div>
             <div className="p-2 bg-card rounded">
               <p className="font-semibold text-sm">{L('야간근무수당', 'Night Pay')}</p>
-              <p className="font-mono text-xs">야간시간 × 시급 × 50% (추가 가산)</p>
+              <BlockMath math="\text{야간시간} \times \text{시급} \times 50\%\ (\text{추가 가산})" />
             </div>
             <div className="p-2 bg-card rounded">
               <p className="font-semibold text-sm">{L('휴일근무수당', 'Holiday Pay')}</p>
-              <p className="font-mono text-xs">휴일근무시간 × 시급 × 200%</p>
+              <BlockMath math="\text{휴일근무시간} \times \text{시급} \times 200\%" />
             </div>
           </div>
         </div>
@@ -308,16 +157,87 @@ export default function HoursCalculatorPage() {
         </div>
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("출퇴근 시간 입력", "Enter clock-in/out times"),
+            L("실제 출근·퇴근 시각을 24시간 형식(HH:MM)으로 입력합니다.", "Enter actual clock-in and clock-out times in 24-hour format."),
+          ],
+          [
+            L("휴게시간 입력", "Enter break time"),
+            L("식사·휴식 등으로 쉰 시간을 분 단위로 입력합니다. 근로기준법상 8시간 근무 시 60분 이상이어야 합니다.", "Enter break duration in minutes. For 8-hour shifts, at least 60 minutes is legally required."),
+          ],
+          [
+            L("근무일수·야간 설정", "Set workdays and night hours"),
+            L("주 근무일수와 야간근무 시간대(기본 22:00~06:00)를 설정합니다. 휴일근무 시간이 있으면 별도 입력하세요.", "Set weekly workdays and night-shift window (default 22:00–06:00). Add holiday hours separately if applicable."),
+          ],
+          [
+            L("시급 입력 후 결과 확인", "Enter hourly wage and check results"),
+            L("기본급·연장·야간·휴일 각 수당과 총 급여가 항목별로 표시됩니다.", "Base pay, overtime, night, and holiday premiums are displayed individually, then summed."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 일반 사무직 (기본 8시간)", "Example 1 — Standard office work (8 hours)")}</p>
+          <p>
+            {L(
+              "출근 09:00, 퇴근 18:00, 휴게 60분, 시급 ₩10,030 → 총 9시간 - 휴게 1시간 = 기본 8시간, 연장 0시간. 기본급 = 8 × 10,030 = ₩80,240/일. 월 22일 기준 약 ₩1,765,280입니다(주휴수당 별도).",
+              "Clock in 09:00, out 18:00, 60-min break, wage ₩10,030 → 8 regular hours, 0 overtime. Daily: ₩80,240; monthly (22 days): ≈₩1,765,280 (weekly holiday pay not included).",
+            )}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 야간 포함 연장근무", "Example 2 — Overtime with night shift")}</p>
+          <p>
+            {L(
+              "출근 14:00, 퇴근 24:00, 휴게 60분, 시급 ₩10,030 → 총 10시간 - 휴게 1시간 = 9시간. 기본 8시간 + 연장 1시간, 야간(22:00~24:00) 2시간. 기본급 8×10,030=₩80,240, 연장 1×10,030×1.5=₩15,045, 야간 2×10,030×0.5=₩10,030 → 일 합계 ₩105,315.",
+              "14:00–24:00, 60-min break, ₩10,030/hr → 9 working hours: 8 regular + 1 overtime; night (22:00–24:00) = 2h. Base ₩80,240 + OT ₩15,045 + night ₩10,030 = ₩105,315/day.",
+            )}
+          </p>
+        </div>
+        <p className="text-xs opacity-80">
+          * {L("위 예시는 주휴수당·4대 보험 공제를 포함하지 않은 참고용 계산입니다.", "Examples omit weekly holiday pay and social-insurance deductions; for reference only.")}
+        </p>
+      </div>
+    ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={isKo ? '근무시간 계산기' : 'Working Hours Calculator'}
-      description={isKo ? '대한민국 노동법 기준으로 근무시간과 급여를 계산합니다.' : 'Calculate working hours and pay based on Korean labor law.'}
-      variant="grouped"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
 }

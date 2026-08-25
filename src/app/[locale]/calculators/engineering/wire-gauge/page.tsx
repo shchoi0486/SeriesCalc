@@ -1,14 +1,29 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import WireGauge from '@/components/engineering-calculator/WireGauge';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./WireGaugeClient";
+import { BlockMath } from "react-katex";
 
-export default function CalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.calculatorNames;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/wire-gauge", "engineering", "wire-gauge");
+}
+
+
+
+export default function WireGaugePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const d = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +67,8 @@ export default function CalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">d(n) = 0.127 mm × 92<sup>(36-n)/39</sup></p>
-            <p className="font-mono text-lg text-center text-purple-600">d(n) = 0.005 inch × 92<sup>(36-n)/39</sup></p>
+            <BlockMath math="d(n) = 0.127\,\text{mm} \times 92^{(36-n)/39}" />
+            <BlockMath math="d(n) = 0.005\,\text{inch} \times 92^{(36-n)/39}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -64,8 +79,8 @@ export default function CalculatorPage() {
         <div>
           <h4 className="font-bold text-base mb-2">{L('단면적·저항 관계식', 'Cross-section and resistance relationships')}</h4>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">A = π × d² / 4</p>
-            <p className="font-mono text-lg text-center text-purple-600">R = ρ × L / A</p>
+            <BlockMath math="A = \dfrac{\pi d^{2}}{4}" />
+            <BlockMath math="R = \dfrac{\rho L}{A}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
             <li><strong className="font-semibold text-green-600">A</strong> — {L('단면적 [mm², cmil]', 'Cross-sectional area [mm², cmil]')}</li>
@@ -108,16 +123,5 @@ export default function CalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.['wire-gauge'] || (ko ? '와이어 게이지 계산기' : 'Wire Gauge (AWG) Calculator')}
-      description={t?.['wire-gauge'] || (ko ? 'AWG 와이어 게이지 치수 및 저항을 조회합니다' : 'Look up AWG wire dimensions and resistance')}
-      icon={<span>⚡</span>}
-      visualizationComponent={<></>}
-      resultComponent={<WireGauge />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

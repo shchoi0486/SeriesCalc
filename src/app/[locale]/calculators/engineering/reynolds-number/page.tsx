@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import ReynoldsNumberCalculator from '@/components/engineering-calculator/ReynoldsNumberCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./ReynoldsNumberClient";
+import { BlockMath } from "react-katex";
 
-export default function ReynoldsNumberPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.reynoldsNumber;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/reynolds-number", "engineering", "reynolds-number");
+}
+
+
+
+export default function ReynoldsNumberPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function ReynoldsNumberPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">Re = (ρ × V × D) / μ</p>
+            <BlockMath math="Re = \dfrac{\rho V D}{\mu}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -111,16 +123,5 @@ export default function ReynoldsNumberPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '레이놀즈 수 계산기' : 'Reynolds Number Calculator')}
-      description={t?.description || (ko ? '레이놀즈 수를 계산해 유동이 층류·천이·난류 중 어느 것인지 판별합니다.' : 'Calculate the Reynolds number to determine whether a fluid flow is laminar, transient, or turbulent.')}
-      icon={<span>🌊</span>}
-      visualizationComponent={<></>}
-      resultComponent={<ReynoldsNumberCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

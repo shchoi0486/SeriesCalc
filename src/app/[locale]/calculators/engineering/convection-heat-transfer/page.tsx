@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import ConvectionHeatTransfer from '@/components/engineering-calculator/ConvectionHeatTransfer';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./ConvectionHeatTransferClient";
+import { BlockMath } from "react-katex";
 
-export default function CalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.calculatorNames;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/convection-heat-transfer", "engineering", "convection-heat-transfer");
+}
+
+
+
+export default function ConvectionHeatTransferPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function CalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">q = h × (T<sub>s</sub> − T<sub>∞</sub>)</p>
+            <BlockMath math="q = h\left(T_s - T_{\infty}\right)" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -72,22 +84,22 @@ export default function CalculatorPage() {
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-3">
             <div>
               <p className="font-semibold text-sm mb-1">{L('평판 난류 (Flat plate turbulent)', 'Flat plate turbulent')}</p>
-              <p className="font-mono text-lg text-center text-purple-600">Nu = 0.037 × Re<sup>0.8</sup> × Pr<sup>1/3</sup></p>
+              <BlockMath math="Nu = 0.037\,Re^{0.8} Pr^{1/3}" />
             </div>
             <div>
               <p className="font-semibold text-sm mb-1">{L('원관 난류 (Circular tube turbulent)', 'Circular tube turbulent')}</p>
-              <p className="font-mono text-lg text-center text-purple-600">Nu = 0.023 × Re<sup>0.8</sup> × Pr<sup>n</sup></p>
+              <BlockMath math="Nu = 0.023\,Re^{0.8} Pr^{n}" />
             </div>
             <div>
               <p className="font-semibold text-sm mb-1">{L('구형 (Sphere)', 'Sphere')}</p>
-              <p className="font-mono text-lg text-center text-purple-600">Nu = 2 + 0.6 × Re<sup>1/2</sup> × Pr<sup>1/3</sup></p>
+              <BlockMath math="Nu = 2 + 0.6\,Re^{1/2} Pr^{1/3}" />
             </div>
           </div>
         </div>
         <div>
           <h4 className="font-bold text-base mb-2">{L('대류 열전달 계수 h의 유도', 'Derivation of convection coefficient h')}</h4>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">h = Nu × k / L</p>
+            <BlockMath math="h = \dfrac{Nu\,k}{L}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
             <li><strong className="font-semibold text-green-600">Nu</strong> — {L('뉴스셀 수 (무차원)', 'Nusselt number (dimensionless)')}</li>
@@ -98,8 +110,8 @@ export default function CalculatorPage() {
         <div>
           <h4 className="font-bold text-base mb-2">{L('무차원 수 계산 공식', 'Dimensionless number formulas')}</h4>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">Re = ρ × v × L / μ</p>
-            <p className="font-mono text-lg text-center text-purple-600">Pr = μ × c<sub>p</sub> / k</p>
+            <BlockMath math="Re = \dfrac{\rho v L}{\mu}" />
+            <BlockMath math="Pr = \dfrac{\mu c_p}{k}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
             <li><strong className="font-semibold text-green-600">Re</strong> — {L('레이놀즈 수: 관성력/점성력 비 (Re > 2300: 천이, Re > 10⁴:난류)', 'Reynolds number: ratio of inertial to viscous forces (Re > 2300: transition, Re > 10⁴: turbulent)')}</li>
@@ -132,16 +144,5 @@ export default function CalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.['convection-heat-transfer'] || (ko ? '대류 열전달 계수 계산기' : 'Convection Heat Transfer Calculator')}
-      description={t?.['convection-heat-transfer'] || (ko ? '대류 열전달 계수를 계산합니다' : 'Calculate convection heat transfer coefficient')}
-      icon={<span>🔥</span>}
-      visualizationComponent={<></>}
-      resultComponent={<ConvectionHeatTransfer />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

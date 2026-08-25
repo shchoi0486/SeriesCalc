@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import ApiGravityCalculator from '@/components/engineering-calculator/ApiGravityCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./ApiGravityClient";
+import { BlockMath } from "react-katex";
 
-export default function ApiGravityPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.apiGravity;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/api-gravity", "engineering", "api-gravity");
+}
+
+
+
+export default function ApiGravityPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -54,11 +66,11 @@ export default function ApiGravityPage() {
           <div className="p-4 bg-muted rounded-lg flex flex-col space-y-4">
             <div>
               <p className="font-semibold text-sm text-muted-foreground mb-1">{L('1. API 비중 (°API)', '1. API Gravity (°API)')}</p>
-              <p className="font-mono text-lg text-blue-600">°API = (141.5 / SG) − 131.5</p>
+              <BlockMath math="^{\circ}\text{API} = \dfrac{141.5}{SG} - 131.5" />
             </div>
             <div>
               <p className="font-semibold text-sm text-muted-foreground mb-1">{L('2. 비중 (SG, 60°F 기준)', '2. Specific Gravity (SG at 60°F)')}</p>
-              <p className="font-mono text-lg text-teal-600">SG = 141.5 / (°API + 131.5)</p>
+              <BlockMath math="SG = \dfrac{141.5}{^{\circ}\text{API} + 131.5}" />
             </div>
           </div>
           <p className="text-sm mt-2">
@@ -121,16 +133,5 @@ export default function ApiGravityPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? 'API 비중 계산기' : 'API Gravity Calculator')}
-      description={t?.description || (ko ? 'API 비중과 비중(SG) 및 밀도를 상호 변환합니다.' : 'Convert between API Gravity and Specific Gravity.')}
-      icon={<span>🛢️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<ApiGravityCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

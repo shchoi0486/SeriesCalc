@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import PsychrometricCalculator from '@/components/engineering-calculator/PsychrometricCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./PsychrometricClient";
+import { BlockMath } from "react-katex";
 
-export default function PsychrometricPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.psychrometric;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/psychrometric", "engineering", "psychrometric");
+}
+
+
+
+export default function PsychrometricPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +64,8 @@ export default function PsychrometricPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-blue-600">P_ws = 0.61078 × exp( 17.27·T / (T + 237.3) )</p>
-            <p className="font-mono text-lg text-center text-blue-400">P_w = P_ws × (RH / 100)</p>
+            <BlockMath math="P_{ws} = 0.61078\,\exp\!\left(\dfrac{17.27\,T}{T + 237.3}\right)" />
+            <BlockMath math="P_w = P_{ws}\left(\dfrac{RH}{100}\right)" />
           </div>
         </div>
         <div>
@@ -67,8 +79,8 @@ export default function PsychrometricPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-green-600">W = 0.621945 × P_w / (P_atm − P_w)</p>
-            <p className="font-mono text-lg text-center text-red-500">h = 1.006·T + W·(2501 + 1.86·T)</p>
+            <BlockMath math="W = \dfrac{0.621945\,P_w}{P_{atm} - P_w}" />
+            <BlockMath math="h = 1.006\,T + W(2501 + 1.86\,T)" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -120,16 +132,5 @@ export default function PsychrometricPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout 
-      title={t?.title || "Psychrometric Calculator"}
-      description={t?.description || "Calculate air properties and states."}
-      icon={<span>☁️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<PsychrometricCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

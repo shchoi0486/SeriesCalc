@@ -1,14 +1,29 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import OrificeFlowCalculator from '@/components/engineering-calculator/OrificeFlowCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./OrificeFlowClient";
+import { BlockMath } from "react-katex";
 
-export default function OrificeFlowPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.orificeFlow;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/orifice-flow", "engineering", "orifice-flow");
+}
+
+
+
+export default function OrificeFlowPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const d = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +67,8 @@ export default function OrificeFlowPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">Q = C_d · A_o · √[ 2ΔP / (ρ·(1 − β⁴)) ]</p>
-            <p className="font-mono text-sm text-muted-foreground">β = d / D</p>
+            <BlockMath math="Q = C_d A_o \sqrt{\dfrac{2\Delta P}{\rho\left(1 - \beta^4\right)}}" />
+            <BlockMath math="\beta = \dfrac{d}{D}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -106,16 +121,5 @@ export default function OrificeFlowPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout 
-      title={t?.title || "Orifice Flow Calculator"}
-      description={t?.description || "Calculate flow rate using orifice plate."}
-      icon={<span>🚰</span>}
-      visualizationComponent={<></>}
-      resultComponent={<OrificeFlowCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

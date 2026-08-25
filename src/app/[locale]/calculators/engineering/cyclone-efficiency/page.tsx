@@ -1,14 +1,29 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import CycloneEfficiencyCalculator from '@/components/engineering-calculator/CycloneEfficiencyCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./CycloneEfficiencyClient";
+import { BlockMath } from "react-katex";
 
-export default function CycloneEfficiencyPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.cycloneEfficiency;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/cyclone-efficiency", "engineering", "cyclone-efficiency");
+}
+
+
+
+export default function CycloneEfficiencyPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const d = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +67,7 @@ export default function CycloneEfficiencyPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">d₅₀ = √[ 9·μ·W / (2π·Nₑ·V_i·(ρ_p − ρ_g)) ]</p>
+            <BlockMath math="d_{50} = \sqrt{\dfrac{9\,\mu W}{2\pi N_e V_i\left(\rho_p - \rho_g\right)}}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -113,16 +128,5 @@ export default function CycloneEfficiencyPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '사이클론 분리기 효율 계산기' : 'Cyclone Separator Calculator')}
-      description={t?.description || (ko ? '입구 조건과 물성으로 사이클론의 분리 한계 입경(d₅₀)을 계산합니다.' : 'Calculate the cut size (d₅₀) of a cyclone from inlet conditions and fluid properties.')}
-      icon={<span>🌪️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<CycloneEfficiencyCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import SoundPressureCalculator from '@/components/engineering-calculator/SoundPressureCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./SoundPressureClient";
+import { BlockMath } from "react-katex";
 
-export default function SoundPressurePage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.soundPressure;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/sound-pressure", "engineering", "sound-pressure");
+}
+
+
+
+export default function SoundPressurePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +64,7 @@ export default function SoundPressurePage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">L₂ = L₁ − 20 × log₁₀(r₂ / r₁)</p>
+            <BlockMath math="L_2 = L_1 - 20\,\log_{10}\!\left(\dfrac{r_2}{r_1}\right)" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -111,16 +123,5 @@ export default function SoundPressurePage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '음압 레벨 거리 계산기' : 'Sound Pressure Level (SPL) Distance Calculator')}
-      description={t?.description || (ko ? '거리에 따른 음압 레벨 감쇠를 계산합니다.' : 'Calculate sound attenuation over distance.')}
-      icon={<span>🔊</span>}
-      visualizationComponent={<></>}
-      resultComponent={<SoundPressureCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

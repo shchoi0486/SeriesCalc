@@ -1,273 +1,152 @@
-'use client';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./VirtualDiceClient";
 
-import React, { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/life/virtual-dice", "life", "virtual-dice");
+}
 
-const DiceFace: React.FC<{ value: number; isRolling: boolean }> = ({ value, isRolling }) => {
-  const getDots = (val: number): boolean[][] => {
-    const patterns: Record<number, boolean[][]> = {
-      1: [
-        [false, false, false],
-        [false, true, false],
-        [false, false, false],
-      ],
-      2: [
-        [false, false, true],
-        [false, false, false],
-        [true, false, false],
-      ],
-      3: [
-        [false, false, true],
-        [false, true, false],
-        [true, false, false],
-      ],
-      4: [
-        [true, false, true],
-        [false, false, false],
-        [true, false, true],
-      ],
-      5: [
-        [true, false, true],
-        [false, true, false],
-        [true, false, true],
-      ],
-      6: [
-        [true, false, true],
-        [true, false, true],
-        [true, false, true],
-      ],
-    };
-    return patterns[val] || patterns[1];
-  };
 
-  const dots = getDots(value);
 
-  return (
-    <div
-      className={`w-20 h-20 bg-white rounded-xl border-2 border-gray-300 shadow-lg p-2 transition-all duration-200 ${
-        isRolling ? 'animate-bounce' : ''
-      }`}
-    >
-      <div className="grid grid-cols-3 grid-rows-3 gap-1 h-full">
-        {dots.flat().map((hasDot, i) => (
-          <div
-            key={i}
-            className={`rounded-full ${
-              hasDot ? 'bg-gray-800' : 'bg-transparent'
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const VirtualDice: React.FC = () => {
-  const { dict, locale } = useI18n();
+export default function VirtualDicePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const dict = isKo ? koDict : enDict;
   const t = dict.virtualDice;
-  const isKo = locale === 'ko';
-  const [diceCount, setDiceCount] = useState(1);
-  const [values, setValues] = useState<number[]>([1]);
-  const [isRolling, setIsRolling] = useState(false);
-  const [totalSum, setTotalSum] = useState(0);
-  const [rollHistory, setRollHistory] = useState<number[]>([]);
+  const L = (koText: string, enText: string) => (isKo ? koText : enText);
 
-  const rollDice = () => {
-    if (isRolling) return;
-
-    setIsRolling(true);
-    const newValues: number[] = [];
-
-    let rollCount = 0;
-    const interval = setInterval(() => {
-      const tempValues = Array.from({ length: diceCount }, () =>
-        Math.floor(Math.random() * 6) + 1
-      );
-      setValues(tempValues);
-      rollCount++;
-
-      if (rollCount >= 10) {
-        clearInterval(interval);
-        const finalValues = Array.from({ length: diceCount }, () =>
-          Math.floor(Math.random() * 6) + 1
-        );
-        setValues(finalValues);
-        const sum = finalValues.reduce((a, b) => a + b, 0);
-        setTotalSum(prev => prev + sum);
-        setRollHistory(prev => [sum, ...prev].slice(0, 10));
-        setIsRolling(false);
-      }
-    }, 60);
-  };
-
-  const changeDiceCount = (count: number) => {
-    setDiceCount(count);
-    setValues(Array(count).fill(1));
-  };
-
-  const resetDice = () => {
-    setValues(Array(diceCount).fill(1));
-    setTotalSum(0);
-    setRollHistory([]);
-  };
-
-  const inputSection = (
-    <div className="flex flex-col items-center space-y-6">
-      <div className="flex items-center space-x-4">
-        <label className="text-sm font-medium">{t.inputs.diceCount}</label>
-        <div className="flex space-x-2">
-          {[1, 2, 3, 4].map((count) => (
-            <Button
-              key={count}
-              variant={diceCount === count ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => changeDiceCount(count)}
-            >
-              {count}{isKo ? '개' : ''}
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex flex-wrap justify-center gap-4">
-        {values.map((value, index) => (
-          <DiceFace key={index} value={value} isRolling={isRolling} />
-        ))}
-      </div>
-
-      {diceCount > 1 && (
-        <div className="text-2xl font-bold">
-          {t.results.sum}: {values.reduce((a, b) => a + b, 0)}
-        </div>
-      )}
-
-      <div className="flex space-x-2">
-        <Button onClick={rollDice} disabled={isRolling} className="px-8">
-          {isRolling ? t.inputs.rolling : t.inputs.rollDice}
-        </Button>
-        <Button variant="secondary" onClick={resetDice}>
-          {t.inputs.reset}
-        </Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-sm text-muted-foreground">{t.results.totalRolls}</p>
-            <p className="text-3xl font-bold text-blue-500">{rollHistory.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4 text-center">
-            <p className="text-sm text-muted-foreground">{t.results.cumulativeSum}</p>
-            <p className="text-3xl font-bold text-green-500">{totalSum}</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {rollHistory.length > 0 && (
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm font-medium mb-2">{t.results.recentHistory}</p>
-            <div className="flex flex-wrap gap-2">
-              {rollHistory.map((sum, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
-                >
-                  {sum}
-                </span>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {rollHistory.length > 0 && (
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm font-medium mb-2">{t.results.average}:</p>
-            <p className="text-xl font-bold">
-              {(totalSum / rollHistory.length).toFixed(2)}
-            </p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {t.results.theoreticalAverage}: {diceCount * 3.5} ({t.results.perDice} 3.5)
-            </p>
-          </CardContent>
-        </Card>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L(" 주사위 면 수를 설정할 수 있나요?", "Can I set the number of dice faces?"),
+      a: L(
+        "이 도구는 일반적인 6면체 주사위를 기본으로 지원합니다. 4면, 8면, 10면, 12면, 20면 등 다면체 주사위(D&D 등)를 지원하는지 여부는 버전에 따라 다를 수 있습니다. 현재 구현에서는 6면체만 지원합니다.",
+        "This tool supports standard 6-sided dice by default. Multi-sided dice (4, 8, 10, 12, 20 for D&D etc.) support depends on the version; currently 6-sided only.",
+      ),
+    },
+    {
+      q: L("Math.random()으로 공정한 결과가 나오나요?", "Is the result fair with Math.random()?"),
+      a: L(
+        "Math.random()은 Mersenne Twister 의사난수 생성기로, 일반적인 entertaintment 용도에는 충분히 균일한 분포를 보장합니다. 다만 온라인 도박·추첨처럼 공정성이 법적으로 요구되는 상황에서는 crypto.getRandomValues() 기반 난수가 필요할 수 있습니다.",
+        "Math.random() uses Mersenne Twister, which provides sufficiently uniform distribution for entertainment. For legally fairness-critical uses (gambling, lotteries), crypto.getRandomValues()-based randomness may be required.",
+      ),
+    },
+    {
+      q: L("여러 개의 주사위를 동시에 던질 수 있나요?", "Can I roll multiple dice at once?"),
+      a: L(
+        "지원 여부는 현재 구현에 따라 다릅니다. 여러 개의 주사위가 동시에 지원되는 경우, 각 주사위의 결과가 독립적으로 계산되어 합산 결과와 함께 표시됩니다. 한 번에 하나씩 던지는 것이 기본입니다.",
+        "Depends on the implementation. When supported, multiple dice are independent and results appear with a sum. Single-die roll is the default.",
+      ),
+    },
+    {
+      q: L("결과 이력은 저장되나요?", "Are roll results saved?"),
+      a: L(
+        "이 도구는 서버에 결과를 저장하지 않습니다. 브라우저 세션 동안의 결과만 표시되며, 새로고침하면 사라집니다. 게임 기록이 필요한 경우 별도로 메모하세요.",
+        "No server storage. Results persist only during the browser session and are lost on refresh. Record game history separately if needed.",
+      ),
+    },
+    {
+      q: L("주사위 도트 패턴은 어떻게 렌더링되나요?", "How are the dice dot patterns rendered?"),
+      a: L(
+        "각 면은 3×3 불리안 그리드로 표현됩니다. 예: 1은 가운데 점 하나, 6은 양쪽 세 줄. 이 패턴은 코드에 하드코딩되어 있으며, 실제 육면체 주사위의 전통적인 도트 배치를 따릅니다.",
+        "Each face is a 3×3 boolean grid — e.g., 1 is a center dot, 6 is three rows of two. Patterns are hardcoded to match traditional die dot layouts.",
+      ),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: `
       <div className="space-y-4">
-        <p className="text-lg font-semibold text-foreground">
-          ${t.descriptionContent.heading}
-        </p>
-        <p>
-          ${t.descriptionContent.p1}
-        </p>
-        <p>
-          ${t.descriptionContent.p2}
-        </p>
-        <p>
-          ${t.descriptionContent.p3}
-        </p>
+        <p className="text-lg font-semibold text-foreground">${t.descriptionContent.heading}</p>
+        <p>${t.descriptionContent.p1}</p>
+        <p>${t.descriptionContent.p2}</p>
+        <p>${t.descriptionContent.p3}</p>
       </div>
     `,
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("던지기 버튼 클릭", "Click roll"),
+            L("'던지기' 버튼을 누르면 주사위가 애니메이션과 함께 랜덤 숫자로 멈춥니다.", "Press roll to see the dice animate and land on a random number."),
+          ],
+          [
+            L("결과 확인", "Check result"),
+            L("주사위 눈(1~6)이 도트 패턴으로 표시됩니다.", "The dice face (1–6) is displayed as a dot pattern."),
+          ],
+          [
+            L("반복 실행", "Repeat"),
+            L("원하는 횟수만큼 반복하여 게임·결정에 활용할 수 있습니다.", "Repeat as needed for games or decisions."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 — 보드게임에서의 활용", "Example — Board game use")}</p>
+          <p>
+            {L(
+              " monopolie(부루마불) 등에서 이동 칸 수를 결정할 때: 주사위를 2번 던져 합산합니다. 첫 번째 4, 두 번째 6 → 총 10칸 이동. 이 도구에서 두 번 연속 '던지기'를 누르면 됩니다.",
+              "For games like Monopoly: roll twice and sum. First roll 4, second 6 → move 10 spaces. Press 'roll' twice consecutively.",
+            )}
+          </p>
+        </div>
+      </div>
+    ),
     calculationFormula: `
-      <div className="space-y-6">
-        <div>
-          <h3 className="font-semibold text-lg mb-2">${t.formula.heading}</h3>
-          <div className="p-4 bg-muted rounded-lg">
-            <code className="text-sm">${t.formula.formula}</code>
-          </div>
-          <p className="mt-2 text-muted-foreground">
-            ${t.formula.desc}
-          </p>
-        </div>
-        <div>
-          <h3 className="font-semibold text-lg mb-2">${t.formula.expectedValue}</h3>
-          <div className="p-4 bg-muted rounded-lg">
-            <code className="text-sm">${t.formula.expectedFormula}</code>
-          </div>
-          <p className="mt-2 text-muted-foreground">
-            ${t.formula.expectedDesc}
-          </p>
-        </div>
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">${t.formula.desc}</p>
       </div>
     `,
     usefulTips: `
       <div className="space-y-4">
-        <div className="p-4 rounded-lg border-l-4 border-primary bg-muted">
-          <h3 className="font-semibold text-lg mb-2 text-foreground">${t.tips.heading}</h3>
-          <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-            ${t.tips.items.map((item: { title: string; desc: string }) => `
-            <li><strong>${item.title}:</strong> ${item.desc}</li>
-            `).join('')}
-          </ul>
-        </div>
+        <p className="text-sm text-muted-foreground">${t.tips.heading}</p>
       </div>
-    `
+    `,
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default VirtualDice;
+}

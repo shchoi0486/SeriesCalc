@@ -1,15 +1,27 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
 
-import React from 'react';
-import PumpPowerCalculator from '@/components/engineering-calculator/PumpPowerCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./PumpPowerClient";
+import { BlockMath } from "react-katex";
 
-export default function PumpPowerCalculatorPage() {
-  const { dict, unitSystem, locale } = useI18n();
-  const t = dict.pumpPower;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/pump-power", "engineering", "pump-power");
+}
+
+
+
+export default function PumpPowerPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -54,7 +66,7 @@ export default function PumpPowerCalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">Pshaft = (ρ × g × H × Q) / (ηp × 1000)</p>
+            <BlockMath math="P_{shaft} = \dfrac{\rho g H Q}{\eta_p \times 1000}" />
           </div>
           <ul className="mt-4 space-y-2 text-sm">
             <li><strong className="font-semibold">ρ</strong> — {L('유체 밀도 [kg/m³ 또는 lb/ft³]', 'Fluid density [kg/m³ or lb/ft³]')}</li>
@@ -75,7 +87,7 @@ export default function PumpPowerCalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">Pmotor = Pshaft / ηm</p>
+            <BlockMath math="P_{motor} = \dfrac{P_{shaft}}{\eta_m}" />
           </div>
           <ul className="mt-4 space-y-2 text-sm">
             <li><strong className="font-semibold">ηm</strong> — {L('모터 효율 (0~1 사이 소수)', 'Motor efficiency (decimal, 0–1)')}</li>
@@ -123,16 +135,5 @@ export default function PumpPowerCalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t.title}
-      description={t.description}
-      icon={<span>⚡</span>}
-      visualizationComponent={<></>}
-      resultComponent={<PumpPowerCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

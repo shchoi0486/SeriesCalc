@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import TorquePowerCalculator from '@/components/engineering-calculator/TorquePowerCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./TorquePowerClient";
+import { BlockMath } from "react-katex";
 
-export default function TorquePowerPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.torquePower;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/torque-power", "engineering", "torque-power");
+}
+
+
+
+export default function TorquePowerPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -54,12 +66,12 @@ export default function TorquePowerPage() {
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-4">
             <div className="text-center">
               <p className="font-semibold text-sm text-muted-foreground mb-1">{L('미터법 (SI)', 'Metric (SI)')}</p>
-              <p className="font-mono text-xl">P (W) = τ (N·m) × [ 2πN(RPM) / 60 ]</p>
+              <BlockMath math="P\,(\text{W}) = \tau\,(\text{N·m}) \times \dfrac{2\pi N(\text{RPM})}{60}" />
             </div>
             <div className="w-full border-t border-dashed border-gray-300"></div>
             <div className="text-center">
               <p className="font-semibold text-sm text-muted-foreground mb-1">{L('야드파운드법 (US)', 'Imperial (US)')}</p>
-              <p className="font-mono text-xl">P (HP) = [ τ (lb-ft) × N(RPM) ] / 5252</p>
+              <BlockMath math="P\,(\text{HP}) = \dfrac{\tau\,(\text{lb-ft}) \times N(\text{RPM})}{5252}" />
             </div>
           </div>
         </div>
@@ -108,16 +120,5 @@ export default function TorquePowerPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '토크·동력 계산기' : 'Torque & Power Calculator')}
-      description={t?.description || (ko ? '토크와 회전 속도로 기계적 동력을 계산합니다.' : 'Calculate mechanical power from torque.')}
-      icon={<span>⚙️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<TorquePowerCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

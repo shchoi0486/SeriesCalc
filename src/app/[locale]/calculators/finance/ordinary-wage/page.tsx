@@ -1,153 +1,23 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import { BlockMath } from "react-katex";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./OrdinaryWageClient";
 
-import React, { useState, useMemo } from 'react';
-import { NextPage } from 'next';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/finance/ordinary-wage", "finance", "ordinary-wage");
+}
 
-const OrdinaryWageCalculator: NextPage = () => {
-  const { locale } = useI18n();
-  const isKo = locale === 'ko';
-  const [baseSalary, setBaseSalary] = useState<number>(3000000);
-  const [monthlyAllowances, setMonthlyAllowances] = useState<number>(200000);
-  const [annualBonuses, setAnnualBonuses] = useState<number>(5000000);
-  const [workHoursPerWeek, setWorkHoursPerWeek] = useState<number>(40);
-
-  // 숫자 입력 처리 핸들러 정의
-  const handleInputChange = (setter: (value: number) => void) => {
-    return (e: React.ChangeEvent<HTMLInputElement>) => {
-      const cleanedValue = e.target.value.replace(/[^0-9.]/g, '');
-      const numericValue = cleanedValue ? parseFloat(cleanedValue) : 0;
-      setter(isNaN(numericValue) ? 0 : numericValue);
-    };
-  };
-
-  const [results, setResults] = useState<{
-    hourlyWage: number;
-    dailyWage: number;
-    monthlyWage: number;
-    annualWage: number;
-  } | null>(null);
-
-  const calculationResults = useMemo(() => {
-    const base = baseSalary;
-    const allowances = monthlyAllowances;
-    const bonuses = annualBonuses;
-    const hours = workHoursPerWeek;
-
-    if (isNaN(base) || isNaN(allowances) || isNaN(bonuses) || isNaN(hours) || hours <= 0) {
-      return null;
-    }
-
-    const totalMonthlyWage = base + allowances + bonuses / 12;
-    const calculatedHourlyWage = totalMonthlyWage / 209; // 주 40시간 기준 월 소정근로시간
-    const calculatedDailyWage = calculatedHourlyWage * (hours / 5);
-
-    return {
-      hourlyWage: calculatedHourlyWage,
-      dailyWage: calculatedDailyWage,
-      monthlyWage: totalMonthlyWage,
-      annualWage: totalMonthlyWage * 12,
-    };
-  }, [baseSalary, monthlyAllowances, annualBonuses, workHoursPerWeek]);
-
-  const handleCalculate = () => {
-    if (calculationResults) {
-      setResults(calculationResults);
-      toast.success(isKo ? '계산이 완료되었습니다.' : 'Calculation complete.');
-    } else {
-      toast.error(isKo ? '입력값을 확인해주세요.' : 'Please check your input.');
-    }
-  };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="baseSalary">{isKo ? '월 기본급 (원)' : 'Monthly Base Salary (KRW)'}</Label>
-        <Input
-          id="baseSalary"
-          value={baseSalary.toLocaleString()}
-          onChange={(e) => handleInputChange(setBaseSalary)(e)}
-          className="text-right"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="monthlyAllowances">{isKo ? '월 기타수당 (원)' : 'Monthly Allowances (KRW)'}</Label>
-        <Input
-          id="monthlyAllowances"
-          value={monthlyAllowances.toLocaleString()}
-          onChange={(e) => handleInputChange(setMonthlyAllowances)(e)}
-          className="text-right"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="annualBonuses">{isKo ? '연간 상여금 (원)' : 'Annual Bonus (KRW)'}</Label>
-        <Input
-          id="annualBonuses"
-          value={annualBonuses.toLocaleString()}
-          onChange={(e) => handleInputChange(setAnnualBonuses)(e)}
-          className="text-right"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="workHoursPerWeek">{isKo ? '주당 근로시간' : 'Work Hours per Week'}</Label>
-        <Input
-          id="workHoursPerWeek"
-          value={workHoursPerWeek.toLocaleString()}
-          onChange={(e) => handleInputChange(setWorkHoursPerWeek)(e)}
-          className="text-right"
-          type="number"
-        />
-      </div>
-      <Button onClick={handleCalculate} className="w-full">{isKo ? '계산하기' : 'Calculate'}</Button>
-    </div>
-  );
-
-  const resultSection = (
-    <>
-      {results ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>{isKo ? '계산 결과' : 'Calculation Result'}</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4 text-lg">
-            <div className="flex justify-between items-center">
-              <span>{isKo ? '시간급 통상임금' : 'Hourly Ordinary Wage'}</span>
-              <span className="font-bold">{results.hourlyWage.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>{isKo ? '일급 통상임금' : 'Daily Ordinary Wage'}</span>
-              <span className="font-bold">{results.dailyWage.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>{isKo ? '월급 통상임금' : 'Monthly Ordinary Wage'}</span>
-              <span className="font-bold">{results.monthlyWage.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span>{isKo ? '연봉 환산액' : 'Annualized Salary'}</span>
-              <span className="font-bold">{results.annualWage.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
-            </div>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="flex items-center justify-center h-full text-muted-foreground">
-          {isKo ? '입력 후 계산하기 버튼을 눌러주세요.' : 'Please enter values and click Calculate.'}
-        </div>
-      )}
-    </>
-  );
+export default function OrdinaryWagePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
 
   const infoSection = {
     calculatorDescription: (
@@ -171,17 +41,13 @@ const OrdinaryWageCalculator: NextPage = () => {
 
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '1. 월 통상임금 산정' : '1. Monthly Ordinary Wage'}</h3>
-          <p className="font-mono p-3 bg-card rounded-md text-sm shadow-sm">
-            {isKo ? '월 통상임금 = 월 기본급 + 각종 수당(매월 고정 지급) + (연간 상여금 및 기타 금품 / 12)' : 'Monthly ordinary wage = Monthly base salary + various allowances (fixed monthly) + (annual bonus & other payments / 12)'}
-          </p>
+          <BlockMath math={isKo ? "\\text{월 통상임금} = \\text{월 기본급} + \\text{각종 수당}(\\text{매월 고정 지급}) + \\dfrac{\\text{연간 상여금 및 기타 금품}}{12}" : "\\text{Monthly Ordinary Wage} = \\text{Base Salary} + \\text{Allowances (fixed monthly)} + \\dfrac{\\text{Annual Bonus \\& Others}}{12}"} />
           <p className="text-xs text-muted-foreground dark:text-muted-foreground mt-2">{isKo ? "※ 모든 수당과 상여금이 통상임금에 포함되는 것은 아니며, 아래 '유용한 팁' 섹션의 포함 기준(정기성, 일률성, 고정성)을 충족해야 합니다." : "※ Not all allowances and bonuses are included; they must meet the inclusion criteria (regularity, uniformity, fixedness) in the 'Useful Tips' section below."}</p>
         </div>
 
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '2. 시간급 통상임금 산정 (가장 기본!)' : '2. Hourly Ordinary Wage (the basics!)'}</h3>
-          <p className="font-mono p-3 bg-card rounded-md text-sm shadow-sm">
-            {isKo ? '시간급 통상임금 = 월 통상임금 / 월 소정근로시간' : 'Hourly ordinary wage = Monthly ordinary wage / Monthly scheduled work hours'}
-          </p>
+          <BlockMath math={isKo ? "\\text{시간급 통상임금} = \\dfrac{\\text{월 통상임금}}{\\text{월 소정근로시간}}" : "\\text{Hourly Ordinary Wage} = \\dfrac{\\text{Monthly Ordinary Wage}}{\\text{Monthly Scheduled Hours}}"} />
           <p className="mt-3"><strong>{isKo ? '월 소정근로시간이란?' : 'What are monthly scheduled work hours?'}</strong></p>
           <p className="text-sm">{isKo ? '근로자와 사용자가 합의한 월 평균 근로시간을 의미합니다. 주 40시간, 주 5일 근무제의 경우, 유급 주휴시간(일요일 8시간)을 포함하여 월 평균 ' : 'The average monthly working hours agreed between worker and employer. Under a 40-hour, 5-day workweek, including paid weekly rest (8 hours on Sunday), it is generally calculated as '}<strong>209시간</strong>{isKo ? '으로 산정하는 것이 일반적입니다.' : ' hours per month on average.'}</p>
           <ul className="text-xs list-disc list-inside mt-2 space-y-1">
@@ -192,9 +58,7 @@ const OrdinaryWageCalculator: NextPage = () => {
 
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '3. 일급 통상임금 산정' : '3. Daily Ordinary Wage'}</h3>
-          <p className="font-mono p-3 bg-card rounded-md text-sm shadow-sm">
-            {isKo ? '일급 통상임금 = 시간급 통상임금 × 1일 소정근로시간' : 'Daily ordinary wage = Hourly ordinary wage × Daily scheduled work hours'}
-          </p>
+          <BlockMath math={isKo ? "\\text{일급 통상임금} = \\text{시간급 통상임금} \\times \\text{1일 소정근로시간}" : "\\text{Daily Ordinary Wage} = \\text{Hourly Ordinary Wage} \\times \\text{Daily Scheduled Hours}"} />
             <p className="text-xs text-muted-foreground dark:text-muted-foreground mt-2">{isKo ? '※ 1일 소정근로시간은 보통 8시간입니다.' : '※ Daily scheduled work hours are usually 8 hours.'}</p>
           </div>
           <div className="mt-6 p-4 bg-muted rounded-lg border border-border">
@@ -267,15 +131,5 @@ const OrdinaryWageCalculator: NextPage = () => {
     )
   };
 
-  return (
-    <CalculatorsLayout
-      title={isKo ? '통상임금 계산기' : 'Ordinary Wage Calculator'}
-      description={isKo ? '월 기본급, 수당, 상여금 등을 입력하여 통상임금을 계산합니다.' : 'Calculate your ordinary wage by entering monthly base salary, allowances, bonus, and more.'}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
-  );
-};
-
-export default OrdinaryWageCalculator;
+  return <CalculatorClient infoSection={infoSection} />;
+}

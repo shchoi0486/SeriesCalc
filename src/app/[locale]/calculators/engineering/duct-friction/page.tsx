@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import DuctFrictionCalculator from '@/components/engineering-calculator/DuctFrictionCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./DuctFrictionClient";
+import { BlockMath } from "react-katex";
 
-export default function DuctFrictionPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.ductFriction;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/duct-friction", "engineering", "duct-friction");
+}
+
+
+
+export default function DuctFrictionPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -54,12 +66,12 @@ export default function DuctFrictionPage() {
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-3 text-center">
             <div>
               <p className="font-mono text-xs text-muted-foreground mb-1">{L('상당 직경 (De)', 'Equivalent diameter (De)')}</p>
-              <p className="font-mono text-lg text-blue-600">Dₑ = 1.3 × (W·H)^0.625 / (W+H)^0.25</p>
+              <BlockMath math="D_e = 1.3\,\dfrac{(WH)^{0.625}}{(W+H)^{0.25}}" />
             </div>
             <div className="w-full border-t border-dashed my-1"></div>
             <div>
               <p className="font-mono text-xs text-muted-foreground mb-1">{L('ASHRAE 경험식 (in.w.g. / 100 ft 기준)', 'ASHRAE empirical formula (in.w.g. / 100 ft)')}</p>
-              <p className="font-mono text-lg text-red-600">ΔP = 0.109136 × (V/1000)^1.9 / Dₑ^1.22</p>
+              <BlockMath math="\Delta P = 0.109136\,\dfrac{(V/1000)^{1.9}}{D_e^{1.22}}" />
             </div>
           </div>
         </div>
@@ -110,16 +122,5 @@ export default function DuctFrictionPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '공기 덕트 마찰 계산기' : 'Air Duct Friction Calculator')}
-      description={t?.description || (ko ? '직사각형 또는 원형 공기 덕트의 마찰 손실을 계산합니다.' : 'Calculate friction loss in rectangular or circular air ducts.')}
-      icon={<span>💨</span>}
-      visualizationComponent={<></>}
-      resultComponent={<DuctFrictionCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

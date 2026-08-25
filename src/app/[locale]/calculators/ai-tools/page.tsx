@@ -1,24 +1,15 @@
-"use client";
+import type { Metadata } from "next";
+import { buildCategoryMetadata } from "@/lib/calculatorSeo";
+import ListingClient from "./AiToolsListingClient";
 
-import CategoryPageLayout from '@/components/calculators/CategoryPageLayout';
-import { calculatorCategories } from '@/data/calculators';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCategoryMetadata(params.locale, "ai-tools");
+}
 
-const AiToolsPage = () => {
-  const { dict } = useI18n();
-  const aiToolsCategory = calculatorCategories.find(cat => cat.id === 'ai-tools');
-
-  if (!aiToolsCategory) {
-    return <div>{dict.categories.notFound}</div>;
-  }
-
-  const categoryWithDescription = {
-    ...aiToolsCategory,
-    name: dict.categories['ai-tools'].name,
-    description: dict.categories['ai-tools'].description,
-  };
-
-  return <CategoryPageLayout category={categoryWithDescription} />;
-};
-
-export default AiToolsPage;
+export default function Page() {
+  return <ListingClient />;
+}

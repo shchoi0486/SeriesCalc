@@ -1,120 +1,56 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./LoremIpsumGeneratorClient";
+import FaqItem from "@/components/calculators/FaqItem";
 
-import { useState } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useI18n } from '@/i18n/I18nProvider';
-
-const LOREM_WORDS = [
-  'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit',
-  'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore',
-  'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud',
-  'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo',
-  'consequat', 'duis', 'aute', 'irure', 'in', 'reprehenderit', 'voluptate',
-  'velit', 'esse', 'cillum', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint',
-  'occaecat', 'cupidatat', 'non', 'proident', 'sunt', 'culpa', 'qui', 'officia',
-  'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum', 'perspiciatis', 'unde',
-  'omnis', 'iste', 'natus', 'error', 'voluptatem', 'accusantium', 'doloremque',
-  'laudantium', 'totam', 'rem', 'aperiam', 'eaque', 'ipsa', 'quae', 'ab', 'illo',
-  'inventore', 'veritatis', 'quasi', 'architecto', 'beatae', 'vitae', 'dicta',
-  'explicabo', 'nemo', 'ipsam', 'quia', 'voluptas', 'aspernatur', 'aut', 'odit',
-  'fugit', 'consequuntur', 'magni', 'dolores', 'ratione', 'sequi', 'nesciunt',
-];
-
-const SENTENCE_STARTERS = [
-  'Lorem ipsum dolor sit amet', 'Sed ut perspiciatis unde omnis', 'Nemo enim ipsam voluptatem',
-  'Neque porro quisquam est', 'Ut enim ad minima veniam', 'Quis autem vel eum iure',
-  'At vero eos et accusamus', 'Nam libero tempore', 'Temporibus autem quibusdam',
-  'Itaque earum rerum hic tenetur', 'Nam libero tempore cum soluta',
-];
-
-function generateWord(): string {
-  return LOREM_WORDS[Math.floor(Math.random() * LOREM_WORDS.length)];
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/ai-tools/lorem-ipsum-generator", "ai-tools", "lorem-ipsum-generator");
 }
 
-function generateSentence(): string {
-  const length = Math.floor(Math.random() * 10) + 6;
-  const words = [SENTENCE_STARTERS[Math.floor(Math.random() * SENTENCE_STARTERS.length)]];
-  for (let i = 1; i < length; i++) {
-    words.push(generateWord());
-  }
-  const sentence = words.join(' ');
-  return sentence.charAt(0).toUpperCase() + sentence.slice(1) + '.';
-}
+export default function LoremIpsumGeneratorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
 
-function generateParagraph(sentenceCount: number): string {
-  return Array.from({ length: sentenceCount }, () => generateSentence()).join(' ');
-}
-
-const LoremIpsumGenerator = () => {
-  const { dict, locale } = useI18n();
-  const t = dict.loremIpsumGenerator;
-  const isKo = locale === 'ko';
-  const [paragraphCount, setParagraphCount] = useState<number>(3);
-  const [sentencesPerParagraph, setSentencesPerParagraph] = useState<number>(5);
-  const [result, setResult] = useState('');
-
-  const generate = () => {
-    const paragraphs = Array.from(
-      { length: paragraphCount },
-      () => generateParagraph(sentencesPerParagraph)
-    );
-    setResult(paragraphs.join('\n\n'));
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(result);
-  };
-
-  const wordCount = result ? result.split(/\s+/).length : 0;
-  const charCount = result.length;
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.paragraphsLabel}</label>
-        <Input
-          type="number"
-          min={1}
-          max={20}
-          value={paragraphCount}
-          onChange={(e) => setParagraphCount(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)))}
-        />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">{t.sentencesLabel}</label>
-        <Input
-          type="number"
-          min={1}
-          max={20}
-          value={sentencesPerParagraph}
-          onChange={(e) => setSentencesPerParagraph(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)))}
-        />
-      </div>
-      <Button onClick={generate} className="w-full">{t.button}</Button>
-    </div>
-  );
-
-  const resultSection = result ? (
-    <div className="space-y-3">
-      <div className="flex gap-2 text-xs text-muted-foreground justify-center">
-        <span>{t.wordCount.replace('{n}', String(wordCount))}</span>
-        <span>|</span>
-        <span>{t.charCount.replace('{n}', String(charCount))}</span>
-        <span>|</span>
-        <span>{t.paraCount.replace('{n}', String(paragraphCount))}</span>
-      </div>
-      <Button variant="outline" size="sm" onClick={copyToClipboard} className="w-full">{t.copyButton}</Button>
-      <Textarea readOnly value={result} className="min-h-[250px] text-sm leading-relaxed" />
-    </div>
-  ) : (
-    <div className="flex items-center justify-center text-muted-foreground h-full">
-      {t.emptyPrompt}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: isKo ? "로렘 입숨(Lorem Ipsum)이란 무엇인가요?" : "What is Lorem Ipsum?",
+      a: isKo
+        ? "로렘 입숨은 디자인과 출판 분야에서 실제 내용 대신 임시로 쓰는 표본 텍스트입니다. 기원전 45년 키케로의 철학 저서 '최고선악론(De Finibus Bonorum et Malorum)'에서 파생된 단어들로 구성되어, 읽는 사람의 주의를 뜻보다는 레이아웃과 타이포그래피에 집중시키는 효과가 있습니다."
+        : "Lorem Ipsum is placeholder text used in design and publishing in place of real content. Derived from Cicero's 45 BC philosophical work 'De Finibus Bonorum et Malorum', it keeps the reader's attention on layout and typography rather than meaning.",
+    },
+    {
+      q: isKo ? "단락, 문장, 단어 중 무엇을 선택해야 하나요?" : "Should I generate paragraphs, sentences, or words?",
+      a: isKo
+        ? "용도에 따라 다릅니다. 문장(sentence)은 한 줄 수준의 간단한 폭·여백 테스트에, 단락(paragraph)은 본문 영역의 흐름과 높이를 확인할 때, 단어(word)는 긴 단어 래핑이나 좁은 열을 테스트할 때 적합합니다."
+        : "It depends on the purpose. Sentences suit simple line-width and margin tests, paragraphs are best for checking body-flow and height, and words work well for testing long word-wrapping or narrow columns.",
+    },
+    {
+      q: isKo ? "왜 디자인에서 로렘 입숨을 사용하나요?" : "Why is Lorem Ipsum used in design?",
+      a: isKo
+        ? "읽는 사람이 텍스트의 의미에 주의를 빼앗기지 않고 레이아웃, 글꼴, 간격, 색상 등 시각적 요소에 집중할 수 있기 때문입니다. 실제 내용을 미리 넣으면 자연어처럼 읽히면서 디자인 평가가 흐려지므로, 무의미한 표본 텍스트가 선호됩니다."
+        : "Because it lets viewers focus on visual elements — layout, typeface, spacing, and color — instead of being distracted by the meaning of the text. Real content reads naturally and biases design evaluation, so meaningless sample text is preferred.",
+    },
+    {
+      q: isKo ? "로렘 입숨의 라틴어는 실제 의미가 있나요?" : "Does the Latin in Lorem Ipsum have real meaning?",
+      a: isKo
+        ? "완전한 문장이 아니므로 직접적인 의미는 없습니다. 다만 단어들은 키케로의 저작에서 비롯되어 부분적으로 의미가 통합니다. 예를 들어 'dolor sit amet'는 '(고통에) 기꺼이 앉으리라'에 가까운 뜻을 지니며, 이후 단어들은 의도적으로 재배열되어 알아보기 어렵게 만들었습니다."
+        : "It isn't coherent prose, so it has no direct meaning. The words originate from Cicero's work, however, and some partially translate — for instance 'dolor sit amet' roughly means 'willingly to sit in pain', and later words were deliberately scrambled to be unrecognizable.",
+    },
+    {
+      q: isKo ? "한국어 플레이스홀더 텍스트도 생성할 수 있나요?" : "Can I generate Korean placeholder text?",
+      a: isKo
+        ? "네. 한글은 음절 단위로 조합되어 라틴 문자와 어절 길이가 달라 레이아웃이 크게 달라집니다. 한국어로 된 placeholder 텍스트를 사용하면 한글 폰트의 자간·줄높이·단어 래핑을 실제 사용 환경과 비슷하게 미리 확인할 수 있으므로, 한글 사이트를 만들 때는 한국어 샘플을 권장합니다."
+        : "Yes. Korean combines syllable blocks, so line lengths differ greatly from Latin text. Using Korean placeholder text lets you preview hangul font spacing, line height, and word-wrapping close to the real environment, which is recommended when building Korean-language sites.",
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -157,18 +93,79 @@ const LoremIpsumGenerator = () => {
         </ul>
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            isKo ? "단위 선택" : "Choose a unit",
+            isKo ? "단락(paragraph), 문장(sentence), 또는 단어(word) 중 생성할 단위를 선택합니다." : "Choose whether to generate paragraphs, sentences, or words.",
+          ],
+          [
+            isKo ? "수량 설정" : "Set the count",
+            isKo ? "생성할 단락·문장·단어의 개수를 입력합니다." : "Enter the number of paragraphs, sentences, or words to generate.",
+          ],
+          [
+            isKo ? "생성" : "Generate",
+            isKo ? "버튼을 눌러 자연스러운 문장 구조를 가진 표본 텍스트를 생성합니다." : "Click to generate sample text with natural sentence structure.",
+          ],
+          [
+            isKo ? "복사" : "Copy",
+            isKo ? "생성된 텍스트를 클립보드에 복사해 프로토타입이나 목업에 붙여넣습니다." : "Copy the generated text to your clipboard and paste it into prototypes or mockups.",
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{isKo ? "예시 1 — 단락 생성" : "Example 1 — Generating paragraphs"}</p>
+          <p>
+            {isKo
+              ? "'단락 3개'를 생성하면 일반적으로 약 15문장(각 단락 4~6문장)으로 구성된 본문이 만들어집니다. 예를 들어 3개 단락은 각각 5문장씩 총 15문장이 되어, 블로그 본문이나 페이지 설명 영역의 높이를 확인하는 데 적합합니다."
+              : "Generating '3 paragraphs' typically produces roughly 15 sentences (4–6 per paragraph). Three paragraphs at about 5 sentences each gives ~15 sentences, suitable for checking the height of a blog body or page description area."}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{isKo ? "예시 2 — 단어 수 출력" : "Example 2 — Word count output"}</p>
+          <p>
+            {isKo
+              ? "'단어 50개'를 선택하면 약 50단어로 이루어진 짧은 문단이 생성됩니다. 예를 들어 5~6문장에 50단어 정도의 텍스트는 표지나 캡션, 광고 문구 자리를 채우는 데 알맞은 분량입니다. 이 도구는 요청한 수량에 맞춰 단어 수를 맞춰 출력합니다."
+              : "Selecting '50 words' produces a short passage of about 50 words. For instance, ~50 words across 5–6 sentences is a comfortable fill for covers, captions, or ad copy placeholders. The tool matches the word count to your requested quantity."}
+          </p>
+        </div>
+      </div>
+    ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-      variant="split"
-     />
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default LoremIpsumGenerator;
+}

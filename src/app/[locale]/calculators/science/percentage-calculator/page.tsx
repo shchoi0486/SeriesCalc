@@ -1,155 +1,51 @@
-'use client';
+import TermGlossary from "@/components/calculators/TermGlossary";
+import FaqItem from "@/components/calculators/FaqItem";
 
-import { useState, useCallback } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./PercentageCalculatorClient";
+import { BlockMath } from "react-katex";
 
-export default function PercentageCalculatorPage() {
-  const { dict, locale } = useI18n();
-  const isKo = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/science/percentage-calculator", "science", "percentage-calculator");
+}
+
+
+
+export default function PercentageCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
   const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  const [mode1A, setMode1A] = useState('');
-  const [mode1B, setMode1B] = useState('');
-  const [mode2A, setMode2A] = useState('');
-  const [mode2B, setMode2B] = useState('');
-  const [mode3A, setMode3A] = useState('');
-  const [mode3B, setMode3B] = useState('');
-  const [result1, setResult1] = useState<number | null>(null);
-  const [result2, setResult2] = useState<number | null>(null);
-  const [result3, setResult3] = useState<number | null>(null);
-
-  const calcMode1 = useCallback(() => {
-    const a = parseFloat(mode1A);
-    const b = parseFloat(mode1B);
-    if (!isNaN(a) && !isNaN(b)) setResult1((a * b) / 100);
-    else setResult1(null);
-  }, [mode1A, mode1B]);
-
-  const calcMode2 = useCallback(() => {
-    const a = parseFloat(mode2A);
-    const b = parseFloat(mode2B);
-    if (!isNaN(a) && !isNaN(b) && b !== 0) setResult2((a / b) * 100);
-    else setResult2(null);
-  }, [mode2A, mode2B]);
-
-  const calcMode3 = useCallback(() => {
-    const a = parseFloat(mode3A);
-    const b = parseFloat(mode3B);
-    if (!isNaN(a) && !isNaN(b)) setResult3(a * (1 + b / 100));
-    else setResult3(null);
-  }, [mode3A, mode3B]);
-
-  const resetMode1 = () => { setMode1A(''); setMode1B(''); setResult1(null); };
-  const resetMode2 = () => { setMode2A(''); setMode2B(''); setResult2(null); };
-  const resetMode3 = () => { setMode3A(''); setMode3B(''); setResult3(null); };
-
-  const inputSection = (
-    <Tabs defaultValue="mode1">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="mode1">{L('A의 B%?', 'A of B%?')}</TabsTrigger>
-        <TabsTrigger value="mode2">{L('A는 B의 몇%?', 'A is what % of B?')}</TabsTrigger>
-        <TabsTrigger value="mode3">{L('A에서 B% 증감', 'A +/- B%')}</TabsTrigger>
-      </TabsList>
-      <TabsContent value="mode1" className="space-y-4 mt-4">
-        <div>
-          <Label>{L('값 (A)', 'Value (A)')}</Label>
-          <Input type="number" value={mode1A} onChange={e => setMode1A(e.target.value)} placeholder={isKo ? '예: 200' : 'e.g. 200'} />
-        </div>
-        <div>
-          <Label>{L('퍼센트 (B%)', 'Percentage (B%)')}</Label>
-          <Input type="number" value={mode1B} onChange={e => setMode1B(e.target.value)} placeholder={isKo ? '예: 15' : 'e.g. 15'} />
-        </div>
-        <div className="flex space-x-2">
-          <Button onClick={calcMode1} className="flex-1">{L('계산', 'Calculate')}</Button>
-          <Button onClick={resetMode1} variant="outline" className="flex-1">{L('초기화', 'Reset')}</Button>
-        </div>
-      </TabsContent>
-      <TabsContent value="mode2" className="space-y-4 mt-4">
-        <div>
-          <Label>{L('값 (A)', 'Value (A)')}</Label>
-          <Input type="number" value={mode2A} onChange={e => setMode2A(e.target.value)} placeholder={isKo ? '예: 30' : 'e.g. 30'} />
-        </div>
-        <div>
-          <Label>{L('전체 값 (B)', 'Total Value (B)')}</Label>
-          <Input type="number" value={mode2B} onChange={e => setMode2B(e.target.value)} placeholder={isKo ? '예: 200' : 'e.g. 200'} />
-        </div>
-        <div className="flex space-x-2">
-          <Button onClick={calcMode2} className="flex-1">{L('계산', 'Calculate')}</Button>
-          <Button onClick={resetMode2} variant="outline" className="flex-1">{L('초기화', 'Reset')}</Button>
-        </div>
-      </TabsContent>
-      <TabsContent value="mode3" className="space-y-4 mt-4">
-        <div>
-          <Label>{L('원래 값 (A)', 'Original Value (A)')}</Label>
-          <Input type="number" value={mode3A} onChange={e => setMode3A(e.target.value)} placeholder={isKo ? '예: 100000' : 'e.g. 100000'} />
-        </div>
-        <div>
-          <Label>{L('변화율 (B%, 음수 가능)', 'Change Rate (B%, negative for decrease)')}</Label>
-          <Input type="number" value={mode3B} onChange={e => setMode3B(e.target.value)} placeholder={isKo ? '예: 20 또는 -10' : 'e.g. 20 or -10'} />
-        </div>
-        <div className="flex space-x-2">
-          <Button onClick={calcMode3} className="flex-1">{L('계산', 'Calculate')}</Button>
-          <Button onClick={resetMode3} variant="outline" className="flex-1">{L('초기화', 'Reset')}</Button>
-        </div>
-      </TabsContent>
-    </Tabs>
-  );
-
-  const resultSection = (
-    <Tabs defaultValue="mode1">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="mode1">{L('A의 B%', 'A of B%')}</TabsTrigger>
-        <TabsTrigger value="mode2">{L('몇%?', 'What %?')}</TabsTrigger>
-        <TabsTrigger value="mode3">{L('증감 결과', 'Change Result')}</TabsTrigger>
-      </TabsList>
-      <TabsContent value="mode1" className="mt-4">
-        {result1 !== null ? (
-          <div className="p-4 bg-muted rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">{isKo ? `${mode1A}의 ${mode1B}%` : `${mode1B}% of ${mode1A}`}</p>
-            <p className="text-2xl font-bold">{result1.toLocaleString(undefined, { maximumFractionDigits: 6 })}</p>
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-lg text-muted-foreground">{isKo ? '값을 입력하세요' : 'Enter values to calculate'}</p>
-          </div>
-        )}
-      </TabsContent>
-      <TabsContent value="mode2" className="mt-4">
-        {result2 !== null ? (
-          <div className="p-4 bg-muted rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">{isKo ? `${mode2A}는 ${mode2B}의` : `${mode2A} is what % of ${mode2B}`}</p>
-            <p className="text-2xl font-bold">{result2.toLocaleString(undefined, { maximumFractionDigits: 4 })}%</p>
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-lg text-muted-foreground">{isKo ? '값을 입력하세요' : 'Enter values to calculate'}</p>
-          </div>
-        )}
-      </TabsContent>
-      <TabsContent value="mode3" className="mt-4">
-        {result3 !== null ? (
-          <div className="p-4 bg-muted rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">{isKo ? `${mode3A}에서 ${mode3B}% ${parseFloat(mode3B) >= 0 ? '증가' : '감소'}` : `${mode3A} ${parseFloat(mode3B) >= 0 ? 'increased' : 'decreased'} by ${Math.abs(parseFloat(mode3B))}%`}</p>
-            <p className="text-2xl font-bold">{result3.toLocaleString(undefined, { maximumFractionDigits: 6 })}</p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {isKo ? `변화량: ${Math.abs(result3 - parseFloat(mode3A || '0')).toLocaleString(undefined, { maximumFractionDigits: 6 })}` : `Change: ${Math.abs(result3 - parseFloat(mode3A || '0')).toLocaleString(undefined, { maximumFractionDigits: 6 })}`}
-            </p>
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <p className="text-lg text-muted-foreground">{isKo ? '값을 입력하세요' : 'Enter values to calculate'}</p>
-          </div>
-        )}
-      </TabsContent>
-    </Tabs>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("퍼센트를 계산하는 공식은 무엇인가요?", "What is the formula for calculating percentage?"),
+      a: L("퍼센트는 100분의 1을 의미합니다. 'A의 B%'를 구하려면 A × (B/100)를 계산합니다. 예를 들어 150의 20%는 150 × 0.20 = 30입니다. 'A가 B의 몇 %인지'를 구하려면 (A / B) × 100을 계산합니다.", "A percentage means one hundredth. To find 'B% of A', compute A × (B/100). For example, 20% of 150 is 150 × 0.20 = 30. To find 'what percent A is of B', compute (A / B) × 100."),
+    },
+    {
+      q: L("퍼센트 변화(증감률)는 어떻게 계산하나요?", "How do you calculate percentage change?"),
+      a: L("퍼센트 변화는 (새 값 - 이전 값) ÷ 이전 값 × 100으로 구합니다. 예를 들어 50에서 60으로 증가하면 (60 - 50) ÷ 50 × 100 = 20% 증가입니다. 값이 감소하면 결과가 음수가 되어 감소율을 나타냅니다.", "Percentage change is calculated as (new value − old value) ÷ old value × 100. For example, an increase from 50 to 60 is (60 − 50) ÷ 50 × 100 = 20% increase. A decrease yields a negative result, representing the decrease rate."),
+    },
+    {
+      q: L("할인 금액과 할인 후 가격은 어떻게 계산하나요?", "How do I calculate a discount and the discounted price?"),
+      a: L("할인 금액 = 원래 가격 × 할인율입니다. 할인 후 가격 = 원래 가격 × (1 - 할인율)입니다. 예를 들어 59,900원 상품이 30% 할인되면 할인 후 가격은 59,900 × 0.70 = 41,930원입니다.", "Discount amount = original price × discount rate. Discounted price = original price × (1 − discount rate). For example, a 59,900 item at 30% off costs 59,900 × 0.70 = 41,930."),
+    },
+    {
+      q: L("퍼센트(%)와 퍼센트포인트(%p)의 차이는 무엇인가요?", "What is the difference between percentage (%) and percentage point (%p)?"),
+      a: L("퍼센트(%)는 비율을 나타내는 상대적 단위이고, 퍼센트포인트(%p)는 두 퍼센트 값 사이의 절대적 차이입니다. 예를 들어 금리가 3%에서 5%로 오르면 '2퍼센트포인트 증가'라고 하며, 이는 비율로는 66.7% 증가한 것입니다. 둘은 혼동하기 쉽지만 의미가 다릅니다.", "Percentage (%) is a relative unit of ratio, while percentage point (%p) is the absolute difference between two percentage values. For example, an interest rate rising from 3% to 5% is a '2 percentage point increase', which is a 66.7% relative increase. The two are easily confused but mean different things."),
+    },
+    {
+      q: L("역퍼센트(역산) 계산은 어떻게 하나요?", "How do you do reverse percentage calculations?"),
+      a: L("어떤 값이 전체의 B%일 때 전체를 구하려면 그 값을 (B/100)로 나눕니다. 예를 들어 '할인된 가격이 원가의 70%'라면 원래 가격 = 할인 후 가격 ÷ 0.70입니다. 즉 할인 후 가격이 70,000원이라면 원래 가격은 70,000 ÷ 0.70 = 100,000원입니다.", "To find the whole when you know it is B% of it, divide the known value by (B/100). For example, if a discounted price is 70% of the original, the original = discounted price ÷ 0.70. So a 70,000 discounted price means the original was 70,000 ÷ 0.70 = 100,000."),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -176,12 +72,64 @@ export default function PercentageCalculatorPage() {
         ]} />
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("계산 유형 선택", "Choose the calculation type"),
+            L("퍼센트 계산 유형을 선택합니다: 'A의 B%는?'(값의 비율), 'A는 B의 몇%?'(비율 비교), 'A에서 B% 증감'(증감률 적용) 중 하나입니다.", "Select the calculation type: 'B% of A' (proportion of a value), 'A is what % of B' (ratio comparison), or 'A +/- B%' (applying a change rate)."),
+          ],
+          [
+            L("값 입력", "Enter your values"),
+            L("선택한 유형에 맞는 기준 값, 퍼센트 값, 또는 두 비교 값을 입력합니다. 예: 기준 값 150과 퍼센트 20.", "Enter the base value, percentage, or the two values to compare depending on the chosen type. For example: base value 150 and percentage 20."),
+          ],
+          [
+            L("계산하기", "Calculate"),
+            L("계산 버튼을 눌러 결과를 확인합니다. 계산기는 입력한 값을 바탕으로 퍼센트 결과를 즉시 계산해 표시합니다.", "Press the calculate button to see the result. The calculator computes and displays the percentage result instantly based on your input."),
+          ],
+          [
+            L("결과 읽기", "Read the result"),
+            L("결과 값을 확인하고, 필요하면 실생활 맥락(할인가, 수익률, 점수 등)에 맞게 해석합니다. 음수 결과는 감소율을 의미합니다.", "Review the result value and interpret it in your real-life context (discounted price, return rate, score, etc.). A negative result indicates a decrease."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 값의 비율", "Example 1 — Proportion of a value")}</p>
+          <p>
+            {L("150의 20%는 얼마인가요? 공식: 150 × (20/100) = 150 × 0.20 = 30. 따라서 150의 20%는 30입니다.", "What is 20% of 150? Formula: 150 × (20/100) = 150 × 0.20 = 30. So 20% of 150 is 30.")}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 비율 비교", "Example 2 — Ratio comparison")}</p>
+          <p>
+            {L("45는 180의 몇 %인가요? 공식: (45/180) × 100 = 0.25 × 100 = 25%. 따라서 45는 180의 25%입니다.", "45 is what percent of 180? Formula: (45/180) × 100 = 0.25 × 100 = 25%. So 45 is 25% of 180.")}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 3 — 증감률", "Example 3 — Percentage change")}</p>
+          <p>
+            {L("50에서 60으로 증가하면 증감률은 얼마인가요? 공식: (60 - 50) ÷ 50 × 100 = 20%. 따라서 20% 증가입니다.", "What is the percentage change from 50 to 60? Formula: (60 − 50) ÷ 50 × 100 = 20%. So it is a 20% increase.")}
+          </p>
+        </div>
+      </div>
+    ),
     calculationFormula: (
       <div className="space-y-6">
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-green-500 pl-3">{L('모드 1: A의 B% 계산', 'Mode 1: B% of A')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-xl font-bold">A × (B / 100)</p>
+            <BlockMath math="A \times \dfrac{B}{100}" />
           </div>
           <ul className="list-disc list-inside space-y-2">
             <li><strong>A</strong> - {L('기준 값 (전체)', 'Base value (total)')}</li>
@@ -192,7 +140,7 @@ export default function PercentageCalculatorPage() {
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-yellow-500 pl-3">{L('모드 2: A는 B의 몇%?', 'Mode 2: A is what % of B?')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-xl font-bold">(A / B) × 100</p>
+            <BlockMath math="\left(\dfrac{A}{B}\right) \times 100" />
           </div>
           <ul className="list-disc list-inside space-y-2">
             <li><strong>A</strong> - {L('부분 값', 'Part value')}</li>
@@ -203,7 +151,7 @@ export default function PercentageCalculatorPage() {
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-purple-500 pl-3">{L('모드 3: A에서 B% 증감', 'Mode 3: A +/- B%')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-xl font-bold">A × (1 ± B/100)</p>
+            <BlockMath math="A \times \left(1 \pm \dfrac{B}{100}\right)" />
           </div>
           <ul className="list-disc list-inside space-y-2">
             <li><strong>A</strong> - {L('원래 값', 'Original value')}</li>
@@ -251,16 +199,32 @@ export default function PercentageCalculatorPage() {
         </div>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={isKo ? '퍼센트 계산기' : 'Percentage Calculator'}
-      description={isKo ? '세 가지 모드로 퍼센트(%) 관련 계산을 간편하게 수행합니다.' : 'Perform percentage calculations easily with three modes.'}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
 }

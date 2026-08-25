@@ -1,256 +1,60 @@
-'use client';
 
-import React, { useState, useMemo } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { useI18n } from '@/i18n/I18nProvider';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { BlockMath } from "react-katex";
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./SubnetCalculatorClient";
 
-function ipToInt(ip: string): number | null {
-  const parts = ip.split('.');
-  if (parts.length !== 4) return null;
-  const nums = parts.map(Number);
-  if (nums.some((n) => isNaN(n) || n < 0 || n > 255)) return null;
-  return ((nums[0] << 24) | (nums[1] << 16) | (nums[2] << 8) | nums[3]) >>> 0;
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/others/subnet-calculator", "others", "subnet-calculator");
 }
 
-function intToIp(int: number): string {
-  return [
-    (int >>> 24) & 255,
-    (int >>> 16) & 255,
-    (int >>> 8) & 255,
-    int & 255,
-  ].join('.');
-}
 
-function intToBinary(int: number): string {
-  return [
-    (int >>> 24) & 255,
-    (int >>> 16) & 255,
-    (int >>> 8) & 255,
-    int & 255,
-  ]
-    .map((b) => b.toString(2).padStart(8, '0'))
-    .join('.');
-}
 
-function parseMask(mask: string): number | null {
-  const trimmed = mask.trim();
-  if (trimmed.startsWith('/')) {
-    const cidr = parseInt(trimmed.slice(1), 10);
-    if (isNaN(cidr) || cidr < 0 || cidr > 32) return null;
-    return cidr === 0 ? 0 : (~0 << (32 - cidr)) >>> 0;
-  }
-  const parts = trimmed.split('.');
-  if (parts.length === 4) {
-    const num = ipToInt(trimmed);
-    if (num === null) return null;
-    const binary = num.toString(2).padStart(32, '0');
-    if (!/^1*0*$/.test(binary)) return null;
-    const ones = binary.split('0')[0].length;
-    return ones;
-  }
-  const cidr = parseInt(trimmed, 10);
-  if (isNaN(cidr) || cidr < 0 || cidr > 32) return null;
-  return cidr === 0 ? 0 : (~0 << (32 - cidr)) >>> 0;
-}
-
-interface SubnetResult {
-  cidr: number;
-  networkAddress: string;
-  broadcastAddress: string;
-  firstUsable: string;
-  lastUsable: string;
-  totalIPs: number;
-  usableHosts: number;
-  wildcardMask: string;
-  subnetMaskInt: number;
-  ipBinary: string;
-  maskBinary: string;
-}
-
-function calculateSubnet(ip: string, maskInput: string): SubnetResult | null {
-  const ipInt = ipToInt(ip);
-  if (ipInt === null) return null;
-
-  const maskResult = parseMask(maskInput);
-  if (maskResult === null) return null;
-
-  let cidr: number;
-  let maskInt: number;
-
-  if (typeof maskResult === 'number' && maskResult <= 32) {
-    const trimmed = maskInput.trim();
-    if (trimmed.startsWith('/')) {
-      cidr = parseInt(trimmed.slice(1), 10);
-      maskInt = cidr === 0 ? 0 : (~0 << (32 - cidr)) >>> 0;
-    } else if (trimmed.split('.').length === 4) {
-      maskInt = maskResult;
-      cidr = maskInt.toString(2).split('1').length - 1;
-    } else {
-      cidr = maskResult;
-      maskInt = cidr === 0 ? 0 : (~0 << (32 - cidr)) >>> 0;
-    }
-  } else {
-    return null;
-  }
-
-  const networkInt = (ipInt & maskInt) >>> 0;
-  const broadcastInt = (networkInt | (~maskInt >>> 0)) >>> 0;
-  const totalIPs = Math.pow(2, 32 - cidr);
-  const usableHosts = cidr >= 31 ? (cidr === 32 ? 1 : 2) : totalIPs - 2;
-
-  return {
-    cidr,
-    networkAddress: intToIp(networkInt),
-    broadcastAddress: intToIp(broadcastInt),
-    firstUsable: cidr >= 31 ? intToIp(networkInt) : intToIp((networkInt + 1) >>> 0),
-    lastUsable: cidr >= 31 ? intToIp(broadcastInt) : intToIp((broadcastInt - 1) >>> 0),
-    totalIPs,
-    usableHosts,
-    wildcardMask: intToIp((~maskInt) >>> 0),
-    subnetMaskInt: maskInt,
-    ipBinary: intToBinary(ipInt),
-    maskBinary: intToBinary(maskInt),
-  };
-}
-
-const SubnetCalculator: React.FC = () => {
-  const { locale } = useI18n();
-  const isKo = locale === 'ko';
+export default function SubnetCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
   const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  const [ip, setIp] = useState('192.168.1.0');
-  const [mask, setMask] = useState('/24');
+  const faqs = [
+    {
+      q: L('CIDR 표기란 무엇인가요?', 'What is CIDR notation?'),
+      a: L('CIDR(Classless Inter-Domain Routing)은 슬래시 뒤에 접두사 길이를 붙여 네트워크 크기를 나타냅니다. 예를 들어 /24는 네트워크 부분이 24비트임을 의미합니다.', 'CIDR (Classless Inter-Domain Routing) indicates network size with a slash and prefix length. For example, /24 means 24 bits are the network portion.'),
+    },
+    {
+      q: L('사용 가능한 호스트 수는 어떻게 계산하나요?', 'How is the number of usable hosts calculated?'),
+      a: L('공식은 2^(32-prefix) - 2입니다. 총 주소 수에서 네트워크 주소와 브로드캐스트 주소를 빼서 구합니다.', 'The formula is 2^(32-prefix) - 2. You subtract the network and broadcast addresses from the total number of addresses.'),
+    },
+    {
+      q: L('서브넷 마스크와 CIDR은 같은 것인가요?', 'Are subnet mask and CIDR the same?'),
+      a: L('둘 다 네트워크 크기를 나타내지만 표현 방식이 다릅니다. 서브넷 마스크는 255.255.255.0 형태로, CIDR은 /24 형태로 표현합니다.', 'They both describe network size but in different formats. A subnet mask uses the form 255.255.255.0, while CIDR uses the form /24.'),
+    },
+    {
+      q: L('IPv6도 지원하나요?', 'Does it support IPv6?'),
+      a: L('아니요. 현재 이 계산기는 IPv4 주소만 지원합니다. IPv6는 128비트 주소 체계로 별도의 도구가 필요합니다.', 'No. This calculator currently supports IPv4 addresses only. IPv6 uses a 128-bit addressing scheme and requires a separate tool.'),
+    },
+    {
+      q: L('네트워크 주소와 브로드캐스트 주소를 사용할 수 없는 이유는 무엇인가요?', 'Why are network and broadcast addresses unusable?'),
+      a: L('네트워크 주소는 네트워크 자체를 식별하고, 브로드캐스트 주소는 네트워크의 모든 호스트에 메시지를 보내는 데 사용되므로 호스트에 할당할 수 없습니다.', 'The network address identifies the network itself, and the broadcast address sends messages to all hosts on the network, so neither can be assigned to a host.'),
+    },
+  ];
 
-  const results = useMemo(() => {
-    if (!ip || !mask) return null;
-    return calculateSubnet(ip, mask);
-  }, [ip, mask]);
-
-  const handleReset = () => {
-    setIp('192.168.1.0');
-    setMask('/24');
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="ipInput">{L('IP 주소', 'IP Address')}</Label>
-        <Input
-          id="ipInput"
-          type="text"
-          value={ip}
-          onChange={(e) => setIp(e.target.value)}
-          placeholder="192.168.1.0"
-          className="font-mono"
-        />
-      </div>
-      <div className="space-y-2">
-        <Label htmlFor="maskInput">{L('서브넷 마스크', 'Subnet Mask')}</Label>
-        <Input
-          id="maskInput"
-          type="text"
-          value={mask}
-          onChange={(e) => setMask(e.target.value)}
-          placeholder="/24 or 255.255.255.0"
-          className="font-mono"
-        />
-        <p className="text-xs text-muted-foreground">
-          {L('/xx 또는 255.255.xxx 형식 지원', 'Supports /xx or 255.255.xxx format')}
-        </p>
-      </div>
-      <Button onClick={handleReset} className="w-full" variant="outline">
-        {L('초기화', 'Reset')}
-      </Button>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-4">
-      {!results ? (
-        <p className="text-muted-foreground text-center py-8">
-          {L('IP 주소와 서브넷 마스크를 입력하세요.', 'Enter an IP address and subnet mask.')}
-        </p>
-      ) : (
-        <>
-          <div className="p-4 bg-muted rounded-lg text-center">
-            <div className="text-sm text-muted-0 mb-1">{L('CIDR 표기', 'CIDR Notation')}</div>
-            <div className="text-2xl font-bold font-mono">
-              {results.networkAddress}/{results.cidr}
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('네트워크 주소', 'Network Address')}</span>
-              <span className="font-mono">{results.networkAddress}</span>
-            </div>
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('브로드캐스트 주소', 'Broadcast Address')}</span>
-              <span className="font-mono">{results.broadcastAddress}</span>
-            </div>
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('첫 번째 사용 가능 IP', 'First Usable IP')}</span>
-              <span className="font-mono">{results.firstUsable}</span>
-            </div>
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('마지막 사용 가능 IP', 'Last Usable IP')}</span>
-              <span className="font-mono">{results.lastUsable}</span>
-            </div>
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('전체 IP 수', 'Total IPs')}</span>
-              <span className="font-mono">{results.totalIPs.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('사용 가능 호스트 수', 'Usable Hosts')}</span>
-              <span className="font-mono">{results.usableHosts.toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between p-3 bg-muted rounded-lg">
-              <span className="font-medium">{L('와일드카드 마스크', 'Wildcard Mask')}</span>
-              <span className="font-mono">{results.wildcardMask}</span>
-            </div>
-          </div>
-
-          <div className="mt-4 space-y-2">
-            <h4 className="font-semibold text-sm">{L('바이너리 표현', 'Binary Representation')}</h4>
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs font-mono">
-                <thead>
-                  <tr className="text-muted-foreground">
-                    <th className="text-left p-1"></th>
-                    <th className="p-1 text-center">1~8</th>
-                    <th className="p-1 text-center">9~16</th>
-                    <th className="p-1 text-center">17~24</th>
-                    <th className="p-1 text-center">25~32</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className="text-left p-1 font-medium">{L('IP', 'IP')}</td>
-                    {results.ipBinary.split('.').map((octet, i) => (
-                      <td key={i} className="p-1 text-center bg-blue-50 dark:bg-blue-900/20 rounded">
-                        {octet}
-                      </td>
-                    ))}
-                  </tr>
-                  <tr>
-                    <td className="text-left p-1 font-medium">{L('마스크', 'Mask')}</td>
-                    {results.maskBinary.split('.').map((octet, i) => (
-                      <td key={i} className="p-1 text-center bg-orange-50 dark:bg-orange-900/20 rounded">
-                        {octet}
-                      </td>
-                    ))}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
 
   const infoSection = {
     calculatorDescription: (
@@ -279,11 +83,11 @@ const SubnetCalculator: React.FC = () => {
             {L('서브넷 계산 공식', 'Subnet Calculation Formulas')}
           </h4>
           <div className="p-4 bg-muted rounded-lg space-y-3">
-            <div className="text-center font-mono text-blue-600 space-y-1">
-              <p>네트워크 주소 = IP AND 마스크</p>
-              <p>브로드캐스트 주소 = 네트워크 OR NOT(마스크)</p>
-              <p>전체 IP 수 = 2^(32 - CIDR)</p>
-              <p>사용 가능 호스트 = 2^(32 - CIDR) - 2</p>
+            <div className="text-center text-blue-600 space-y-1">
+              <BlockMath math="\text{네트워크 주소} = \text{IP} \wedge \text{마스크}" />
+              <BlockMath math="\text{브로드캐스트 주소} = \text{네트워크} \vee \neg(\text{마스크})" />
+              <BlockMath math="\text{전체 IP 수} = 2^{(32 - \text{CIDR})}" />
+              <BlockMath math="\text{사용 가능 호스트} = 2^{(32 - \text{CIDR})} - 2" />
             </div>
           </div>
         </div>
@@ -343,21 +147,48 @@ const SubnetCalculator: React.FC = () => {
         </div>
       </div>
     ),
+    howToUse: (
+      <div className="space-y-4 leading-relaxed">
+        <ol className="list-decimal list-inside space-y-2">
+          <li>{L('IP 주소와 CIDR 표기를 입력하세요. 예: 192.168.1.0/24', 'Enter an IP address and CIDR notation, e.g. 192.168.1.0/24.')}</li>
+          <li>{L('또는 점으로 구분된 마스크(예: 255.255.255.0)를 직접 선택하세요.', 'Alternatively, select a dotted-decimal mask such as 255.255.255.0.')}</li>
+          <li>{L('네트워크 주소, 브로드캐스트 주소, 호스트 범위가 자동으로 계산됩니다.', 'The network address, broadcast address, and host range are computed automatically.')}</li>
+          <li>{L('사용 가능한 호스트 수를 확인해 네트워크 규모를 파악하세요.', 'Review the usable host count to understand the size of your network.')}</li>
+        </ol>
+      </div>
+    ),
+    workedExamples: (
+      <div className="space-y-4 leading-relaxed">
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-blue-500">
+          <h4 className="font-bold text-base mb-2">192.168.1.0/24</h4>
+          <p className="text-sm">{L('총 256개의 IP 주소(0~255) 중 254개의 호스트를 사용할 수 있습니다. 일반적인 소규모 사무실 네트워크에 적합합니다.', 'There are 256 total IP addresses (0-255), of which 254 hosts are usable. Ideal for a typical small office network.')}</p>
+        </div>
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-blue-500">
+          <h4 className="font-bold text-base mb-2">10.0.0.0/8</h4>
+          <p className="text-sm">{L('총 16,777,216개의 IP 주소 중 16,777,214개의 호스트를 사용할 수 있습니다. 대규모 사설 네트워크에서 사용합니다.', 'There are 16,777,216 total IP addresses, of which 16,777,214 hosts are usable. Used for large private networks.')}</p>
+        </div>
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-blue-500">
+          <h4 className="font-bold text-base mb-2">192.168.1.0/30</h4>
+          <p className="text-sm">{L('총 4개의 IP 주소 중 2개의 호스트만 사용할 수 있습니다. 라우터 간 포인트 투 포인트(point-to-point) 링크에 적합합니다.', 'There are 4 total IP addresses with only 2 usable hosts. Ideal for point-to-point links between routers.')}</p>
+        </div>
+      </div>
+    ),
+    faq: (
+      <div className="space-y-4 leading-relaxed">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
   };
 
   return (
-    <CalculatorsLayout
-      title={L('서브넷 계산기', 'Subnet Calculator')}
-      description={L(
-        'IPv4 주소와 서브넷 마스크를 입력하여 네트워크 정보를 계산합니다.',
-        'Enter an IPv4 address and subnet mask to calculate network information.'
-      )}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default SubnetCalculator;
+}

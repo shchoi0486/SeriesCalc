@@ -1,24 +1,15 @@
-"use client";
+import type { Metadata } from "next";
+import { buildCategoryMetadata } from "@/lib/calculatorSeo";
+import ListingClient from "./OthersListingClient";
 
-import CategoryPageLayout from '@/components/calculators/CategoryPageLayout';
-import { calculatorCategories } from '@/data/calculators';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCategoryMetadata(params.locale, "others");
+}
 
-const OthersPage = () => {
-  const { dict } = useI18n();
-  const othersCategory = calculatorCategories.find(cat => cat.id === 'others');
-
-  if (!othersCategory) {
-    return <div>{dict.categories.notFound}</div>;
-  }
-
-  const categoryWithDescription = {
-    ...othersCategory,
-    name: dict.categories.others.name,
-    description: dict.categories.others.description,
-  };
-
-  return <CategoryPageLayout category={categoryWithDescription} />;
-};
-
-export default OthersPage;
+export default function Page() {
+  return <ListingClient />;
+}

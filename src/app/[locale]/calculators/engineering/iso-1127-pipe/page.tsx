@@ -1,15 +1,31 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import Iso1127PipeCalculator from '@/components/engineering-calculator/Iso1127PipeCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./Iso1127PipeClient";
+import { BlockMath } from "react-katex";
 
-export default function Iso1127PipePage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.iso1127Pipe;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/iso-1127-pipe", "engineering", "iso-1127-pipe");
+}
+
+
+
+export default function Iso1127PipePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const dict = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
+  const t = dict?.common?.iso1127Pipe;
 
   const infoSection = {
     calculatorDescription: (
@@ -52,8 +68,8 @@ export default function Iso1127PipePage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-3">
-            <p className="font-mono text-lg text-center">W = (D − t) · t · 0.0246615</p>
-            <p className="font-mono text-lg text-center">A = (π / 4) · (D − 2t)²</p>
+            <BlockMath math="W = (D - t)\,t \times 0.0246615" />
+            <BlockMath math="A = \dfrac{\pi}{4}\left(D - 2t\right)^{2}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -102,16 +118,5 @@ export default function Iso1127PipePage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || L('ISO 1127 스테인리스강 튜브', 'ISO 1127 Stainless Steel Tube')}
-      description={t?.description || L('ISO 1127 규격에 따라 스테인리스강 튜브의 무게와 치수를 계산합니다.', 'Calculate weight and dimensions of stainless steel tubes according to ISO 1127.')}
-      icon={<span>⭕</span>}
-      visualizationComponent={<></>}
-      resultComponent={<Iso1127PipeCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

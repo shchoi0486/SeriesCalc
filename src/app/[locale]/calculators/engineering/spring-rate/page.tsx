@@ -1,14 +1,29 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import SpringRateCalculator from '@/components/engineering-calculator/SpringRateCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./SpringRateClient";
+import { BlockMath } from "react-katex";
 
-export default function SpringRatePage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.springRate;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/spring-rate", "engineering", "spring-rate");
+}
+
+
+
+export default function SpringRatePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const d = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,7 +67,7 @@ export default function SpringRatePage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">k = (G × d⁴) / (8 × D³ × n)</p>
+            <BlockMath math="k = \dfrac{G d^4}{8 D^3 n}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -104,16 +119,5 @@ export default function SpringRatePage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '스프링 상수 계산기' : 'Spring Rate Calculator')}
-      description={t?.description || (ko ? '헬리컬 압축 스프링의 스프링 상수(강성)를 계산합니다.' : 'Calculate the spring constant (rate) of a helical compression spring.')}
-      icon={<span>⚙️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<SpringRateCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

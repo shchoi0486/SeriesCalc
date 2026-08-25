@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import AcPowerCalculator from '@/components/engineering-calculator/AcPowerCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./AcPowerClient";
+import { BlockMath } from "react-katex";
 
-export default function AcPowerPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.acPower;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/ac-power", "engineering", "ac-power");
+}
+
+
+
+export default function AcPowerPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,10 +64,10 @@ export default function AcPowerPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-blue-600">S = V × I</p>
-            <p className="font-mono text-lg text-green-600">P = S × cos(θ) = V × I × PF</p>
-            <p className="font-mono text-lg text-red-500">Q = S × sin(θ)</p>
-            <p className="font-mono text-lg text-purple-600">PF = cos(θ)</p>
+            <BlockMath math="S = V I" />
+            <BlockMath math="P = S\cos(\theta) = V I\,\text{PF}" />
+            <BlockMath math="Q = S\sin(\theta)" />
+            <BlockMath math="\text{PF} = \cos(\theta)" />
           </div>
           <p className="text-sm text-muted-foreground mt-2 italic">{L('* 3상 시스템의 경우 피상 전력에 √3을 곱합니다: S = √3 × V_L × I_L', '* For 3-phase systems, multiply apparent power by √3: S = √3 × V_L × I_L')}</p>
         </div>
@@ -108,16 +120,5 @@ export default function AcPowerPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '교류 전력 계산기' : 'AC Power Calculator')}
-      description={t?.description || (ko ? '교류 회로의 유효·무효·피상 전력과 역률을 계산합니다.' : 'Calculate Real, Reactive, and Apparent Power in AC circuits.')}
-      icon={<span>🔌</span>}
-      visualizationComponent={<></>}
-      resultComponent={<AcPowerCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

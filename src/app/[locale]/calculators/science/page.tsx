@@ -1,24 +1,15 @@
-"use client";
+import type { Metadata } from "next";
+import { buildCategoryMetadata } from "@/lib/calculatorSeo";
+import ListingClient from "./ScienceListingClient";
 
-import CategoryPageLayout from '@/components/calculators/CategoryPageLayout';
-import { calculatorCategories } from '@/data/calculators';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCategoryMetadata(params.locale, "science");
+}
 
-const SciencePage = () => {
-  const { dict } = useI18n();
-  const scienceCategory = calculatorCategories.find(cat => cat.id === 'science');
-
-  if (!scienceCategory) {
-    return <div>{dict.categories.notFound}</div>;
-  }
-
-  const categoryWithDescription = {
-    ...scienceCategory,
-    name: dict.categories.science.name,
-    description: dict.categories.science.description,
-  };
-
-  return <CategoryPageLayout category={categoryWithDescription} />;
-};
-
-export default SciencePage;
+export default function Page() {
+  return <ListingClient />;
+}

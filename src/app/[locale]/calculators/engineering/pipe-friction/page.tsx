@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import PipeFrictionCalculator from '@/components/engineering-calculator/PipeFrictionCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./PipeFrictionClient";
+import { BlockMath } from "react-katex";
 
-export default function PipeFrictionPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.pipeFriction;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/pipe-friction", "engineering", "pipe-friction");
+}
+
+
+
+export default function PipeFrictionPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +64,8 @@ export default function PipeFrictionPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">h_f = f × (L / D) × (v² / 2g)</p>
-            <p className="font-mono text-lg text-center text-green-600">ΔP = h_f × ρ × g</p>
+            <BlockMath math="h_f = f\,\dfrac{L}{D}\,\dfrac{v^2}{2g}" />
+            <BlockMath math="\Delta P = h_f\,\rho\,g" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -107,16 +119,5 @@ export default function PipeFrictionPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout 
-      title={t?.title || "Pipe Friction Loss Calculator"}
-      description={t?.description || "Calculate the head loss and pressure loss due to friction in a pipe."}
-      icon={<span>💧</span>}
-      visualizationComponent={<></>}
-      resultComponent={<PipeFrictionCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

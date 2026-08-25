@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import SpecificSpeedCalculator from '@/components/engineering-calculator/SpecificSpeedCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./SpecificSpeedClient";
+import { BlockMath } from "react-katex";
 
-export default function SpecificSpeedPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.specificSpeed;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/specific-speed", "engineering", "specific-speed");
+}
+
+
+
+export default function SpecificSpeedPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -53,7 +65,7 @@ export default function SpecificSpeedPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">N<sub>s</sub> = N · Q<sup>0.5</sup> / H<sup>0.75</sup></p>
+            <BlockMath math="N_s = \dfrac{N\,Q^{0.5}}{H^{0.75}}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -113,16 +125,5 @@ export default function SpecificSpeedPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '펌프 비속도 계산기' : 'Pump Specific Speed Calculator')}
-      description={t?.description || (ko ? '비속도로 최적 임펠러 형식을 결정합니다.' : 'Determine impeller type based on specific speed.')}
-      icon={<span>🌀</span>}
-      visualizationComponent={<></>}
-      resultComponent={<SpecificSpeedCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

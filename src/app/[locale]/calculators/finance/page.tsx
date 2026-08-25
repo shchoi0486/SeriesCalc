@@ -1,24 +1,15 @@
-"use client";
+import type { Metadata } from "next";
+import { buildCategoryMetadata } from "@/lib/calculatorSeo";
+import ListingClient from "./FinanceListingClient";
 
-import CategoryPageLayout from '@/components/calculators/CategoryPageLayout';
-import { calculatorCategories } from '@/data/calculators';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCategoryMetadata(params.locale, "finance");
+}
 
-const FinancePage = () => {
-  const { dict } = useI18n();
-  const financeCategory = calculatorCategories.find(cat => cat.id === 'finance');
-
-  if (!financeCategory) {
-    return <div>{dict.categories.notFound}</div>;
-  }
-
-  const categoryWithDescription = {
-    ...financeCategory,
-    name: dict.categories.finance.name,
-    description: dict.categories.finance.description,
-  };
-
-  return <CategoryPageLayout category={categoryWithDescription} />;
-};
-
-export default FinancePage;
+export default function Page() {
+  return <ListingClient />;
+}

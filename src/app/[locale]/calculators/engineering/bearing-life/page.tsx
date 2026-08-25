@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import BearingLifeCalculator from '@/components/engineering-calculator/BearingLifeCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./BearingLifeClient";
+import { BlockMath } from "react-katex";
 
-export default function BearingLifePage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.bearingLife;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/bearing-life", "engineering", "bearing-life");
+}
+
+
+
+export default function BearingLifePage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +64,8 @@ export default function BearingLifePage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">L₁₀ = (C / P)ᵖ</p>
-            <p className="font-mono text-lg text-center">L₁₀h = (1,000,000 / (60 × N)) × L₁₀</p>
+            <BlockMath math="L_{10} = \left(\dfrac{C}{P}\right)^{p}" />
+            <BlockMath math="L_{10h} = \left(\dfrac{10^{6}}{60N}\right) L_{10}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -105,16 +117,5 @@ export default function BearingLifePage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '베어링 수명(L10) 계산기' : 'Bearing Life (L10) Calculator')}
-      description={t?.description || (ko ? 'ISO 281 기준 구름 베어링의 기본 정격 수명을 계산합니다.' : 'Calculate ISO 281 basic rating life for bearings.')}
-      icon={<span>⚙️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<BearingLifeCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

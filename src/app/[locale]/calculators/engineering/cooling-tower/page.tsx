@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import CoolingTowerCalculator from '@/components/engineering-calculator/CoolingTowerCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./CoolingTowerClient";
+import { BlockMath } from "react-katex";
 
-export default function CoolingTowerPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.coolingTower;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/cooling-tower", "engineering", "cooling-tower");
+}
+
+
+
+export default function CoolingTowerPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,9 +64,9 @@ export default function CoolingTowerPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-red-500">Range = T_hw − T_cw</p>
-            <p className="font-mono text-lg text-center text-blue-600">Approach = T_cw − T_wb</p>
-            <p className="font-mono text-lg text-center text-green-600">Effectiveness = [Range / (Range + Approach)] × 100%</p>
+            <BlockMath math="\text{Range} = T_{hw} - T_{cw}" />
+            <BlockMath math="\text{Approach} = T_{cw} - T_{wb}" />
+            <BlockMath math="\text{Effectiveness} = \dfrac{\text{Range}}{\text{Range} + \text{Approach}} \times 100\%" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -103,16 +115,5 @@ export default function CoolingTowerPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? '냉각탑 설계 계산기' : 'Cooling Tower Design Calculator')}
-      description={t?.description || (ko ? '냉각탑의 레인지, 어프로치, 효율을 계산합니다.' : 'Calculate cooling tower Range, Approach, and Effectiveness.')}
-      icon={<span>🏭</span>}
-      visualizationComponent={<></>}
-      resultComponent={<CoolingTowerCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

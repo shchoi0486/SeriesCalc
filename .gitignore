@@ -71,3 +71,5 @@ crawler/sites/auth.json
 discovered_subcategories.log
 login_page_after_goto.png
 autocal/
+
+dev-server.log

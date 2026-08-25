@@ -1,263 +1,168 @@
-'use client';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import FaqItem from "@/components/calculators/FaqItem";
+import CalculatorClient from "./PasswordGeneratorClient";
 
-import React, { useState, useCallback } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/life/password-generator", "life", "password-generator");
+}
 
-const PasswordGenerator: React.FC = () => {
-  const { dict, locale } = useI18n();
+
+
+export default function PasswordGeneratorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const dict = isKo ? koDict : enDict;
   const t = dict.passwordGenerator;
-  const isKo = locale === 'ko';
-  const [length, setLength] = useState(16);
-  const [useUppercase, setUseUppercase] = useState(true);
-  const [useLowercase, setUseLowercase] = useState(true);
-  const [useNumbers, setUseNumbers] = useState(true);
-  const [useSymbols, setUseSymbols] = useState(true);
-  const [password, setPassword] = useState('');
-  const [copied, setCopied] = useState(false);
+  const L = (koText: string, enText: string) => (isKo ? koText : enText);
 
-  const generatePassword = useCallback(() => {
-    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
-    const numbers = '0123456789';
-    const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-
-    let charset = '';
-    let result = '';
-
-    if (useUppercase) charset += uppercase;
-    if (useLowercase) charset += lowercase;
-    if (useNumbers) charset += numbers;
-    if (useSymbols) charset += symbols;
-
-    if (charset === '') {
-      setPassword(t.results.selectCharset);
-      return;
-    }
-
-    const array = new Uint32Array(length);
-    crypto.getRandomValues(array);
-    for (let i = 0; i < length; i++) {
-      result += charset[array[i] % charset.length];
-    }
-
-    setPassword(result);
-    setCopied(false);
-  }, [length, useUppercase, useLowercase, useNumbers, useSymbols, t.results.selectCharset]);
-
-  const copyToClipboard = async () => {
-    if (!password) return;
-    try {
-      await navigator.clipboard.writeText(password);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      const textarea = document.createElement('textarea');
-      textarea.value = password;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
-
-  const getStrength = (): { label: string; color: string; percent: number } => {
-    let score = 0;
-    if (length >= 8) score++;
-    if (length >= 12) score++;
-    if (length >= 16) score++;
-    if (length >= 24) score++;
-    if (useUppercase) score++;
-    if (useLowercase) score++;
-    if (useNumbers) score++;
-    if (useSymbols) score++;
-
-    const types = [useUppercase, useLowercase, useNumbers, useSymbols].filter(Boolean).length;
-    if (types >= 3) score++;
-    if (types === 4) score++;
-
-    if (score <= 3) return { label: t.strengthLevels.weak, color: 'bg-red-500', percent: 25 };
-    if (score <= 5) return { label: t.strengthLevels.medium, color: 'bg-orange-500', percent: 50 };
-    if (score <= 7) return { label: t.strengthLevels.strong, color: 'bg-blue-500', percent: 75 };
-    return { label: t.strengthLevels.veryStrong, color: 'bg-green-500', percent: 100 };
-  };
-
-  const strength = getStrength();
-
-  const inputSection = (
-    <div className="flex flex-col space-y-4">
-      <div className="flex items-center space-x-4">
-        <label className="w-28">{t.inputs.length}: {length}</label>
-        <input
-          type="range"
-          min={8}
-          max={64}
-          value={length}
-          onChange={(e) => setLength(Number(e.target.value))}
-          className="flex-1"
-        />
-        <span className="w-10 text-center">{length}</span>
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <label className="flex items-center space-x-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={useUppercase}
-            onChange={(e) => setUseUppercase(e.target.checked)}
-            className="form-checkbox"
-          />
-          <span>{t.inputs.uppercase}</span>
-        </label>
-        <label className="flex items-center space-x-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={useLowercase}
-            onChange={(e) => setUseLowercase(e.target.checked)}
-            className="form-checkbox"
-          />
-          <span>{t.inputs.lowercase}</span>
-        </label>
-        <label className="flex items-center space-x-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={useNumbers}
-            onChange={(e) => setUseNumbers(e.target.checked)}
-            className="form-checkbox"
-          />
-          <span>{t.inputs.numbers}</span>
-        </label>
-        <label className="flex items-center space-x-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={useSymbols}
-            onChange={(e) => setUseSymbols(e.target.checked)}
-            className="form-checkbox"
-          />
-          <span>{t.inputs.symbols}</span>
-        </label>
-      </div>
-
-      <div className="flex space-x-2">
-        <Button onClick={generatePassword}>{t.inputs.generate}</Button>
-        <Button variant="secondary" onClick={() => { setPassword(''); setCopied(false); }}>
-          {t.inputs.reset}
-        </Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-4">
-      {password ? (
-        <>
-          <div className="flex items-center space-x-2">
-            <Input
-              value={password}
-              readOnly
-              className="font-mono text-lg flex-1"
-            />
-            <Button onClick={copyToClipboard} variant={copied ? 'default' : 'outline'}>
-              {copied ? t.results.copied : t.results.copy}
-            </Button>
-          </div>
-
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex justify-between mb-2">
-                <span>{t.results.strength}:</span>
-                <span className="font-bold">{strength.label}</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
-                <div
-                  className={`${strength.color} h-3 rounded-full transition-all duration-300`}
-                  style={{ width: `${strength.percent}%` }}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="text-sm text-muted-foreground">
-            <p>{t.results.charCount}: {password.length}{isKo ? '자' : ' chars'}</p>
-            <p>{t.results.selectedTypes}: {[useUppercase && t.inputs.uppercase, useLowercase && t.inputs.lowercase, useNumbers && t.inputs.numbers, useSymbols && t.inputs.symbols].filter(Boolean).join(', ')}</p>
-          </div>
-        </>
-      ) : (
-        <div className="flex items-center justify-center text-muted-foreground h-32">
-          {t.results.emptyMessage}
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("비밀번호 길이가 길수록 안전한가요?", "Is a longer password always more secure?"),
+      a: L(
+        "맞습니다. 비밀번호의 무차원 대입(brute-force) 방어력은 길이에 지수적으로 비례합니다. 예: 소문자+숫자(36자) 기준 8자리 = 2.8조, 12자리 = 4.7경 경우의 수. 따라서 12자 이상으로 설정하면 현행 컴퓨터로 수백 년이 걸립니다. 다만 너무 길면 입력이 불편하므로, 12~16자 사이가 실용적 균형점입니다.",
+        "Yes. Brute-force resistance grows exponentially with length. At 36 charset, 8 chars = 2.8 trillion combos; 12 chars = 4.7 quintillion. 12–16 characters is the practical sweet spot.",
+      ),
+    },
+    {
+      q: L("문자 유형을 다양하게 섞어야 하나요?", "Should I mix character types?"),
+      a: L(
+        "소문자(a-z), 대문자(A-Z), 숫자(0-9), 특수문자(!@#$…)를 모두 포함하면 사용 가능한 문자 집합이 커져 대입 공격이 어려워집니다. 이 계산기에서 모든 체크박스를 켜면 94개 문자가 사용됩니다. 다만 예약어 필터 등에서 특수문자가 문제를 일으키는 경우가 있으므로, 사용처 제약 조건을 먼저 확인하세요.",
+        "Including lowercase, uppercase, digits, and symbols expands the character pool (94 chars with all enabled). Check service-specific restrictions first, as some reject certain symbols.",
+      ),
+    },
+    {
+      q: L("생성된 비밀번호를 어디에 저장하나요?", "Where should I store the generated password?"),
+      a: L(
+        "이 도구는 브라우저에서만 비밀번호를 생성하며, 생성 후 어디에도 저장하지 않습니다(서버 전송 없음). 안전한 저장을 위해 비밀번호 관리자(LastPass, Bitwarden, 1Password 등) 사용을 강력히 권장합니다. 스프레드시트나 메모장에 평문 저장하는 것은 절대 하지 마세요.",
+        "This tool generates passwords entirely in-browser and stores nothing. Use a dedicated password manager (LastPass, Bitwarden, 1Password). Never store passwords in plain text files.",
+      ),
+    },
+    {
+      q: L("이전에 생성한 비밀번호를 복구할 수 있나요?", "Can I recover a previously generated password?"),
+      a: L(
+        "아닙니다. 이 도구는 클라이언트 사이드에서 Math.random()을 사용해 일회성으로 생성합니다. 이전 결과는 저장되지 않으므로, 새로고침하면 사라집니다. 생성 즉시 비밀번호 관리자에 저장하거나 안전한 곳에 기록하세요.",
+        "No. Passwords are generated client-side with Math.random() and are not persisted. Save them immediately to a password manager or secure vault.",
+      ),
+    },
+    {
+      q: L("Math.random()으로 만들어도 안전한가요?", "Is Math.random() secure enough?"),
+      a: L(
+        "Math.random()은 암호학적으로 안전한 난수 생성기(CSPRNG)가 아니므로, 이론적으로 예측 가능성이 있습니다. 다만 브라우저에서 비밀번호를 '빠르게 만들기 위한' 용도라면 충분합니다. 절대적으로 안전한 난수가 필요한 경우(암호화 키 생성 등)에는 Web Crypto API의 crypto.getRandomValues()를 직접 사용해야 합니다.",
+        "Math.random() is not cryptographically secure, but is adequate for quick password generation. For absolute security (encryption keys), use crypto.getRandomValues() via the Web Crypto API.",
+      ),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: `
       <div className="space-y-4">
-        <p className="text-lg font-semibold text-foreground">
-          ${t.descriptionContent.heading}
-        </p>
-        <p>
-          ${t.descriptionContent.p1}
-        </p>
-        <p>
-          ${t.descriptionContent.p2}
-        </p>
-        <p>
-          ${t.descriptionContent.p3}
-        </p>
+        <p className="text-lg font-semibold text-foreground">${t.descriptionContent.heading}</p>
+        <p>${t.descriptionContent.p1}</p>
+        <p>${t.descriptionContent.p2}</p>
+        <p>${t.descriptionContent.p3}</p>
       </div>
     `,
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("길이 설정", "Set length"),
+            L("비밀번호 길이를 4~64자 범위에서 설정합니다. 12~16자가 보안·편의성 균형점입니다.", "Set password length (4–64 chars). 12–16 is the security/convenience balance point."),
+          ],
+          [
+            L("문자 유형 선택", "Choose character types"),
+            L("대문자·소문자·숫자·특수문자 중 사용할 유형을 체크합니다. 모두 선택하면 가장 강력합니다.", "Check uppercase, lowercase, numbers, and symbols. Enable all for maximum strength."),
+          ],
+          [
+            L("생성 버튼 클릭", "Click generate"),
+            L("'생성' 버튼을 누르면 랜덤 비밀번호가 즉시 표시됩니다.", "Press generate to display a random password instantly."),
+          ],
+          [
+            L("복사·저장", "Copy and save"),
+            L("복사 버튼으로 클립보드에 복사한 뒤, 비밀번호 관리자에 즉시 저장하세요. 브라우저를 새로고침하면 사라집니다.", "Copy to clipboard, then save to a password manager immediately. Refreshing the page clears it."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 일반 계정용", "Example 1 — General account")}</p>
+          <p>
+            {L(
+              "길이 16, 모든 문자 유형 선택 → 예: 'k9#Lm2@xPq$7nR!w'. 대문자 3개, 소문자 6개, 숫자 3개, 특수문자 4개가 포함되어 대입 공격에 매우 강합니다.",
+              "Length 16, all types → e.g., 'k9#Lm2@xPq$7nR!w' with 3 uppercase, 6 lowercase, 3 digits, 4 symbols — highly resistant to brute force.",
+            )}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — Wi-Fi 비밀번호용 (특수문자 제외)", "Example 2 — Wi-Fi (no symbols)")}</p>
+          <p>
+            {L(
+              "길이 12, 대문자+소문자+숫자만 선택 → 예: 'Ht7kM2pLx9Nq'. 기기 호환성을 위해 특수문자를 뺀 구성입니다.",
+              "Length 12, uppercase+lowercase+digits only → e.g., 'Ht7kM2pLx9Nq'. Symbols excluded for device compatibility.",
+            )}
+          </p>
+        </div>
+        <p className="text-xs opacity-80">
+          * {L("위 예시는 참고용이며, 실제 생성 결과는 매번 다릅니다.", "Examples are illustrative; actual results differ each time.")}
+        </p>
+      </div>
+    ),
     calculationFormula: `
-      <div className="space-y-6">
-        <div>
-          <h3 className="font-semibold text-lg mb-2">${t.formula.heading}</h3>
-          <p className="mb-2 text-muted-foreground">
-            ${t.formula.desc}
-          </p>
-          <div className="p-4 bg-muted rounded-lg">
-            <code className="text-sm">${t.formula.code}</code>
-          </div>
-          <p className="mt-2 text-muted-foreground">
-            ${t.formula.cryptoDesc}
-          </p>
-        </div>
-        <div>
-          <h3 className="font-semibold text-lg mb-2">${t.formula.strengthCalc}</h3>
-          <p className="text-muted-foreground">
-            ${t.formula.strengthDesc}
-          </p>
-        </div>
+      <div className="space-y-4">
+        <p className="text-sm text-muted-foreground">${t.formula.desc}</p>
       </div>
     `,
     usefulTips: `
       <div className="space-y-4">
-        <div className="p-4 rounded-lg border-l-4 border-primary bg-muted">
-          <h3 className="font-semibold text-lg mb-2 text-foreground">${t.tips.heading}</h3>
-          <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-            ${t.tips.items.map((item: { title: string; desc: string }) => `
-            <li><strong>${item.title}:</strong> ${item.desc}</li>
-            `).join('')}
-          </ul>
-        </div>
+        <p className="text-sm text-muted-foreground">${t.tips.heading}</p>
       </div>
-    `
+    `,
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
-};
-
-export default PasswordGenerator;
+}

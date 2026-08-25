@@ -1,14 +1,29 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import MomentOfInertia from '@/components/engineering-calculator/MomentOfInertia';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./MomentOfInertiaClient";
+import { BlockMath } from "react-katex";
 
-export default function CalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.calculatorNames;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/moment-of-inertia", "engineering", "moment-of-inertia");
+}
+
+
+
+export default function MomentOfInertiaPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const d = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -54,19 +69,19 @@ export default function CalculatorPage() {
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-3">
             <div>
               <p className="font-semibold text-sm mb-1">{L('사각형 (Rectangle)', 'Rectangle')}</p>
-              <p className="font-mono text-lg text-center text-purple-600">I = b × h³ / 12</p>
+              <BlockMath math="I = \dfrac{b h^3}{12}" />
             </div>
             <div>
               <p className="font-semibold text-sm mb-1">{L('원형 (Circle)', 'Circle')}</p>
-              <p className="font-mono text-lg text-center text-purple-600">I = π × d⁴ / 64</p>
+              <BlockMath math="I = \dfrac{\pi d^4}{64}" />
             </div>
             <div>
               <p className="font-semibold text-sm mb-1">{L('빈 원형 (Hollow circle)', 'Hollow circle')}</p>
-              <p className="font-mono text-lg text-center text-purple-600">I = π × (D⁴ − d⁴) / 64</p>
+              <BlockMath math="I = \dfrac{\pi\left(D^4 - d^4\right)}{64}" />
             </div>
             <div>
               <p className="font-semibold text-sm mb-1">{L('I형 (I-beam)', 'I-beam')}</p>
-              <p className="font-mono text-lg text-center text-purple-600">I = (BH³ − bh³) / 12</p>
+              <BlockMath math="I = \dfrac{B H^3 - b h^3}{12}" />
             </div>
           </div>
         </div>
@@ -80,8 +95,8 @@ export default function CalculatorPage() {
         <div>
           <h4 className="font-bold text-base mb-2">{L('단면계수와의 관계', 'Relation to section modulus')}</h4>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">S = I / c</p>
-            <p className="font-mono text-lg text-center text-purple-600">σ = M / S = M × c / I</p>
+            <BlockMath math="S = \dfrac{I}{c}" />
+            <BlockMath math="\sigma = \dfrac{M}{S} = \dfrac{M c}{I}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
             <li><strong className="font-semibold text-green-600">S</strong> — {L('단면계수(section modulus) [mm³]', 'Section modulus [mm³]')}</li>
@@ -114,16 +129,5 @@ export default function CalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.['moment-of-inertia'] || (ko ? '단면 2차 모멘트 계산기' : 'Moment of Inertia Calculator')}
-      description={t?.['moment-of-inertia'] || (ko ? '다양한 단면의 2차 모멘트를 계산합니다' : 'Calculate second moment of area for various sections')}
-      icon={<span>📐</span>}
-      visualizationComponent={<></>}
-      resultComponent={<MomentOfInertia />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

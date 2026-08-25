@@ -1,140 +1,54 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import TermGlossary from "@/components/calculators/TermGlossary";
+import FaqItem from "@/components/calculators/FaqItem";
 
-import { useState, useCallback } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./FractionCalculatorClient";
+import { BlockMath } from "react-katex";
 
-function gcd(a: number, b: number): number {
-  a = Math.abs(a);
-  b = Math.abs(b);
-  while (b) { [a, b] = [b, a % b]; }
-  return a;
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/science/fraction-calculator", "science", "fraction-calculator");
 }
 
-function simplify(numer: number, denom: number): [number, number] {
-  if (denom === 0) return [numer, denom];
-  const sign = (numer < 0) !== (denom < 0) ? -1 : 1;
-  const g = gcd(Math.abs(numer), Math.abs(denom));
-  return [sign * Math.abs(numer) / g, Math.abs(denom) / g];
-}
 
-export default function FractionCalculatorPage() {
-  const { locale } = useI18n();
-  const isKo = locale === 'ko';
+
+export default function FractionCalculatorPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const d = isKo ? koDict : enDict;
   const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  const [num1, setNum1] = useState('');
-  const [den1, setDen1] = useState('');
-  const [operator, setOperator] = useState('+');
-  const [num2, setNum2] = useState('');
-  const [den2, setDen2] = useState('');
-  const [result, setResult] = useState<{ numer: number; denom: number; decimal: number } | null>(null);
-
-  const calculate = useCallback(() => {
-    const n1 = parseInt(num1);
-    const d1 = parseInt(den1);
-    const n2 = parseInt(num2);
-    const d2 = parseInt(den2);
-    if (isNaN(n1) || isNaN(d1) || isNaN(n2) || isNaN(d2) || d1 === 0 || d2 === 0) {
-      setResult(null);
-      return;
-    }
-    let rn: number, rd: number;
-    switch (operator) {
-      case '+': rn = n1 * d2 + n2 * d1; rd = d1 * d2; break;
-      case '-': rn = n1 * d2 - n2 * d1; rd = d1 * d2; break;
-      case '×': rn = n1 * n2; rd = d1 * d2; break;
-      case '÷':
-        if (n2 === 0) { setResult(null); return; }
-        rn = n1 * d2; rd = d1 * n2;
-        break;
-      default: return;
-    }
-    const [sn, sd] = simplify(rn, rd);
-    setResult({ numer: sn, denom: sd, decimal: sn / sd });
-  }, [num1, den1, num2, den2, operator]);
-
-  const reset = () => { setNum1(''); setDen1(''); setNum2(''); setDen2(''); setResult(null); };
-
-  const FractionInput = ({ num, setNum, den, setDen, label }: { num: string; setNum: (v: string) => void; den: string; setDen: (v: string) => void; label: string }) => (
-    <div>
-      <Label className="mb-2 block">{label}</Label>
-      <div className="flex items-center space-x-2">
-        <div className="text-center">
-          <Input type="number" value={num} onChange={e => setNum(e.target.value)} placeholder={isKo ? '분자' : 'Num'} className="w-20 text-center" />
-          <div className="h-px bg-foreground my-1" />
-          <Input type="number" value={den} onChange={e => setDen(e.target.value)} placeholder={isKo ? '분모' : 'Den'} className="w-20 text-center" />
-        </div>
-      </div>
-    </div>
-  );
-
-  const inputSection = (
-    <div className="space-y-4">
-      <div className="flex items-center justify-center space-x-4">
-        <FractionInput num={num1} setNum={setNum1} den={den1} setDen={setDen1} label={L('분수 1', 'Fraction 1')} />
-        <Select value={operator} onValueChange={setOperator}>
-          <SelectTrigger className="w-16 mt-6">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="+">+</SelectItem>
-            <SelectItem value="-">-</SelectItem>
-            <SelectItem value="×">×</SelectItem>
-            <SelectItem value="÷">÷</SelectItem>
-          </SelectContent>
-        </Select>
-        <FractionInput num={num2} setNum={setNum2} den={den2} setDen={setDen2} label={L('분수 2', 'Fraction 2')} />
-      </div>
-      <div className="flex space-x-2">
-        <Button onClick={calculate} className="flex-1">{L('계산', 'Calculate')}</Button>
-        <Button onClick={reset} variant="outline" className="flex-1">{L('초기화', 'Reset')}</Button>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div>
-      {result ? (
-        <div className="space-y-4">
-          <div className="p-4 bg-muted rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">{L('계산 결과', 'Result')}</p>
-            <div className="text-center my-2">
-              <span className="font-mono text-2xl font-bold">
-                {result.numer}
-              </span>
-              <span className="mx-1">/</span>
-              <span className="font-mono text-2xl font-bold">
-                {result.denom}
-              </span>
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
-              {L('소수:', 'Decimal:')} {result.decimal.toFixed(6)}
-            </p>
-          </div>
-          <div className="p-3 bg-muted rounded-lg">
-            <p className="text-sm font-semibold mb-1">{L('단계별 계산', 'Step-by-Step')}</p>
-            <p className="text-xs font-mono">
-              {num1}/{den1} {operator} {num2}/{den2}
-            </p>
-            <p className="text-xs font-mono mt-1">
-              = {result.numer * (operator === '÷' ? 1 : 1)}/{result.denom}
-              {result.numer !== result.numer || result.denom !== result.denom ? ` = ${result.numer}/${result.denom}` : ''}
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="text-center py-8">
-          <p className="text-lg text-muted-foreground">{isKo ? '분수를 입력하세요' : 'Enter fractions to calculate'}</p>
-        </div>
-      )}
-    </div>
-  );
+  const faqs: { q: string; a: string }[] = [
+    {
+      q: L("분수의 덧셈은 어떻게 하나요?", "How do you add fractions?"),
+      a: L("분모가 같으면 분자끼리 더합니다. 분모가 다르면 최소공배수로 통분한 뒤 분자끼리 더합니다. 예: 1/2 + 1/4는 통분하면 2/4 + 1/4 = 3/4가 됩니다. 결과는 가능하면 기약분수로 약분합니다.", "If the denominators are the same, add the numerators. If not, find a common denominator (LCM), then add the numerators. Example: 1/2 + 1/4 becomes 2/4 + 1/4 = 3/4. Simplify the result to a reduced fraction when possible."),
+    },
+    {
+      q: L("분수의 곱셈은 어떻게 하나요?", "How do you multiply fractions?"),
+      a: L("분자끼리 곱하고 분모끼리 곱합니다: (a/b) × (c/d) = (a×c) / (b×d). 예: 2/3 × 3/4 = 6/12 = 1/2. 곱셈에서는 통분이 필요하지 않습니다.", "Multiply the numerators together and the denominators together: (a/b) × (c/d) = (a×c) / (b×d). Example: 2/3 × 3/4 = 6/12 = 1/2. Multiplication does not require a common denominator."),
+    },
+    {
+      q: L("분수의 나눗셈은 어떻게 하나요?", "How do you divide fractions?"),
+      a: L("나눗셈은 나누는 분수의 역수(분자와 분모를 뒤집은 값)를 곱하는 것으로 바꿉니다: (a/b) ÷ (c/d) = (a/b) × (d/c). 예: 3/4 ÷ 1/2 = 3/4 × 2/1 = 6/4 = 3/2 = 1.5.", "Division is converted to multiplication by the reciprocal (flip the divisor): (a/b) ÷ (c/d) = (a/b) × (d/c). Example: 3/4 ÷ 1/2 = 3/4 × 2/1 = 6/4 = 3/2 = 1.5."),
+    },
+    {
+      q: L("가분수와 대분수의 차이는 무엇인가요?", "What is the difference between improper and mixed fractions?"),
+      a: L("가분수는 분자가 분모보다 크거나 같은 분수입니다(예: 7/3). 대분수는 정수 부분과 진분수로 이루어진 수입니다(예: 2 1/3). 가분수를 대분수로 바꾸려면 분자를 분모로 나눈 몫이 정수 부분, 나머지가 새 분자가 됩니다. 7/3 = 2와 나머지 1이므로 2 1/3입니다.", "An improper fraction has a numerator greater than or equal to its denominator (e.g., 7/3). A mixed fraction combines a whole number and a proper fraction (e.g., 2 1/3). To convert an improper fraction to a mixed number, divide the numerator by the denominator: the quotient is the whole part and the remainder is the new numerator. 7/3 = 2 with remainder 1, so 2 1/3."),
+    },
+    {
+      q: L("분수를 소수로 변환하는 방법은 무엇인가요?", "How do you convert a fraction to a decimal?"),
+      a: L("분자를 분모로 나누면 소수로 변환됩니다. 예: 3/4 = 3 ÷ 4 = 0.75. 어떤 분수는 유한 소수(예: 1/2 = 0.5)가 되지만, 1/3 = 0.333...처럼 무한 순환 소수가 되는 경우도 있습니다. 이 계산기는 기약분수와 소수 결과를 동시에 보여줍니다.", "Divide the numerator by the denominator to convert to a decimal. Example: 3/4 = 3 ÷ 4 = 0.75. Some fractions give a finite decimal (e.g., 1/2 = 0.5), while others repeat infinitely (e.g., 1/3 = 0.333...). This calculator shows both the reduced fraction and decimal result."),
+    },
+  ];
 
   const infoSection = {
     calculatorDescription: (
@@ -156,34 +70,86 @@ export default function FractionCalculatorPage() {
         ]} />
       </div>
     ),
+    howToUse: (
+      <ol className="space-y-4 text-sm text-muted-foreground">
+        {[
+          [
+            L("두 분수 입력", "Enter two fractions"),
+            L("첫 번째와 두 번째 분수의 분자(numerator)와 분모(denominator)를 입력합니다. 분모는 0이 될 수 없습니다.", "Enter the numerator and denominator for the first and second fractions. The denominator cannot be zero."),
+          ],
+          [
+            L("연산 선택", "Choose an operation"),
+            L("덧셈(+), 뺄셈(-), 곱셈(×), 나눗셈(÷) 중 수행할 사칙연산을 선택합니다.", "Select the arithmetic operation to perform: addition (+), subtraction (−), multiplication (×), or division (÷)."),
+          ],
+          [
+            L("계산하기", "Calculate"),
+            L("계산 버튼을 눌러 두 분수의 연산 결과를 구합니다. 계산기는 결과를 기약분수로 약분해 보여줍니다.", "Press the calculate button to get the result of the operation. The calculator simplifies the result to a reduced fraction."),
+          ],
+          [
+            L("결과 읽기", "Read the result"),
+            L("결과를 분수와 소수 형식으로 모두 확인합니다. 필요하면 가분수/대분수 형태도 함께 확인할 수 있습니다.", "Review the result in both fraction and decimal form. You can also check the improper or mixed fraction form if needed."),
+          ],
+        ].map(([title, body], i) => (
+          <li key={i} className="flex gap-3">
+            <span className="shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs mt-0.5">{i + 1}</span>
+            <div>
+              <p className="font-semibold text-foreground">{title}</p>
+              <p className="mt-1">{body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    ),
+    workedExamples: (
+      <div className="space-y-6 text-sm text-muted-foreground">
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 덧셈", "Example 1 — Addition")}</p>
+          <p>
+            {L("1/2 + 1/4를 계산해 봅시다. 통분하면 2/4 + 1/4 = 3/4입니다. 따라서 1/2 + 1/4 = 3/4 = 0.75입니다.", "Compute 1/2 + 1/4. Using a common denominator: 2/4 + 1/4 = 3/4. So 1/2 + 1/4 = 3/4 = 0.75.")}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 곱셈", "Example 2 — Multiplication")}</p>
+          <p>
+            {L("2/3 × 3/4를 계산해 봅시다. 분자끼리, 분모끼리 곱하면 6/12이며, 약분하면 1/2입니다. 따라서 2/3 × 3/4 = 1/2 = 0.5입니다.", "Compute 2/3 × 3/4. Multiply numerators and denominators: 6/12, which reduces to 1/2. So 2/3 × 3/4 = 1/2 = 0.5.")}
+          </p>
+        </div>
+        <div>
+          <p className="font-semibold text-foreground mb-2">{L("예시 3 — 나눗셈", "Example 3 — Division")}</p>
+          <p>
+            {L("3/4 ÷ 1/2를 계산해 봅시다. 역수를 곱하면 3/4 × 2/1 = 6/4 = 3/2입니다. 따라서 3/4 ÷ 1/2 = 3/2 = 1.5입니다.", "Compute 3/4 ÷ 1/2. Multiply by the reciprocal: 3/4 × 2/1 = 6/4 = 3/2. So 3/4 ÷ 1/2 = 3/2 = 1.5.")}
+          </p>
+        </div>
+      </div>
+    ),
     calculationFormula: (
       <div className="space-y-6">
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-green-500 pl-3">{L('덧셈/뺄셈', 'Addition/Subtraction')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-lg font-bold">a/b + c/d = (a×d + c×b) / (b×d)</p>
-            <p className="font-mono text-lg font-bold mt-2">a/b - c/d = (a×d - c×b) / (b×d)</p>
+            <BlockMath math="\dfrac{a}{b} + \dfrac{c}{d} = \dfrac{ad + cb}{bd}" />
+            <BlockMath math="\dfrac{a}{b} - \dfrac{c}{d} = \dfrac{ad - cb}{bd}" />
           </div>
           <p className="text-sm mt-2">{L('분모가 다를 때: 통분(최소공배수) 후 분자끼리 연산', 'When denominators differ: find LCM, then operate on numerators')}</p>
         </div>
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-yellow-500 pl-3">{L('곱셈', 'Multiplication')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-lg font-bold">a/b × c/d = (a×c) / (b×d)</p>
+            <BlockMath math="\dfrac{a}{b} \times \dfrac{c}{d} = \dfrac{ac}{bd}" />
           </div>
           <p className="text-sm mt-2">{L('분자 × 분자, 분모 × 분모', 'Numerator × Numerator, Denominator × Denominator')}</p>
         </div>
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-purple-500 pl-3">{L('나눗셈', 'Division')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-lg font-bold">a/b ÷ c/d = a/b × d/c = (a×d) / (b×c)</p>
+            <BlockMath math="\dfrac{a}{b} \div \dfrac{c}{d} = \dfrac{a}{b} \times \dfrac{d}{c} = \dfrac{ad}{bc}" />
           </div>
           <p className="text-sm mt-2">{L('나눗셈은 역수를 곱하는 것으로 변환', 'Division is converted to multiplication by the reciprocal')}</p>
         </div>
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-indigo-500 pl-3">{L('약분 (GCD)', 'Simplification (GCD)')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="font-mono text-lg font-bold">GCD(a, b): 유클리드 호제법</p>
+            <BlockMath math="\text{GCD}(a, b):\ \text{유클리드 호제법}" />
           </div>
           <p className="text-sm mt-2">{L('최대공약수(GCD)로 나누어 기약분수로 변환', 'Divide by the Greatest Common Divisor (GCD) to get the reduced fraction')}</p>
         </div>
@@ -196,15 +162,15 @@ export default function FractionCalculatorPage() {
           <div className="space-y-3 mt-2">
             <div className="p-3 bg-muted rounded-lg">
               <p className="font-semibold text-sm">{L('덧셈 예시', 'Addition Example')}</p>
-              <p className="font-mono text-xs mt-1">1/2 + 1/3 = (1×3 + 1×2) / (2×3) = 5/6</p>
+              <BlockMath math="\dfrac{1}{2} + \dfrac{1}{3} = \dfrac{1 \times 3 + 1 \times 2}{2 \times 3} = \dfrac{5}{6}" />
             </div>
             <div className="p-3 bg-muted rounded-lg">
               <p className="font-semibold text-sm">{L('곱셈 예시', 'Multiplication Example')}</p>
-              <p className="font-mono text-xs mt-1">2/3 × 3/4 = 6/12 = 1/2</p>
+              <BlockMath math="\dfrac{2}{3} \times \dfrac{3}{4} = \dfrac{6}{12} = \dfrac{1}{2}" />
             </div>
             <div className="p-3 bg-muted rounded-lg">
               <p className="font-semibold text-sm">{L('나눗셈 예시', 'Division Example')}</p>
-              <p className="font-mono text-xs mt-1">3/5 ÷ 2/7 = 3/5 × 7/2 = 21/10</p>
+              <BlockMath math="\dfrac{3}{5} \div \dfrac{2}{7} = \dfrac{3}{5} \times \dfrac{7}{2} = \dfrac{21}{10}" />
             </div>
           </div>
         </div>
@@ -219,16 +185,32 @@ export default function FractionCalculatorPage() {
         </div>
       </div>
     ),
+    faq: (
+      <div className="space-y-5 text-sm text-muted-foreground">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
+  };
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
   };
 
   return (
-    <CalculatorsLayout
-      title={isKo ? '분수 계산기' : 'Fraction Calculator'}
-      description={isKo ? '두 분수의 사칙연산을 수행하고 기약분수와 소수로 결과를 표시합니다.' : 'Perform arithmetic on two fractions and see the result as a simplified fraction and decimal.'}
-      variant="split"
-      inputSection={inputSection}
-      resultSection={resultSection}
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
 }

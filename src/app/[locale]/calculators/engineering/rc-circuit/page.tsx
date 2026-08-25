@@ -1,15 +1,31 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import RcCircuitCalculator from '@/components/engineering-calculator/RcCircuitCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./RcCircuitClient";
+import { BlockMath } from "react-katex";
 
-export default function RcCircuitPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.rcCircuit;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/rc-circuit", "engineering", "rc-circuit");
+}
+
+
+
+export default function RcCircuitPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const dict = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
+  const t = dict?.common?.rcCircuit;
 
   const infoSection = {
     calculatorDescription: (
@@ -52,9 +68,9 @@ export default function RcCircuitPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">τ = R × C</p>
-            <p className="font-mono text-lg text-center">Q = C × V</p>
-            <p className="font-mono text-lg text-center">V_c(t) = V × (1 − e^(−t/τ))</p>
+            <BlockMath math="\tau = R C" />
+            <BlockMath math="Q = C V" />
+            <BlockMath math="V_c(t) = V\left(1 - e^{-t/\tau}\right)" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -115,16 +131,5 @@ export default function RcCircuitPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? 'RC 회로 계산기' : 'RC Circuit Calculator')}
-      description={t?.description || (ko ? 'RC 회로의 시정수와 충전 특성을 계산합니다.' : 'Calculate RC circuit time constant and charging characteristics.')}
-      icon={<span>⚡</span>}
-      visualizationComponent={<></>}
-      resultComponent={<RcCircuitCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

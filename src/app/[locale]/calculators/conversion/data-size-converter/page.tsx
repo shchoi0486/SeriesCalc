@@ -1,96 +1,66 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
+import TermGlossary from "@/components/calculators/TermGlossary";
+import FaqItem from "@/components/calculators/FaqItem";
 
-import React, { useState, useEffect } from 'react';
-import CalculatorsLayout from '@/components/calculators/Calculatorslayout';
-import { Input } from '@/components/ui/input';
-import TermGlossary from '@/components/calculators/TermGlossary';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./DataSizeConverterClient";
+import { BlockMath } from "react-katex";
 
-const units = ['Byte', 'KB', 'MB', 'GB', 'TB', 'PB'] as const;
-type Unit = typeof units[number];
-
-const toBytes: Record<Unit, number> = {
-  Byte: 1,
-  KB: 1024,
-  MB: 1024 ** 2,
-  GB: 1024 ** 3,
-  TB: 1024 ** 4,
-  PB: 1024 ** 5,
-};
-
-function convertDataSize(value: number, fromUnit: Unit): Record<Unit, number> {
-  const bytes = value * toBytes[fromUnit];
-  const result: Record<string, number> = {};
-  units.forEach((u) => {
-    result[u] = bytes / toBytes[u];
-  });
-  return result as Record<Unit, number>;
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/conversion/data-size-converter", "conversion", "data-size-converter");
 }
 
-function formatNumber(n: number): string {
-  if (n === 0) return '0';
-  if (n >= 1e15) return n.toExponential(2);
-  if (n < 0.0001 && n > 0) return n.toExponential(2);
-  if (Number.isInteger(n)) return n.toLocaleString();
-  return n.toFixed(6).replace(/\.?0+$/, '');
-}
 
-export default function DataSizeConverter() {
-  const { dict } = useI18n();
+
+export default function DataSizeConverterPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const dict = isKo ? koDict : enDict;
   const t = dict.dataSizeConverter;
 
-  const [value, setValue] = useState('1');
-  const [fromUnit, setFromUnit] = useState<Unit>('GB');
-  const [results, setResults] = useState<Record<Unit, number>>({
-    Byte: 0, KB: 0, MB: 0, GB: 1, TB: 0, PB: 0,
-  });
+  const L = (ko: string, en: string) => (isKo ? ko : en);
 
-  useEffect(() => {
-    const num = parseFloat(value);
-    if (!isNaN(num)) {
-      setResults(convertDataSize(num, fromUnit));
-    } else {
-      const empty: Record<string, number> = {};
-      units.forEach((u) => { empty[u] = 0; });
-      setResults(empty as Record<Unit, number>);
-    }
-  }, [value, fromUnit]);
+  const faqs = [
+    {
+      q: L('2진법(1024)과 10진법(1000)의 차이는 무엇인가요?', 'What is the difference between binary (1024) and decimal (1000)?'),
+      a: L('컴퓨터는 2의 거듭제곱을 사용하므로 1KB = 1,024바이트(2진법)로 계산합니다. 반면 하드디스크 제조사 등은 1KB = 1,000바이트(10진법)로 표기하는 경우가 많아, 같은 용량이라도 숫자가 달라질 수 있습니다.', 'Computers use powers of two, so 1 KB = 1,024 bytes (binary). In contrast, storage manufacturers often use 1 KB = 1,000 bytes (decimal), so the same capacity can be shown with different numbers.'),
+    },
+    {
+      q: L('GB와 GiB는 어떻게 다른가요?', 'How do GB and GiB differ?'),
+      a: L('GB는 10진법 기준 1,000,000,000바이트이고, GiB는 2진법 기준 1,073,741,824바이트입니다. 1GiB ≈ 1.074GB이며, 운영체제는 주로 GiB 단위를 표시하지만 GB로 부르는 경우가 많습니다.', 'GB is 1,000,000,000 bytes (decimal), while GiB is 1,073,741,824 bytes (binary). 1 GiB ≈ 1.074 GB, and operating systems often display GiB but call it GB.'),
+    },
+    {
+      q: L('저장장치 표시 용량이 광고보다 적은 이유는?', 'Why does storage show less capacity than advertised?'),
+      a: L('제조사는 10진법(1GB = 1,000MB)으로 용량을 표기하지만, 운영체제는 2진법(1GB = 1,024MB)으로 계산해 표시하기 때문에 실제 표시 용량이 광고보다 작아 보입니다.', 'Manufacturers list capacity in decimal (1 GB = 1,000 MB), but operating systems calculate and display in binary (1 GB = 1,024 MB), so the displayed capacity appears smaller than advertised.'),
+    },
+    {
+      q: L('비트(bit)와 바이트(byte)의 차이는 무엇인가요?', 'What is the difference between a bit and a byte?'),
+      a: L('비트는 정보의 가장 작은 단위로 0 또는 1을 나타내며, 바이트는 8개의 비트로 구성됩니다. 파일 크기는 주로 바이트 단위로 표시하고, 네트워크 속도는 비트 단위(예: Mbps)로 표시하는 경우가 많습니다.', 'A bit is the smallest unit of information representing 0 or 1, and a byte consists of 8 bits. File sizes are usually shown in bytes, while network speeds are often shown in bits (e.g., Mbps).'),
+    },
+    {
+      q: L('데이터 단위 간 변환은 어떻게 하나요?', 'How do I convert between data units?'),
+      a: L('더 큰 단위로 갈 때는 1,024로 나누고, 더 작은 단위로 갈 때는 1,024를 곱하면 됩니다. 예를 들어 2,048MB를 GB로 바꾸면 2,048 ÷ 1,024 = 2GB입니다.', 'Divide by 1,024 to go to a larger unit and multiply by 1,024 to go to a smaller unit. For example, 2,048 MB divided by 1,024 equals 2 GB.'),
+    },
+  ];
 
-  const inputSection = (
-    <div className="flex flex-col space-y-4">
-      <div className="flex items-center space-x-2">
-        <label htmlFor="dataValue" className="w-24">{t.inputLabel}</label>
-        <Input
-          id="dataValue"
-          type="number"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={t.inputPlaceholder}
-          className="flex-grow"
-        />
-        <select
-          value={fromUnit}
-          onChange={(e) => setFromUnit(e.target.value as Unit)}
-          className="border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
-        >
-          {units.map((u) => (
-            <option key={u} value={u}>{u}</option>
-          ))}
-        </select>
-      </div>
-    </div>
-  );
-
-  const resultSection = (
-    <div className="space-y-3">
-      {units.map((u) => (
-        <div key={u} className="flex items-center justify-between p-3 bg-muted rounded-md">
-          <span className="text-sm font-medium">{t.unitLabels[u]}</span>
-          <span className="text-sm font-bold text-primary">{formatNumber(results[u])} {u}</span>
-        </div>
-      ))}
-    </div>
-  );
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map(f => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
 
   const infoSection = {
     calculatorDescription: (
@@ -109,11 +79,11 @@ export default function DataSizeConverter() {
         <div>
           <h4 className="font-bold text-lg mb-2 border-l-4 border-green-500 pl-3">{t.formulaTitle}</h4>
           <div className="p-4 bg-muted rounded-lg">
-            <p className="text-center font-mono text-lg">1 KB = 1,024 Byte</p>
-            <p className="text-center font-mono text-lg mt-2">1 MB = 1,024 KB = 1,048,576 Byte</p>
-            <p className="text-center font-mono text-lg mt-2">1 GB = 1,024 MB = 1,073,741,824 Byte</p>
-            <p className="text-center font-mono text-lg mt-2">1 TB = 1,024 GB</p>
-            <p className="text-center font-mono text-lg mt-2">1 PB = 1,024 TB</p>
+            <BlockMath math="1\,\text{KB} = 1{,}024\,\text{Byte}" />
+            <BlockMath math="1\,\text{MB} = 1{,}024\,\text{KB} = 1{,}048{,}576\,\text{Byte}" />
+            <BlockMath math="1\,\text{GB} = 1{,}024\,\text{MB} = 1{,}073{,}741{,}824\,\text{Byte}" />
+            <BlockMath math="1\,\text{TB} = 1{,}024\,\text{GB}" />
+            <BlockMath math="1\,\text{PB} = 1{,}024\,\text{TB}" />
           </div>
         </div>
         <div className="p-3 bg-yellow-50 dark:bg-yellow-900/30 border-l-4 border-yellow-500 rounded-r-lg text-sm">
@@ -154,16 +124,48 @@ export default function DataSizeConverter() {
         </div>
       </div>
     ),
+    howToUse: (
+      <div className="space-y-4">
+        <ol className="list-decimal list-inside space-y-2">
+          <li>{L('입력 단위를 선택하세요 (B, KB, MB, GB, TB).', 'Choose the input unit (B, KB, MB, GB, TB).')}</li>
+          <li>{L('변환할 값을 입력하세요.', 'Enter the value to convert.')}</li>
+          <li>{L('출력 단위를 선택하세요.', 'Choose the output unit.')}</li>
+          <li>{L('변환 버튼을 누르면 결과가 표시됩니다.', 'Press convert to see the result.')}</li>
+        </ol>
+      </div>
+    ),
+    workedExamples: (
+      <div className="space-y-4">
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
+          <h4 className="font-bold text-base mb-2">{L('GB → MB 변환', 'GB → MB Conversion')}</h4>
+          <p className="text-sm">{L('1GB = 1,024MB입니다.', '1 GB = 1,024 MB.')}</p>
+        </div>
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
+          <h4 className="font-bold text-base mb-2">{L('MB → GB 변환', 'MB → GB Conversion')}</h4>
+          <p className="text-sm">{L('2,048MB = 2,048 ÷ 1,024 = 2GB입니다.', '2,048 MB = 2,048 ÷ 1,024 = 2 GB.')}</p>
+        </div>
+        <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
+          <h4 className="font-bold text-base mb-2">{L('TB → GB 변환', 'TB → GB Conversion')}</h4>
+          <p className="text-sm">{L('5TB = 5 × 1,024 = 5,120GB입니다.', '5 TB = 5 × 1,024 = 5,120 GB.')}</p>
+        </div>
+      </div>
+    ),
+    faq: (
+      <div className="space-y-4">
+        {faqs.map((f, i) => (
+          <FaqItem key={i} q={f.q} a={f.a} />
+        ))}
+      </div>
+    ),
   };
 
   return (
-    <CalculatorsLayout
-      title={t.title}
-      description={t.description}
-      inputSection={inputSection}
-      resultSection={resultSection}
-      variant="split"
-      infoSection={infoSection}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
+      <CalculatorClient infoSection={infoSection} />
+    </>
   );
 }

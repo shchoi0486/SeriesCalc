@@ -1,24 +1,15 @@
-"use client";
+import type { Metadata } from "next";
+import { buildCategoryMetadata } from "@/lib/calculatorSeo";
+import ListingClient from "./LifeListingClient";
 
-import CategoryPageLayout from '@/components/calculators/CategoryPageLayout';
-import { calculatorCategories } from '@/data/calculators';
-import { useI18n } from '@/i18n/I18nProvider';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCategoryMetadata(params.locale, "life");
+}
 
-const LifePage = () => {
-  const { dict } = useI18n();
-  const lifeCategory = calculatorCategories.find(cat => cat.id === 'life');
-
-  if (!lifeCategory) {
-    return <div>{dict.categories.notFound}</div>;
-  }
-
-  const categoryWithDescription = {
-    ...lifeCategory,
-    name: dict.categories.life.name,
-    description: dict.categories.life.description,
-  };
-
-  return <CategoryPageLayout category={categoryWithDescription} />;
-};
-
-export default LifePage;
+export default function Page() {
+  return <ListingClient />;
+}

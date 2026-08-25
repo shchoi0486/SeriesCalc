@@ -1,15 +1,31 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import AsmeSectionViiiCalculator from '@/components/engineering-calculator/AsmeSectionViiiCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./AsmeSectionViiiClient";
+import { BlockMath } from "react-katex";
 
-export default function AsmeSectionViiiPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.asmeSectionViii;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/asme-section-viii", "engineering", "asme-section-viii");
+}
+
+
+
+export default function AsmeSectionViiiPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const dict = isKo ? koDict : enDict;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
+  const t = dict?.common?.asmeSectionViii;
 
   const infoSection = {
     calculatorDescription: (
@@ -52,8 +68,8 @@ export default function AsmeSectionViiiPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-blue-600">Cylinder: t = (P × R) / (S × E − 0.6 × P)</p>
-            <p className="font-mono text-lg text-teal-600">Sphere: t = (P × R) / (2 × S × E − 0.2 × P)</p>
+            <BlockMath math="\text{Cylinder:}\;\; t = \dfrac{P R}{S E - 0.6 P}" />
+            <BlockMath math="\text{Sphere:}\;\; t = \dfrac{P R}{2 S E - 0.2 P}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -104,16 +120,5 @@ export default function AsmeSectionViiiPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || (ko ? 'ASME Section VIII 압력용기 계산기' : 'ASME Section VIII Vessel Calculator')}
-      description={t?.description || (ko ? '압력용기의 필요 벽 두께를 계산합니다.' : 'Calculate the required thickness for pressure vessels.')}
-      icon={<span>🛡️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<AsmeSectionViiiCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

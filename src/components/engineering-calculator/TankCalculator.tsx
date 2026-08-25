@@ -464,7 +464,7 @@ export default function TankCalculator() {
         const labels = missingFields
           .map(f => FIELD_LABELS[f]?.[isEn ? 'en' : 'ko'] ?? f)
           .join(', ');
-        alert(isEn ? `Please enter the following fields: ${labels}` : `다음 필드를 입력해주세요: ${labels}`);
+        toast.error(isEn ? `Please enter the following fields: ${labels}` : `다음 필드를 입력해주세요: ${labels}`);
       }
       
       // 입력값이 양수인지 검증

@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import NPSHCalculator from '@/components/engineering-calculator/NPSHCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { BlockMath } from "react-katex";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./NpshClient";
 
-export default function NPSHCalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict.npshCalculator;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/npsh", "engineering", "npsh");
+}
+
+
+
+export default function NpshPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -58,7 +70,7 @@ export default function NPSHCalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">NPSHa = (P_surf − P_vap) / (ρ·g) ± Z − H_l</p>
+            <BlockMath math="\text{NPSHa} = \frac{P_{surf} - P_{vap}}{\rho \cdot g} \pm Z - H_l" />
             <p className="font-mono text-sm text-muted-foreground">Z: + above pump, − below pump</p>
           </div>
         </div>
@@ -112,16 +124,5 @@ export default function NPSHCalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t.title}
-      description={t.description}
-      icon={<span>💧</span>}
-      visualizationComponent={<></>}
-      resultComponent={<NPSHCalculator dict={t} />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

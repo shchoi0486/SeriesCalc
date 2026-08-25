@@ -1,20 +1,36 @@
-'use client';
+import { en as enDict } from "@/i18n/dictionaries/en";
+import { ko as koDict } from "@/i18n/dictionaries/ko";
 
-import React from 'react';
-import HeatTransferCalculator from '@/components/engineering-calculator/HeatTransferCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./HeatTransferClient";
+import { BlockMath } from "react-katex";
 
-export default function HeatTransferPage() {
-  const { dict, locale, unitSystem } = useI18n();
-  const t = dict?.common?.heatTransfer;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/heat-transfer", "engineering", "heat-transfer");
+}
+
+
+
+export default function HeatTransferPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
+  const d = isKo ? koDict : enDict;
+  const unitSystem: string = "metric";
+  const imperial = unitSystem === "imperial";
   const L = (koText: string, enText: string) => (ko ? koText : enText);
-  const imperial = unitSystem === 'imperial';
+  const qUnit = imperial ? 'BTU/hr' : 'W';
   const kUnit = imperial ? 'BTU/(hr·ft·°F)' : 'W/(m·K)';
   const aUnit = imperial ? 'ft²' : 'm²';
   const dUnit = imperial ? 'in' : 'm';
-  const qUnit = imperial ? 'BTU/hr' : 'W';
   const tUnit = imperial ? '°F' : '°C';
 
   const infoSection = {
@@ -58,8 +74,8 @@ export default function HeatTransferPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center">Q = (k · A · ΔT) / d</p>
-            <p className="font-mono text-base text-center text-muted-foreground">q = Q / A</p>
+            <BlockMath math="Q = \dfrac{k A \Delta T}{d}" />
+            <BlockMath math="q = \dfrac{Q}{A}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -110,16 +126,5 @@ export default function HeatTransferPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || L('열전도 계산기', 'Heat Conduction Calculator')}
-      description={t?.description || L('재료를 통과하는 열전달률을 계산합니다.', 'Calculate the rate of heat transfer through a material.')}
-      icon={<span>🌡️</span>}
-      visualizationComponent={<></>}
-      resultComponent={<HeatTransferCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import HydraulicJumpCalculator from '@/components/engineering-calculator/HydraulicJumpCalculator';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./HydraulicJumpClient";
+import { BlockMath } from "react-katex";
 
-export default function HydraulicJumpPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.common?.hydraulicJump;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/hydraulic-jump", "engineering", "hydraulic-jump");
+}
+
+
+
+export default function HydraulicJumpPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,9 +64,9 @@ export default function HydraulicJumpPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-3">
-            <p className="font-mono text-base text-center">Fr₁ = v₁ / √(g · y₁)</p>
-            <p className="font-mono text-base text-center">y₂ = (y₁ / 2) · [ √(1 + 8·Fr₁²) − 1 ]</p>
-            <p className="font-mono text-base text-center">ΔE = (y₂ − y₁)³ / (4 · y₁ · y₂)</p>
+            <BlockMath math="Fr_1 = \dfrac{v_1}{\sqrt{g\,y_1}}" />
+            <BlockMath math="y_2 = \frac{y_1}{2}\left[\sqrt{1 + 8\,Fr_1^2} - 1\right]" />
+            <BlockMath math="\Delta E = \dfrac{(y_2 - y_1)^3}{4\,y_1\,y_2}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -104,16 +116,5 @@ export default function HydraulicJumpPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.title || L('수력 도약 계산기', 'Hydraulic Jump Calculator')}
-      description={t?.description || L('개수로 수력 도약의 도약 후 수심과 에너지 손실을 계산합니다.', 'Calculate sequent depth and energy loss in an open channel hydraulic jump.')}
-      icon={<span>🌊</span>}
-      visualizationComponent={<></>}
-      resultComponent={<HydraulicJumpCalculator />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }

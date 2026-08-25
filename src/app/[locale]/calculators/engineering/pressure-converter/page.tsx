@@ -1,14 +1,26 @@
-'use client';
 
-import React from 'react';
-import PressureConverter from '@/components/engineering-calculator/PressureConverter';
-import CalculatorLayout from '@/components/engineering-calculator/CalculatorLayout';
-import { useI18n } from '@/i18n/I18nProvider';
+import type { Metadata } from "next";
+import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
+import CalculatorClient from "./PressureConverterClient";
+import { BlockMath } from "react-katex";
 
-export default function CalculatorPage() {
-  const { dict, locale } = useI18n();
-  const t = dict?.calculatorNames;
-  const ko = locale === 'ko';
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Metadata {
+  return buildCalculatorMetadata(params.locale, "/calculators/engineering/pressure-converter", "engineering", "pressure-converter");
+}
+
+
+
+export default function PressureConverterPage({
+  params,
+}: {
+  params: { locale: string };
+}) {
+  const isKo = params.locale === "ko";
+  const ko = isKo;
   const L = (koText: string, enText: string) => (ko ? koText : enText);
 
   const infoSection = {
@@ -52,8 +64,8 @@ export default function CalculatorPage() {
             )}
           </p>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">1 atm = 101,325 Pa = 101.325 kPa = 1.01325 bar</p>
-            <p className="font-mono text-lg text-center text-purple-600">1 atm = 14.696 psi = 760 mmHg = 10,332.6 cmH₂O</p>
+            <BlockMath math="1\ \text{atm} = 101{,}325\ \text{Pa} = 101.325\ \text{kPa} = 1.01325\ \text{bar}" />
+            <BlockMath math="1\ \text{atm} = 14.696\ \text{psi} = 760\ \text{mmHg} = 10{,}332.6\ \text{cmH}_2\text{O}" />
           </div>
         </div>
         <ul className="space-y-2 text-sm">
@@ -67,7 +79,7 @@ export default function CalculatorPage() {
         <div>
           <h4 className="font-bold text-base mb-2">{L('일반 변환 공식', 'General conversion formula')}</h4>
           <div className="p-4 bg-muted rounded-lg flex flex-col items-center space-y-2">
-            <p className="font-mono text-lg text-center text-purple-600">P<sub>target</sub> = P<sub>source</sub> × (C<sub>target</sub> / C<sub>source</sub>)</p>
+            <BlockMath math="P_{\text{target}} = P_{\text{source}}\left(\dfrac{C_{\text{target}}}{C_{\text{source}}}\right)" />
           </div>
           <p className="text-sm mt-2">
             {L(
@@ -100,16 +112,5 @@ export default function CalculatorPage() {
     ),
   };
 
-  return (
-    <CalculatorLayout
-      title={t?.['pressure-converter'] || (ko ? '압력 단위 변환기' : 'Pressure Unit Converter')}
-      description={t?.['pressure-converter'] || (ko ? '압력 단위를 상호 변환합니다' : 'Convert between pressure units')}
-      icon={<span>🔧</span>}
-      visualizationComponent={<></>}
-      resultComponent={<PressureConverter />}
-      infoSection={infoSection}
-    >
-      <></>
-    </CalculatorLayout>
-  );
+  return <CalculatorClient infoSection={infoSection} />;
 }
