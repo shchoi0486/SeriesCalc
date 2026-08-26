@@ -8,6 +8,11 @@ const SITE_URL =
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = ["", "/about", "/privacy-policy", "/terms-of-service", "/contact"];
+  const guidePaths = [
+    "/guides/compound-interest-power",
+    "/guides/jeonse-vs-wolse",
+    "/guides/mortgage-repayment-types",
+  ];
 
   const calcHrefs: string[] = [];
   for (const cat of calculatorCategories) {
@@ -30,6 +35,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       if (isMarketAllowed(href, locale)) {
         urls.push({ url: `${SITE_URL}/${locale}${href}`, lastModified: now });
       }
+    }
+    for (const href of guidePaths) {
+      urls.push({ url: `${SITE_URL}/${locale}${href}`, lastModified: now });
     }
   }
 

@@ -10,6 +10,7 @@ import { en } from "@/i18n/dictionaries/en";
 import { ko } from "@/i18n/dictionaries/ko";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { notFound } from "next/navigation";
+import SiteStructuredData from "@/components/seo/SiteStructuredData";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://allincalc.com"),
@@ -55,6 +56,7 @@ export default function LocaleLayout({
         )}
       </head>
       <body className={`antialiased`} suppressHydrationWarning={true}>
+        <SiteStructuredData locale={locale} />
         <Providers>
           <Layout>
             <I18nProvider locale={locale} dict={dict}>

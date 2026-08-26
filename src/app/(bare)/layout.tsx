@@ -3,6 +3,7 @@ import "../globals.css";
 import Providers from "../providers";
 import Layout from "@/components/layout/Layout";
 import { Toaster } from "sonner";
+import SiteStructuredData from "@/components/seo/SiteStructuredData";
 
 export default function BareLayout({
   children,
@@ -31,6 +32,7 @@ export default function BareLayout({
         )}
       </head>
       <body className={`antialiased`} suppressHydrationWarning={true}>
+        <SiteStructuredData />
         <Providers>
           <Layout>{children}</Layout>
           <Toaster richColors closeButton />

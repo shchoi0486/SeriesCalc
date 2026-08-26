@@ -13,6 +13,8 @@ import {
 } from '@/components/ui/accordion';
 import { useI18n } from '@/i18n/I18nProvider';
 import UnitSystemToggle from '@/components/calculators/UnitSystemToggle';
+import RelatedCalculators from '@/components/calculators/RelatedCalculators';
+import AffiliateSlot from '@/components/sections/AffiliateSlot';
 
 type LayoutVariant = 'split' | 'single' | 'grouped';
 
@@ -60,7 +62,24 @@ const CalculatorsLayout: React.FC<CalculatorsLayoutProps> = ({
 }: CalculatorsLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { dict } = useI18n();
+  const { locale, dict } = useI18n();
+
+  const SITE_URL =
+    (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allincalc.com').replace(/\/$/, '');
+  const pathSegs = (pathname || '').split('/').filter(Boolean);
+  const breadcrumbItems =
+    pathSegs.length >= 4 && pathSegs[1] === 'calculators'
+      ? [
+          { name: dict.common?.home ?? (locale === 'ko' ? '홈' : 'Home'), url: `/${locale}` },
+          {
+            name:
+              (dict.categories as unknown as Record<string, { name?: string }>)[pathSegs[2]]
+                ?.name ?? pathSegs[2],
+            url: `/${locale}/calculators/${pathSegs[2]}`,
+          },
+          { name: title, url: pathname || '' },
+        ]
+      : [];
 
   const handleBackClick = () => {
     const pathSegments = (pathname || '').split('/').filter(segment => segment !== '');
@@ -129,6 +148,23 @@ const CalculatorsLayout: React.FC<CalculatorsLayoutProps> = ({
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4">
+      {breadcrumbItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: breadcrumbItems.map((c, i) => ({
+                '@type': 'ListItem',
+                position: i + 1,
+                name: c.name,
+                item: `${SITE_URL}${c.url}`,
+              })),
+            }).replace(/</g, '\\u003c'),
+          }}
+        />
+      )}
       <div className="text-center mb-6 relative">
         <Button
           variant="outline"
@@ -163,6 +199,8 @@ const CalculatorsLayout: React.FC<CalculatorsLayoutProps> = ({
           </CardContent>
         </Card>
       </div>
+
+      <AffiliateSlot />
 
       {fullWidthSection && (
         <Card className="mb-8">
@@ -206,6 +244,8 @@ const CalculatorsLayout: React.FC<CalculatorsLayoutProps> = ({
           </AccordionItem>
         ))}
       </Accordion>
+
+      <RelatedCalculators />
     </div>
   );
 };

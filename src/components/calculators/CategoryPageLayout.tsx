@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ArrowRight, Briefcase, Landmark, PiggyBank, Building, HandCoins, FileText, Calculator as CalculatorIcon, Coins, Percent, Divide, Sigma, BarChart, Shield, Calendar, Heart, Ruler, ArrowLeftRight, Zap, Wind, Droplets, FlaskConical, Cpu, Gamepad2, Sparkles, Bot, Code, Palette, Timer, Globe, Binary, Link2, Search, Lock, Minimize2, Maximize2, Hash, Mail, Type, Notebook, Wifi, Square, Triangle, Circle, Leaf, Brain, TestTube, Anchor, Sun, Cloud, Flame, DraftingCompass, Rocket, Trophy, Gem, Key, Layers, Monitor, Music, ShoppingCart, Truck, Utensils, Wrench, BookOpen, Waves, HardDrive, Box, Image, FileJson, FileCode, QrCode, Keyboard, Dice5, Beaker, Car, TrendingUp, Receipt, Clock, GraduationCap, Building2, HeartPulse, Scale, Activity } from 'lucide-react';
 
 const CALCULATOR_ICONS: Record<string, React.ElementType> = {
@@ -227,6 +228,13 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
   const [searchTerm, setSearchTerm] = useState('');
   const [showRegionNotice, setShowRegionNotice] = useState(false);
   const { dict, locale } = useI18n();
+  const pathname = usePathname() || '';
+  const SITE_URL =
+    (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allincalc.com').replace(/\/$/, '');
+  const categoryCrumbs = [
+    { name: dict.common?.home ?? (locale === 'ko' ? '홈' : 'Home'), url: `/${locale}` },
+    { name: category.name, url: pathname },
+  ];
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.hash === '#unsupported') {
@@ -257,6 +265,21 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
 
   return (
     <div className="bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: categoryCrumbs.map((c, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: c.name,
+              item: `${SITE_URL}${c.url}`,
+            })),
+          }).replace(/</g, '\\u003c'),
+        }}
+      />
       <div className="container mx-auto px-4 py-8 sm:py-12">
         {showRegionNotice && (
           <div className="mb-8 max-w-2xl mx-auto rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/40 dark:border-amber-800 px-5 py-4 text-sm text-amber-900 dark:text-amber-200">

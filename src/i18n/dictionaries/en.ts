@@ -1314,6 +1314,8 @@ export const en = {
     formula: 'Formula',
     tips: 'Useful Tips',
     faq: 'Frequently Asked Questions',
+    related: 'Related calculators',
+    sponsored: 'Sponsored',
   },
   loanInterest: {
     title: 'Loan Interest Calculator',

@@ -1314,6 +1314,8 @@ export const ko: Dictionary = {
     formula: '계산 공식',
     tips: '유용한 팁',
     faq: '자주 묻는 질문',
+    related: '관련 계산기',
+    sponsored: '광고',
   },
   loanInterest: {
     title: '대출 이자 계산기',
