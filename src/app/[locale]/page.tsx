@@ -33,13 +33,10 @@ export default function Home({ params }: { params: { locale: string } }) {
         </section>
 
         <section className="text-center max-w-3xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground">
-            {locale === 'ko' ? '모든 계산기, 한곳에서' : 'Every Calculator, One Place'}
-          </h1>
-          <p className="mt-4 text-lg leading-8 text-muted-foreground">
+          <p className="mt-2 text-base leading-7 text-muted-foreground">
             {locale === 'ko'
-              ? 'AllinCalc는 일상생활부터 금융, 과학, 공학까지 필요한 모든 계산기를 무료로 제공합니다. 회원가입 없이 즉시 사용할 수 있으며, 입력하신 값은 브라우저 내에서만 처리되어 개인정보가 안전하게 보호됩니다.'
-              : 'AllinCalc offers every calculator you need — from daily life to finance, science, and engineering — for free. No sign-up required, and your inputs are processed privately in your browser to keep your data safe.'}
+              ? '회원가입 없이 즉시 사용할 수 있으며, 입력하신 값은 브라우저 내에서만 처리되어 개인정보가 안전하게 보호됩니다.'
+              : 'No sign-up required — your inputs are processed privately in your browser, keeping your data safe.'}
           </p>
         </section>
 
