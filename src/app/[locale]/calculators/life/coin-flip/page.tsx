@@ -43,15 +43,15 @@ export default function CoinFlipPage({
     {
       q: L("연속으로 같은 면이 나올 확률은?", "What's the probability of the same side streak?"),
       a: L(
-        "연속 n번 동일 면이 나올 확률은 (1/2)^n입니다. 연속 5번 = 1/32 ≈ 3.1%, 연속 10번 = 1/1024 ≈ 0.098%. 많은 사람들이 '앞면 3번 연속이면 뒷면이 나올 차례'라고 생각하지만(도박사의 오류), 각 던지는 것은 독립적이라 이전 결과는 다음에 영향을 주지 않습니다.",
-        "Probability of n consecutive same sides = (1/2)^n. Five in a row ≈ 3.1%; ten ≈ 0.1%. The gambler's fallacy — 'tails is due after three heads' — ignores that each flip is independent.",
+        "연속 n번 동일 면이 나올 확률은 (1/2)^n입니다. 연속 5번 = 1/32 ≈ 3.1%, 연속 10번 = 1/1024 ≈ 0.098%. 많은 사람들이 '앞면 3번 연속이면 뒷면이 나올 차례'라고 생각하지만(흔한 착각), 각 던지는 것은 독립적이라 이전 결과는 다음에 영향을 주지 않습니다.",
+        "Probability of n consecutive same sides = (1/2)^n. Five in a row ≈ 3.1%; ten ≈ 0.1%. A common misconception — 'tails is due after three heads' — ignores that each flip is independent.",
       ),
     },
     {
       q: L("Math.random()의 난수 품질은 어떤가요?", "How good is Math.random()'s randomness?"),
       a: L(
-        "Math.random()은 Mersenne Twister 기반으로, 일반적인 용도에는 충분한 의사난수를 생성합니다. 다만 암호학적으로는 예측 가능성이 있어, 도박·추첨 등 공정성이 요구되는 상황에서는 crypto.getRandomValues()가 더 적합합니다. 이 도구는 장난감·재미 목적이므로 Math.random()으로 충분합니다.",
-        "Math.random() uses Mersenne Twister, adequate for general purposes but not cryptographically secure. For fairness-critical applications (gambling, lotteries), crypto.getRandomValues() is more appropriate. For entertainment, Math.random() suffices.",
+        "Math.random()은 Mersenne Twister 기반으로, 일반적인 용도에는 충분한 의사난수를 생성합니다. 다만 암호학적으로는 예측 가능성이 있어, 공정성이 법적으로 요구되는 상황에서는 crypto.getRandomValues()가 더 적합합니다. 이 도구는 장난감·재미 목적이므로 Math.random()으로 충분합니다.",
+        "Math.random() uses Mersenne Twister, adequate for general purposes but not cryptographically secure. For fairness-critical applications, crypto.getRandomValues() is more appropriate. For entertainment, Math.random() suffices.",
       ),
     },
     {

@@ -251,10 +251,10 @@ const RandomNumberGenerator: React.FC = () => {
     usefulTips: (
       <div className="space-y-6">
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
-          <h4 className="font-bold text-lg mb-2">{t.tips.lottery}</h4>
+          <h4 className="font-bold text-lg mb-2">{t.tips.randomSelection}</h4>
           <ul className="list-disc list-inside space-y-2 mt-2">
-            <li>{t.tips.lotteryTip1}</li>
-            <li>{t.tips.lotteryTip2}</li>
+            <li>{t.tips.randomSelectionTip1}</li>
+            <li>{t.tips.randomSelectionTip2}</li>
           </ul>
         </div>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
@@ -311,8 +311,8 @@ const RandomNumberGenerator: React.FC = () => {
           <p>{L('범위 1~6, 개수 2를 설정하면 주사위를 두 번 던진 것처럼 1에서 6 사이의 두 숫자가 생성됩니다.', 'Set the range 1-6 and count 2 to generate two numbers between 1 and 6, just like rolling a die twice.')}</p>
         </div>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
-          <h4 className="font-bold text-lg mb-2">{L('로또 번호', 'Lottery Numbers')}</h4>
-          <p>{L('범위 1~45, 개수 6, 중복 없음을 선택하면 겹치지 않는 6개의 로또 번호가 생성됩니다.', 'Select range 1-45, count 6, and no duplicates to generate 6 unique lottery numbers.')}</p>
+          <h4 className="font-bold text-lg mb-2">{L('무작위 추출', 'Random Selection')}</h4>
+          <p>{L('범위 1~100, 개수 5, 중복 없음을 선택하면 겹치지 않는 5개의 숫자가 생성됩니다.', 'Select range 1-100, count 5, and no duplicates to generate 5 unique numbers.')}</p>
         </div>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h4 className="font-bold text-lg mb-2">{L('정렬된 목록', 'Sorted List')}</h4>
@@ -336,8 +336,8 @@ const RandomNumberGenerator: React.FC = () => {
             a: L('계산기는 두 값을 자동으로 정렬하여 올바른 범위로 처리하므로 항상 유효한 결과를 생성합니다.', 'The calculator automatically sorts the two values into the correct range, so it always produces a valid result.'),
           },
           {
-            q: L('로또 번호는 정말 무작위인가요?', 'Are lottery numbers truly random?'),
-            a: L('네. 각 번호는 독립적으로 무작위로 선택되므로 중복을 제외하면 실제 로또 추첨과 동일한 확률 분포를 따릅니다.', 'Yes. Each number is selected independently and at random, so excluding duplicates it follows the same probability distribution as a real lottery draw.'),
+            q: L('생성된 번호에 편향이 없나요?', 'Are the generated numbers unbiased?'),
+            a: L('네. 각 번호는 독립적으로 균등한 확률로 선택되므로 편향 없이 무작위로 생성됩니다.', 'Yes. Each number is selected independently with equal probability, so the results are unbiased and random.'),
           },
           {
             q: L('보안에 중요한 용도에는 어떤 난수를 사용해야 하나요?', 'Which random numbers should be used for security-critical purposes?'),

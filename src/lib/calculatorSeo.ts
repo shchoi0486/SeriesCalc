@@ -22,6 +22,35 @@ type LocaleCopy = { title: string; description: string };
 // 주요 계산기의 메타데이터(검색 결과 노출용)를 dict 값과 무관하게 우선 적용한다.
 // UI 표시명(dict.calculatorNames)은 카테고리 페이지 등에서 재사용되므로 건드리지 않는다.
 const META_OVERRIDES: Record<string, { ko: LocaleCopy; en: LocaleCopy }> = {
+  // 국가전용 신규 계산기
+  "401k": {
+    ko: { title: "401(k) / Roth IRA 계산기 - 미국 은퇴 적립 시뮬레이션", description: "미국 401(k)·Roth IRA의 은퇴 적립금을 회사 매칭·수익률·세금 혜택을 반영해 계산합니다." },
+    en: { title: "401(k) & Roth IRA Calculator — Project Retirement Savings with Employer Match", description: "Project your 401(k) or Roth IRA balance with employer match, expected return, and tax-deferred growth." },
+  },
+  "mortgage-piti": {
+    ko: { title: "Mortgage PITI & PMI 계산기 (미국 주택담보대출)", description: "미국 주택담보대출의 월 상환액(PITI)과 PMI를 세금·보험료까지 포함해 계산합니다." },
+    en: { title: "Mortgage PITI & PMI Calculator — Estimate Monthly Payment with Taxes & Insurance", description: "Estimate your US mortgage monthly payment including principal, interest, property tax, insurance, and PMI." },
+  },
+  "credit-card-payoff": {
+    ko: { title: "Credit Card Payoff 계산기 (미국 리볼빙)", description: "미국 신용카드 잔액을 APR 이자를 고려해 상환하는 데 걸리는 기간과 이자 절감액을 계산합니다." },
+    en: { title: "Credit Card Payoff Calculator — Pay Off Balance & Save on APR Interest", description: "See how long it takes to pay off your credit card and how much interest you save by increasing monthly payments." },
+  },
+  "rsu-tax": {
+    ko: { title: "RSU / 주식 보상 세금 계산기 (미국)", description: "미국 RSU 베스팅·스톡옵션 행사 시 연방세·주세·FICA를 반영한 실수령 주식 가치를 계산합니다." },
+    en: { title: "RSU & Equity Tax Calculator — Estimate Tax on Vestings & Exercises", description: "Estimate the after-tax value of RSU vestings and stock option exercises with federal, state, and FICA taxes." },
+  },
+  "jeonse-vs-wolse": {
+    ko: { title: "전세 vs 월세 비교 계산기 - 어떤 게 유리할까?", description: "전세와 월세를 기회비용(예금 이자) 기준으로 비교해 나에게 유리한 주거 형태를 계산합니다." },
+    en: { title: "Jeonse vs Wolse Calculator — Compare Lease Types (Korea)", description: "Compare Korea's jeonse (lump-sum deposit) and wolse (monthly rent) using the opportunity cost of deposit interest." },
+  },
+  "acquisition-tax": {
+    ko: { title: "주택 취득세 계산기 - 취득세율·중과세율 적용", description: "주택 취득세를 조정대상지역·다주택자 중과 및 생애최초·취약계층 감면을 반영해 계산합니다." },
+    en: { title: "Korea Acquisition Tax Calculator — Property Purchase Tax", description: "Calculate Korean real estate acquisition tax with regional surcharges and multi-homeowner heavy taxation rules." },
+  },
+  "isa": {
+    ko: { title: "ISA / 청년도약계좌 계산기 - 비과세 혜택 확인", description: "ISA와 청년도약계좌의 비과세·세금 혜택과 만기 시 예상 수령액을 계산합니다." },
+    en: { title: "ISA & Youth Leap Account Calculator (Korea)", description: "Estimate the tax-free benefits and matured value of Korea's ISA and Youth Leap Account." },
+  },
   "salary-calculator": {
     ko: {
       title: "연봉 실수령액 계산기 - 세후 월급, 4대보험·소득세 자동 계산",
@@ -737,8 +766,8 @@ function alternatesFor(locale: string, calcPath: string) {
   return {
     canonical: `/${loc}${calcPath}`,
     languages: {
-      ko: `/ko${calcPath}`,
-      en: `/en${calcPath}`,
+      "ko-kr": `/ko${calcPath}`,
+      "en-us": `/en${calcPath}`,
       "x-default": `/en${calcPath}`,
     },
   };

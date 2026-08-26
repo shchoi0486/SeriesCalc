@@ -25,6 +25,7 @@ export const calculatorCategories = [
           { id: 'amortization-schedule', name: '상환 스케줄 계산기', href: '/calculators/finance/amortization-schedule' },
           { id: 'credit-card-installment-fee', name: '신용카드 할부 수수료 계산기', href: '/calculators/finance/credit-card-installment-fee' },
           { id: 'auto-loan-calculator', name: '자동차 대출 계산기', href: '/calculators/finance/auto-loan-calculator', locales: ['en'] },
+          { id: 'credit-card-payoff', name: 'Credit Card Payoff Calculator', href: '/calculators/finance/credit-card-payoff', locales: ['en'] },
         ],
       },
       {
@@ -35,26 +36,30 @@ export const calculatorCategories = [
           { id: 'property-tax-calculator', name: '부동산세 계산기', href: '/calculators/finance/property-tax-calculator' },
           { id: 'jeonse-deposit-calculator', name: '전세보증금 대출 한도', href: '/calculators/finance/jeonse-deposit-calculator', locales: ['ko'] },
           { id: 'charter-loan-calculator', name: '전세자금대출 계산기', href: '/calculators/finance/charter-loan-calculator', locales: ['ko'] },
+          { id: 'mortgage-piti', name: 'Mortgage PITI & PMI Calculator', href: '/calculators/finance/mortgage-piti', locales: ['en'] },
+          { id: 'jeonse-vs-wolse', name: '전세 vs 월세 비교 계산기', href: '/calculators/finance/jeonse-vs-wolse', locales: ['ko'] },
+          { id: 'acquisition-tax', name: '주택 취득세 계산기', href: '/calculators/finance/acquisition-tax', locales: ['ko'] },
         ],
       },
       {
         id: 'business-income',
         name: '사업소득 계산기',
         calculators: [
-          { id: 'vat-calculator', name: '부가가치세 계산기', href: '/calculators/finance/vat' },
+          { id: 'vat-calculator', name: '부가가치세 계산기', href: '/calculators/finance/vat', locales: ['ko'] },
         ],
       },
       {
         id: 'salary-income',
         name: '급여 및 소득',
         calculators: [
-          { id: 'ordinary-wage', name: '통상임금 계산기', href: '/calculators/finance/ordinary-wage' },
-          { id: 'insurance', name: '4대보험 계산기', href: '/calculators/finance/insurance' },
-          { id: 'retirement', name: '퇴직금 계산기', href: '/calculators/finance/retirement' },
-          { id: 'annual-leave', name: '연차 계산기', href: '/calculators/finance/annual-leave' },
+          { id: 'ordinary-wage', name: '통상임금 계산기', href: '/calculators/finance/ordinary-wage', locales: ['ko'] },
+          { id: 'insurance', name: '4대보험 계산기', href: '/calculators/finance/insurance', locales: ['ko'] },
+          { id: 'retirement', name: '퇴직금 계산기', href: '/calculators/finance/retirement', locales: ['ko'] },
+          { id: 'annual-leave', name: '연차 계산기', href: '/calculators/finance/annual-leave', locales: ['ko'] },
           { id: 'net-salary-calculator', name: '실수령액 계산기', href: '/calculators/finance/net-salary-calculator', locales: ['ko'] },
           { id: 'salary-calculator', name: '연봉 변환 계산기', href: '/calculators/finance/salary-calculator', locales: ['ko'] },
           { id: 'income-tax-calculator', name: '소득세 계산기', href: '/calculators/finance/income-tax-calculator', locales: ['ko'] },
+          { id: 'rsu-tax', name: 'RSU / Equity Tax Calculator', href: '/calculators/finance/rsu-tax', locales: ['en'] },
         ],
       },
       {
@@ -63,6 +68,7 @@ export const calculatorCategories = [
         calculators: [
           { id: 'stock-compound-interest', name: '주식 복리 계산기', href: '/calculators/finance/stock-compound-interest' },
           { id: 'cagr', name: 'CAGR 계산기', href: '/calculators/finance/cagr' },
+          { id: '401k', name: '401(k) / Roth IRA Calculator', href: '/calculators/finance/401k', locales: ['en'] },
         ],
       },
       {
@@ -72,6 +78,7 @@ export const calculatorCategories = [
           { id: 'deposit-interest', name: '정기예금 이자 계산기', href: '/calculators/finance/deposit-interest' },
           { id: 'regular-installment-savings', name: '정기적금 계산기', href: '/calculators/finance/regular-installment-savings' },
           { id: 'free-installment-savings', name: '자유적금 계산기', href: '/calculators/finance/free-installment-savings' },
+          { id: 'isa', name: 'ISA / 청년도약계좌 계산기', href: '/calculators/finance/isa', locales: ['ko'] },
         ],
       },
       {

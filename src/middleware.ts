@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { locales, defaultLocale, isLocale } from '@/i18n/config';
+import { isMarketAllowed } from '@/data/calculatorMarkets';
 
 // 영어 우선 자동 판별: 쿠키 → Accept-Language(명시적 ko 최우선일 때만 ko) → 기본 en
 function detectLocale(req: NextRequest): string {
@@ -19,6 +20,16 @@ export function middleware(req: NextRequest) {
 
   // 이미 로케일 접두사가 있으면 통과
   if (maybeLocale && isLocale(maybeLocale)) {
+    // 계산기 상세 페이지: 해당 시장(국가)에서 지원하지 않으면 부모 카테고리로 리다이렉트
+    if (segments[2] === 'calculators' && segments[3] && segments[4]) {
+      const href = '/' + segments.slice(2).join('/');
+      if (!isMarketAllowed(href, maybeLocale)) {
+        const url = req.nextUrl.clone();
+        url.pathname = `/${maybeLocale}/calculators/${segments[3]}`;
+        url.hash = 'unsupported';
+        return NextResponse.redirect(url);
+      }
+    }
     return NextResponse.next();
   }
 

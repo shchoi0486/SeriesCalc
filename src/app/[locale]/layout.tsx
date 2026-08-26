@@ -36,6 +36,14 @@ export default function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning className="overflow-y-scroll">
       <head>
+        <Script
+          id="consent-mode-v2"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});",
+          }}
+        />
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT && (
           <Script
             id="adsense-script"

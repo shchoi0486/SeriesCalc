@@ -36,8 +36,8 @@ export default function VirtualDicePage({
     {
       q: L("Math.random()으로 공정한 결과가 나오나요?", "Is the result fair with Math.random()?"),
       a: L(
-        "Math.random()은 Mersenne Twister 의사난수 생성기로, 일반적인 entertaintment 용도에는 충분히 균일한 분포를 보장합니다. 다만 온라인 도박·추첨처럼 공정성이 법적으로 요구되는 상황에서는 crypto.getRandomValues() 기반 난수가 필요할 수 있습니다.",
-        "Math.random() uses Mersenne Twister, which provides sufficiently uniform distribution for entertainment. For legally fairness-critical uses (gambling, lotteries), crypto.getRandomValues()-based randomness may be required.",
+        "Math.random()은 Mersenne Twister 의사난수 생성기로, 일반적인 entertaintment 용도에는 충분히 균일한 분포를 보장합니다. 다만 공정성이 법적으로 요구되는 상황에서는 crypto.getRandomValues() 기반 난수가 필요할 수 있습니다.",
+        "Math.random() uses Mersenne Twister, which provides sufficiently uniform distribution for entertainment. For legally fairness-critical uses, crypto.getRandomValues()-based randomness may be required.",
       ),
     },
     {

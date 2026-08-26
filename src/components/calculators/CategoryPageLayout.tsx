@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import {
   Accordion,
@@ -225,7 +225,14 @@ const ICONS: { [key: string]: React.ElementType } = {
 
 const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showRegionNotice, setShowRegionNotice] = useState(false);
   const { dict, locale } = useI18n();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#unsupported') {
+      setShowRegionNotice(true);
+    }
+  }, []);
 
   const getSubcategoryName = (id: string, fallbackName: string) => {
     const translated = dict.subcategoryNames[id as keyof typeof dict.subcategoryNames];
@@ -251,6 +258,13 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
   return (
     <div className="bg-background">
       <div className="container mx-auto px-4 py-8 sm:py-12">
+        {showRegionNotice && (
+          <div className="mb-8 max-w-2xl mx-auto rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/40 dark:border-amber-800 px-5 py-4 text-sm text-amber-900 dark:text-amber-200">
+            {locale === 'ko'
+              ? '해당 계산기는 현재 선택된 국가(시장)에서 지원하지 않아, 관련 계산기 목록으로 안내했습니다. 상단 언어/국가 전환으로 다른 버전을 이용하실 수 있습니다.'
+              : 'This calculator is not available in the currently selected country/market. We have redirected you to related calculators. Switch the language/region above to access other versions.'}
+          </div>
+        )}
         <div className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground leading-tight">
             {category.name} {dict.categories.titleSuffix}
