@@ -5,6 +5,8 @@ import Layout from "@/components/layout/Layout";
 import { Toaster } from "sonner";
 import SiteStructuredData from "@/components/seo/SiteStructuredData";
 
+export const runtime = "edge";
+
 export default function BareLayout({
   children,
 }: Readonly<{
