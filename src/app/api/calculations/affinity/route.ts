@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 interface AffinityCalculationInput {
   n1: number; // 초기 회전수 (rpm)
   n2: number; // 변경 회전수 (rpm)

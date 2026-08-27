@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Pages
+name: Deploy to Cloudflare (OpenNext)
 
 on:
   push:
@@ -19,17 +19,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build for Cloudflare Pages
-        run: npm run cf:build
+      - name: Build and deploy (OpenNext -> Cloudflare Worker)
+        run: npm run cf:deploy
         env:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_UPSTASH_REDIS_REST_URL: ${{ secrets.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL }}
           NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN: ${{ secrets.NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN }}
           NEXT_PUBLIC_ADSENSE_CLIENT: ${{ secrets.NEXT_PUBLIC_ADSENSE_CLIENT }}
-
-      - name: Deploy with Wrangler
-        run: npx wrangler pages deploy
-        env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

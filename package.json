@@ -12,8 +12,8 @@
     "build": "next build",
     "start": "next start -p 3000",
     "lint": "eslint",
-    "cf:build": "npx @cloudflare/next-on-pages",
-    "cf:deploy": "npm run cf:build && wrangler pages deploy"
+    "cf:build": "npx @opennextjs/cloudflare build",
+    "cf:deploy": "npm run cf:build && npx @opennextjs/cloudflare deploy"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-autoformat": "^47.0.0",
@@ -145,8 +145,8 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.12.0",
     "@eslint/eslintrc": "^3",
+    "@opennextjs/cloudflare": "1.10.0",
     "@tailwindcss/postcss": "^4",
     "@types/estree": "^1.0.8",
     "@types/json-schema": "*",
@@ -160,6 +160,7 @@
     "autoprefixer": "^10.4.20",
     "baseline-browser-mapping": "^2.10.43",
     "concurrently": "^8.2.2",
+    "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
     "lightningcss": "^1.30.2",
@@ -170,6 +171,6 @@
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.7",
     "typescript": "^5",
-    "wrangler": "^3.114.17"
+    "wrangler": "^4.38.0"
   }
 }

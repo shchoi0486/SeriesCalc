@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 interface NPSHCalculationInput {
   atmospheric_pressure: number;
   vapor_pressure: number;

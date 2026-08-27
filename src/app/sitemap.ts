@@ -1,7 +1,5 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/i18n/config";
-
-export const runtime = "edge";
 import { calculatorCategories } from "@/data/calculators";
 import { isMarketAllowed } from "@/data/calculatorMarkets";
 

@@ -36,8 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
-# cloudflare pages (next-on-pages 빌드 산출물 + wrangler 상태)
+# cloudflare (opennextjs-cloudflare 빌드 산출물 + wrangler 상태)
 .vercel/output
+.open-next/
 .wrangler/
 dev-run.log
 cf-build.log

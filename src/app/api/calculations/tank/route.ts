@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 // 자재 밀도 데이터 (kg/m³)
 const MATERIAL_DENSITIES = {
   carbon: 7850,      // 탄소강
