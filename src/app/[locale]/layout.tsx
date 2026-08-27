@@ -38,6 +38,7 @@ export default function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning className="overflow-y-scroll">
       <head>
+        <meta name="naver-site-verification" content="f8b1fc72e9049871a46d76d6a9865fcf400cd9a4" />
         <HrefLangTags />
         <Script
           id="consent-mode-v2"
