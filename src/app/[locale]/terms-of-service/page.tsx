@@ -8,10 +8,10 @@ export function generateMetadata({
 }): Metadata {
   const isKo = params.locale === "ko";
   return {
-    title: isKo ? "이용약관 | AllinCalc" : "Terms of Service | AllinCalc",
+    title: isKo ? "이용약관 | SeriesCalc" : "Terms of Service | SeriesCalc",
     description: isKo
-      ? "AllinCalc 서비스 이용과 관련된 약관을 안내합니다."
-      : "The terms governing your use of the AllinCalc Service.",
+      ? "SeriesCalc 서비스 이용과 관련된 약관을 안내합니다."
+      : "The terms governing your use of the SeriesCalc Service.",
   };
 }
 
@@ -30,8 +30,8 @@ export default function TermsOfServicePage({
     <ProsePage title={isKo ? "이용약관" : "Terms of Service"}>
       <p className="text-foreground">
         {isKo
-          ? "본 이용약관(이하 \"약관\")은 AllinCalc(이하 \"회사\")가 제공하는 모든 계산기 및 웹사이트 서비스(이하 \"서비스\")의 이용 조건 및 회사와 이용자 간의 권리·의무·책임사항을 규정합니다. 서비스를 이용함으로써 본 약관에 동의하는 것으로 간주됩니다."
-          : "These Terms of Service (the \"Terms\") set out the conditions for using all calculators and the website provided by AllinCalc (the \"Company\", \"we\"), and the rights, obligations, and responsibilities between the Company and users. By using the Service, you are deemed to have agreed to these Terms."}
+          ? "본 이용약관(이하 \"약관\")은 SeriesCalc(이하 \"회사\")가 제공하는 모든 계산기 및 웹사이트 서비스(이하 \"서비스\")의 이용 조건 및 회사와 이용자 간의 권리·의무·책임사항을 규정합니다. 서비스를 이용함으로써 본 약관에 동의하는 것으로 간주됩니다."
+          : "These Terms of Service (the \"Terms\") set out the conditions for using all calculators and the website provided by SeriesCalc (the \"Company\", \"we\"), and the rights, obligations, and responsibilities between the Company and users. By using the Service, you are deemed to have agreed to these Terms."}
       </p>
 
       <ProseSection title={isKo ? "1. 서비스의 성격" : "1. Nature of the Service"}>

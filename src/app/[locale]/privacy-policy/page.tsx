@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ProsePage, { ProseSection } from "@/components/sections/ProsePage";
 
-const CONTACT_EMAIL = "privacy@allincalc.com";
+const CONTACT_EMAIL = "privacy@seriescalc.com";
 
 export function generateMetadata({
   params,
@@ -10,10 +10,10 @@ export function generateMetadata({
 }): Metadata {
   const isKo = params.locale === "ko";
   return {
-    title: isKo ? "개인정보처리방침 | AllinCalc" : "Privacy Policy | AllinCalc",
+    title: isKo ? "개인정보처리방침 | SeriesCalc" : "Privacy Policy | SeriesCalc",
     description: isKo
-      ? "AllinCalc가 사용자의 개인정보를 어떻게 수집·이용·보호하는지 안내합니다."
-      : "How AllinCalc collects, uses, and protects your personal information.",
+      ? "SeriesCalc가 사용자의 개인정보를 어떻게 수집·이용·보호하는지 안내합니다."
+      : "How SeriesCalc collects, uses, and protects your personal information.",
   };
 }
 
@@ -32,8 +32,8 @@ export default function PrivacyPolicyPage({
     <ProsePage title={isKo ? "개인정보처리방침" : "Privacy Policy"}>
       <p className="text-foreground">
         {isKo
-          ? "본 개인정보처리방침은 AllinCalc(이하 \"회사\")가 제공하는 계산기 및 웹사이트 서비스(이하 \"서비스\")를 이용함에 있어, 회사가 사용자의 개인정보를 어떻게 수집·이용·보호·관리하는지 설명합니다. 본 방침은 한국 개인정보 보호법 및 유럽 일반개인정보보호법(GDPR) 등 관련 법령을 준수하기 위해 작성되었습니다."
-          : "This Privacy Policy explains how AllinCalc (\"we\", \"us\", or \"the Company\") collects, uses, protects, and manages your personal information when you use our calculators and website (the \"Service\"). It is written to comply with the Korean Personal Information Protection Act (PIPA) and the EU General Data Protection Regulation (GDPR)."}
+          ? "본 개인정보처리방침은 SeriesCalc(이하 \"회사\")가 제공하는 계산기 및 웹사이트 서비스(이하 \"서비스\")를 이용함에 있어, 회사가 사용자의 개인정보를 어떻게 수집·이용·보호·관리하는지 설명합니다. 본 방침은 한국 개인정보 보호법 및 유럽 일반개인정보보호법(GDPR) 등 관련 법령을 준수하기 위해 작성되었습니다."
+          : "This Privacy Policy explains how SeriesCalc (\"we\", \"us\", or \"the Company\") collects, uses, protects, and manages your personal information when you use our calculators and website (the \"Service\"). It is written to comply with the Korean Personal Information Protection Act (PIPA) and the EU General Data Protection Regulation (GDPR)."}
       </p>
 
       <ProseSection title={isKo ? "1. 수집하는 개인정보" : "1. Information We Collect"}>

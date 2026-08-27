@@ -13,7 +13,7 @@ import { notFound } from "next/navigation";
 import SiteStructuredData from "@/components/seo/SiteStructuredData";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://allincalc.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://seriescalc.com"),
 };
 
 export function generateStaticParams() {

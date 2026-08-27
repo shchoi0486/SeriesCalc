@@ -19,7 +19,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({ dict, locale }) => {
         {/* 왼쪽 섹션 - 로고 */}
         <div className="lg:w-1/3 mb-8 lg:mb-0">
             <div className="flex items-center mb-4">
-              <span className="text-xl font-bold text-foreground">AllinCalc</span>
+              <span className="text-xl font-bold text-foreground">SeriesCalc</span>
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">
               {locale === 'ko'
@@ -48,7 +48,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({ dict, locale }) => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-border text-center text-muted-foreground">
-          &copy; {new Date().getFullYear()} AllinCalc. {f.copyright}
+          &copy; {new Date().getFullYear()} SeriesCalc. {f.copyright}
         </div>
       </div>
     </footer>

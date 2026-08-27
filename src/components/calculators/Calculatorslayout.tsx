@@ -65,7 +65,7 @@ const CalculatorsLayout: React.FC<CalculatorsLayoutProps> = ({
   const { locale, dict } = useI18n();
 
   const SITE_URL =
-    (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allincalc.com').replace(/\/$/, '');
+    (process.env.NEXT_PUBLIC_SITE_URL || 'https://seriescalc.com').replace(/\/$/, '');
   const pathSegs = (pathname || '').split('/').filter(Boolean);
   const breadcrumbItems =
     pathSegs.length >= 4 && pathSegs[1] === 'calculators'

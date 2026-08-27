@@ -4,7 +4,7 @@ import { calculatorCategories } from "@/data/calculators";
 import { isMarketAllowed } from "@/data/calculatorMarkets";
 
 const SITE_URL =
-  (process.env.NEXT_PUBLIC_SITE_URL || "https://www.allincalc.com").replace(/\/$/, "");
+  (process.env.NEXT_PUBLIC_SITE_URL || "https://seriescalc.com").replace(/\/$/, "");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = ["", "/about", "/privacy-policy", "/terms-of-service", "/contact"];

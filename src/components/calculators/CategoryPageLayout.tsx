@@ -230,7 +230,7 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
   const { dict, locale } = useI18n();
   const pathname = usePathname() || '';
   const SITE_URL =
-    (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allincalc.com').replace(/\/$/, '');
+    (process.env.NEXT_PUBLIC_SITE_URL || 'https://seriescalc.com').replace(/\/$/, '');
   const categoryCrumbs = [
     { name: dict.common?.home ?? (locale === 'ko' ? '홈' : 'Home'), url: `/${locale}` },
     { name: category.name, url: pathname },

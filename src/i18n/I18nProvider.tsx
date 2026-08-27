@@ -125,8 +125,8 @@ export function I18nProvider({
 const fallbackDict = {
   common: { searchPlaceholder: 'Search for any calculator...', language: 'Language', selectLanguage: 'Select language', theme: 'Toggle theme', calculate: 'Calculate', home: 'Home' },
   nav: { finance: 'Finance', conversion: 'Conversion', life: 'Life', science: 'Science', engineering: 'Engineering', aiTools: 'AI Tools', game: 'Game', others: 'Others' },
-  home: { title: 'Online Calculators for Every Need', subtitle: 'Explore calculators across finance, health, daily life, engineering and more, right now.', press: 'Press', about: 'About AllinCalc' },
-  footer: { press: 'Press', editorialPolicy: 'Editorial Policy', partnership: 'Partnership', about: 'About AllinCalc', resources: 'Resources', intro: 'Intro', library: 'Library', affiliate: 'Affiliate', contact: 'Contact', blog: 'Blog', copyright: 'All rights reserved.' },
+  home: { title: 'Online Calculators for Every Need', subtitle: 'Explore calculators across finance, health, daily life, engineering and more, right now.', press: 'Press', about: 'About SeriesCalc' },
+  footer: { press: 'Press', editorialPolicy: 'Editorial Policy', partnership: 'Partnership', about: 'About SeriesCalc', resources: 'Resources', intro: 'Intro', library: 'Library', affiliate: 'Affiliate', contact: 'Contact', blog: 'Blog', copyright: 'All rights reserved.' },
   mortgage: {} as Record<string, unknown>,
 } as unknown as Dictionary;
 

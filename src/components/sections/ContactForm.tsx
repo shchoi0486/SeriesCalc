@@ -8,12 +8,12 @@ export default function ContactForm({ isKo }: { isKo: boolean }) {
   const [message, setMessage] = useState("");
   const [opened, setOpened] = useState(false);
 
-  const to = "contact@allincalc.com";
+  const to = "contact@seriescalc.com";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const subject = encodeURIComponent(
-      isKo ? `AllinCalc 문의: ${name || "무제"}` : `AllinCalc Inquiry: ${name || "No subject"}`
+      isKo ? `SeriesCalc 문의: ${name || "무제"}` : `SeriesCalc Inquiry: ${name || "No subject"}`
     );
     const body = encodeURIComponent(
       `${message}\n\n--\n${name} (${email})`

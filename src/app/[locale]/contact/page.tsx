@@ -9,10 +9,10 @@ export function generateMetadata({
 }): Metadata {
   const isKo = params.locale === "ko";
   return {
-    title: isKo ? "문의하기 | AllinCalc" : "Contact | AllinCalc",
+    title: isKo ? "문의하기 | SeriesCalc" : "Contact | SeriesCalc",
     description: isKo
-      ? "AllinCalc에 문의사항이 있으신가요? 언제든 연락 주세요."
-      : "Have a question for AllinCalc? Reach out to us anytime.",
+      ? "SeriesCalc에 문의사항이 있으신가요? 언제든 연락 주세요."
+      : "Have a question for SeriesCalc? Reach out to us anytime.",
   };
 }
 
@@ -39,7 +39,7 @@ export default function ContactPage({
 
       <ProseSection title={isKo ? "직접 이메일 보내기" : "Email Us Directly"}>
         <p>{isKo ? "양식을 사용하기 어려우시다면 아래 이메일로 직접 연락 주세요." : "If the form is inconvenient, email us directly at:"}</p>
-        <p className="text-foreground font-medium">contact@allincalc.com</p>
+        <p className="text-foreground font-medium">contact@seriescalc.com</p>
       </ProseSection>
 
       <ProseSection title={isKo ? "응답 시간" : "Response Time"}>

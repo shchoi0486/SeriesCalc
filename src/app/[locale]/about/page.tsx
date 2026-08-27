@@ -8,10 +8,10 @@ export function generateMetadata({
 }): Metadata {
   const isKo = params.locale === "ko";
   return {
-    title: isKo ? "AllinCalc 소개 | 모든 계산기를 한곳에" : "About AllinCalc | Every Calculator in One Place",
+    title: isKo ? "SeriesCalc 소개 | 모든 계산기를 한곳에" : "About SeriesCalc | Every Calculator in One Place",
     description: isKo
-      ? "AllinCalc는 일상부터 전문 분야까지 필요한 모든 계산기를 무료로, 개인정보 걱정 없이 제공합니다."
-      : "AllinCalc offers every calculator you need — from daily life to professional fields — for free and with privacy in mind.",
+      ? "SeriesCalc는 일상부터 전문 분야까지 필요한 모든 계산기를 무료로, 개인정보 걱정 없이 제공합니다."
+      : "SeriesCalc offers every calculator you need — from daily life to professional fields — for free and with privacy in mind.",
   };
 }
 
@@ -27,18 +27,18 @@ export default function AboutPage({
   const isKo = params.locale === "ko";
 
   return (
-    <ProsePage title={isKo ? "AllinCalc 소개" : "About AllinCalc"}>
+    <ProsePage title={isKo ? "SeriesCalc 소개" : "About SeriesCalc"}>
       <p className="text-foreground">
         {isKo
-          ? "AllinCalc는 일상생활과 전문적인 작업에 필요한 모든 종류의 계산기를 한곳에 모아둔 종합 계산기 플랫폼입니다. 복잡한 수식부터 간단한 단위 변환까지, 사용자 친화적인 인터페이스로 빠르고 정확한 결과를 제공합니다."
-          : "AllinCalc is a comprehensive calculator platform that brings every type of calculator you need — from everyday life to specialized professional fields — into one place. From complex formulas to simple unit conversions, we deliver fast, accurate results through a friendly interface."}
+          ? "SeriesCalc는 일상생활과 전문적인 작업에 필요한 모든 종류의 계산기를 한곳에 모아둔 종합 계산기 플랫폼입니다. 복잡한 수식부터 간단한 단위 변환까지, 사용자 친화적인 인터페이스로 빠르고 정확한 결과를 제공합니다."
+          : "SeriesCalc is a comprehensive calculator platform that brings every type of calculator you need — from everyday life to specialized professional fields — into one place. From complex formulas to simple unit conversions, we deliver fast, accurate results through a friendly interface."}
       </p>
 
       <ProseSection title={isKo ? "우리의 미션" : "Our Mission"}>
         {isKo ? (
-          <p>계산은 누구나 필요하지만, 신뢰할 수 있는 도구는 많지 않습니다. AllinCalc는 광고로 수익을 내되 사용자 경험을 해치지 않으며, 회원가입 없이 즉시 사용할 수 있는 투명한 계산기 생태계를 만드는 것을 목표로 합니다.</p>
+          <p>계산은 누구나 필요하지만, 신뢰할 수 있는 도구는 많지 않습니다. SeriesCalc는 광고로 수익을 내되 사용자 경험을 해치지 않으며, 회원가입 없이 즉시 사용할 수 있는 투명한 계산기 생태계를 만드는 것을 목표로 합니다.</p>
         ) : (
-          <p>Everyone needs calculations, yet trustworthy tools are rare. AllinCalc is funded by advertising without harming the user experience, and our goal is a transparent calculator ecosystem you can use instantly — no account required.</p>
+          <p>Everyone needs calculations, yet trustworthy tools are rare. SeriesCalc is funded by advertising without harming the user experience, and our goal is a transparent calculator ecosystem you can use instantly — no account required.</p>
         )}
       </ProseSection>
 

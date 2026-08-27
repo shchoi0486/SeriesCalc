@@ -105,7 +105,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto flex h-20 items-center justify-between px-4">
         {/* Logo */}
         <Link href={localePrefix} className="flex items-center space-x-3">
-          <Image src="/logo/allincalc5.png" alt="AllinCalc Logo" width={60} height={18} />
+          <Image src="/logo/seriescalc5.png" alt="SeriesCalc Logo" width={60} height={18} />
           <h1 className="text-2xl font-bold text-foreground">All-in-Calc</h1>
         </Link>
 

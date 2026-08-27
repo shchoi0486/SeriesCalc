@@ -1,20 +1,20 @@
 import type { Locale } from '@/i18n/config';
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.allincalc.com').replace(/\/$/, '');
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://seriescalc.com').replace(/\/$/, '');
 
 export default function SiteStructuredData({ locale }: { locale?: Locale }) {
   const org = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'AllinCalc',
+    name: 'SeriesCalc',
     url: SITE_URL,
-    logo: `${SITE_URL}/logo/allincalc.png`,
+    logo: `${SITE_URL}/logo/seriescalc.png`,
   };
 
   const website: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'AllinCalc',
+    name: 'SeriesCalc',
     url: SITE_URL,
   };
   if (locale) {

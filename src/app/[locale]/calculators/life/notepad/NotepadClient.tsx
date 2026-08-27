@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useI18n } from '@/i18n/I18nProvider';
 
 import { toast } from 'sonner';
-const STORAGE_KEY = 'allincalc-notepad-content';
+const STORAGE_KEY = 'seriescalc-notepad-content';
 
 interface InfoSection {
   calculatorDescription: React.ReactNode;
