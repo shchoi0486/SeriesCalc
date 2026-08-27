@@ -36,6 +36,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# cloudflare pages (next-on-pages 빌드 산출물 + wrangler 상태)
+.vercel/output
+.wrangler/
+dev-run.log
+cf-build.log
+next-build.log
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

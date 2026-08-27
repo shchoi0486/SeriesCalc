@@ -32,7 +32,7 @@ export default function PropertyTaxCalculatorPage({
           {isKo ? '다주택 투자자, 고가 주택 보유자, 그리고 상속·증여로 부동산을 취득한 분들에게 특히 중요합니다. 보유 부동산의 연간 세 부담을 미리 파악하면 현금 흐름 계획과 매도·증여 타이밍 결정에 큰 도움이 됩니다.' : 'It is especially important for multi-home investors, high-priced home owners, and those who acquired real estate by inheritance or gift. Knowing your annual tax burden in advance greatly helps with cash-flow planning and decisions on timing of sale or gift.'}
         </p>
         <p className="mt-4 text-muted-foreground">
-          <strong className="text-foreground">{isKo ? "All_in_Calc의 부동산세 계산기" : "All_in_Calc's Property Tax Calculator"}</strong>{isKo ? '는 공시가격, 주택 수, 공정가액비율을 입력하면 공정가액·과세표준·부동산세를 자동 계산합니다. 1주택 6억, 2주택 9억, 3주택 이상 12억 원의 기본공제와 누진세율이 자동 적용됩니다.' : ' automatically computes the fair value, tax base, and property tax when you enter the official price, number of houses, and fair-value ratio. The basic deductions (600M for 1 house, 900M for 2, 1.2B for 3+) and progressive rates are applied automatically.'}
+          <strong className="text-foreground">{isKo ? "SeriesCalc의 부동산세 계산기" : "SeriesCalc's Property Tax Calculator"}</strong>{isKo ? '는 공시가격, 주택 수, 공정가액비율을 입력하면 공정가액·과세표준·부동산세를 자동 계산합니다. 1주택 6억, 2주택 9억, 3주택 이상 12억 원의 기본공제와 누진세율이 자동 적용됩니다.' : ' automatically computes the fair value, tax base, and property tax when you enter the official price, number of houses, and fair-value ratio. The basic deductions (600M for 1 house, 900M for 2, 1.2B for 3+) and progressive rates are applied automatically.'}
         </p>
         <TermGlossary
           items={[

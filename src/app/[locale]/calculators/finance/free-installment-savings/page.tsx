@@ -1,4 +1,4 @@
-import TermGlossary from "@/components/calculators/TermGlossary";
+﻿import TermGlossary from "@/components/calculators/TermGlossary";
 import { BlockMath } from "react-katex";
 import type { Metadata } from "next";
 import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
@@ -44,8 +44,8 @@ export default function FreeInstallmentSavingsPage({
         </p>
         <p className="mt-4 text-base leading-relaxed">
           {isKo
-            ? 'All-in-Calc의 자유적금 계산기는 당신의 자유로운 저축 스타일에 맞춰, 각기 다른 날짜와 금액으로 납입된 모든 돈이 만기일에 얼마가 되어 돌아올지, 세금은 얼마나 떼이는지 등을 한눈에 명확하게 보여줍니다. 더 이상 복잡한 엑셀 계산은 필요 없습니다. 당신의 저축 여정에 든든한 네비게이터가 되어드리겠습니다.'
-            : "All-in-Calc's free savings calculator adapts to your flexible saving style, clearly showing at a glance how much all deposits made on different dates and amounts will become at maturity, and how much tax will be deducted. No more complicated Excel calculations. We will be a reliable navigator for your saving journey."}</p>        <TermGlossary items={[
+            ? 'SeriesCalc의 자유적금 계산기는 당신의 자유로운 저축 스타일에 맞춰, 각기 다른 날짜와 금액으로 납입된 모든 돈이 만기일에 얼마가 되어 돌아올지, 세금은 얼마나 떼이는지 등을 한눈에 명확하게 보여줍니다. 더 이상 복잡한 엑셀 계산은 필요 없습니다. 당신의 저축 여정에 든든한 네비게이터가 되어드리겠습니다.'
+            : "SeriesCalc's free savings calculator adapts to your flexible saving style, clearly showing at a glance how much all deposits made on different dates and amounts will become at maturity, and how much tax will be deducted. No more complicated Excel calculations. We will be a reliable navigator for your saving journey."}</p>        <TermGlossary items={[
           { term: isKo ? '자유적금' : 'Free savings', desc: isKo ? '정해진 날짜와 금액에 얽매이지 않고, 원할 때 원하는 만큼 자유롭게 입금하며 목돈을 만드는 적금 상품입니다.' : 'A savings product that lets you freely deposit as much as you want, whenever you want, without being tied to a fixed date or amount, to build a lump sum.' },
           { term: isKo ? '비과세요 종합저축' : 'Non-taxable comprehensive savings', desc: isKo ? '만 65세 이상·장애인 등 요건 충족 시 전 금융기관 통합 5,000만 원 한도 내 이자 소득이 면제되는 상품입니다.' : 'A product where, if you meet conditions such as being 65 or older or disabled, interest income is exempt up to a combined 50 million KRW limit across all institutions.' },
           { term: isKo ? '선납 효과' : 'Early-payment effect', desc: isKo ? '같은 금액이라도 적금 초반에 일찍 납입할수록 예치일수가 길어져 더 많은 이자를 받게 되는 효과입니다.' : 'The effect that, for the same amount, depositing earlier in the term yields more interest because the days on deposit are longer.' },

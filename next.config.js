@@ -12,6 +12,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    // Cloudflare Pages는 Next 내장 이미지 최적화 엔드포인트를 실행하지 않으므로 비활성화.
+    // 필요하면 Cloudflare Image Resizing으로 대체 권장.
+    unoptimized: true,
     domains: [process.env.NEXT_PUBLIC_SUPABASE_URL ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname : ''],
   },
   env: {

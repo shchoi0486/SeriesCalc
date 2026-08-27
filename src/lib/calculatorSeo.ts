@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { en } from "@/i18n/dictionaries/en";
 import { ko } from "@/i18n/dictionaries/ko";
 
 type DictShape = typeof en;
 
-const SITE_NAME = "All-in-Calc";
+const SITE_NAME = "SeriesCalc";
 
 function camelize(id: string): string {
   return id.replace(/-([a-z])/g, (_m: string, c: string) => c.toUpperCase());

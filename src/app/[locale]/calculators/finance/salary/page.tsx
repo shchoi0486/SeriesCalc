@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import TermGlossary from "@/components/calculators/TermGlossary";
 import { en } from "@/i18n/dictionaries/en";
 import { ko } from "@/i18n/dictionaries/ko";
@@ -32,7 +32,7 @@ export function generateMetadata({
       description,
       url: `/${locale}${CALC_PATH}`,
       type: "website",
-      siteName: "All-in-Calc",
+      siteName: "SeriesCalc",
       locale: locale === "ko" ? "ko_KR" : "en_US",
     },
   };

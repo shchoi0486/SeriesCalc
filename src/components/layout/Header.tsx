@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -106,7 +106,7 @@ const Header: React.FC = () => {
         {/* Logo */}
         <Link href={localePrefix} className="flex items-center space-x-3">
           <Image src="/logo/seriescalc5.png" alt="SeriesCalc Logo" width={60} height={18} />
-          <h1 className="text-2xl font-bold text-foreground">All-in-Calc</h1>
+          <h1 className="text-2xl font-bold text-foreground">SeriesCalc</h1>
         </Link>
 
         <div className="flex flex-1 items-center justify-end space-x-4">

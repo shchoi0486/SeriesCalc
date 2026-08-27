@@ -1,4 +1,4 @@
-import TermGlossary from "@/components/calculators/TermGlossary";
+﻿import TermGlossary from "@/components/calculators/TermGlossary";
 import { BlockMath } from "react-katex";
 import type { Metadata } from "next";
 import { buildCalculatorMetadata } from "@/lib/calculatorSeo";
@@ -35,8 +35,8 @@ export default function CreditCardInstallmentFeePage({
         </p>
         <p className="mt-4 text-foreground leading-relaxed">
           {isKo
-            ? 'All-in-Calc의 신용카드 할부 수수료 계산기는 바로 이런 상황을 방지하기 위해 탄생했습니다. 복잡한 계산은 저희에게 맡기시고, 여러분은 현명한 소비 계획만 세우세요. 이 계산기를 통해 여러분은 다음 정보를 명확하고 직관적으로 파악할 수 있습니다:'
-            : "All-in-Calc's credit card installment fee calculator was created to prevent exactly this kind of situation. Leave the complicated math to us, and you just plan your smart spending. With this calculator you can clearly and intuitively understand the following:"}
+            ? 'SeriesCalc의 신용카드 할부 수수료 계산기는 바로 이런 상황을 방지하기 위해 탄생했습니다. 복잡한 계산은 저희에게 맡기시고, 여러분은 현명한 소비 계획만 세우세요. 이 계산기를 통해 여러분은 다음 정보를 명확하고 직관적으로 파악할 수 있습니다:'
+            : "SeriesCalc's credit card installment fee calculator was created to prevent exactly this kind of situation. Leave the complicated math to us, and you just plan your smart spending. With this calculator you can clearly and intuitively understand the following:"}
         </p>
         <ul className="list-disc list-inside mt-4 space-y-2 text-foreground">
           <li><strong className="font-semibold">{isKo ? '정확한 월 납부액:' : 'Exact monthly payment:'}</strong> {isKo ? '매월 상환해야 할 원금과 수수료가 얼마인지 정확히 알 수 있습니다.' : 'Know exactly how much principal and fee you must repay each month.'}</li>
