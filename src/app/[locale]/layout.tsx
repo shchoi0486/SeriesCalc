@@ -11,6 +11,7 @@ import { ko } from "@/i18n/dictionaries/ko";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { notFound } from "next/navigation";
 import SiteStructuredData from "@/components/seo/SiteStructuredData";
+import HrefLangTags from "@/components/seo/HrefLangTags";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://seriescalc.com"),
@@ -37,6 +38,7 @@ export default function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning className="overflow-y-scroll">
       <head>
+        <HrefLangTags />
         <Script
           id="consent-mode-v2"
           strategy="beforeInteractive"

@@ -7,7 +7,7 @@ const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL || "https://seriescalc.com").replace(/\/$/, "");
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPaths = ["", "/about", "/privacy-policy", "/terms-of-service", "/contact"];
+  const staticPaths = ["", "/calculators", "/about", "/privacy-policy", "/terms-of-service", "/contact"];
   const guidePaths = [
     "/guides/compound-interest-power",
     "/guides/jeonse-vs-wolse",
