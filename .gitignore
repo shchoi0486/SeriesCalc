@@ -73,3 +73,6 @@ login_page_after_goto.png
 autocal/
 
 dev-server.log
+
+# server logs
+prod-server.log
