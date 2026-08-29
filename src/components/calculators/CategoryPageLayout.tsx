@@ -196,6 +196,7 @@ interface Calculator {
   id: string;
   name: string;
   href: string;
+  emoji: string;
   locales?: string[];
 }
 
