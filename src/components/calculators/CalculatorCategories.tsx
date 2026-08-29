@@ -49,7 +49,7 @@ export default function CalculatorCategories() {
               </LocalizedLink>
               <div className="flex flex-col gap-1">
                 {itemsToDisplay.map((calculator) =>
-                  calculator.isPlaceholder ? (
+                  'isPlaceholder' in calculator ? (
                     <div
                       key={calculator.id}
                       aria-disabled="true"
