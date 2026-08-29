@@ -88,6 +88,7 @@ export default function LocaleLayout({
       <head>
         <meta name="naver-site-verification" content="f8b1fc72e9049871a46d76d6a9865fcf400cd9a4" />
         <meta name="google-site-verification" content="Sh-CbQLycbp5kg8gDPE2Cz9TjIbrEvVXNbhDI_xnCwA" />
+        <meta name="google-adsense-account" content="ca-pub-7279511347629270" />
         <HrefLangTags />
         <Script
           id="consent-mode-v2"
