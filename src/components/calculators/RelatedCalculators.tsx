@@ -17,7 +17,7 @@ export default function RelatedCalculators() {
   const slug = segs[3];
   const currentHref = `/calculators/${category}/${slug}`;
 
-  let siblings: { href: string; name: string; locales?: string[] }[] = [];
+  let siblings: { id: string; href: string; name: string; locales?: string[] }[] = [];
   for (const cat of calculatorCategories) {
     if (cat.id !== category) continue;
     for (const sub of cat.subcategories) {
@@ -35,17 +35,20 @@ export default function RelatedCalculators() {
     <section className="mt-10" aria-label={dict.calculatorLayout.related}>
       <h2 className="text-xl font-bold mb-4">{dict.calculatorLayout.related}</h2>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {visible.map((c) => (
-          <li key={c.href}>
-            <Link
-              href={`/${locale}${c.href}`}
-              className="flex items-center justify-between px-4 py-3 rounded-lg border hover:bg-accent transition-colors"
-            >
-              <span className="text-sm font-medium">{c.name}</span>
-              <span className="text-muted-foreground">→</span>
-            </Link>
-          </li>
-        ))}
+        {visible.map((c) => {
+          const name = dict.calculatorNames[c.id as keyof typeof dict.calculatorNames] || c.name;
+          return (
+            <li key={c.href}>
+              <Link
+                href={`/${locale}${c.href}`}
+                className="flex items-center justify-between px-4 py-3 rounded-lg border hover:bg-accent transition-colors"
+              >
+                <span className="text-sm font-medium">{name}</span>
+                <span className="text-muted-foreground">→</span>
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </section>
   );
