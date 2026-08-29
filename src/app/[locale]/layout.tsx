@@ -13,9 +13,40 @@ import { notFound } from "next/navigation";
 import SiteStructuredData from "@/components/seo/SiteStructuredData";
 import HrefLangTags from "@/components/seo/HrefLangTags";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://seriescalc.com"),
-};
+export function generateMetadata({ params }: { params: { locale: string } }): Metadata {
+  const { locale } = params;
+  const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://seriescalc.com").replace(/\/$/, "");
+  const isKo = locale === "ko";
+  const title = isKo
+    ? "SeriesCalc - 공학·금융·생활 계산기 모음"
+    : "SeriesCalc - Engineering, Finance & Life Calculators";
+  const description = isKo
+    ? "SeriesCalc는 공학, 금융, 생활, 단위 변환 등 350여 개의 계산기를 한곳에서 제공합니다."
+    : "SeriesCalc provides 350+ calculators for engineering, finance, life, and unit conversion in one place.";
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: title,
+      template: `%s | SeriesCalc`,
+    },
+    description,
+    applicationName: "SeriesCalc",
+    openGraph: {
+      type: "website",
+      url: `${SITE_URL}/${locale}`,
+      siteName: "SeriesCalc",
+      title,
+      description,
+      locale: isKo ? "ko_KR" : "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
