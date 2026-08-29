@@ -74,11 +74,11 @@ const NewUnitConverter = ({ category }: { category: string }) => {
               className="text-right text-xs w-full sm:w-[150px]"
         />
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {units.map(unit => (
-          <div key={unit} className="flex items-center justify-start gap-2">
-            <span className="text-right w-[120px] text-xs py-2 px-3 bg-gray-100 rounded-md shadow-inner">{convertedValues[unit]?.toFixed(2) || ''}</span>
-            <span className="text-xs text-black whitespace-nowrap text-left font-bold">{unit}</span>
+          <div key={unit} className="grid grid-cols-[1fr_auto] items-center gap-2">
+            <span className="text-right text-xs py-2 px-3 bg-gray-100 rounded-md shadow-inner truncate">{convertedValues[unit]?.toFixed(2) || ''}</span>
+            <span className="w-10 shrink-0 text-xs text-black whitespace-nowrap text-left font-bold">{unit}</span>
           </div>
         ))}
       </div>

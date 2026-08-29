@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import "../globals.css";
 import "katex/dist/katex.min.css";
@@ -32,8 +32,8 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
     ? "SeriesCalc - 공학·금융·생활 계산기 모음"
     : "SeriesCalc - Engineering, Finance & Life Calculators";
   const description = isKo
-    ? "SeriesCalc는 공학, 금융, 생활, 단위 변환 등 350여 개의 계산기를 한곳에서 제공합니다."
-    : "SeriesCalc provides 350+ calculators for engineering, finance, life, and unit conversion in one place.";
+    ? "SeriesCalc는 공학·금융·생활·단위 변환 등 350여 개의 계산기를 한곳에서 무료로 제공합니다."
+    : "SeriesCalc offers 350+ free calculators for engineering, finance, daily life, and unit conversion in one place.";
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -62,6 +62,12 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export default function LocaleLayout({
   children,

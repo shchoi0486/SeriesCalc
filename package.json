@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npm run dev:frontend",
     "dev:kill3000": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { try { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue } catch {} }; exit 0\"",
-    "dev:frontend": "npm run dev:kill3000 && next dev -p 3000",
+    "dev:frontend": "npm run dev:kill3000 && set NODE_OPTIONS=--max-old-space-size=8192 && next dev -p 3000",
     "dev:backend": "cd backend && python main.py",
     "dev:all": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "build": "next build",

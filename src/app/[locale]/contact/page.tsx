@@ -40,7 +40,7 @@ export default function ContactPage({
 
       <ProseSection title={isKo ? "직접 이메일 보내기" : "Email Us Directly"}>
         <p>{isKo ? "양식을 사용하기 어려우시다면 아래 이메일로 직접 연락 주세요." : "If the form is inconvenient, email us directly at:"}</p>
-        <p className="text-foreground font-medium">contact@seriescalc.com</p>
+        <p className="text-foreground font-medium">seriessnap.co@gmail.com</p>
       </ProseSection>
 
       <ProseSection title={isKo ? "응답 시간" : "Response Time"}>

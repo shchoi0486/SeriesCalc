@@ -1010,10 +1010,9 @@
     others: 'Others',
   },
   home: {
-    title: 'Online Calculators for Every Need',
+    title: 'Every calculator you need, all in one place',
     subtitle:
-      'Explore calculators across finance, health, daily life, engineering and more, right now.',
-    adPlaceholder: 'Ad space (insert AdSense / Coupang code)',
+      'Browse calculators for finance, health, daily life, engineering and more.',
     press: 'Press',
     about: 'About SeriesCalc',
   },

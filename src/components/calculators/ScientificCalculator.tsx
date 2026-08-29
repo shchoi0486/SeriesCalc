@@ -248,7 +248,7 @@ const ScientificCalculator: React.FC = () => {
   };
 
   const getButtonClass = (button: string, span: number = 1) => {
-        const baseClass = `w-full h-10 text-xs font-bold m-1 truncate`;
+        const baseClass = `w-full h-8 text-[11px] font-bold m-0.5 truncate`;
     const spanClass = span > 1 ? `col-span-${span}` : '';
 
     const scientificButtons = ['sin', 'cos', 'tan', 'sin⁻¹', 'cos⁻¹', 'tan⁻¹', 'π', 'e', 'xʸ', 'x³', 'x²', 'eˣ', '10ˣ', 'ʸ√x', '³√x', '√x', 'ln', 'log'];
@@ -275,30 +275,45 @@ const ScientificCalculator: React.FC = () => {
     return `${baseClass} ${spanClass} bg-gray-200 text-gray-800 hover:bg-gray-300`;
   };
 
-  const buttonLayout = [
-    ['sin', 'cos', 'tan', '7', '8', '9', '+', '⌫'],
-    ['sin⁻¹', 'cos⁻¹', 'tan⁻¹', 'π', 'e', '4', '5', '6', '-', 'Ans'],
-    ['xʸ', 'x³', 'x²', 'eˣ', '10ˣ', '1', '2', '3', '×', 'M+'],
-    ['ʸ√x', '³√x', '√x', 'ln', 'log', { label: '0', span: 2 }, '.', 'EXP', '÷', 'M-'],
-    ['(', ')', '1/x', '%', 'n!', '±', 'RND', 'AC', { label: '=', span: 2 }, 'MR'],
+  // 함수키 (sin/cos/tan은 렌더에서 별도 배치)
+  const functionButtons = [
+    'sin⁻¹', 'cos⁻¹', 'tan⁻¹', 'π', 'e',
+    'xʸ', 'x³', 'x²', 'eˣ', '10ˣ',
+    'ʸ√x', '³√x', '√x', 'ln', 'log',
+    '(', ')', '1/x', '%', 'n!',
   ];
+
+  // 표준 숫자 키패드 5열 (calculator.net 순서)
+  const numberPad = [
+    '7', '8', '9', '+', '⌫',
+    '4', '5', '6', '-', 'Ans',
+    '1', '2', '3', '×', 'M+',
+    '0', '.', 'EXP', '÷', 'M-',
+    '±', 'RND', 'AC', '=', 'MR',
+  ];
+
+  const onButtonClick = (button: string) => {
+    if (button === 'AC') {
+      handleClear();
+    } else if (button === '=') {
+      handleEquals();
+    } else if (button === '⌫') {
+      handleBackspace();
+    } else if ([
+      'Ans', 'π', 'e', '±', '1/x', '%', 'n!', 'RND',
+      'M+', 'M-', 'MR', 'xʸ', 'x³', 'x²', 'eˣ', '10ˣ',
+      'ʸ√x', '³√x', '√x', 'ln', 'log', 'sin', 'cos', 'tan',
+      'sin⁻¹', 'cos⁻¹', 'tan⁻¹', 'EXP',
+    ].includes(button)) {
+      handleSpecialButton(button);
+    } else {
+      handleButtonClick(button);
+    }
+  };
 
   return (
     <Card className="h-full">
       <CardContent className="p-4">
-        <div className="flex items-center space-x-4 mb-4">
-          <RadioGroup defaultValue="deg" className="flex" onValueChange={setMode}>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="deg" id="deg" />
-              <Label htmlFor="deg">Deg</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="rad" id="rad" />
-              <Label htmlFor="rad">Rad</Label>
-            </div>
-          </RadioGroup>
-        </div>
-        
         {/* 계산 히스토리 */}
         {history.length > 0 && (
           <div className="mb-2 text-sm text-gray-500 max-h-20 overflow-y-auto">
@@ -312,54 +327,42 @@ const ScientificCalculator: React.FC = () => {
           type="text"
           readOnly
           value={display}
-          className="w-full h-12 text-3xl text-right mb-4 pr-4 bg-gray-100 rounded-md"
+          className="w-full h-10 text-2xl text-right mb-3 pr-4 bg-gray-100 rounded-md"
         />
-        <div className="grid grid-cols-5 sm:grid-cols-10 gap-1">
-          {buttonLayout.flat().map((button, index) => {
-            if (typeof button === 'object') {
-              return (
-                <Button
-                  key={index}
-                  className={getButtonClass(button.label, button.span)}
-                  onClick={() => {
-                    if (button.label === '=') {
-                      handleEquals();
-                    } else {
-                      handleButtonClick(button.label);
-                    }
-                  }}
-                >
-                  {button.label}
-                </Button>
-              );
-            }
-            return (
-              <Button
-                key={index}
-                className={getButtonClass(button)}
-                onClick={() => {
-                  if (button === 'AC') {
-                    handleClear();
-                  } else if (button === '=') {
-                    handleEquals();
-                  } else if (button === '⌫') {
-                    handleBackspace();
-                  } else if ([
-                    'Ans', 'π', 'e', '±', '1/x', '%', 'n!', 'RND',
-                    'M+', 'M-', 'MR', 'xʸ', 'x³', 'x²', 'eˣ', '10ˣ',
-                    'ʸ√x', '³√x', '√x', 'ln', 'log', 'sin', 'cos', 'tan',
-                    'sin⁻¹', 'cos⁻¹', 'tan⁻¹', 'EXP'
-                  ].includes(button)) {
-                    handleSpecialButton(button);
-                  } else {
-                    handleButtonClick(button);
-                  }
-                }}
-              >
-                {button}
-              </Button>
-            );
-          })}
+
+        {/* 함수키 영역 5열: sin/cos/tan + Deg/Rad + 나머지 함수키 */}
+        <div className="grid grid-cols-5 gap-1">
+          {['sin', 'cos', 'tan'].map((button) => (
+            <Button key={button} className={getButtonClass(button)} onClick={() => onButtonClick(button)}>
+              {button}
+            </Button>
+          ))}
+          <div className="col-span-2 flex items-center justify-center">
+            <RadioGroup defaultValue="deg" className="flex gap-3" onValueChange={setMode}>
+              <div className="flex items-center gap-1">
+                <RadioGroupItem value="deg" id="deg" />
+                <Label htmlFor="deg" className="text-xs cursor-pointer">Deg</Label>
+              </div>
+              <div className="flex items-center gap-1">
+                <RadioGroupItem value="rad" id="rad" />
+                <Label htmlFor="rad" className="text-xs cursor-pointer">Rad</Label>
+              </div>
+            </RadioGroup>
+          </div>
+          {functionButtons.map((button) => (
+            <Button key={button} className={getButtonClass(button)} onClick={() => onButtonClick(button)}>
+              {button}
+            </Button>
+          ))}
+        </div>
+
+        {/* 표준 숫자키패드 5열 */}
+        <div className="grid grid-cols-5 gap-1 mt-2">
+          {numberPad.map((button) => (
+            <Button key={button} className={getButtonClass(button)} onClick={() => onButtonClick(button)}>
+              {button}
+            </Button>
+          ))}
         </div>
       </CardContent>
     </Card>

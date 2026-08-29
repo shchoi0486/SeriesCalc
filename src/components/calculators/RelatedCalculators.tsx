@@ -17,7 +17,7 @@ export default function RelatedCalculators() {
   const slug = segs[3];
   const currentHref = `/calculators/${category}/${slug}`;
 
-  let siblings: { id: string; href: string; name: string; locales?: string[] }[] = [];
+  let siblings: { id: string; href: string; name: string; locales?: string[]; emoji?: string }[] = [];
   for (const cat of calculatorCategories) {
     if (cat.id !== category) continue;
     for (const sub of cat.subcategories) {
@@ -43,6 +43,7 @@ export default function RelatedCalculators() {
                 href={`/${locale}${c.href}`}
                 className="flex items-center justify-between px-4 py-3 rounded-lg border hover:bg-accent transition-colors min-w-0"
               >
+                <span className="text-base leading-none shrink-0 mr-1">{c.emoji}</span>
                 <span className="text-sm font-medium min-w-0 truncate">{name}</span>
                 <span className="text-muted-foreground shrink-0 ml-2">→</span>
               </Link>

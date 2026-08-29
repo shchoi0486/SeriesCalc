@@ -147,6 +147,15 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  /* 제목은 줄바꿈을 균형 있게, 본문은 외톤 글자(orphan) 방지 */
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
   
   html {
     height: 100%;

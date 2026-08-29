@@ -23,7 +23,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({ dict, locale }) => {
             </div>
             <p className="text-sm text-muted-foreground max-w-xs">
               {locale === 'ko'
-                ? '일상부터 전문 분야까지, 모든 계산기를 한곳에.'
+                ? '일상부터 전문 분야까지, 계산기 모두 한곳에.'
                 : 'Every calculator you need — from daily life to professional fields.'}
             </p>
           </div>

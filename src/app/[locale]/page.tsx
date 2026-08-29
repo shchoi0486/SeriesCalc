@@ -5,6 +5,7 @@ import ScientificCalculator from '@/components/calculators/ScientificCalculator'
 import FooterSection from '@/components/sections/FooterSection';
 import { Card, CardContent } from "@/components/ui/card";
 import CombinedUnitConverter from '@/components/calculators/CombinedUnitConverter';
+import AdUnit from '@/components/ads/AdUnit';
 import { en } from '@/i18n/dictionaries/en';
 import { ko } from '@/i18n/dictionaries/ko';
 import { isLocale, type Locale } from '@/i18n/config';
@@ -23,16 +24,14 @@ export default function Home({ params }: { params: { locale: string } }) {
     <>
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <section className="text-center">
-          {/* 애드센스/쿠팡 광고 삽입 영역 */}
-          <div className="ad-placeholder my-3 p-6 border border-dashed rounded-lg">
-            <p className="text-gray-500">{dict.home.adPlaceholder}</p>
-          </div>
+          {/* 애드센스 광고 영역 (슬롯 ID는 .env의 NEXT_PUBLIC_ADSENSE_SLOT_HOME 에서 지정) */}
+          <AdUnit slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_HOME} className="my-3" minHeight={100} />
           <div className="mt-4 mx-auto">
             <CalculatorSearch />
           </div>
         </section>
 
-        <section className="text-center max-w-3xl mx-auto">
+        <section className="text-center">
           <p className="mt-2 text-base leading-7 text-muted-foreground">
             {locale === 'ko'
               ? '회원가입 없이 즉시 사용할 수 있으며, 입력하신 값은 브라우저 내에서만 처리되어 개인정보가 안전하게 보호됩니다.'
@@ -41,11 +40,11 @@ export default function Home({ params }: { params: { locale: string } }) {
         </section>
 
         <AllCalculators />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 items-stretch">
-          <div className="lg:col-span-1 h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mb-8 items-stretch">
+          <div className="lg:col-span-3 h-full">
             <CombinedUnitConverter />
           </div>
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-2">
             <ScientificCalculator />
           </div>
         </div>

@@ -282,12 +282,12 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
         {showRegionNotice && (
           <div className="mb-8 max-w-2xl mx-auto rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/40 dark:border-amber-800 px-5 py-4 text-sm text-amber-900 dark:text-amber-200">
             {locale === 'ko'
-              ? '?�당 계산기는 ?�재 ?�택??�??(?�장)?�서 지?�하지 ?�아, 관??계산�?목록?�로 ?�내?�습?�다. ?�단 ?�어/�?? ?�환?�로 ?�른 버전???�용?�실 ???�습?�다.'
+              ? '해당 계산기는 현재 선택하신 국가/시장에서 이용할 수 없어 관련 계산기 목록으로 안내합니다. 상단의 언어/국가 설정을 변경하면 다른 버전을 이용하실 수 있습니다.'
               : 'This calculator is not available in the currently selected country/market. We have redirected you to related calculators. Switch the language/region above to access other versions.'}
           </div>
         )}
         <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground leading-tight">
             {category.name} {dict.categories.titleSuffix}
           </h1>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -327,10 +327,7 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
                         <LocalizedLink href={calculator.href} passHref>
                           <div className="group flex items-center justify-between px-4 py-2 rounded-lg hover:bg-accent transition-colors duration-200">
                             <div className="flex items-center space-x-3 min-w-0">
-                              {(() => {
-                                const Icon = CALCULATOR_ICONS[calculator.id] || CalculatorIcon;
-                                return <Icon className="w-5 h-5 shrink-0 text-muted-foreground group-hover:text-primary" />;
-                              })()}
+                              <span className="text-lg leading-none shrink-0">{calculator.emoji || '🔢'}</span>
                               <span className="text-base font-medium text-muted-foreground group-hover:text-foreground min-w-0 truncate">
                                 {getCalculatorName(calculator.id, calculator.name)}
                               </span>

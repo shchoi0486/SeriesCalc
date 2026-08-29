@@ -9,12 +9,12 @@ const AboutSection: React.FC = () => {
           SeriesCalc에 오신 것을 환영합니다!
         </h2>
         <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-          SeriesCalc는 일상생활과 전문적인 작업에 필요한 모든 종류의 계산기를 한곳에 모아둔
+          SeriesCalc는 일상과 전문 작업에 필요한 계산기를 한곳에 모아둔
           종합 계산기 플랫폼입니다. 복잡한 수식부터 간단한 변환까지,
-          사용자 친화적인 인터페이스로 빠르고 정확한 결과를 제공합니다.
+          직관적인 인터페이스로 빠르고 정확한 결과를 제공합니다.
         </p>
         <p className="mt-2 text-lg font-semibold leading-8 text-gray-700 dark:text-gray-200">
-          저희는 여러분의 시간과 노력을 절약하기 위해 끊임없이 노력하고 있습니다.
+          SeriesCalc는 여러분의 시간과 노력을 아끼기 위해 계속 노력합니다.
         </p>
         <div className="mt-8 flex justify-center">
           <Link

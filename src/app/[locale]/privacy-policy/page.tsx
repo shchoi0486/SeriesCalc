@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { locales } from "@/i18n/config";
 import ProsePage, { ProseSection } from "@/components/sections/ProsePage";
 
-const CONTACT_EMAIL = "privacy@seriescalc.com";
+const CONTACT_EMAIL = "seriessnap.co@gmail.com";
 
 export function generateMetadata({
   params,
