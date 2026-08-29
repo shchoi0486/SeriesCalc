@@ -761,18 +761,6 @@ const META_OVERRIDES: Record<string, { ko: LocaleCopy; en: LocaleCopy }> = {
   },
 };
 
-function alternatesFor(locale: string, calcPath: string) {
-  const loc = locale === "ko" ? "ko" : "en";
-  return {
-    canonical: `/${loc}${calcPath}`,
-    languages: {
-      "ko-kr": `/ko${calcPath}`,
-      "en-us": `/en${calcPath}`,
-      "x-default": `/en${calcPath}`,
-    },
-  };
-}
-
 function openGraphFor(
   locale: string,
   calcPath: string,
@@ -822,7 +810,6 @@ export function buildCalculatorMetadata(
   return {
     title,
     description,
-    alternates: alternatesFor(loc, calcPath),
     openGraph: openGraphFor(loc, calcPath, title, description),
   };
 }
@@ -848,7 +835,6 @@ export function buildCategoryMetadata(
   return {
     title,
     description,
-    alternates: alternatesFor(loc, `/calculators/${category}`),
     openGraph: openGraphFor(
       loc,
       `/calculators/${category}`,

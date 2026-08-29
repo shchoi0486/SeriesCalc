@@ -20,9 +20,9 @@ export default function HrefLangTags() {
   return (
     <>
       <link rel="canonical" href={canonical} />
-      <link rel="alternate" hrefLang="ko" href={ko} />
-      <link rel="alternate" hrefLang="en" href={en} />
-      <link rel="alternate" hrefLang="x-default" href={ko} />
+      <link rel="alternate" hrefLang="ko-kr" href={ko} />
+      <link rel="alternate" hrefLang="en-us" href={en} />
+      <link rel="alternate" hrefLang="x-default" href={en} />
     </>
   );
 }
