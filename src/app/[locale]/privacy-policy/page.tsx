@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { locales } from "@/i18n/config";
 import ProsePage, { ProseSection } from "@/components/sections/ProsePage";
 
 const CONTACT_EMAIL = "privacy@seriescalc.com";
@@ -18,7 +19,7 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "ko" }];
+  return locales.map((locale) => ({ locale }));
 }
 
 export default function PrivacyPolicyPage({

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { locales } from "@/i18n/config";
 import ProsePage, { ProseSection } from "@/components/sections/ProsePage";
 import ContactForm from "@/components/sections/ContactForm";
 
@@ -17,7 +18,7 @@ export function generateMetadata({
 }
 
 export function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "ko" }];
+  return locales.map((locale) => ({ locale }));
 }
 
 export default function ContactPage({

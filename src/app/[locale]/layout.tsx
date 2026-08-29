@@ -5,7 +5,7 @@ import "katex/dist/katex.min.css";
 import Providers from "../providers";
 import Layout from "@/components/layout/Layout";
 import { Toaster } from "sonner";
-import { isLocale, locales, defaultLocale } from "@/i18n/config";
+import { isLocale, locales, defaultLocale, localeMeta, type Locale } from "@/i18n/config";
 import { en } from "@/i18n/dictionaries/en";
 import { ko } from "@/i18n/dictionaries/ko";
 import { I18nProvider } from "@/i18n/I18nProvider";
@@ -49,7 +49,7 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
       siteName: "SeriesCalc",
       title,
       description,
-      locale: isKo ? "ko_KR" : "en_US",
+      locale: localeMeta[locale as Locale].ogLocale,
     },
     twitter: {
       card: "summary_large_image",

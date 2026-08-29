@@ -2,14 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import { locales, defaultLocale, isLocale } from '@/i18n/config';
 import { isMarketAllowed } from '@/data/calculatorMarkets';
 
-// 영어 우선 자동 판별: 쿠키 → Accept-Language(명시적 ko 최우선일 때만 ko) → 기본 en
+// 기본 en. 쿠키 → Accept-Language(지원 언어와 일치하는 것 우선) → 기본 en
 function detectLocale(req: NextRequest): string {
   const cookie = req.cookies.get('locale')?.value;
   if (cookie && isLocale(cookie)) return cookie;
 
   const accept = req.headers.get('accept-language') || '';
-  const preferred = accept.split(',')[0]?.split(';')[0]?.trim().toLowerCase() || '';
-  if (preferred.startsWith('ko')) return 'ko';
+  for (const part of accept.split(',')) {
+    const lang = part.split(';')[0]?.trim().toLowerCase() || '';
+    const base = lang.split('-')[0];
+    const match = (locales as readonly string[]).find((l) => l === lang || l === base);
+    if (match) return match;
+  }
   return defaultLocale;
 }
 

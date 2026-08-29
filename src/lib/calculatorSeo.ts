@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from "next";
 import { en } from "@/i18n/dictionaries/en";
 import { ko } from "@/i18n/dictionaries/ko";
+import { localeMeta, type Locale } from "@/i18n/config";
 
 type DictShape = typeof en;
 
@@ -767,14 +768,14 @@ function openGraphFor(
   title: string,
   description: string
 ) {
-  const loc = locale === "ko" ? "ko" : "en";
+  const loc = locale as Locale;
   return {
     title,
     description,
     url: `/${loc}${calcPath}`,
     type: "website" as const,
     siteName: SITE_NAME,
-    locale: loc === "ko" ? "ko_KR" : "en_US",
+    locale: localeMeta[loc]?.ogLocale ?? "en_US",
   };
 }
 
@@ -810,7 +811,7 @@ export function buildCalculatorMetadata(
   return {
     title,
     description,
-    openGraph: openGraphFor(loc, calcPath, title, description),
+    openGraph: openGraphFor(locale, calcPath, title, description),
   };
 }
 
@@ -836,7 +837,7 @@ export function buildCategoryMetadata(
     title,
     description,
     openGraph: openGraphFor(
-      loc,
+      locale,
       `/calculators/${category}`,
       title,
       description
