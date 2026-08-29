@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import LocalizedLink from '@/components/LocalizedLink';
 import { calculatorCategories } from '@/data/calculators';
 import { MoreHorizontal } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
@@ -52,14 +52,14 @@ export default function CalculatorCategories() {
 
           return (
             <div key={category.id}>
-              <Link href={category.href} className="group mb-3 inline-block">
+              <LocalizedLink href={category.href} className="group mb-3 inline-block">
                 <h3 className={`text-base font-bold ${style.color} group-hover:underline`}>
-                  {getCategoryName(category.id, category.name)} ›
+                  {getCategoryName(category.id, category.name)} ??
                 </h3>
-              </Link>
+              </LocalizedLink>
               <div className="flex flex-col gap-1">
                 {itemsToDisplay.map((calculator) => (
-                  <Link
+                  <LocalizedLink
                     href={calculator.href}
                     key={calculator.id}
                     className={`flex items-start gap-2 p-2 border rounded-md transition-colors bg-white dark:bg-gray-950 ${style.border} hover:bg-gray-50 dark:hover:bg-gray-900 min-w-0`}
@@ -68,7 +68,7 @@ export default function CalculatorCategories() {
                     <span className="text-sm font-normal text-gray-800 dark:text-gray-200 break-words line-clamp-2" title={getCalculatorName(calculator.id, calculator.name)}>
                       {getCalculatorName(calculator.id, calculator.name)}
                     </span>
-                  </Link>
+                  </LocalizedLink>
                 ))}
                 <Link
                   href={category.href}
@@ -76,7 +76,7 @@ export default function CalculatorCategories() {
                 >
                   <MoreHorizontal className={`w-4 h-4 ${style.color}`} />
                   <span className="font-normal text-gray-800 dark:text-gray-200">{dict.common.moreTopics}</span>
-                </Link>
+                </LocalizedLink>
               </div>
             </div>
           );

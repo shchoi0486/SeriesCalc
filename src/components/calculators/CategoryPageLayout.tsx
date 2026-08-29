@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Link from 'next/link';
+import LocalizedLink from '@/components/LocalizedLink';
 import { usePathname } from 'next/navigation';
 import { ArrowRight, Briefcase, Landmark, PiggyBank, Building, HandCoins, FileText, Calculator as CalculatorIcon, Coins, Percent, Divide, Sigma, BarChart, Shield, Calendar, Heart, Ruler, ArrowLeftRight, Zap, Wind, Droplets, FlaskConical, Cpu, Gamepad2, Sparkles, Bot, Code, Palette, Timer, Globe, Binary, Link2, Search, Lock, Minimize2, Maximize2, Hash, Mail, Type, Notebook, Wifi, Square, Triangle, Circle, Leaf, Brain, TestTube, Anchor, Sun, Cloud, Flame, DraftingCompass, Rocket, Trophy, Gem, Key, Layers, Monitor, Music, ShoppingCart, Truck, Utensils, Wrench, BookOpen, Waves, HardDrive, Box, Image, FileJson, FileCode, QrCode, Keyboard, Dice5, Beaker, Car, TrendingUp, Receipt, Clock, GraduationCap, Building2, HeartPulse, Scale, Activity } from 'lucide-react';
 
@@ -44,8 +44,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'inflation-calculator': TrendingUp,
   'interest-rate-calculator': Percent,
   'auto-loan-calculator': Car,
-  // 변환
-  'unit-converter': ArrowLeftRight,
+  // 변??  'unit-converter': ArrowLeftRight,
   'conversion-page': ArrowLeftRight,
   'data-size-converter': HardDrive,
   'distance-converter': Ruler,
@@ -58,7 +57,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'timezone-converter': Globe,
   'korean-shoe-size-converter': Ruler,
   'korean-clothing-size-converter': Ruler,
-  // 일상
+  // ?�상
   'bmi-calculator': Heart,
   'bmr-calculator': Heart,
   'weight-loss-calculator': Heart,
@@ -100,8 +99,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'fraction-calculator': Divide,
   'triangle-calculator': Triangle,
   'standard-deviation-calculator': Sigma,
-  // 엔지니어링
-  'free-fall': ArrowLeftRight,
+  // ?��??�어�?  'free-fall': ArrowLeftRight,
   'beam-deflection': Ruler,
   'spring-rate': Ruler,
   'gear-ratio': Cpu,
@@ -162,7 +160,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'heat-capacity': Flame,
   'dew-point': Cloud,
   'convection-heat-transfer': Flame,
-  // AI 도구
+  // AI ?�구
   'text-summarizer': FileText,
   'lorem-ipsum-generator': FileText,
   'image-resizer': Image,
@@ -182,7 +180,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'meeting-notes': FileText,
   // 게임
   'dps-calculator': Gamepad2,
-  // 기타
+  // 기�?
   'random-number-generator': Dice5,
   'random-string-generator': Hash,
   'random-email-generator': Mail,
@@ -232,7 +230,7 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
   const SITE_URL =
     (process.env.NEXT_PUBLIC_SITE_URL || 'https://seriescalc.com').replace(/\/$/, '');
   const categoryCrumbs = [
-    { name: dict.common?.home ?? (locale === 'ko' ? '홈' : 'Home'), url: `/${locale}` },
+    { name: dict.common?.home ?? (locale === 'ko' ? '?? : 'Home'), url: `/${locale}` },
     { name: category.name, url: pathname },
   ];
 
@@ -284,7 +282,7 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
         {showRegionNotice && (
           <div className="mb-8 max-w-2xl mx-auto rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/40 dark:border-amber-800 px-5 py-4 text-sm text-amber-900 dark:text-amber-200">
             {locale === 'ko'
-              ? '해당 계산기는 현재 선택된 국가(시장)에서 지원하지 않아, 관련 계산기 목록으로 안내했습니다. 상단 언어/국가 전환으로 다른 버전을 이용하실 수 있습니다.'
+              ? '?�당 계산기는 ?�재 ?�택??�??(?�장)?�서 지?�하지 ?�아, 관??계산�?목록?�로 ?�내?�습?�다. ?�단 ?�어/�?? ?�환?�로 ?�른 버전???�용?�실 ???�습?�다.'
               : 'This calculator is not available in the currently selected country/market. We have redirected you to related calculators. Switch the language/region above to access other versions.'}
           </div>
         )}
@@ -326,7 +324,7 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
                     {subcategory.calculators.map(calculator => (
                       <li key={calculator.id}>
-                        <Link href={calculator.href} passHref>
+                        <LocalizedLink href={calculator.href} passHref>
                           <div className="group flex items-center justify-between px-4 py-2 rounded-lg hover:bg-accent transition-colors duration-200">
                             <div className="flex items-center space-x-3">
                               {(() => {
@@ -339,7 +337,7 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
                             </div>
                             <ArrowRight className="w-5 h-5 text-muted-foreground transform transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary shrink-0" />
                           </div>
-                        </Link>
+                        </LocalizedLink>
                       </li>
                     ))}
                   </ul>
