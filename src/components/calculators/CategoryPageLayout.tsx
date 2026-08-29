@@ -57,7 +57,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'timezone-converter': Globe,
   'korean-shoe-size-converter': Ruler,
   'korean-clothing-size-converter': Ruler,
-  // ?�상
+  // ?�상
   'bmi-calculator': Heart,
   'bmr-calculator': Heart,
   'weight-loss-calculator': Heart,
@@ -99,7 +99,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'fraction-calculator': Divide,
   'triangle-calculator': Triangle,
   'standard-deviation-calculator': Sigma,
-  // ?��??�어�?  'free-fall': ArrowLeftRight,
+  // ?��??�어�?  'free-fall': ArrowLeftRight,
   'beam-deflection': Ruler,
   'spring-rate': Ruler,
   'gear-ratio': Cpu,
@@ -160,7 +160,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'heat-capacity': Flame,
   'dew-point': Cloud,
   'convection-heat-transfer': Flame,
-  // AI ?�구
+  // AI ?�구
   'text-summarizer': FileText,
   'lorem-ipsum-generator': FileText,
   'image-resizer': Image,
@@ -180,7 +180,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'meeting-notes': FileText,
   // 게임
   'dps-calculator': Gamepad2,
-  // 기�?
+  // 기�?
   'random-number-generator': Dice5,
   'random-string-generator': Hash,
   'random-email-generator': Mail,
@@ -230,7 +230,7 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
   const SITE_URL =
     (process.env.NEXT_PUBLIC_SITE_URL || 'https://seriescalc.com').replace(/\/$/, '');
   const categoryCrumbs = [
-    { name: dict.common?.home ?? (locale === 'ko' ? '?? : 'Home'), url: `/${locale}` },
+    { name: dict.common?.home ?? (locale === 'ko' ? '홈' : 'Home'), url: `/${locale}` },
     { name: category.name, url: pathname },
   ];
 
@@ -282,7 +282,7 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
         {showRegionNotice && (
           <div className="mb-8 max-w-2xl mx-auto rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/40 dark:border-amber-800 px-5 py-4 text-sm text-amber-900 dark:text-amber-200">
             {locale === 'ko'
-              ? '?�당 계산기는 ?�재 ?�택??�??(?�장)?�서 지?�하지 ?�아, 관??계산�?목록?�로 ?�내?�습?�다. ?�단 ?�어/�?? ?�환?�로 ?�른 버전???�용?�실 ???�습?�다.'
+              ? '?�당 계산기는 ?�재 ?�택??�??(?�장)?�서 지?�하지 ?�아, 관??계산�?목록?�로 ?�내?�습?�다. ?�단 ?�어/�?? ?�환?�로 ?�른 버전???�용?�실 ???�습?�다.'
               : 'This calculator is not available in the currently selected country/market. We have redirected you to related calculators. Switch the language/region above to access other versions.'}
           </div>
         )}

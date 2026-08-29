@@ -70,7 +70,7 @@ export default function CalculatorCategories() {
                     </span>
                   </LocalizedLink>
                 ))}
-                <Link
+                <LocalizedLink
                   href={category.href}
                   className={`flex items-center gap-2 p-2 border rounded-md transition-colors bg-white dark:bg-gray-950 ${style.border} hover:bg-gray-50 dark:hover:bg-gray-900`}
                 >
