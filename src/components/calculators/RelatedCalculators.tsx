@@ -41,10 +41,10 @@ export default function RelatedCalculators() {
             <li key={c.href}>
               <Link
                 href={`/${locale}${c.href}`}
-                className="flex items-center justify-between px-4 py-3 rounded-lg border hover:bg-accent transition-colors"
+                className="flex items-center justify-between px-4 py-3 rounded-lg border hover:bg-accent transition-colors min-w-0"
               >
-                <span className="text-sm font-medium">{name}</span>
-                <span className="text-muted-foreground">→</span>
+                <span className="text-sm font-medium min-w-0 truncate">{name}</span>
+                <span className="text-muted-foreground shrink-0 ml-2">→</span>
               </Link>
             </li>
           );

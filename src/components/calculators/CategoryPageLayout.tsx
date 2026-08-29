@@ -320,13 +320,13 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
                     </CardTitle>
                   </div>
                 </CardHeader>
-                <CardContent className="p-3">
+                <CardContent className="p-3 overflow-hidden">
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
                     {subcategory.calculators.map(calculator => (
                       <li key={calculator.id}>
                         <LocalizedLink href={calculator.href} passHref>
                           <div className="group flex items-center justify-between px-4 py-2 rounded-lg hover:bg-accent transition-colors duration-200">
-                            <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-3 min-w-0">
                               {(() => {
                                 const Icon = CALCULATOR_ICONS[calculator.id] || CalculatorIcon;
                                 return <Icon className="w-5 h-5 shrink-0 text-muted-foreground group-hover:text-primary" />;
