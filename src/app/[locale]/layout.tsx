@@ -70,7 +70,7 @@ export default function LocaleLayout({
     <html lang={locale} suppressHydrationWarning className="overflow-y-scroll">
       <head>
         <meta name="naver-site-verification" content="f8b1fc72e9049871a46d76d6a9865fcf400cd9a4" />
-        <meta name="google-site-verification" content="fZ9Q4Tb392iwuz6Mtw9iytpnsFCaqjcK_rhO-d7WfPc" />
+        <meta name="google-site-verification" content="Sh-CbQLycbp5kg8gDPE2Cz9TjIbrEvVXNbhDI_xnCwA" />
         <HrefLangTags />
         <Script
           id="consent-mode-v2"
@@ -80,6 +80,23 @@ export default function LocaleLayout({
               "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500});",
           }}
         />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <Script
+            id="ga4-loader"
+            strategy="beforeInteractive"
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          />
+        )}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <Script
+            id="ga4-config"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');`,
+            }}
+          />
+        )}
         {process.env.NEXT_PUBLIC_ADSENSE_CLIENT && (
           <Script
             id="adsense-script"
