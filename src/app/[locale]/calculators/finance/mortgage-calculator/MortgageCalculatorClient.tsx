@@ -301,7 +301,7 @@ const MortgageCalculator: React.FC = () => {
                   <tr key={y} className="border-b border-border">
                     <td className="px-3 py-2 text-foreground">{startYear + y}</td>
                     <td className="px-3 py-2 text-right text-red-500">{formatCurrency(yInterest, 'KRW')}</td>
-                    <td className="px-3 py-2 text-right text-blue-600">{formatCurrency(yPrincipal, 'KRW')}</td>
+                    <td className="px-3 py-2 text-right text-blue-600 dark:text-blue-400">{formatCurrency(yPrincipal, 'KRW')}</td>
                     <td className="px-3 py-2 text-right text-muted-foreground">{formatCurrency(lastBalance, 'KRW')}</td>
                   </tr>
                 );

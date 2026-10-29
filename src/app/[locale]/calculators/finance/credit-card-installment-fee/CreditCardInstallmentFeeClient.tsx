@@ -84,7 +84,7 @@ const CreditCardInstallmentFeeCalculator = ({ infoSection }: CreditCardInstallme
         principalToTotalFeeRatio: 0,
         totalFeeToTotalPaymentRatio: 0,
         schedule: [],
-        statusBadgeColor: 'bg-gray-500',
+        statusBadgeColor: 'bg-gray-50 dark:bg-gray-9000',
         statusKey: 'error',
       };
     }
@@ -160,7 +160,7 @@ const CreditCardInstallmentFeeCalculator = ({ infoSection }: CreditCardInstallme
       statusBadgeColor = 'bg-red-500';
       statusKey = 'high';
     } else if (totalFeeToTotalPaymentRatio > 5) {
-      statusBadgeColor = 'bg-yellow-500 text-black';
+      statusBadgeColor = 'bg-yellow-500 text-black dark:text-white';
       statusKey = 'medium';
     }
 
@@ -215,7 +215,7 @@ const CreditCardInstallmentFeeCalculator = ({ infoSection }: CreditCardInstallme
           <Label htmlFor="paymentAmount">{isKo ? '결제 금액 (원)' : 'Payment amount (KRW)'}</Label>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="text-muted-foreground hover:text-gray-600 cursor-help">
+              <TooltipTrigger className="text-muted-foreground hover:text-gray-600 dark:text-gray-400 cursor-help">
                 <span className="text-xs">?</span>
               </TooltipTrigger>
               <TooltipContent>
@@ -240,7 +240,7 @@ const CreditCardInstallmentFeeCalculator = ({ infoSection }: CreditCardInstallme
           <Label htmlFor="installmentMonths">{isKo ? '할부 개월 수 (개월)' : 'Installment period (months)'}</Label>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="text-muted-foreground hover:text-gray-600 cursor-help">
+              <TooltipTrigger className="text-muted-foreground hover:text-gray-600 dark:text-gray-400 cursor-help">
                 <span className="text-xs">?</span>
               </TooltipTrigger>
               <TooltipContent>
@@ -266,7 +266,7 @@ const CreditCardInstallmentFeeCalculator = ({ infoSection }: CreditCardInstallme
           <Label htmlFor="interestFreeMonths">{isKo ? '무이자 할부 개월 수 (개월)' : 'Interest-free installment months'}</Label>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="text-muted-foreground hover:text-gray-600 cursor-help">
+              <TooltipTrigger className="text-muted-foreground hover:text-gray-600 dark:text-gray-400 cursor-help">
                 <span className="text-xs">?</span>
               </TooltipTrigger>
               <TooltipContent>
@@ -292,7 +292,7 @@ const CreditCardInstallmentFeeCalculator = ({ infoSection }: CreditCardInstallme
           <Label htmlFor="annualFeeRate">{isKo ? '할부 수수료율 (연 %)' : 'Installment fee rate (annual %)'}</Label>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="text-muted-foreground hover:text-gray-600 cursor-help">
+              <TooltipTrigger className="text-muted-foreground hover:text-gray-600 dark:text-gray-400 cursor-help">
                 <span className="text-xs">?</span>
               </TooltipTrigger>
               <TooltipContent>

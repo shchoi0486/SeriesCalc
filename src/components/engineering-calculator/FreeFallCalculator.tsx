@@ -123,7 +123,7 @@ export default function FreeFallCalculator() {
                   className="flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
                   min="0"
                 />
-                <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs">
+                <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs">
                   s
                 </span>
               </div>
@@ -142,7 +142,7 @@ export default function FreeFallCalculator() {
                   className="flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
                   min="0"
                 />
-                <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs">
+                <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs">
                   {unitSystem === 'metric' ? 'm/s' : 'ft/s'}
                 </span>
               </div>
@@ -162,7 +162,7 @@ export default function FreeFallCalculator() {
                   className="flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
                   min="0"
                 />
-                <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs">
+                <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs">
                   {unitSystem === 'metric' ? 'm' : 'ft'}
                 </span>
               </div>
@@ -195,7 +195,7 @@ export default function FreeFallCalculator() {
                       {result.unitSystemUsed === 'metric' ? 'm/s' : 'ft/s'}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500 mt-1">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {result.unitSystemUsed === 'metric' 
                       ? `(${(result.finalVelocity * 3.6).toFixed(2)} km/h)` 
                       : `(${(result.finalVelocity * 0.681818).toFixed(2)} mph)`}

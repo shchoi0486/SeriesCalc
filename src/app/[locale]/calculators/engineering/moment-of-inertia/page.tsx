@@ -86,11 +86,11 @@ export default function MomentOfInertiaPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">I</strong> — {L('단면 2차 모멘트 [mm⁴, cm⁴, m⁴]', 'Second moment of area [mm⁴, cm⁴, m⁴]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">I</strong> — {L('단면 2차 모멘트 [mm⁴, cm⁴, m⁴]', 'Second moment of area [mm⁴, cm⁴, m⁴]')}</li>
           <li><strong className="font-semibold text-red-500">b, h</strong> — {L('사각형의 폭과 높이 [mm]', 'Width and height of rectangle [mm]')}</li>
-          <li><strong className="font-semibold text-blue-600">d, D</strong> — {L('원의 직경 [mm] (D: 외경, d: 내경)', 'Circle diameter [mm] (D: outer, d: inner)')}</li>
-          <li><strong className="font-semibold text-orange-600">B, H</strong> — {L('I형 외부 치수 [mm]', 'I-beam outer dimensions [mm]')}</li>
-          <li><strong className="font-semibold text-purple-600">b, h (I형 내부)</strong> — {L('I형 복판(web) 제외 내부 치수 [mm]', 'I-beam internal dimensions excluding flanges [mm]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">d, D</strong> — {L('원의 직경 [mm] (D: 외경, d: 내경)', 'Circle diameter [mm] (D: outer, d: inner)')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">B, H</strong> — {L('I형 외부 치수 [mm]', 'I-beam outer dimensions [mm]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">b, h (I형 내부)</strong> — {L('I형 복판(web) 제외 내부 치수 [mm]', 'I-beam internal dimensions excluding flanges [mm]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('단면계수와의 관계', 'Relation to section modulus')}</h4>
@@ -99,10 +99,10 @@ export default function MomentOfInertiaPage({
             <BlockMath math="\sigma = \dfrac{M}{S} = \dfrac{M c}{I}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
-            <li><strong className="font-semibold text-green-600">S</strong> — {L('단면계수(section modulus) [mm³]', 'Section modulus [mm³]')}</li>
+            <li><strong className="font-semibold text-green-600 dark:text-green-400">S</strong> — {L('단면계수(section modulus) [mm³]', 'Section modulus [mm³]')}</li>
             <li><strong className="font-semibold text-red-500">c</strong> — {L('중심축으로부터 가장 먼 섬유까지의 거리 [mm]', 'Distance from centroid to extreme fiber [mm]')}</li>
-            <li><strong className="font-semibold text-blue-600">M</strong> — {L('휨 모멘트 [N·mm]', 'Bending moment [N·mm]')}</li>
-            <li><strong className="font-semibold text-orange-600">σ</strong> — {L('휨 응력 [MPa]', 'Bending stress [MPa]')}</li>
+            <li><strong className="font-semibold text-blue-600 dark:text-blue-400">M</strong> — {L('휨 모멘트 [N·mm]', 'Bending moment [N·mm]')}</li>
+            <li><strong className="font-semibold text-orange-600 dark:text-orange-400">σ</strong> — {L('휨 응력 [MPa]', 'Bending stress [MPa]')}</li>
           </ul>
         </div>
       </div>

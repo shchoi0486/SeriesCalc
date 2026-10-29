@@ -161,16 +161,16 @@ const TextDifference = ({ infoSection }: TextDifferenceProps) => {
           <Card>
             <CardContent className="p-4">
               <p className="text-sm font-medium mb-2">{t.diffResultTitle}</p>
-              <div className="font-mono text-sm whitespace-pre-wrap border rounded-lg p-4 bg-gray-50 max-h-[400px] overflow-y-auto">
+              <div className="font-mono text-sm whitespace-pre-wrap border rounded-lg p-4 bg-gray-50 dark:bg-gray-900 max-h-[400px] overflow-y-auto">
                 {diffResult.map((segment, index) => (
                   <div
                     key={index}
                     className={`px-2 py-0.5 ${
                       segment.type === 'added'
-                        ? 'bg-green-100 text-green-800 border-l-4 border-green-500'
+                        ? 'bg-green-100 text-green-800 dark:text-green-300 border-l-4 border-green-500'
                         : segment.type === 'removed'
-                        ? 'bg-red-100 text-red-800 border-l-4 border-red-500 line-through'
-                        : 'text-gray-700'
+                        ? 'bg-red-100 text-red-800 dark:text-red-300 border-l-4 border-red-500 line-through'
+                        : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     <span className="mr-2 text-xs text-gray-400 select-none">

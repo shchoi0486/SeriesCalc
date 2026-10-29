@@ -120,7 +120,7 @@ export default function SalaryConverterCalculator({ infoSection }: SalaryConvert
         </div>
         <div className="flex justify-between items-center">
           <span className="text-muted-foreground">{isKo ? '세후 월급 (추정)' : 'Monthly After Tax (Est.)'}</span>
-          <span className="font-bold text-blue-600">{formatNumber(Math.round(result.monthlyAfterTax))}{isKo ? '원' : ' KRW'}</span>
+          <span className="font-bold text-blue-600 dark:text-blue-400">{formatNumber(Math.round(result.monthlyAfterTax))}{isKo ? '원' : ' KRW'}</span>
         </div>
         <div className="flex justify-between items-center border-t pt-3">
           <span className="text-muted-foreground">{isKo ? '실수령 (추정)' : 'Net Take-home (Est.)'}</span>

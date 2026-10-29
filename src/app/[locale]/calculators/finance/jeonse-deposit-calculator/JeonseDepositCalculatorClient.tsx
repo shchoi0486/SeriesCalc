@@ -154,14 +154,14 @@ const JeonseDepositCalculator = ({ infoSection }: JeonseDepositCalculatorProps) 
           </div>
 
           {ltvLimit !== null && dsrLimit !== null && ltvLimit < dsrLimit && (
-            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700 dark:text-blue-400">
               {isKo
                 ? 'ℹ️ LTV 기준이 더 낮아 LTV 기준으로 대출한도가 결정되었습니다.'
                 : 'ℹ️ LTV is the binding constraint for the loan limit.'}
             </div>
           )}
           {ltvLimit !== null && dsrLimit !== null && dsrLimit < ltvLimit && (
-            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-700">
+            <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-700 dark:text-yellow-400">
               {isKo
                 ? 'ℹ️ DSR 기준이 더 낮아 상환능력이 대출한도의 병목입니다. 소득을 높이거나 DTI를 조정해보세요.'
                 : 'ℹ️ DSR is the binding constraint. Increasing income or adjusting DTI can raise the limit.'}

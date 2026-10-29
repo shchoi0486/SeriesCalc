@@ -202,7 +202,7 @@ const ColorPicker = ({ infoSection }: ColorPickerProps) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">{t.results.hex}:</span>
                 <div className="flex items-center space-x-2">
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm">{normalizeHex(hexInput)}</code>
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">{normalizeHex(hexInput)}</code>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -216,7 +216,7 @@ const ColorPicker = ({ infoSection }: ColorPickerProps) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">{t.results.rgb}:</span>
                 <div className="flex items-center space-x-2">
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm">rgb({rgb.r}, {rgb.g}, {rgb.b})</code>
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">rgb({rgb.r}, {rgb.g}, {rgb.b})</code>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -230,7 +230,7 @@ const ColorPicker = ({ infoSection }: ColorPickerProps) => {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">{t.results.hsl}:</span>
                 <div className="flex items-center space-x-2">
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm">hsl({hsl.h}, {hsl.s}%, {hsl.l}%)</code>
+                  <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">hsl({hsl.h}, {hsl.s}%, {hsl.l}%)</code>
                   <Button
                     size="sm"
                     variant="ghost"

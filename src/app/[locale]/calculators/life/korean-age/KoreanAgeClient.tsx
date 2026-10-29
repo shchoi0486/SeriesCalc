@@ -202,7 +202,7 @@ const KoreanAgeCalculator = () => {
         <div className="flex flex-col space-y-4">
           <div className="flex items-center space-x-4">
             <label htmlFor="currentYear" className="w-24">{t.inputs.currentYear}:</label>
-            <Input id="currentYear" type="number" value={currentYear} disabled className="bg-gray-100 text-gray-500 cursor-not-allowed w-[180px]" />
+            <Input id="currentYear" type="number" value={currentYear} disabled className="bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed w-[180px]" />
           </div>
           <div className="flex items-center space-x-4">
             <label htmlFor="birthYear" className="w-24">{t.inputs.birthYear}:</label>
@@ -256,34 +256,34 @@ const KoreanAgeCalculator = () => {
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-            <h3 className="font-semibold text-blue-800 mb-2">{t.results.koreanAge}</h3>
-            <p className="text-2xl font-bold text-blue-600">{result.koreanAge}{yearSuffix}</p>
-            <p className="text-sm text-blue-600 mt-1">{t.results.koreanAgeDesc}</p>
+            <h3 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">{t.results.koreanAge}</h3>
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{result.koreanAge}{yearSuffix}</p>
+            <p className="text-sm text-blue-600 dark:text-blue-400 mt-1">{t.results.koreanAgeDesc}</p>
           </div>
           <div className="bg-green-50 p-4 rounded-lg border border-green-100">
-            <h3 className="font-semibold text-green-800 mb-2">{t.results.internationalAge}</h3>
-            <p className="text-2xl font-bold text-green-600">{result.internationalAge}{yearSuffix}</p>
-            <p className="text-sm text-green-600 mt-1">{t.results.internationalAgeDesc}</p>
+            <h3 className="font-semibold text-green-800 dark:text-green-300 mb-2">{t.results.internationalAge}</h3>
+            <p className="text-2xl font-bold text-green-600 dark:text-green-400">{result.internationalAge}{yearSuffix}</p>
+            <p className="text-sm text-green-600 dark:text-green-400 mt-1">{t.results.internationalAgeDesc}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
-            <h3 className="font-semibold text-purple-800 mb-2">{t.results.yearAge}</h3>
-            <p className="text-2xl font-bold text-purple-600">{result.yearAge}{yearSuffix}</p>
-            <p className="text-sm text-purple-600 mt-1">{t.results.yearAgeDesc}</p>
+            <h3 className="font-semibold text-purple-800 dark:text-purple-300 mb-2">{t.results.yearAge}</h3>
+            <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{result.yearAge}{yearSuffix}</p>
+            <p className="text-sm text-purple-600 dark:text-purple-400 mt-1">{t.results.yearAgeDesc}</p>
           </div>
           <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
             <h3 className="font-semibold text-orange-800 mb-2">{t.results.zodiac}</h3>
-            <p className="text-2xl font-bold text-orange-600">{result.zodiac}{isKo ? '띠' : ''}</p>
-            <p className="text-sm text-orange-600 mt-1">{t.results.zodiacDesc}</p>
+            <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{result.zodiac}{isKo ? '띠' : ''}</p>
+            <p className="text-sm text-orange-600 dark:text-orange-400 mt-1">{t.results.zodiacDesc}</p>
           </div>
         </div>
 
         {result.daysLived > 0 && (
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-            <h3 className="font-semibold text-gray-800 mb-2">{t.results.daysLived}</h3>
-            <p className="text-2xl font-bold text-gray-600">{result.daysLived.toLocaleString()}{daySuffix}</p>
+          <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border border-gray-100">
+            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-2">{t.results.daysLived}</h3>
+            <p className="text-2xl font-bold text-gray-600 dark:text-gray-400">{result.daysLived.toLocaleString()}{daySuffix}</p>
           </div>
         )}
 
@@ -298,19 +298,19 @@ const KoreanAgeCalculator = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className={`p-3 rounded-lg border ${result.isAdult ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
             <h3 className="font-semibold mb-1">{t.results.adultStatus}</h3>
-            <p className={`text-lg font-bold ${result.isAdult ? 'text-green-600' : 'text-red-600'}`}>
+            <p className={`text-lg font-bold ${result.isAdult ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
               {result.isAdult ? t.results.adult : t.results.minor}
             </p>
           </div>
-          <div className={`p-3 rounded-lg border ${result.canVote ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 border-gray-200'}`}>
+          <div className={`p-3 rounded-lg border ${result.canVote ? 'bg-blue-50 border-blue-200' : 'bg-gray-50 dark:bg-gray-900 border-gray-200'}`}>
             <h3 className="font-semibold mb-1">{t.results.canVote}</h3>
-            <p className={`text-lg font-bold ${result.canVote ? 'text-blue-600' : 'text-gray-600'}`}>
+            <p className={`text-lg font-bold ${result.canVote ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400'}`}>
               {result.canVote ? t.results.possible : t.results.impossible}
             </p>
           </div>
-          <div className={`p-3 rounded-lg border ${result.canDrink ? 'bg-purple-50 border-purple-200' : 'bg-gray-50 border-gray-200'}`}>
+          <div className={`p-3 rounded-lg border ${result.canDrink ? 'bg-purple-50 border-purple-200' : 'bg-gray-50 dark:bg-gray-900 border-gray-200'}`}>
             <h3 className="font-semibold mb-1">{t.results.canDrink}</h3>
-            <p className={`text-lg font-bold ${result.canDrink ? 'text-purple-600' : 'text-gray-600'}`}>
+            <p className={`text-lg font-bold ${result.canDrink ? 'text-purple-600 dark:text-purple-400' : 'text-gray-600 dark:text-gray-400'}`}>
               {result.canDrink ? t.results.possible : t.results.impossible}
             </p>
           </div>

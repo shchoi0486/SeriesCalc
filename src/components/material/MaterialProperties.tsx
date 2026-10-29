@@ -127,7 +127,7 @@ export default function MaterialProperties({
                 {filteredMaterials.map((material) => (
                   <div
                     key={material.id}
-                    className="flex items-center justify-between p-2 hover:bg-gray-100 rounded"
+                    className="flex items-center justify-between p-2 hover:bg-gray-100 dark:bg-gray-800 rounded"
                   >
                     <span>{material.displayName}</span>
                     <Button
@@ -163,7 +163,7 @@ export default function MaterialProperties({
                   {selectedMaterials.map((material) => (
                     <div
                       key={material.id}
-                      className="flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm"
+                      className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full px-3 py-1 text-sm"
                     >
                       <span>{material.displayName}</span>
                       <Button
@@ -196,12 +196,12 @@ export default function MaterialProperties({
           <CardContent>
             <div className="space-y-4">
               {/* 활성/비활성 토글 */}
-              <div className="flex flex-wrap gap-2 mb-4 p-2 bg-gray-50 rounded-lg">
+              <div className="flex flex-wrap gap-2 mb-4 p-2 bg-gray-50 dark:bg-gray-900 rounded-lg">
                 {selectedMaterials.map((material) => (
                   <div
                     key={material.id}
                     className={`flex items-center gap-2 p-2 rounded-md cursor-pointer transition-colors ${
-                      material.active ? 'bg-blue-100 text-blue-800' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                      material.active ? 'bg-blue-100 text-blue-800 dark:text-blue-300' : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300'
                     }`}
                     onClick={() => toggleMaterialActive(material.id)}
                   >
@@ -219,13 +219,13 @@ export default function MaterialProperties({
                     <thead>
                       <tr className="border-b border-gray-200">
                         <th 
-                          className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                          className="text-left py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                           style={{ width: '300px' }}
                         >
                           물성
                         </th>
                         <th 
-                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                             style={{ width: '100px' }}
                           >
                             단위
@@ -233,7 +233,7 @@ export default function MaterialProperties({
                         {selectedMaterials.filter(m => m.active).map((material, index) => (
                           <th 
                             key={index} 
-                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-blue-50"
+                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-blue-50"
                             style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
                           >
                             <div className="truncate" title={material.displayName}>
@@ -264,20 +264,20 @@ export default function MaterialProperties({
                            const unit = firstMaterial?.properties[propertyKey]?.unit;
                            
                            return (
-                             <tr key={propertyKey} className="border-b border-gray-100 hover:bg-gray-50">
+                             <tr key={propertyKey} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-gray-900">
                                <td className="py-1 px-3">
-                                 <div className="text-xs font-medium text-gray-900 leading-tight">
+                                 <div className="text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight">
                                    {koreanInfo?.korean ? `${koreanInfo.korean} (${propertyKey})` : propertyKey}
                                  </div>
                                </td>
                                <td className="py-1 px-3 text-center">
-                                 <div className="text-xs text-gray-600 font-mono">
+                                 <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">
                                    {unit ? <span dangerouslySetInnerHTML={{ __html: formatUnit(unit) }} /> : '-'}
                                  </div>
                                </td>
                                {selectedMaterials.filter(m => m.active).map((material, index) => (
                                  <td key={index} className="py-1 px-3 text-center">
-                                   <div className="text-xs font-medium text-gray-900">
+                                   <div className="text-xs font-medium text-gray-900 dark:text-gray-100">
                                      {formatRangeValue(material.properties[propertyKey]?.value || '-')}
                                    </div>
                                  </td>
@@ -350,7 +350,7 @@ export default function MaterialProperties({
 
                 return (
                   <div>
-                    <h3 className="text-lg font-semibold mb-3 text-green-600 border-b border-green-200 pb-2">
+                    <h3 className="text-lg font-semibold mb-3 text-green-600 dark:text-green-400 border-b border-green-200 pb-2">
                       Chemical Composition
                     </h3>
                     
@@ -359,12 +359,12 @@ export default function MaterialProperties({
                       {/* 모바일 카드 레이아웃 */}
                       <div className="space-y-4">
                         {sortedElements.map((symbol, elementIndex) => (
-                          <div key={elementIndex} className="bg-white border border-gray-200 rounded-lg p-4">
+                          <div key={elementIndex} className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg p-4">
                             <div className="mb-3">
-                              <h4 className="text-sm font-semibold text-gray-900">
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                                 {elementKoreanNames[symbol] ? `${elementKoreanNames[symbol]}` : symbol}
                               </h4>
-                              <p className="text-xs text-gray-500 mt-1">
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                 {symbol} (%)
                               </p>
                             </div>
@@ -383,11 +383,11 @@ export default function MaterialProperties({
                                   : '-';
 
                                 return (
-                                  <div key={materialIndex} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
-                                    <span className="text-sm font-medium text-gray-700 truncate max-w-[60%]">
+                                  <div key={materialIndex} className="flex justify-between items-center py-2 px-3 bg-gray-50 dark:bg-gray-900 rounded">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[60%]">
                                       {material.displayName}
                                     </span>
-                                    <span className="text-sm font-semibold text-gray-900">
+                                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                                       {value}
                                     </span>
                                   </div>
@@ -406,13 +406,13 @@ export default function MaterialProperties({
                         <thead>
                           <tr className="border-b border-gray-200">
                             <th 
-                              className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                              className="text-left py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                               style={{ width: '300px' }}
                             >
                               원소
                             </th>
                             <th 
-                              className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                              className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                               style={{ width: '100px' }}
                             >
                               단위
@@ -420,7 +420,7 @@ export default function MaterialProperties({
                             {selectedMaterials.filter(m => m.active).map((material, index) => (
                               <th 
                                 key={index} 
-                                className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-green-50"
+                                className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-green-50"
                                 style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
                               >
                                 <div className="truncate" title={material.displayName}>
@@ -434,14 +434,14 @@ export default function MaterialProperties({
                         {/* 원소별 데이터 */}
                         <tbody>
                           {sortedElements.map((symbol, elementIndex) => (
-                            <tr key={elementIndex} className="border-b border-gray-100 hover:bg-gray-50">
+                            <tr key={elementIndex} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-gray-900">
                               <td className="py-1 px-3">
-                                <div className="text-xs font-medium text-gray-900 leading-tight">
+                                <div className="text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight">
                                   {elementKoreanNames[symbol] ? `${elementKoreanNames[symbol]}(${symbol})` : symbol}
                                 </div>
                               </td>
                               <td className="py-1 px-3 text-center">
-                                <div className="text-xs text-gray-600 font-mono">
+                                <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">
                                   %
                                 </div>
                               </td>
@@ -460,7 +460,7 @@ export default function MaterialProperties({
 
                                 return (
                                   <td key={materialIndex} className="py-1 px-3 text-center">
-                                    <div className="text-xs font-medium text-gray-900">
+                                    <div className="text-xs font-medium text-gray-900 dark:text-gray-100">
                                       {value}
                                     </div>
                                   </td>
@@ -478,29 +478,29 @@ export default function MaterialProperties({
               {/* BASE PRICE 섹션 */}
               {selectedMaterials.some(material => material.basePrice) && (
                 <div>
-                  <h3 className="text-lg font-semibold mb-3 text-purple-600 border-b border-purple-200 pb-2">
+                  <h3 className="text-lg font-semibold mb-3 text-purple-600 dark:text-purple-400 border-b border-purple-200 pb-2">
                     Reference Price
                   </h3>
                   
                   {/* 모바일에서는 카드 레이아웃, 데스크톱에서는 테이블 */}
                   <div className="block sm:hidden">
                     {/* 모바일 카드 레이아웃 */}
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg p-4">
                       <div className="mb-3">
-                        <h4 className="text-sm font-semibold text-gray-900">
+                        <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                           기본 금속 가격
                         </h4>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           Base Metal Price ({selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit === '%' ? '%rel' : selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit || '-'})
                         </p>
                       </div>
                       <div className="space-y-2">
                         {selectedMaterials.filter(m => m.active).map((material, index) => (
-                          <div key={index} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
-                            <span className="text-sm font-medium text-gray-700 truncate max-w-[60%]">
+                          <div key={index} className="flex justify-between items-center py-2 px-3 bg-gray-50 dark:bg-gray-900 rounded">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[60%]">
                               {material.displayName}
                             </span>
-                            <span className="text-sm font-semibold text-gray-900">
+                            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                               {material.basePrice ? formatRangeValue(material.basePrice.value) : '-'}
                             </span>
                           </div>
@@ -516,13 +516,13 @@ export default function MaterialProperties({
                       <thead>
                         <tr className="border-b border-gray-200">
                           <th 
-                            className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                            className="text-left py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                             style={{ width: '300px' }}
                           >
                             가격 지수
                           </th>
                           <th 
-                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                             style={{ width: '100px' }}
                           >
                             단위
@@ -530,7 +530,7 @@ export default function MaterialProperties({
                           {selectedMaterials.filter(m => m.active).map((material, index) => (
                             <th 
                               key={index} 
-                              className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-blue-50"
+                              className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-blue-50"
                               style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
                             >
                               <div className="truncate" title={material.displayName}>
@@ -543,23 +543,23 @@ export default function MaterialProperties({
                       
                       {/* 가격 데이터 */}
                       <tbody>
-                        <tr className="border-b border-gray-100 hover:bg-gray-50">
+                        <tr className="border-b border-gray-100 hover:bg-gray-50 dark:bg-gray-900">
                           <td className="py-2 px-3">
-                            <div className="text-xs font-medium text-gray-900">
+                            <div className="text-xs font-medium text-gray-900 dark:text-gray-100">
                               기본 금속 가격
                             </div>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
                               Base Metal Price
                             </div>
                           </td>
                           <td className="py-2 px-3 text-center">
-                            <div className="text-xs text-gray-600">
+                            <div className="text-xs text-gray-600 dark:text-gray-400">
                               {selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit === '%' ? '%rel' : selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit || '-'}
                             </div>
                           </td>
                           {selectedMaterials.filter(m => m.active).map((material, index) => (
                             <td key={index} className="py-2 px-3 text-center">
-                              <div className="text-xs text-gray-700">
+                              <div className="text-xs text-gray-700 dark:text-gray-300">
                                 {material.basePrice ? formatRangeValue(material.basePrice.value) : '-'}
                               </div>
                             </td>
@@ -579,7 +579,7 @@ export default function MaterialProperties({
       {selectedMaterials.length === 0 && (
         <Card>
           <CardContent className="text-center py-12">
-            <div className="text-gray-500">
+            <div className="text-gray-500 dark:text-gray-400">
               <Plus className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p className="text-lg font-medium mb-2">재질을 선택해주세요</p>
               <p className="text-sm">

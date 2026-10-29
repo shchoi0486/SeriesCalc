@@ -29,7 +29,7 @@ export default function CalculatorSearch() {
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-gray-900 dark:text-gray-50">
               {renderTitle(dict.home.title)}
             </h1>
-            <p className="mx-auto text-gray-600 md:text-lg dark:text-gray-400">
+            <p className="mx-auto text-gray-600 dark:text-gray-400 md:text-lg dark:text-gray-400">
               {dict.home.subtitle}
             </p>
           </div>

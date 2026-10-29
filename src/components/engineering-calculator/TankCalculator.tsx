@@ -822,7 +822,7 @@ export default function TankCalculator() {
                     {TANK_TYPES.map(type => (
                       <li key={type.value} className="flex justify-between border-b border-gray-200 dark:border-gray-600 pb-1 last:border-0">
                         <span>{type.label}</span>
-                        <span className="text-gray-500 font-mono text-xs hidden sm:inline-block">
+                        <span className="text-gray-500 dark:text-gray-400 font-mono text-xs hidden sm:inline-block">
                           {type.value === 'vertical-cylinder' && 'V = π × r² × h'}
                           {type.value === 'horizontal-cylinder' && 'V = π × r² × l'}
                           {type.value === 'rectangular-prism' && 'V = l × w × h'}

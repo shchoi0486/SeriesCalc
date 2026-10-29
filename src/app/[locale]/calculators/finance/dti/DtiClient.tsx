@@ -69,7 +69,7 @@ export default function DtiPage({ infoSection }: DtiPageProps) {
       dtiBadgeColor = "bg-blue-500";
     } else if (calculatedDti <= 40) {
       dtiStatus = t.status.caution;
-      dtiBadgeColor = "bg-yellow-500 text-black";
+      dtiBadgeColor = "bg-yellow-500 text-black dark:text-white";
     } else if (calculatedDti <= 50) {
       dtiStatus = t.status.risky;
       dtiBadgeColor = "bg-orange-500";
@@ -183,7 +183,7 @@ const inputSection = (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <p className="text-xl font-bold text-blue-600">{Math.round(calculationResults.estimatedLoanAmount).toLocaleString()}{isKo ? '원' : ' KRW'}</p>
+                  <p className="text-xl font-bold text-blue-600 dark:text-blue-400">{Math.round(calculationResults.estimatedLoanAmount).toLocaleString()}{isKo ? '원' : ' KRW'}</p>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{calculationResults.estimatedLoanAmount.toLocaleString()}{isKo ? '원' : ' KRW'}</p>

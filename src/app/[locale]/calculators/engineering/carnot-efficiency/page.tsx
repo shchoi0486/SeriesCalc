@@ -68,9 +68,9 @@ export default function CarnotEfficiencyPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">η</strong> — {L('카르노 효율 (비율 또는 %)', 'Carnot efficiency (ratio or %)')}</li>
-          <li><strong className="font-semibold text-blue-600">T_C</strong> — {L('저열원 절대 온도 [K (°R)]', 'Cold-reservoir absolute temperature [K (°R)]')}</li>
-          <li><strong className="font-semibold text-orange-600">T_H</strong> — {L('고열원 절대 온도 [K (°R)]', 'Hot-reservoir absolute temperature [K (°R)]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">η</strong> — {L('카르노 효율 (비율 또는 %)', 'Carnot efficiency (ratio or %)')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">T_C</strong> — {L('저열원 절대 온도 [K (°R)]', 'Cold-reservoir absolute temperature [K (°R)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">T_H</strong> — {L('고열원 절대 온도 [K (°R)]', 'Hot-reservoir absolute temperature [K (°R)]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

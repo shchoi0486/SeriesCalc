@@ -123,7 +123,7 @@ const HydraulicJumpCalculator = () => {
             </div>
 
             {froude1 > 0 && froude1 <= 1 && (
-              <div className="text-xs text-yellow-600 bg-yellow-50 p-2 rounded border border-yellow-200">
+              <div className="text-xs text-yellow-600 dark:text-yellow-400 bg-yellow-50 p-2 rounded border border-yellow-200">
                 Froude number is &le; 1 (Subcritical). Hydraulic jump will not occur.
               </div>
             )}
@@ -140,7 +140,7 @@ const HydraulicJumpCalculator = () => {
               <div className="grid gap-3">
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex justify-between items-center">
                   <span className="text-sm font-medium text-muted-foreground">{t?.results?.froudeNumber || 'Froude Number (Fr₁)'}</span>
-                  <div className="text-xl font-bold text-blue-600">
+                  <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
                     {froude1.toFixed(2)}
                   </div>
                 </div>

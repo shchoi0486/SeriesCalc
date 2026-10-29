@@ -237,7 +237,7 @@ export default function BarlowsFormulaCalculator() {
               onChange={(e) => setDesignFactor(e.target.value)}
               className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
             />
-            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
               -
             </span>
           </div>
@@ -255,7 +255,7 @@ export default function BarlowsFormulaCalculator() {
               onChange={(e) => setJointFactor(e.target.value)}
               className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
             />
-            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
               -
             </span>
           </div>
@@ -273,7 +273,7 @@ export default function BarlowsFormulaCalculator() {
               onChange={(e) => setTempFactor(e.target.value)}
               className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
             />
-            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
               -
             </span>
           </div>
@@ -338,7 +338,7 @@ export default function BarlowsFormulaCalculator() {
                 </>
               )}
             </div>
-            <div className="flex justify-between text-[10px] font-mono text-gray-500 mt-1">
+            <div className="flex justify-between text-[10px] font-mono text-gray-500 dark:text-gray-400 mt-1">
               <span>0</span>
               <span>P_a (Allowable)</span>
               <span>P_y (Yield)</span>

@@ -68,9 +68,9 @@ export default function CentrifugePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">RCF</strong> — {L('상대 원심력 (중력 가속도 배수, × g)', 'Relative centrifugal force (multiple of gravity, × g)')}</li>
-          <li><strong className="font-semibold text-green-600">r</strong> — {L('로터 반경 [cm]', 'Rotor radius [cm]')}</li>
-          <li><strong className="font-semibold text-purple-600">N</strong> — {L('회전 속도 [RPM]', 'Rotational speed [RPM]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">RCF</strong> — {L('상대 원심력 (중력 가속도 배수, × g)', 'Relative centrifugal force (multiple of gravity, × g)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">r</strong> — {L('로터 반경 [cm]', 'Rotor radius [cm]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">N</strong> — {L('회전 속도 [RPM]', 'Rotational speed [RPM]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

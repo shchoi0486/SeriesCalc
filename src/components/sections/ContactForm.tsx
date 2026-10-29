@@ -159,7 +159,7 @@ export default function ContactForm({ isKo }: { isKo: boolean }) {
         </button>
 
         {status === "error" && (
-          <p className="text-sm text-red-600">{errorMsg}</p>
+          <p className="text-sm text-red-600 dark:text-red-400">{errorMsg}</p>
         )}
       </form>
     </div>

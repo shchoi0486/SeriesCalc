@@ -72,12 +72,12 @@ export default function OrificeFlowPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">Q</strong> — {L('체적 유량 [m³/s (ft³/s)]', 'Volumetric flow rate [m³/s (ft³/s)]')}</li>
-          <li><strong className="font-semibold text-green-600">C_d</strong> — {L('유량 계수 (실제/이론 유량비, 보통 ≈ 0.61)', 'Discharge coefficient (actual/theoretical flow, typically ≈ 0.61)')}</li>
-          <li><strong className="font-semibold text-purple-600">A_o</strong> — {L('오리피스 단면적 (π·d²/4) [m² (ft²)]', 'Orifice area (π·d²/4) [m² (ft²)]')}</li>
-          <li><strong className="font-semibold text-red-600">ΔP</strong> — {L('차압(압력 강하) [Pa (psi)]', 'Pressure drop [Pa (psi)]')}</li>
-          <li><strong className="font-semibold text-yellow-600">ρ</strong> — {L('유체 밀도 [kg/m³ (lb/ft³)]', 'Fluid density [kg/m³ (lb/ft³)]')}</li>
-          <li><strong className="font-semibold text-orange-600">β</strong> — {L('베타 비 (오리피스 직경 / 배관 직경)', 'Beta ratio (orifice diameter / pipe diameter)')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">Q</strong> — {L('체적 유량 [m³/s (ft³/s)]', 'Volumetric flow rate [m³/s (ft³/s)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">C_d</strong> — {L('유량 계수 (실제/이론 유량비, 보통 ≈ 0.61)', 'Discharge coefficient (actual/theoretical flow, typically ≈ 0.61)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">A_o</strong> — {L('오리피스 단면적 (π·d²/4) [m² (ft²)]', 'Orifice area (π·d²/4) [m² (ft²)]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">ΔP</strong> — {L('차압(압력 강하) [Pa (psi)]', 'Pressure drop [Pa (psi)]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">ρ</strong> — {L('유체 밀도 [kg/m³ (lb/ft³)]', 'Fluid density [kg/m³ (lb/ft³)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">β</strong> — {L('베타 비 (오리피스 직경 / 배관 직경)', 'Beta ratio (orifice diameter / pipe diameter)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

@@ -634,7 +634,7 @@ function MaterialComparisonPage() {
             <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
             <h2 className="text-xl sm:text-2xl font-semibold leading-none tracking-tight">{t.title}</h2>
           </div>
-          <div className="text-xs text-gray-500 py-2 ml-4 flex items-center">
+          <div className="text-xs text-gray-500 dark:text-gray-400 py-2 ml-4 flex items-center">
             - {t.source}
             <br />
             - {t.description}
@@ -645,7 +645,7 @@ function MaterialComparisonPage() {
           <div className="flex flex-col sm:flex-row sm:items-end gap-2 sm:gap-3 mb-4">
             {/* 대분류 선택 */}
             <div className="w-full sm:flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">
                 대분류를 선택하세요
               </label>
               <Select
@@ -670,7 +670,7 @@ function MaterialComparisonPage() {
 
             {/* 중분류 선택 */}
             <div className="w-full sm:flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">
                 중분류를 선택하세요
               </label>
               <Select
@@ -697,7 +697,7 @@ function MaterialComparisonPage() {
             {/* 소분류 선택 */}
             {subCategories.length > 0 && (
               <div className="w-full sm:flex-1">
-                <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">
                   소분류 선택
                 </label>
                 <Select
@@ -724,7 +724,7 @@ function MaterialComparisonPage() {
 
             {/* 재료 선택 */}
             <div className="w-full sm:flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">
                 재료 선택
               </label>
               <Select
@@ -790,15 +790,15 @@ function MaterialComparisonPage() {
             
             {/* 검색 결과 */}
             {showSearchResults && searchResults.length > 0 && (
-              <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
+              <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-gray-900 border border-gray-200 rounded-md shadow-lg max-h-60 overflow-y-auto">
                 {searchResults.map((material, index) => (
                   <div
                     key={`${material.name}-${index}`}
-                    className="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    className="p-3 hover:bg-gray-50 dark:bg-gray-900 cursor-pointer border-b border-gray-100 last:border-b-0"
                     onClick={() => handleAddMaterialFromSearch(material)}
                   >
-                    <div className="font-medium text-sm text-gray-900">{material.name}</div>
-                    <div className="text-xs text-gray-500 mt-1">{material.category}</div>
+                    <div className="font-medium text-sm text-gray-900 dark:text-gray-100">{material.name}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{material.category}</div>
                     {material.description && (
                       <div className="text-xs text-gray-400 mt-1 truncate">{isKo ? getKoreanSummary(material.description) : material.description}</div>
                     )}
@@ -808,8 +808,8 @@ function MaterialComparisonPage() {
             )}
             
             {showSearchResults && searchQuery && searchResults.length === 0 && (
-              <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white border border-gray-200 rounded-md shadow-lg p-3">
-                <div className="text-sm text-gray-500 text-center">{t.noResults}</div>
+              <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-gray-900 border border-gray-200 rounded-md shadow-lg p-3">
+                <div className="text-sm text-gray-500 dark:text-gray-400 text-center">{t.noResults}</div>
               </div>
             )}
           </div>
@@ -817,27 +817,27 @@ function MaterialComparisonPage() {
           {/* 선택된 재료 목록 */}
           <div className="mt-4 flex flex-wrap gap-2">
             {selectedMaterials.map(material => (
-              <div key={material.id} className="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 rounded-md border border-gray-200 text-xs">
+              <div key={material.id} className="flex items-center gap-1.5 px-2 py-0.5 bg-gray-50 dark:bg-gray-900 rounded-md border border-gray-200 text-xs">
                 <button
                   title={`Toggle visibility of ${material.name}`}
                   aria-label={`Toggle visibility of ${material.name}`}
                   onClick={() => handleToggleMaterialActive(material.id, !material.active)}
-                  className={`relative inline-flex h-3 w-6 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 ${material.active ? 'bg-blue-500' : 'bg-gray-200'}`}
+                  className={`relative inline-flex h-3 w-6 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 ${material.active ? 'bg-blue-500' : 'bg-gray-200 dark:bg-gray-700'}`}
                 >
                   <span
-                    className={`inline-block h-2 w-2 transform rounded-full bg-white transition-transform duration-200 ${material.active ? 'translate-x-3' : 'translate-x-0.5'}`}
+                    className={`inline-block h-2 w-2 transform rounded-full bg-white dark:bg-gray-900 transition-transform duration-200 ${material.active ? 'translate-x-3' : 'translate-x-0.5'}`}
                   ></span>
                 </button>
                 <label
                   data-slot="label"
-                  className="flex items-center gap-2 select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 text-xs font-medium text-gray-700 cursor-pointer max-w-[150px] sm:max-w-[150px] truncate"
+                  className="flex items-center gap-2 select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50 text-xs font-medium text-gray-700 dark:text-gray-300 cursor-pointer max-w-[150px] sm:max-w-[150px] truncate"
                   title={material.name}
                 >
                   {material.name}
                 </label>
                 <button
                   onClick={() => handleRemoveMaterial(material.id)}
-                  className="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-md h-4 w-4 p-0 hover:bg-red-100 hover:text-red-600 text-gray-400"
+                  className="inline-flex items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 rounded-md h-4 w-4 p-0 hover:bg-red-100 hover:text-red-600 dark:text-red-400 text-gray-400"
                 >
                   ×
                 </button>
@@ -857,7 +857,7 @@ function MaterialComparisonPage() {
             <div className="space-y-6">
               {/* PROPERTIES 섹션 */}
               <div>
-                <h3 className="text-lg font-semibold mb-3 text-blue-600 border-b border-blue-200 pb-2">
+                <h3 className="text-lg font-semibold mb-3 text-blue-600 dark:text-blue-400 border-b border-blue-200 pb-2">
                   PROPERTIES
                 </h3>
                 
@@ -882,12 +882,12 @@ function MaterialComparisonPage() {
                         const unit = firstMaterial?.properties[propertyKey]?.unit;
                         
                         return (
-                          <div key={propertyKey} className="bg-white border border-gray-200 rounded-lg p-4">
+                          <div key={propertyKey} className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg p-4">
                             <div className="mb-3">
-                              <h4 className="text-sm font-semibold text-gray-900">
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                                 {isKo ? (koreanInfo?.korean || propertyKey) : propertyKey}
                               </h4>
-                              <p className="text-xs text-gray-500 mt-1">
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                 {propertyKey} {unit && (
                                   <span className="font-mono">
                                     (<span dangerouslySetInnerHTML={{ __html: formatUnit(unit) }} />)
@@ -897,11 +897,11 @@ function MaterialComparisonPage() {
                             </div>
                             <div className="space-y-2">
                               {selectedMaterials.filter(m => m.active).map((material, index) => (
-                                <div key={index} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
-                                  <span className="text-sm font-medium text-gray-700 truncate max-w-[60%]">
+                                <div key={index} className="flex justify-between items-center py-2 px-3 bg-gray-50 dark:bg-gray-900 rounded">
+                                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[60%]">
                                     {material.name}
                                   </span>
-                                  <span className="text-sm font-semibold text-gray-900">
+                                  <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                                     {formatRangeValue(material.properties[propertyKey]?.value || '-')}
                                   </span>
                                 </div>
@@ -921,13 +921,13 @@ function MaterialComparisonPage() {
                     <thead>
                       <tr className="border-b border-gray-200">
                   <th 
-                           className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                           className="text-left py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                            style={{ width: '300px' }}
                          >
                            {t.property}
                          </th>
                          <th 
-                             className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                             className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                              style={{ width: '100px' }}
                            >
                              {t.unit}
@@ -935,7 +935,7 @@ function MaterialComparisonPage() {
                         {selectedMaterials.filter(m => m.active).map((material, index) => (
                           <th 
                             key={index} 
-                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-blue-50"
+                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-blue-50"
                             style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
                           >
                             <div className="truncate" title={material.name}>
@@ -966,20 +966,20 @@ function MaterialComparisonPage() {
                            const unit = firstMaterial?.properties[propertyKey]?.unit;
                            
                            return (
-                             <tr key={propertyKey} className="border-b border-gray-100 hover:bg-gray-50">
+                             <tr key={propertyKey} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-gray-900">
                                 <td className="py-1 px-3">
-                                  <div className="text-xs font-medium text-gray-900 leading-tight">
+                                  <div className="text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight">
                                     {isKo ? (koreanInfo?.korean ? `${koreanInfo.korean} (${propertyKey})` : propertyKey) : propertyKey}
                                   </div>
                                 </td>
                                <td className="py-1 px-3 text-center">
-                                 <div className="text-xs text-gray-600 font-mono">
+                                 <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">
                                    {unit ? <span dangerouslySetInnerHTML={{ __html: formatUnit(unit) }} /> : '-'}
                                  </div>
                                </td>
                                {selectedMaterials.filter(m => m.active).map((material, index) => (
                                  <td key={index} className="py-1 px-3 text-center">
-                                   <div className="text-xs font-medium text-gray-900">
+                                   <div className="text-xs font-medium text-gray-900 dark:text-gray-100">
                                      {formatRangeValue(material.properties[propertyKey]?.value || '-')}
                                    </div>
                                  </td>
@@ -1052,7 +1052,7 @@ function MaterialComparisonPage() {
 
                 return (
                   <div>
-                    <h3 className="text-lg font-semibold mb-3 text-green-600 border-b border-green-200 pb-2">
+                    <h3 className="text-lg font-semibold mb-3 text-green-600 dark:text-green-400 border-b border-green-200 pb-2">
                       Chemical Composition
                     </h3>
                     
@@ -1061,12 +1061,12 @@ function MaterialComparisonPage() {
                       {/* 모바일 카드 레이아웃 */}
                       <div className="space-y-4">
                         {sortedElements.map((symbol, elementIndex) => (
-                          <div key={elementIndex} className="bg-white border border-gray-200 rounded-lg p-4">
+                          <div key={elementIndex} className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg p-4">
                             <div className="mb-3">
-                              <h4 className="text-sm font-semibold text-gray-900">
+                              <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                                 {isKo ? (elementKoreanNames[symbol] || symbol) : symbol}
                               </h4>
-                              <p className="text-xs text-gray-500 mt-1">
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                                 {symbol} (%)
                               </p>
                             </div>
@@ -1085,11 +1085,11 @@ function MaterialComparisonPage() {
                                   : '-';
 
                                 return (
-                                  <div key={materialIndex} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
-                                    <span className="text-sm font-medium text-gray-700 truncate max-w-[60%]">
+                                  <div key={materialIndex} className="flex justify-between items-center py-2 px-3 bg-gray-50 dark:bg-gray-900 rounded">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[60%]">
                                       {material.name}
                                     </span>
-                                    <span className="text-sm font-semibold text-gray-900">
+                                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                                       {value}
                                     </span>
                                   </div>
@@ -1108,13 +1108,13 @@ function MaterialComparisonPage() {
                         <thead>
                           <tr className="border-b border-gray-200">
                             <th 
-                              className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                              className="text-left py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                               style={{ width: '300px' }}
                             >
                               {t.element}
                             </th>
                               <th 
-                                className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                                className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                                 style={{ width: '100px' }}
                               >
                                 {isKo ? '단위' : 'Unit'}
@@ -1122,7 +1122,7 @@ function MaterialComparisonPage() {
                               {selectedMaterials.filter(m => m.active).map((material, index) => (
                                 <th 
                                   key={index} 
-                                  className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-green-50"
+                                  className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-green-50"
                                 style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
                               >
                                 <div className="truncate" title={material.name}>
@@ -1136,14 +1136,14 @@ function MaterialComparisonPage() {
                         {/* 원소별 데이터 */}
                         <tbody>
                           {sortedElements.map((symbol, elementIndex) => (
-                            <tr key={elementIndex} className="border-b border-gray-100 hover:bg-gray-50">
+                            <tr key={elementIndex} className="border-b border-gray-100 hover:bg-gray-50 dark:bg-gray-900">
                                 <td className="py-1 px-3">
-                                  <div className="text-xs font-medium text-gray-900 leading-tight">
+                                  <div className="text-xs font-medium text-gray-900 dark:text-gray-100 leading-tight">
                                     {isKo ? (elementKoreanNames[symbol] ? `${elementKoreanNames[symbol]}(${symbol})` : symbol) : symbol}
                                   </div>
                                 </td>
                               <td className="py-1 px-3 text-center">
-                                <div className="text-xs text-gray-600 font-mono">
+                                <div className="text-xs text-gray-600 dark:text-gray-400 font-mono">
                                   %
                                 </div>
                               </td>
@@ -1162,7 +1162,7 @@ function MaterialComparisonPage() {
 
                                 return (
                                   <td key={materialIndex} className="py-1 px-3 text-center">
-                                    <div className="text-xs font-medium text-gray-900">
+                                    <div className="text-xs font-medium text-gray-900 dark:text-gray-100">
                                       {value}
                                     </div>
                                   </td>
@@ -1180,29 +1180,29 @@ function MaterialComparisonPage() {
               {/* BASE PRICE 섹션 */}
               {selectedMaterials.some(material => material.basePrice) && (
                 <div>
-                  <h3 className="text-lg font-semibold mb-3 text-purple-600 border-b border-purple-200 pb-2">
+                  <h3 className="text-lg font-semibold mb-3 text-purple-600 dark:text-purple-400 border-b border-purple-200 pb-2">
                     Reference Price
                   </h3>
                   
                   {/* 모바일에서는 카드 레이아웃, 데스크톱에서는 테이블 */}
                   <div className="block sm:hidden">
                     {/* 모바일 카드 레이아웃 */}
-                    <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg p-4">
                       <div className="mb-3">
-                        <h4 className="text-sm font-semibold text-gray-900">
+                        <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                           {isKo ? '기본 금속 가격' : 'Base Metal Price'}
                         </h4>
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                           Base Metal Price ({selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit === '%' ? '%rel' : selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit || '-'})
                         </p>
                       </div>
                       <div className="space-y-2">
                         {selectedMaterials.filter(m => m.active).map((material, index) => (
-                          <div key={index} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded">
-                            <span className="text-sm font-medium text-gray-700 truncate max-w-[60%]">
+                          <div key={index} className="flex justify-between items-center py-2 px-3 bg-gray-50 dark:bg-gray-900 rounded">
+                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300 truncate max-w-[60%]">
                               {material.name}
                             </span>
-                            <span className="text-sm font-semibold text-gray-900">
+                            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                               {material.basePrice ? formatRangeValue(material.basePrice.value) : '-'}
                             </span>
                           </div>
@@ -1218,13 +1218,13 @@ function MaterialComparisonPage() {
                       <thead>
                         <tr className="border-b border-gray-200">
                           <th 
-                            className="text-left py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                            className="text-left py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                             style={{ width: '300px' }}
                           >
                             {isKo ? '가격 지수' : 'Price Index'}
                           </th>
                           <th 
-                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-gray-50"
+                            className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-900"
                             style={{ width: '100px' }}
                           >
                             {isKo ? '단위' : 'Unit'}
@@ -1232,7 +1232,7 @@ function MaterialComparisonPage() {
                           {selectedMaterials.filter(m => m.active).map((material, index) => (
                             <th 
                               key={index} 
-                              className="text-center py-2 px-3 text-sm font-medium text-gray-600 bg-blue-50"
+                              className="text-center py-2 px-3 text-sm font-medium text-gray-600 dark:text-gray-400 bg-blue-50"
                               style={{ width: `${100 / (selectedMaterials.filter(m => m.active).length + 2)}%` }}
                             >
                               <div className="truncate" title={material.name}>
@@ -1245,23 +1245,23 @@ function MaterialComparisonPage() {
                       
                       {/* 가격 데이터 */}
                       <tbody>
-                        <tr className="border-b border-gray-100 hover:bg-gray-50">
+                        <tr className="border-b border-gray-100 hover:bg-gray-50 dark:bg-gray-900">
                             <td className="py-2 px-3">
-                              <div className="text-xs font-medium text-gray-900">
+                              <div className="text-xs font-medium text-gray-900 dark:text-gray-100">
                                 {isKo ? '기본 금속 가격' : 'Base Metal Price'}
                               </div>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
                               Base Metal Price
                             </div>
                           </td>
                           <td className="py-2 px-3 text-center">
-                            <div className="text-xs text-gray-600">
+                            <div className="text-xs text-gray-600 dark:text-gray-400">
                               {selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit === '%' ? '%rel' : selectedMaterials.find(m => m.active && m.basePrice)?.basePrice?.unit || '-'}
                             </div>
                           </td>
                           {selectedMaterials.filter(m => m.active).map((material, index) => (
                             <td key={index} className="py-2 px-3 text-center">
-                              <div className="text-xs text-gray-700">
+                              <div className="text-xs text-gray-700 dark:text-gray-300">
                                 {material.basePrice ? formatRangeValue(material.basePrice.value) : '-'}
                               </div>
                             </td>
@@ -1281,7 +1281,7 @@ function MaterialComparisonPage() {
       {selectedMaterials.length === 0 && (
         <Card>
           <CardContent className="text-center py-12">
-            <div className="text-gray-500">
+            <div className="text-gray-500 dark:text-gray-400">
               <Plus className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p className="text-lg font-medium mb-2">{isKo ? '재질을 선택해주세요' : 'Please select a material'}</p>
               <p className="text-sm">

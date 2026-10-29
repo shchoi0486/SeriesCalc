@@ -70,11 +70,11 @@ export default function VoltageDropPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">V_drop</strong> — {L('전압 강하 [V]', 'Voltage drop [V]')}</li>
-          <li><strong className="font-semibold text-green-600">I</strong> — {L('부하 전류 [A]', 'Load current [A]')}</li>
-          <li><strong className="font-semibold text-blue-600">R</strong> — {L('전선 1선 저항 (왕복 아님) [Ω]', 'One-way wire resistance (not round-trip) [Ω]')}</li>
-          <li><strong className="font-semibold text-purple-600">L</strong> — {L('회로 편도 거리 [m 또는 ft]', 'One-way circuit distance [m or ft]')}</li>
-          <li><strong className="font-semibold text-orange-600">A, ρ</strong> — {L('선심 단면적 [mm²] 및 비저항 (Cu 0.0168, Al 0.0282 Ω·mm²/m)', 'Conductor area [mm²] and resistivity (Cu 0.0168, Al 0.0282 Ω·mm²/m)')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">V_drop</strong> — {L('전압 강하 [V]', 'Voltage drop [V]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">I</strong> — {L('부하 전류 [A]', 'Load current [A]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">R</strong> — {L('전선 1선 저항 (왕복 아님) [Ω]', 'One-way wire resistance (not round-trip) [Ω]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">L</strong> — {L('회로 편도 거리 [m 또는 ft]', 'One-way circuit distance [m or ft]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">A, ρ</strong> — {L('선심 단면적 [mm²] 및 비저항 (Cu 0.0168, Al 0.0282 Ω·mm²/m)', 'Conductor area [mm²] and resistivity (Cu 0.0168, Al 0.0282 Ω·mm²/m)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('야드파운드법 (K 상수)', 'Imperial form (K-factor)')}</h4>

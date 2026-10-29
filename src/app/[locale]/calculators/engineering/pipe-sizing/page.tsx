@@ -163,10 +163,10 @@ export default function PipeSizingPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">Q</strong> — {L('부피 유량 [m³/s]', 'Volumetric flow rate [m³/s]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">Q</strong> — {L('부피 유량 [m³/s]', 'Volumetric flow rate [m³/s]')}</li>
           <li><strong className="font-semibold text-red-500">A</strong> — {L('배관 단면적 [m²]', 'Pipe cross-sectional area [m²]')}</li>
-          <li><strong className="font-semibold text-blue-600">v</strong> — {L('유속 [m/s]', 'Velocity [m/s]')}</li>
-          <li><strong className="font-semibold text-orange-600">D</strong> — {L('배관 내경 [m]', 'Pipe inner diameter [m]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">v</strong> — {L('유속 [m/s]', 'Velocity [m/s]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">D</strong> — {L('배관 내경 [m]', 'Pipe inner diameter [m]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('마찰 압력 강하 (Darcy-Weisbach)', 'Frictional Pressure Drop (Darcy-Weisbach)')}</h4>
@@ -174,10 +174,10 @@ export default function PipeSizingPage({
             <BlockMath math="\Delta P = f\,\dfrac{L}{D}\,\dfrac{\rho v^{2}}{2}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
-            <li><strong className="font-semibold text-green-600">ΔP</strong> — {L('마찰 압력 강하 [Pa]', 'Frictional pressure drop [Pa]')}</li>
+            <li><strong className="font-semibold text-green-600 dark:text-green-400">ΔP</strong> — {L('마찰 압력 강하 [Pa]', 'Frictional pressure drop [Pa]')}</li>
             <li><strong className="font-semibold text-red-500">f</strong> — {L('Darcy 마찰 계수 (무차원)', 'Darcy friction factor (dimensionless)')}</li>
-            <li><strong className="font-semibold text-blue-600">L</strong> — {L('배관 길이 [m]', 'Pipe length [m]')}</li>
-            <li><strong className="font-semibold text-orange-600">ρ</strong> — {L('유체 밀도 [kg/m³]', 'Fluid density [kg/m³]')}</li>
+            <li><strong className="font-semibold text-blue-600 dark:text-blue-400">L</strong> — {L('배관 길이 [m]', 'Pipe length [m]')}</li>
+            <li><strong className="font-semibold text-orange-600 dark:text-orange-400">ρ</strong> — {L('유체 밀도 [kg/m³]', 'Fluid density [kg/m³]')}</li>
           </ul>
         </div>
         <div>

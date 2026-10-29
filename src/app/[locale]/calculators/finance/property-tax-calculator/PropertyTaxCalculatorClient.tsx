@@ -153,7 +153,7 @@ const PropertyTaxCalculator = ({ infoSection }: PropertyTaxCalculatorProps) => {
             <div className="font-medium">{isKo ? '과세표준' : 'Tax Base'}</div>
             <div className="text-right">{formatNumber(Math.round(results.taxBase))}{isKo ? '원' : ' KRW'}</div>
             <div className="font-medium">{isKo ? '부동산세' : 'Property Tax'}</div>
-            <div className="text-right font-bold text-red-600">{formatNumber(results.propertyTax)}{isKo ? '원' : ' KRW'}</div>
+            <div className="text-right font-bold text-red-600 dark:text-red-400">{formatNumber(results.propertyTax)}{isKo ? '원' : ' KRW'}</div>
           </div>
         </div>
       ) : (

@@ -191,7 +191,7 @@ const CountdownTimer = ({ infoSection }: CountdownTimerProps) => {
       </div>
 
       {totalSeconds > 0 && (
-        <div className="w-full bg-gray-200 rounded-full h-3">
+        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
           <div
             className={`h-3 rounded-full transition-all duration-1000 ${
               isFinished ? 'bg-red-500' : 'bg-blue-500'
@@ -204,7 +204,7 @@ const CountdownTimer = ({ infoSection }: CountdownTimerProps) => {
       {isFinished && (
         <Card className="w-full border-red-200 bg-red-50">
           <CardContent className="p-4 text-center">
-            <p className="text-xl font-bold text-red-600">{t.results.timeUp}</p>
+            <p className="text-xl font-bold text-red-600 dark:text-red-400">{t.results.timeUp}</p>
           </CardContent>
         </Card>
       )}

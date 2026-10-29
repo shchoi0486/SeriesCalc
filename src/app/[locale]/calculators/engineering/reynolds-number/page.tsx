@@ -68,11 +68,11 @@ export default function ReynoldsNumberPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">Re</strong> — {L('레이놀즈 수 (무차원수)', 'Reynolds number (dimensionless)')}</li>
-          <li><strong className="font-semibold text-green-600">ρ</strong> — {L('유체 밀도 [kg/m³ 또는 lb/ft³]', 'Fluid density [kg/m³ or lb/ft³]')}</li>
-          <li><strong className="font-semibold text-yellow-600">V</strong> — {L('유속(평균속도) [m/s 또는 ft/s]', 'Flow velocity (mean) [m/s or ft/s]')}</li>
-          <li><strong className="font-semibold text-red-600">D</strong> — {L('관 내경 [m 또는 ft]', 'Pipe inner diameter [m or ft]')}</li>
-          <li><strong className="font-semibold text-purple-600">μ</strong> — {L('동점성 계수(점도) [Pa·s 또는 lb/(ft·s)]', 'Dynamic viscosity [Pa·s or lb/(ft·s)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">Re</strong> — {L('레이놀즈 수 (무차원수)', 'Reynolds number (dimensionless)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">ρ</strong> — {L('유체 밀도 [kg/m³ 또는 lb/ft³]', 'Fluid density [kg/m³ or lb/ft³]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">V</strong> — {L('유속(평균속도) [m/s 또는 ft/s]', 'Flow velocity (mean) [m/s or ft/s]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">D</strong> — {L('관 내경 [m 또는 ft]', 'Pipe inner diameter [m or ft]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">μ</strong> — {L('동점성 계수(점도) [Pa·s 또는 lb/(ft·s)]', 'Dynamic viscosity [Pa·s or lb/(ft·s)]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미', 'How the formula works')}</h4>

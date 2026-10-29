@@ -13,7 +13,7 @@ const LeftAdRail: React.FC = () => {
   if (!client) return null;
 
   return (
-    <aside className="hidden xl:flex xl:flex-col xl:fixed xl:inset-y-0 xl:left-0 xl:z-40 w-64 bg-white border-r border-gray-200 p-3 overflow-y-auto">
+    <aside className="hidden xl:flex xl:flex-col xl:fixed xl:inset-y-0 xl:left-0 xl:z-40 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 p-3 overflow-y-auto">
       <div className="space-y-4">
         {/* 상단 큰 배너 (300x600 권장) */}
         {slotTop && (

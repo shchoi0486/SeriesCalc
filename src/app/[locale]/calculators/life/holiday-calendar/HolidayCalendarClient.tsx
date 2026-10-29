@@ -253,7 +253,7 @@ const HolidayCalendar = ({ infoSection }: HolidayCalendarProps) => {
         <div
           key={`header-${index}`}
           className={`text-center text-sm font-semibold p-2 ${
-            index === 0 ? 'text-red-500' : index === 6 ? 'text-blue-500' : 'text-gray-700'
+            index === 0 ? 'text-red-500' : index === 6 ? 'text-blue-500' : 'text-gray-700 dark:text-gray-300'
           }`}
         >
           {day}
@@ -273,12 +273,12 @@ const HolidayCalendar = ({ infoSection }: HolidayCalendarProps) => {
             key={`day-${day}`}
             className={`text-center p-2 rounded-lg text-sm transition-colors ${
               holiday
-                ? 'bg-red-100 text-red-600 font-bold border-2 border-red-300'
+                ? 'bg-red-100 text-red-600 dark:text-red-400 font-bold border-2 border-red-300'
                 : dayOfWeek === 0
                 ? 'text-red-500'
                 : dayOfWeek === 6
                 ? 'text-blue-500'
-                : 'text-gray-700'
+                : 'text-gray-700 dark:text-gray-300'
             }`}
             title={holiday ? holidayName(holiday) : ''}
           >
@@ -312,9 +312,9 @@ const HolidayCalendar = ({ infoSection }: HolidayCalendarProps) => {
               {monthHolidays.map((holiday, index) => (
                 <div key={index} className="flex items-center justify-between p-2 bg-red-50 rounded-lg">
                   <div>
-                    <span className="font-medium text-red-700">{holidayName(holiday)}</span>
+                    <span className="font-medium text-red-700 dark:text-red-400">{holidayName(holiday)}</span>
                   </div>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     {isKo ? `${holiday.month}월 ${holiday.day}일` : `${holiday.month}/${holiday.day}`}
                   </span>
                 </div>
@@ -331,7 +331,7 @@ const HolidayCalendar = ({ infoSection }: HolidayCalendarProps) => {
             <div className="space-y-1">
               {holidays.map((holiday, index) => (
                 <div key={index} className="flex items-center justify-between text-sm py-1 border-b last:border-0">
-                  <span className={holiday.month === selectedMonth ? 'font-bold text-red-600' : ''}>
+                  <span className={holiday.month === selectedMonth ? 'font-bold text-red-600 dark:text-red-400' : ''}>
                     {holidayName(holiday)}
                   </span>
                   <span className="text-muted-foreground">{holiday.date}</span>

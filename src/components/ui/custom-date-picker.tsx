@@ -100,7 +100,7 @@ export function CustomDatePickerWithPopover({
               <button
                 onClick={decreaseMonth}
                 disabled={prevMonthButtonDisabled}
-                className="px-2 py-1 rounded-md hover:bg-gray-200 disabled:opacity-50"
+                className="px-2 py-1 rounded-md hover:bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
               >
                 {'<'}
               </button>
@@ -133,7 +133,7 @@ export function CustomDatePickerWithPopover({
               <button
                 onClick={increaseMonth}
                 disabled={nextMonthButtonDisabled}
-                className="px-2 py-1 rounded-md hover:bg-gray-200 disabled:opacity-50"
+                className="px-2 py-1 rounded-md hover:bg-gray-200 dark:bg-gray-700 disabled:opacity-50"
               >
                 {'>'}
               </button>

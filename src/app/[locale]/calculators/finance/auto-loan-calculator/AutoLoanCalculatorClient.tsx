@@ -123,7 +123,7 @@ const AutoLoanCalculator = ({ infoSection }: AutoLoanCalculatorProps) => {
                 </tr>
                 <tr className="border-b border-border">
                   <td className="px-4 py-2.5 text-muted-foreground">{isEn ? 'Down Payment' : '선수금'}</td>
-                  <td className="px-4 py-2.5 text-right font-medium text-blue-600">${downPayment.toLocaleString()}</td>
+                  <td className="px-4 py-2.5 text-right font-medium text-blue-600 dark:text-blue-400">${downPayment.toLocaleString()}</td>
                 </tr>
                 <tr className="border-b border-border">
                   <td className="px-4 py-2.5 text-muted-foreground">{isEn ? 'Loan Amount' : '대출금액'}</td>

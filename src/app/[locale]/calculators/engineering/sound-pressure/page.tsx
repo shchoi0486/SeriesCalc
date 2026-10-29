@@ -68,10 +68,10 @@ export default function SoundPressurePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">L₁</strong> — {L('기준 거리에서의 음압 레벨 [dB]', 'Sound pressure level at reference distance [dB]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">L₁</strong> — {L('기준 거리에서의 음압 레벨 [dB]', 'Sound pressure level at reference distance [dB]')}</li>
           <li><strong className="font-semibold text-red-500">L₂</strong> — {L('목표 거리에서의 음압 레벨 [dB]', 'Sound pressure level at target distance [dB]')}</li>
-          <li><strong className="font-semibold text-blue-600">r₁</strong> — {L('기준 거리 [m 또는 ft]', 'Reference distance [m or ft]')}</li>
-          <li><strong className="font-semibold text-orange-600">r₂</strong> — {L('목표 거리 [m 또는 ft]', 'Target distance [m or ft]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">r₁</strong> — {L('기준 거리 [m 또는 ft]', 'Reference distance [m or ft]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">r₂</strong> — {L('목표 거리 [m 또는 ft]', 'Target distance [m or ft]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미', 'How the formula works')}</h4>

@@ -84,12 +84,12 @@ export default function PsychrometricPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-gray-700">T</strong> — {L('건구 온도 [°C (°F)]', 'Dry bulb temperature [°C (°F)]')}</li>
-          <li><strong className="font-semibold text-blue-600">P_ws</strong> — {L('포화 수증기압 [kPa]', 'Saturation vapor pressure [kPa]')}</li>
+          <li><strong className="font-semibold text-gray-700 dark:text-gray-300">T</strong> — {L('건구 온도 [°C (°F)]', 'Dry bulb temperature [°C (°F)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">P_ws</strong> — {L('포화 수증기압 [kPa]', 'Saturation vapor pressure [kPa]')}</li>
           <li><strong className="font-semibold text-blue-400">P_w</strong> — {L('실제 수증기압 [kPa]', 'Actual vapor pressure [kPa]')}</li>
-          <li><strong className="font-semibold text-green-600">W</strong> — {L('절대습도 (건공기 1kg당 수증기 kg)', 'Humidity ratio (kg water vapor / kg dry air)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">W</strong> — {L('절대습도 (건공기 1kg당 수증기 kg)', 'Humidity ratio (kg water vapor / kg dry air)')}</li>
           <li><strong className="font-semibold text-red-500">h</strong> — {L('비엔탈피 (건공기 1kg당 열량 kJ)', 'Specific enthalpy (kJ per kg dry air)')}</li>
-          <li><strong className="font-semibold text-gray-600">P_atm</strong> — {L('대기압 (통상 101.325 kPa)', 'Atmospheric pressure (typically 101.325 kPa)')}</li>
+          <li><strong className="font-semibold text-gray-600 dark:text-gray-400">P_atm</strong> — {L('대기압 (통상 101.325 kPa)', 'Atmospheric pressure (typically 101.325 kPa)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

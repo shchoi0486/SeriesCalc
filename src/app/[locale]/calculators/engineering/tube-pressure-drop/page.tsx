@@ -69,12 +69,12 @@ export default function TubePressureDropPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">ΔP</strong> — {L('압력 강하 [Pa]', 'Pressure drop [Pa]')}</li>
-          <li><strong className="font-semibold text-blue-600">h_f</strong> — {L('수두 손실 [m]', 'Head loss [m]')}</li>
-          <li><strong className="font-semibold text-green-600">f</strong> — {L('Darcy 마찰 계수 (무차원)', 'Darcy friction factor (dimensionless)')}</li>
-          <li><strong className="font-semibold text-purple-600">L, D</strong> — {L('길이 및 내부 지름 [m]', 'Length and inside diameter [m]')}</li>
-          <li><strong className="font-semibold text-yellow-600">v, ρ</strong> — {L('유속 [m/s] 및 밀도 [kg/m³]', 'Velocity [m/s] and density [kg/m³]')}</li>
-          <li><strong className="font-semibold text-orange-600">g</strong> — {L('중력 가속도 (≈ 9.81 m/s²)', 'Gravitational acceleration (≈ 9.81 m/s²)')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">ΔP</strong> — {L('압력 강하 [Pa]', 'Pressure drop [Pa]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">h_f</strong> — {L('수두 손실 [m]', 'Head loss [m]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">f</strong> — {L('Darcy 마찰 계수 (무차원)', 'Darcy friction factor (dimensionless)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">L, D</strong> — {L('길이 및 내부 지름 [m]', 'Length and inside diameter [m]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">v, ρ</strong> — {L('유속 [m/s] 및 밀도 [kg/m³]', 'Velocity [m/s] and density [kg/m³]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">g</strong> — {L('중력 가속도 (≈ 9.81 m/s²)', 'Gravitational acceleration (≈ 9.81 m/s²)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

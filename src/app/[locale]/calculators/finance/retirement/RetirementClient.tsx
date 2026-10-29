@@ -163,7 +163,7 @@ const RetirementCalculator = ({ infoSection }: RetirementCalculatorProps) => {
         </div>
         <div className="text-center py-4">
           <p className="text-sm text-muted-foreground">{t.results.estimatedSeverancePay}</p>
-          <p className="text-3xl font-bold text-blue-600">{severancePay.toLocaleString()}{isKo ? '원' : ' KRW'}</p>
+          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{severancePay.toLocaleString()}{isKo ? '원' : ' KRW'}</p>
         </div>
       </CardContent>
     </Card>

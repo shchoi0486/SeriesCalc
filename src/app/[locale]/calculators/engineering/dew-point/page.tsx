@@ -72,11 +72,11 @@ export default function DewPointPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">T<sub>d</sub></strong> — {L('이슬점 온도 [°C]', 'Dew point temperature [°C]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">T<sub>d</sub></strong> — {L('이슬점 온도 [°C]', 'Dew point temperature [°C]')}</li>
           <li><strong className="font-semibold text-red-500">T</strong> — {L('건구 온도 [°C]', 'Dry-bulb temperature [°C]')}</li>
-          <li><strong className="font-semibold text-blue-600">RH</strong> — {L('상대 습도 [%]', 'Relative humidity [%]')}</li>
-          <li><strong className="font-semibold text-orange-600">a, b</strong> — {L('상수 (a = 17.27, b = 237.7 °C)', 'Constants (a = 17.27, b = 237.7 °C)')}</li>
-          <li><strong className="font-semibold text-purple-600">ln</strong> — {L('자연 로그 (natural logarithm)', 'Natural logarithm')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">RH</strong> — {L('상대 습도 [%]', 'Relative humidity [%]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">a, b</strong> — {L('상수 (a = 17.27, b = 237.7 °C)', 'Constants (a = 17.27, b = 237.7 °C)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">ln</strong> — {L('자연 로그 (natural logarithm)', 'Natural logarithm')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('포화 수증기압 공식', 'Saturation vapor pressure formula')}</h4>

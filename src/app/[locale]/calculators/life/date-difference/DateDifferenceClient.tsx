@@ -92,13 +92,13 @@ const DateDifferenceCalculator: React.FC = () => {
   );
 
   const resultSection = result && (
-    <div className="mt-6 p-4 border rounded-md bg-gray-50">
+    <div className="mt-6 p-4 border rounded-md bg-gray-50 dark:bg-gray-900">
       <h3 className="text-xl font-semibold mb-2">{t.results.title}</h3>
         <p className="text-lg">
-          {t.results.period}은 <span className="font-bold text-blue-600">{result.totalYears}{isKo ? '년' : ' yr'} {result.totalMonths}{isKo ? '개월' : ' mo'} {result.totalDays}{isKo ? '일' : ' d'}</span> 이고,
+          {t.results.period}은 <span className="font-bold text-blue-600 dark:text-blue-400">{result.totalYears}{isKo ? '년' : ' yr'} {result.totalMonths}{isKo ? '개월' : ' mo'} {result.totalDays}{isKo ? '일' : ' d'}</span> 이고,
         </p>
         <p className="text-lg">
-          {t.results.totalDays}은 <span className="font-bold text-blue-600">{result.diffDays}{isKo ? '일' : ' days'}</span> 입니다.
+          {t.results.totalDays}은 <span className="font-bold text-blue-600 dark:text-blue-400">{result.diffDays}{isKo ? '일' : ' days'}</span> 입니다.
         </p>
     </div>
   );

@@ -78,10 +78,10 @@ export default function OhmsLawPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">V</strong> — {L('전압(전위차) [Volt, V]', 'Voltage / potential difference [Volts, V]')}</li>
-          <li><strong className="font-semibold text-yellow-600">I</strong> — {L('전류 [Ampere, A]', 'Current [Amperes, A]')}</li>
-          <li><strong className="font-semibold text-red-600">R</strong> — {L('저항 [Ohm, Ω]', 'Resistance [Ohms, Ω]')}</li>
-          <li><strong className="font-semibold text-green-600">P</strong> — {L('전력(소비/공급 에너지율) [Watt, W]', 'Power (rate of energy use/supply) [Watts, W]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">V</strong> — {L('전압(전위차) [Volt, V]', 'Voltage / potential difference [Volts, V]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">I</strong> — {L('전류 [Ampere, A]', 'Current [Amperes, A]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">R</strong> — {L('저항 [Ohm, Ω]', 'Resistance [Ohms, Ω]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">P</strong> — {L('전력(소비/공급 에너지율) [Watt, W]', 'Power (rate of energy use/supply) [Watts, W]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

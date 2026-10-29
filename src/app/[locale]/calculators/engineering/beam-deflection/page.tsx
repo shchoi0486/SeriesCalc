@@ -68,11 +68,11 @@ export default function BeamDeflectionPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">δ</strong> — {L('최대 처짐 [mm (Metric) 또는 in (Imperial)]', 'Maximum deflection [mm (Metric) or in (Imperial)]')}</li>
-          <li><strong className="font-semibold text-red-600">P</strong> — {L('집중 하중 [kN (Metric) 또는 kip (Imperial)]', 'Point load [kN (Metric) or kip (Imperial)]')}</li>
-          <li><strong className="font-semibold text-green-600">L</strong> — {L('보 길이 [m (Metric) 또는 ft (Imperial)]', 'Beam length [m (Metric) or ft (Imperial)]')}</li>
-          <li><strong className="font-semibold text-purple-600">E</strong> — {L('탄성 계수 (강재 ≈ 200 GPa 또는 29 Mpsi)', 'Modulus of Elasticity (steel ≈ 200 GPa or 29 Mpsi)')}</li>
-          <li><strong className="font-semibold text-orange-600">I</strong> — {L('단면 2차 모멘트 [cm⁴ (Metric) 또는 in⁴ (Imperial)]', 'Area moment of inertia [cm⁴ (Metric) or in⁴ (Imperial)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">δ</strong> — {L('최대 처짐 [mm (Metric) 또는 in (Imperial)]', 'Maximum deflection [mm (Metric) or in (Imperial)]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">P</strong> — {L('집중 하중 [kN (Metric) 또는 kip (Imperial)]', 'Point load [kN (Metric) or kip (Imperial)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">L</strong> — {L('보 길이 [m (Metric) 또는 ft (Imperial)]', 'Beam length [m (Metric) or ft (Imperial)]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">E</strong> — {L('탄성 계수 (강재 ≈ 200 GPa 또는 29 Mpsi)', 'Modulus of Elasticity (steel ≈ 200 GPa or 29 Mpsi)')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">I</strong> — {L('단면 2차 모멘트 [cm⁴ (Metric) 또는 in⁴ (Imperial)]', 'Area moment of inertia [cm⁴ (Metric) or in⁴ (Imperial)]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

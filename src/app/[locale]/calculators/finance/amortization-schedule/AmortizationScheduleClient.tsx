@@ -187,7 +187,7 @@ const AmortizationSchedule = ({ infoSection }: AmortizationScheduleProps) => {
               <tr key={row.month} className="border-b border-border last:border-0 hover:bg-muted/50">
                 <td className="px-3 py-2 text-foreground">{row.month}</td>
                 <td className="px-3 py-2 text-right text-foreground">{formatCurrency(row.payment)}</td>
-                <td className="px-3 py-2 text-right text-blue-600">{formatCurrency(row.principal)}</td>
+                <td className="px-3 py-2 text-right text-blue-600 dark:text-blue-400">{formatCurrency(row.principal)}</td>
                 <td className="px-3 py-2 text-right text-red-500">{formatCurrency(row.interest)}</td>
                 <td className="px-3 py-2 text-right text-muted-foreground">{formatCurrency(row.balance)}</td>
               </tr>

@@ -174,11 +174,11 @@ export default function FlowRateConverterPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">Q</strong> — {L('부피 유량 [LPM, m³/h, GPM 등]', 'Volumetric flow rate [LPM, m³/h, GPM, etc.]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">Q</strong> — {L('부피 유량 [LPM, m³/h, GPM 등]', 'Volumetric flow rate [LPM, m³/h, GPM, etc.]')}</li>
           <li><strong className="font-semibold text-red-500">V</strong> — {L('유체 부피 [L, m³, gal]', 'Fluid volume [L, m³, gal]')}</li>
-          <li><strong className="font-semibold text-blue-600">t</strong> — {L('시간 [min, h, s]', 'Time [min, h, s]')}</li>
-          <li><strong className="font-semibold text-orange-600">ṁ</strong> — {L('질량 유량 [kg/s, lb/min]', 'Mass flow rate [kg/s, lb/min]')}</li>
-          <li><strong className="font-semibold text-purple-600">ρ</strong> — {L('유체 밀도 [kg/m³, lb/ft³]', 'Fluid density [kg/m³, lb/ft³]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">t</strong> — {L('시간 [min, h, s]', 'Time [min, h, s]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">ṁ</strong> — {L('질량 유량 [kg/s, lb/min]', 'Mass flow rate [kg/s, lb/min]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">ρ</strong> — {L('유체 밀도 [kg/m³, lb/ft³]', 'Fluid density [kg/m³, lb/ft³]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('자주 쓰이는 환산 계수', 'Common conversion factors')}</h4>

@@ -72,12 +72,12 @@ export default function AcPowerPage({
           <p className="text-sm text-muted-foreground mt-2 italic">{L('* 3상 시스템의 경우 피상 전력에 √3을 곱합니다: S = √3 × V_L × I_L', '* For 3-phase systems, multiply apparent power by √3: S = √3 × V_L × I_L')}</p>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">S</strong> — {L('피상 전력 (Volt-Amperes, VA)', 'Apparent Power (Volt-Amperes, VA)')}</li>
-          <li><strong className="font-semibold text-green-600">P</strong> — {L('유효(실) 전력 (Watts, W)', 'Real / Active Power (Watts, W)')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">S</strong> — {L('피상 전력 (Volt-Amperes, VA)', 'Apparent Power (Volt-Amperes, VA)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">P</strong> — {L('유효(실) 전력 (Watts, W)', 'Real / Active Power (Watts, W)')}</li>
           <li><strong className="font-semibold text-red-500">Q</strong> — {L('무효 전력 (Volt-Amperes Reactive, VAR)', 'Reactive Power (Volt-Amperes Reactive, VAR)')}</li>
-          <li><strong className="font-semibold text-purple-600">θ</strong> — {L('전압과 전류 사이의 위상각 (도 또는 rad)', 'Phase angle between voltage and current [° or rad]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">θ</strong> — {L('전압과 전류 사이의 위상각 (도 또는 rad)', 'Phase angle between voltage and current [° or rad]')}</li>
           <li><strong>V, I</strong> — {L('전압 [V] 및 전류 [A]', 'Voltage [V] and Current [A]')}</li>
-          <li><strong className="font-semibold text-purple-600">PF</strong> — {L('역률 (−1 ~ 1, 보통 0 ~ 1)', 'Power Factor [−1 to 1, usually 0 to 1]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">PF</strong> — {L('역률 (−1 ~ 1, 보통 0 ~ 1)', 'Power Factor [−1 to 1, usually 0 to 1]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

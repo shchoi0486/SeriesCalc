@@ -190,7 +190,7 @@ const MonthlyCompoundSavingsCalculator = ({ infoSection }: MonthlyCompoundSaving
           </div>
           <div className="flex justify-between items-center">
             <span className="text-muted-foreground">{t.results.totalInterest}</span>
-            <span className="text-lg font-bold text-green-600">{totalInterest?.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
+            <span className="text-lg font-bold text-green-600 dark:text-green-400">{totalInterest?.toLocaleString()}{isKo ? '원' : ' KRW'}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-xl font-bold">{t.results.maturityAmount}</span>

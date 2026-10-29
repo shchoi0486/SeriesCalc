@@ -76,10 +76,10 @@ export default function DuctFrictionPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">ΔP</strong> — {L('마찰 손실 [in.w.g. / 100 ft]', 'Friction loss [in.w.g. per 100 ft]')}</li>
-          <li><strong className="font-semibold text-blue-600">Dₑ</strong> — {L('상당(수력) 직경 [in]', 'Equivalent (hydraulic) diameter [in]')}</li>
-          <li><strong className="font-semibold text-green-600">V</strong> — {L('공기 유속 [ft/min]', 'Air velocity [ft/min]')}</li>
-          <li><strong className="font-semibold text-purple-600">W, H</strong> — {L('덕트 폭과 높이 [in]', 'Duct width and height [in]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">ΔP</strong> — {L('마찰 손실 [in.w.g. / 100 ft]', 'Friction loss [in.w.g. per 100 ft]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">Dₑ</strong> — {L('상당(수력) 직경 [in]', 'Equivalent (hydraulic) diameter [in]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">V</strong> — {L('공기 유속 [ft/min]', 'Air velocity [ft/min]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">W, H</strong> — {L('덕트 폭과 높이 [in]', 'Duct width and height [in]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

@@ -110,9 +110,9 @@ export default function NPSHVisualization({
 
   // 안전성 상태 결정
   const getSafetyStatus = (npsh: number) => {
-    if (npsh > 3) return { status: 'safe', color: 'text-green-600', bgColor: 'bg-green-100', label: dict?.results?.safe || 'Safe' };
-    if (npsh > 2) return { status: 'warning', color: 'text-yellow-600', bgColor: 'bg-yellow-100', label: dict?.results?.caution || 'Caution' };
-    return { status: 'danger', color: 'text-red-600', bgColor: 'bg-red-100', label: dict?.results?.danger || 'Danger' };
+    if (npsh > 3) return { status: 'safe', color: 'text-green-600 dark:text-green-400', bgColor: 'bg-green-100', label: dict?.results?.safe || 'Safe' };
+    if (npsh > 2) return { status: 'warning', color: 'text-yellow-600 dark:text-yellow-400', bgColor: 'bg-yellow-100', label: dict?.results?.caution || 'Caution' };
+    return { status: 'danger', color: 'text-red-600 dark:text-red-400', bgColor: 'bg-red-100', label: dict?.results?.danger || 'Danger' };
   };
 
   const safetyInfo = getSafetyStatus(npshValue);
@@ -121,13 +121,13 @@ export default function NPSHVisualization({
     return (
       <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600">
         <div className="text-center p-6">
-          <div className="text-gray-400 dark:text-gray-500 mb-2">
+          <div className="text-gray-400 dark:text-gray-500 dark:text-gray-400 mb-2">
             <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{dict?.messages?.error || "Cannot load image"}</p>
-          <p className="text-xs text-gray-400 dark:text-gray-500">
+          <p className="text-xs text-gray-400 dark:text-gray-500 dark:text-gray-400">
             {tankPosition === 'above' ? (dict?.inputs?.abovePump || 'Above Pump') : (dict?.inputs?.belowPump || 'Below Pump')} Image
           </p>
           <button
@@ -177,7 +177,7 @@ export default function NPSHVisualization({
             {/* 상단: 좌측(Conditions) / 우측(Tank Position) */}
             <div className="flex justify-between items-start w-full">
               {/* 좌측 상단: 주요 파라미터 */}
-              <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-600 w-auto min-w-[10rem] max-w-[13rem] pointer-events-auto">
+              <div className="bg-white dark:bg-gray-900/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-600 w-auto min-w-[10rem] max-w-[13rem] pointer-events-auto">
                 <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{dict?.visualization?.conditions || "Conditions"}</div>
                 <div className="space-y-1 text-[11px] sm:text-xs">
                   <div className="flex justify-between items-center gap-2">
@@ -199,7 +199,7 @@ export default function NPSHVisualization({
               </div>
 
               {/* 우측 상단: Tank Position 표시 */}
-              <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-600 pointer-events-auto">
+              <div className="bg-white dark:bg-gray-900/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-600 pointer-events-auto">
                 <div className="text-xs font-medium text-gray-600 dark:text-gray-400">{dict?.inputs?.tankPosition || "Tank Position"}</div>
                 <div className="text-sm font-semibold text-gray-900 dark:text-white">
                   {tankPosition === 'above' ? (dict?.inputs?.abovePump || 'Above Pump') : (dict?.inputs?.belowPump || 'Below Pump')}
@@ -210,7 +210,7 @@ export default function NPSHVisualization({
             {/* 하단: 좌측(Pressure) / 우측(NPSH Available) */}
             <div className="flex justify-between items-end w-full">
               {/* 좌측 하단: 압력 정보 */}
-              <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-600 w-auto min-w-[10rem] max-w-[13rem] pointer-events-auto">
+              <div className="bg-white dark:bg-gray-900/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border border-gray-200 dark:border-gray-600 w-auto min-w-[10rem] max-w-[13rem] pointer-events-auto">
                 <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">{dict?.results?.pressureHeadTitle || "Pressure"}</div>
                 <div className="space-y-1 text-[11px] sm:text-xs">
                   <div className="flex justify-between items-center gap-2">
@@ -235,7 +235,7 @@ export default function NPSHVisualization({
               </div>
 
               {/* 우측 하단: NPSH 결과 */}
-              <div className={`backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border ${showCalculation ? safetyInfo.bgColor + ' ' + safetyInfo.color : 'bg-gray-100 text-gray-600'} border-current/20 pointer-events-auto`}>
+              <div className={`backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm border ${showCalculation ? safetyInfo.bgColor + ' ' + safetyInfo.color : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'} border-current/20 pointer-events-auto`}>
                 <div className="text-xs font-medium opacity-80">{dict?.results?.npsha || "NPSH Available"}</div>
                 <div className="text-lg font-bold">
                   {showCalculation ? `${npshDisplay.toFixed(2)} ${headUnit}` : (dict?.visualization?.needCalculate || "Calculation Needed")}

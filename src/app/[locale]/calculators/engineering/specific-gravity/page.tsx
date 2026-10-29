@@ -175,9 +175,9 @@ export default function SpecificGravityPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">SG</strong> — {L('비중 (무차원)', 'Specific gravity (dimensionless)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">SG</strong> — {L('비중 (무차원)', 'Specific gravity (dimensionless)')}</li>
           <li><strong className="font-semibold text-red-500">ρ<sub>substance</sub></strong> — {L('물질의 밀도 [kg/m³]', 'Density of the substance [kg/m³]')}</li>
-          <li><strong className="font-semibold text-blue-600">ρ<sub>water</sub></strong> — {L('같은 온도의 물 밀도 [kg/m³]', 'Density of water at the same temperature [kg/m³]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">ρ<sub>water</sub></strong> — {L('같은 온도의 물 밀도 [kg/m³]', 'Density of water at the same temperature [kg/m³]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('밀도 역변환', 'Inverse density calculation')}</h4>

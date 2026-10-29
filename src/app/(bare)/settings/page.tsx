@@ -15,7 +15,7 @@ const SettingsPage: React.FC = () => {
     <AdminAuth>
       <div className="space-y-6">
           <h1 className="text-2xl font-bold">애플리케이션 설정</h1>
-          <p className="text-gray-600">애플리케이션의 다양한 설정을 관리할 수 있습니다.</p>
+          <p className="text-gray-600 dark:text-gray-400">애플리케이션의 다양한 설정을 관리할 수 있습니다.</p>
           
           <Card>
             <CardHeader><CardTitle>실행 기록 및 모니터링</CardTitle></CardHeader>
@@ -41,7 +41,7 @@ const SettingsPage: React.FC = () => {
             <CardHeader><CardTitle>스케줄 변경</CardTitle></CardHeader>
             <CardContent>
               <p className="mb-2">실행 시간 변경은 코드 수정이 필요합니다. 아래 설정 파일의 `cron` 값을 수정한 후 GitHub에 push하세요. (시간은 UTC 기준)</p>
-              <div className="p-2 my-2 bg-gray-100 rounded-md font-mono text-sm">.github/workflows/crawler.yml</div>
+              <div className="p-2 my-2 bg-gray-100 dark:bg-gray-800 rounded-md font-mono text-sm">.github/workflows/crawler.yml</div>
               <a href={`${GITHUB_REPO_URL}/blob/main/.github/workflows/crawler.yml`} target="_blank" rel="noopener noreferrer">
                 <Button><CodeBracketIcon className="w-4 h-4 mr-2" />스케줄 설정 파일 보기</Button>
               </a>

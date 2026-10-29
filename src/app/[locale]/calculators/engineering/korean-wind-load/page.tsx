@@ -168,10 +168,10 @@ export default function KoreanWindLoadPage({
         </div>
         <ul className="space-y-2 text-sm">
           <li><strong className="font-semibold text-blue-500">q₀</strong> — {L('기본풍압 [Pa]', 'Base wind pressure [Pa]')}</li>
-          <li><strong className="font-semibold text-blue-600">ρ</strong> — {L('공기밀도 = 1.225 kg/m³ (표준대기)', 'Air density = 1.225 kg/m³ (standard atmosphere)')}</li>
-          <li><strong className="font-semibold text-green-600">V</strong> — {L('기본풍속 [m/s] (지역 및 높이에 따라 결정)', 'Basic wind speed [m/s] (determined by region and height)')}</li>
-          <li><strong className="font-semibold text-purple-600">Cp</strong> — {L('풍압계수 (건물 형상에 따라 0.7~2.0)', 'Pressure coefficient (0.7–2.0 depending on building shape)')}</li>
-          <li><strong className="font-semibold text-orange-600">Gf</strong> — {L('돌풍계수 (1.0~2.2, 높이·지역에 따라 변동)', 'Gust factor (1.0–2.2, varies with height and region)')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">ρ</strong> — {L('공기밀도 = 1.225 kg/m³ (표준대기)', 'Air density = 1.225 kg/m³ (standard atmosphere)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">V</strong> — {L('기본풍속 [m/s] (지역 및 높이에 따라 결정)', 'Basic wind speed [m/s] (determined by region and height)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">Cp</strong> — {L('풍압계수 (건물 형상에 따라 0.7~2.0)', 'Pressure coefficient (0.7–2.0 depending on building shape)')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">Gf</strong> — {L('돌풍계수 (1.0~2.2, 높이·지역에 따라 변동)', 'Gust factor (1.0–2.2, varies with height and region)')}</li>
           <li><strong className="font-semibold text-red-500">A</strong> — {L('정면투사면적 [㎡]', 'Projected frontal area [㎡]')}</li>
         </ul>
         <div>

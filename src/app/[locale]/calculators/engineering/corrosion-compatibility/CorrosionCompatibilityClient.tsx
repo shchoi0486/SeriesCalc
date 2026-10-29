@@ -763,13 +763,13 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
       case 'C':
       case 'S':
       case 'IG':
-        return { color: 'bg-white border border-gray-300', icon: Info, description: getKoreanRatingDescription(normalizedRating) };
+        return { color: 'bg-white dark:bg-gray-900 border border-gray-300', icon: Info, description: getKoreanRatingDescription(normalizedRating) };
       case 'BP':
-        return { color: 'bg-white border border-gray-300', icon: Droplet, description: getKoreanRatingDescription('BP') };
+        return { color: 'bg-white dark:bg-gray-900 border border-gray-300', icon: Droplet, description: getKoreanRatingDescription('BP') };
       case 'ND':
-        return { color: 'bg-white border border-gray-300', icon: Info, description: getKoreanRatingDescription('ND') };
+        return { color: 'bg-white dark:bg-gray-900 border border-gray-300', icon: Info, description: getKoreanRatingDescription('ND') };
       default:
-        return { color: 'bg-white border border-gray-300', icon: Info, description: '' };
+        return { color: 'bg-white dark:bg-gray-900 border border-gray-300', icon: Info, description: '' };
     }
   };
 
@@ -881,10 +881,10 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
     return (
       <IconComponent
         className={`w-4 h-4 ${
-          rating === '0' ? 'text-green-600' :
-          rating === '1' ? 'text-yellow-600' :
-          rating === '2' ? 'text-red-600' :
-          'text-gray-600'
+          rating === '0' ? 'text-green-600 dark:text-green-400' :
+          rating === '1' ? 'text-yellow-600 dark:text-yellow-400' :
+          rating === '2' ? 'text-red-600 dark:text-red-400' :
+          'text-gray-600 dark:text-gray-400'
         }`}
       />
     );
@@ -895,7 +895,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
     const IconComponent = ratingInfo.icon;
 
     return (
-      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${ratingInfo.color === 'bg-white border border-gray-300' ? 'text-gray-700' : 'text-white'} ${ratingInfo.color}`}>
+      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${ratingInfo.color === 'bg-white dark:bg-gray-900 border border-gray-300' ? 'text-gray-700 dark:text-gray-300' : 'text-white'} ${ratingInfo.color}`}>
         <IconComponent className="w-2 h-2 mr-1" />
         {rating}
       </span>
@@ -918,7 +918,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
             <div className="w-1 h-5 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
             <h2 className="text-2xl font-semibold leading-none tracking-tight">{t.title}</h2>
       </div>
-       <div className="text-xs text-gray-500 py-2 ml-4 flex items-center">
+       <div className="text-xs text-gray-500 dark:text-gray-400 py-2 ml-4 flex items-center">
          - {t.source}
        </div>
         </div>
@@ -927,7 +927,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
         <div className="flex flex-col md:flex-row md:items-end gap-2 md:gap-3 mt-2 mb-2">
           {/* 화학물질 선택 */}
           <div className="w-full md:w-[200px]">
-            <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">
               {isKo ? '화학물질 선택' : 'Select chemical'}
             </label>
             <Select value={selectedChemical} onValueChange={setSelectedChemical} onOpenChange={setIsChemicalSelectOpen}>
@@ -965,7 +965,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
           </div>
 
           <div className="w-full md:w-[200px]">
-            <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">
               {isKo ? '재질 선택' : 'Select material'}
             </label>
             <Select value={selectedMaterial} onValueChange={setSelectedMaterial} onOpenChange={setIsMaterialSelectOpen}>
@@ -1003,7 +1003,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
           </div>
 
           <div className="w-full md:w-[200px]">
-            <label className="block text-sm font-medium text-gray-700 mb-2 sr-only">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sr-only">
               {isKo ? '모든 등급' : 'All ratings'}
             </label>
             <Select value={selectedRating} onValueChange={setSelectedRating}>
@@ -1030,7 +1030,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
       {/* 이 섹션은 이제 필요 없으므로 주석 처리하거나 제거할 수 있습니다. */}
       {/* {selectedChemical && selectedMaterial && specificCompatibility && (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-2 md:p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
             {selectedChemical} × {selectedMaterial} 호환성 결과
           </h3>
           {specificCompatibility.corrosion_ratings.length > 0 ? (
@@ -1077,22 +1077,22 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                   return (
                     <div key={index} className="border rounded-lg p-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">{isKo ? '농도' : 'concentration'}</div>
+                        <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{isKo ? '농도' : 'concentration'}</div>
                           <div className="font-medium">{concentration}</div>
                         </div>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">{isKo ? '온도 (°C)' : 'Temperature (°C)'}</div>
+                        <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{isKo ? '온도 (°C)' : 'Temperature (°C)'}</div>
                           <div className="font-medium">{temperature}</div>
                         </div>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">{isKo ? '호환성 등급' : 'Compatibility Rating'}</div>
+                        <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{isKo ? '호환성 등급' : 'Compatibility Rating'}</div>
                           <div className="flex items-center gap-2">
                             {getRatingBadge(actualRating)}
                           </div>
                         </div>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <div className="text-sm text-gray-600 mb-1">{isKo ? '비고' : 'Remarks'}</div>
+                        <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg">
+                          <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{isKo ? '비고' : 'Remarks'}</div>
                           <div className="font-medium">
                             {getDetailedRatingDescription(actualRating) ? (
                               <span dangerouslySetInnerHTML={{ __html: getDetailedRatingDescription(actualRating) }} />
@@ -1103,7 +1103,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                         </div>
                       </div>
                       <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                        <div className="text-sm text-blue-800">
+                        <div className="text-sm text-blue-800 dark:text-blue-300">
                            <strong>{isKo ? '등급 설명:' : 'Rating description:'}</strong> {getRatingInfo(actualRating).description}
                         </div>
                       </div>
@@ -1112,7 +1112,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                 })}
             </div>
           ) : (
-            <div className="text-center py-8 text-black">
+            <div className="text-center py-8 text-black dark:text-white">
               {t.noData}
             </div>
           )}
@@ -1122,17 +1122,17 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
       {/* 전체 재질 호환성 결과 테이블 */}
       {selectedChemical && filteredCompatibilityResults.length > 0 && (
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-2 md:p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
             {getChemicalTitleWithFormulas(selectedChemical)} {t.compatibilityResult}
           </h3>
 
           {/* 모바일에서는 카드 형태로 표시 */}
           <div className="block sm:hidden space-y-4">
             {filteredCompatibilityResults.map((result, index) => (
-              <div key={index} className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm max-w-full">
+              <div key={index} className="bg-white dark:bg-gray-900 border border-gray-200 rounded-lg p-4 shadow-sm max-w-full">
                 <div className="space-y-2">
                   <div className="block">
-                    <span className="font-semibold text-sm text-gray-700 min-w-fit block mb-1">{t.materialName}</span>
+                    <span className="font-semibold text-sm text-gray-700 dark:text-gray-300 min-w-fit block mb-1">{t.materialName}</span>
                     <span className="text-sm font-medium text-right break-words max-w-full block">{result.material}</span>
                   </div>
 
@@ -1146,7 +1146,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                         if (result.concentrations && result.chemicalNames) {
                           return result.chemicalNames.map((chemName, idx) => (
                             <div key={idx} className="block">
-                              <span className="font-semibold text-sm text-gray-700 min-w-fit block mb-1">{chemName} {t.concentration}</span>
+                              <span className="font-semibold text-sm text-gray-700 dark:text-gray-300 min-w-fit block mb-1">{chemName} {t.concentration}</span>
                               <span className="text-sm text-right break-words max-w-full block">{result.concentrations?.[idx] || 'N/A'}</span>
                             </div>
                           ));
@@ -1155,7 +1155,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
 
                       return chemicalParts.map((chemName, idx) => (
                         <div key={idx} className="flex flex-wrap justify-between items-center">
-                           <span className="font-semibold text-sm text-gray-700 min-w-[80px]">{chemName} {isKo ? '농도' : 'concentration'}</span>
+                           <span className="font-semibold text-sm text-gray-700 dark:text-gray-300 min-w-[80px]">{chemName} {isKo ? '농도' : 'concentration'}</span>
                           <span className="text-sm text-right break-words max-w-[60%]">
                             {idx === 0 ? result.concentration1 :
                              idx === 1 ? result.concentration2 :
@@ -1166,18 +1166,18 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                     })()
                   ) : (
                     <div className="flex flex-wrap justify-between items-center">
-                          <span className="font-semibold text-sm text-gray-700 min-w-[80px]">{t.concentration}</span>
+                          <span className="font-semibold text-sm text-gray-700 dark:text-gray-300 min-w-[80px]">{t.concentration}</span>
                       <span className="text-sm text-right break-words max-w-[60%]">{result.concentration}</span>
                     </div>
                   )}
 
                   <div className="flex flex-wrap justify-between items-center">
-                    <span className="font-semibold text-sm text-gray-700 min-w-[80px]">{t.temperature}</span>
+                    <span className="font-semibold text-sm text-gray-700 dark:text-gray-300 min-w-[80px]">{t.temperature}</span>
                     <span className="text-sm text-right break-words max-w-[60%]">{result.temperature}</span>
                   </div>
 
                   <div className="flex flex-wrap justify-between items-center">
-                    <span className="font-semibold text-sm text-gray-700 min-w-[80px]">{t.compatibilityRating}</span>
+                    <span className="font-semibold text-sm text-gray-700 dark:text-gray-300 min-w-[80px]">{t.compatibilityRating}</span>
                     <span className="text-sm text-right break-words max-w-[60%]">
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getRatingBadge(result.rating).props.className}`}>
                         {getRatingIcon(result.rating)}
@@ -1187,8 +1187,8 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                   </div>
 
                   <div className="pt-2 border-t">
-                    <span className="font-semibold text-sm text-gray-700 block mb-1">{t.remarks}</span>
-                    <div className="text-sm text-gray-600 break-words" dangerouslySetInnerHTML={{ __html: getDetailedRatingDescription(result.rating) || 'N/A' }} />
+                    <span className="font-semibold text-sm text-gray-700 dark:text-gray-300 block mb-1">{t.remarks}</span>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 break-words" dangerouslySetInnerHTML={{ __html: getDetailedRatingDescription(result.rating) || 'N/A' }} />
                   </div>
                 </div>
               </div>
@@ -1198,9 +1198,9 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
           {/* 데스크톱에서는 테이블 형태로 표시 */}
           <div className="hidden md:block overflow-x-auto">
             <table className="min-w-full divide-y divide-black">
-              <thead className="bg-gray-50">
+              <thead className="bg-gray-50 dark:bg-gray-900">
                 <tr>
-                  <th className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
+                  <th className="px-4 py-2 text-center text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
                     {t.materialName}
                   </th>
                   {selectedChemical && selectedChemical.includes('+') ? (
@@ -1214,7 +1214,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                         const firstResult = compatibilityResults[0];
                         if (firstResult && firstResult.chemicalNames) {
                           return firstResult.chemicalNames.map((chemName, idx) => (
-                            <th key={idx} className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
+                            <th key={idx} className="px-4 py-2 text-center text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
                               {chemName} {t.concentration}
                             </th>
                           ));
@@ -1223,28 +1223,28 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
 
                       // 2개 화학물질인 경우 (기존 로직)
                       return chemicalParts.map((chemName, idx) => (
-                            <th key={idx} className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
+                            <th key={idx} className="px-4 py-2 text-center text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
                               {chemName} {isKo ? '농도' : 'concentration'}
                             </th>
                       ));
                     })()
                   ) : (
-                    <th className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
+                    <th className="px-4 py-2 text-center text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
                       {t.concentration}
                     </th>
                   )}
-                  <th className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
+                  <th className="px-4 py-2 text-center text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
                     {t.temperature}
                   </th>
-                  <th className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
+                  <th className="px-4 py-2 text-center text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
                     {t.compatibilityRating}
                   </th>
-                  <th className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
+                  <th className="px-4 py-2 text-center text-sm font-semibold text-black dark:text-white uppercase tracking-wider">
                     {t.remarks}
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-black">
+              <tbody className="bg-white dark:bg-gray-900 divide-y divide-black">
                 {filteredCompatibilityResults.map((result, index) => {
                   let rowSpan = 1;
                   for (let i = index + 1; i < filteredCompatibilityResults.length; i++) {
@@ -1257,13 +1257,13 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
 
                   if (index > 0 && filteredCompatibilityResults[index - 1].material === result.material) {
                     return (
-                      <tr key={index} className="hover:bg-gray-50">
+                      <tr key={index} className="hover:bg-gray-50 dark:bg-gray-900">
                         {result.isMultipleChemicals ? (
                           (() => {
                             if (result.chemicalCount && result.chemicalCount >= 3 && result.concentrations) {
                               // 3개 이상의 화학물질인 경우 실제 데이터 사용
                               return result.concentrations.map((conc, idx) => (
-                                <td key={idx} className="px-3 py-1 text-sm text-black text-center">
+                                <td key={idx} className="px-3 py-1 text-sm text-black dark:text-white text-center">
                                   {conc}
                                 </td>
                               ));
@@ -1271,10 +1271,10 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                               // 2개 화학물질인 경우 (기존 로직)
                               return (
                                 <>
-                                  <td className="px-3 py-1 text-sm text-black text-center">
+                                  <td className="px-3 py-1 text-sm text-black dark:text-white text-center">
                                     {result.concentration1}
                                   </td>
-                                  <td className="px-3 py-1 text-sm text-black text-center">
+                                  <td className="px-3 py-1 text-sm text-black dark:text-white text-center">
                                     {result.concentration2}
                                   </td>
                                 </>
@@ -1282,17 +1282,17 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             }
                           })()
                         ) : (
-                          <td className="px-3 py-1 text-sm text-black text-center">
+                          <td className="px-3 py-1 text-sm text-black dark:text-white text-center">
                             {result.concentration}
                           </td>
                         )}
-                        <td className="px-3 py-1 text-sm text-black text-center">
+                        <td className="px-3 py-1 text-sm text-black dark:text-white text-center">
                           {result.temperature}
                         </td>
-                        <td className="px-3 py-1 text-sm text-black text-center">
+                        <td className="px-3 py-1 text-sm text-black dark:text-white text-center">
                           {getRatingBadge(result.rating)}
                         </td>
-                        <td className="px-3 py-1 text-sm text-black text-center">
+                        <td className="px-3 py-1 text-sm text-black dark:text-white text-center">
                           {getDetailedRatingDescription(result.rating) ? (
                             <div className="max-w-xs break-words" dangerouslySetInnerHTML={{ __html: getDetailedRatingDescription(result.rating) }} />
                           ) : (
@@ -1304,10 +1304,10 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                   }
 
                   return (
-                    <tr key={index} className="hover:bg-gray-50">
+                    <tr key={index} className="hover:bg-gray-50 dark:bg-gray-900">
                       <td
                         rowSpan={rowSpan}
-                        className="px-3 py-1 text-sm font-medium text-gray-900 text-center align-middle"
+                        className="px-3 py-1 text-sm font-medium text-gray-900 dark:text-gray-100 text-center align-middle"
                       >
                           {result.material === "Alleima® 3R12" ? (
                           <Tooltip>
@@ -1320,7 +1320,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             <TooltipContent
                               side="top"
                               sideOffset={5}
-                              className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                              className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                             >
                               <p>ASTM: TP304/TP304L</p>
                               <p>UNS: S30400/S30403</p>
@@ -1338,7 +1338,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             <TooltipContent
                               side="top"
                               sideOffset={5}
-                              className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                              className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                             >
                               <p>ASTM: 904L</p>
                               <p>UNS: N08904</p>
@@ -1356,7 +1356,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             <TooltipContent
                               side="top"
                               sideOffset={5}
-                              className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                              className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                             >
                               <p>ASTM: TP317L</p>
                               <p>UNS: S31703</p>
@@ -1374,7 +1374,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             <TooltipContent
                               side="top"
                               sideOffset={5}
-                              className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                              className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                             >
                               <p>ASTM: TP316/TP316L</p>
                               <p>UNS: S31600/S31603</p>
@@ -1392,7 +1392,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             <TooltipContent
                               side="top"
                               sideOffset={5}
-                              className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                              className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                             >
                               <p>UNS: S32205/S31803</p>
                               <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
@@ -1409,7 +1409,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                              <TooltipContent
                                side="top"
                                sideOffset={5}
-                               className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                               className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                              >
                                <p>UNS: S32304</p>
                                <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
@@ -1426,7 +1426,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                               <TooltipContent
                                 side="top"
                                 sideOffset={5}
-                                className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                                className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                               >
                                 <p>UNS: S32750, ASTM A789, A790</p>
                                 <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
@@ -1443,7 +1443,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                               <TooltipContent
                                 side="top"
                                 sideOffset={5}
-                                className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                                className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                               >
                                 <p>UNS: S32707, ASTM A789, A790</p>
                                 <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
@@ -1460,7 +1460,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                               <TooltipContent
                                 side="top"
                                 sideOffset={5}
-                                className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                                className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                               >
                                 <p>UNS: S32906, ASTM A789, A790</p>
                                 <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
@@ -1477,7 +1477,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                               <TooltipContent
                                 side="top"
                                 sideOffset={5}
-                                className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                                className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                               >
                                 <p>UNS: S33207, ASTM A789, A790</p>
                                 <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
@@ -1494,7 +1494,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                               <TooltipContent
                                 side="top"
                                 sideOffset={5}
-                                className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                                className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                               >
                                 <p>UNS: N08028, ASTM B 668</p>
                                 <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
@@ -1511,7 +1511,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                               <TooltipContent
                                 side="top"
                                 sideOffset={5}
-                                className="relative bg-white text-black p-2 border border-gray-300 rounded-md shadow-lg"
+                                className="relative bg-white dark:bg-gray-900 text-black dark:text-white p-2 border border-gray-300 rounded-md shadow-lg"
                               >
                                 <p>UNS: S31254</p>
                                 <div className="absolute left-1/2 transform -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-white"></div>
@@ -1524,7 +1524,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                           if (result.chemicalCount && result.chemicalCount >= 3 && result.concentrations) {
                             // 3개 이상의 화학물질인 경우 실제 데이터 사용
                             return result.concentrations.map((conc, idx) => (
-                              <td key={idx} className="min-w-[80px] px-2 py-1 text-sm text-black text-center">
+                              <td key={idx} className="min-w-[80px] px-2 py-1 text-sm text-black dark:text-white text-center">
                                 {conc}
                               </td>
                             ));
@@ -1532,10 +1532,10 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             // 2개 화학물질인 경우 (기존 로직)
                             return (
                               <>
-                                <td className="min-w-[80px] px-2 py-1 text-sm text-black text-center">
+                                <td className="min-w-[80px] px-2 py-1 text-sm text-black dark:text-white text-center">
                                   {result.concentration1}
                                 </td>
-                                <td className="min-w-[80px] px-2 py-1 text-sm text-black text-center">
+                                <td className="min-w-[80px] px-2 py-1 text-sm text-black dark:text-white text-center">
                                   {result.concentration2}
                                 </td>
                               </>
@@ -1543,17 +1543,17 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                           }
                         })()
                       ) : (
-                        <td className="min-w-[80px] px-2 py-1 text-sm text-black text-center">
+                        <td className="min-w-[80px] px-2 py-1 text-sm text-black dark:text-white text-center">
                           {result.concentration}
                         </td>
                       )}
-                      <td className="min-w-[60px] px-2 py-1 text-sm text-black text-center">
+                      <td className="min-w-[60px] px-2 py-1 text-sm text-black dark:text-white text-center">
                         {result.temperature}
                       </td>
-                      <td className="min-w-[60px] px-2 py-1 text-sm text-black text-center">
+                      <td className="min-w-[60px] px-2 py-1 text-sm text-black dark:text-white text-center">
                         {getRatingBadge(result.rating)}
                       </td>
-                      <td className="min-w-[100px] max-w-xs px-2 py-1 text-sm text-black break-words text-center">
+                      <td className="min-w-[100px] max-w-xs px-2 py-1 text-sm text-black dark:text-white break-words text-center">
                         {getDetailedRatingDescription(result.rating) ? (
                           <span dangerouslySetInnerHTML={{ __html: getDetailedRatingDescription(result.rating) }} />
                         ) : (
@@ -1574,8 +1574,8 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <div className="text-center py-8">
             <Info className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">{isKo ? '호환성 데이터가 없습니다' : 'No compatibility data available'}</h3>
-            <p className="text-gray-500">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">{isKo ? '호환성 데이터가 없습니다' : 'No compatibility data available'}</h3>
+            <p className="text-gray-500 dark:text-gray-400">
               {isKo ? `선택하신 화학물질 "${selectedChemical}"에 대한 호환성 데이터를 찾을 수 없습니다.` : `No compatibility data found for the selected chemical "${selectedChemical}".`}
             </p>
           </div>
@@ -1586,12 +1586,12 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
 
       {/* 호환성 등급 설명 */}
       <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">{isKo ? '호환성 등급 설명' : 'Compatibility Rating Legend'}</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">{isKo ? '호환성 등급 설명' : 'Compatibility Rating Legend'}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-3">
           {data && Object.entries(data.symbol_clarification).map(([symbol, description]) => (
             <div key={symbol} className="flex items-center space-x-2">
               {getRatingBadge(symbol)}
-              <p className="text-xs text-gray-700">{getKoreanRatingDescription(symbol)}</p>
+              <p className="text-xs text-gray-700 dark:text-gray-300">{getKoreanRatingDescription(symbol)}</p>
             </div>
           ))}
         </div>
@@ -1607,7 +1607,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
   }
 
   if (error) {
-    return <div className="flex justify-center items-center h-64 text-red-600">{isKo ? '오류: ' : 'Error: '}{error}</div>;
+    return <div className="flex justify-center items-center h-64 text-red-600 dark:text-red-400">{isKo ? '오류: ' : 'Error: '}{error}</div>;
   }
 
   if (!data) {

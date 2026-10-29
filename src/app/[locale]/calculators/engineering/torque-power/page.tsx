@@ -76,9 +76,9 @@ export default function TorquePowerPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">P</strong> — {L('기계적 동력 [W 또는 HP]', 'Mechanical power [W or HP]')}</li>
-          <li><strong className="font-semibold text-green-600">τ</strong> — {L('토크 [N·m 또는 lb-ft]', 'Torque [N·m or lb-ft]')}</li>
-          <li><strong className="font-semibold text-purple-600">N</strong> — {L('회전 속도 [RPM]', 'Rotational speed [RPM]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">P</strong> — {L('기계적 동력 [W 또는 HP]', 'Mechanical power [W or HP]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">τ</strong> — {L('토크 [N·m 또는 lb-ft]', 'Torque [N·m or lb-ft]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">N</strong> — {L('회전 속도 [RPM]', 'Rotational speed [RPM]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

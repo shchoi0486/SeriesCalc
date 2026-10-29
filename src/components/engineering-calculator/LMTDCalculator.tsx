@@ -124,7 +124,7 @@ const LMTDCalculator = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label className="text-red-600">{t?.inputs?.hotIn || 'Hot In'}</Label>
+                <Label className="text-red-600 dark:text-red-400">{t?.inputs?.hotIn || 'Hot In'}</Label>
                 <div className="flex min-w-0">
                   <Input type="number" value={hotIn} onChange={(e) => setHotIn(e.target.value)} className="min-w-0 flex-1 rounded-r-none" />
                   <select
@@ -140,7 +140,7 @@ const LMTDCalculator = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="text-red-600">{t?.inputs?.hotOut || 'Hot Out'}</Label>
+                <Label className="text-red-600 dark:text-red-400">{t?.inputs?.hotOut || 'Hot Out'}</Label>
                 <div className="flex min-w-0">
                   <Input type="number" value={hotOut} onChange={(e) => setHotOut(e.target.value)} className="min-w-0 flex-1 rounded-r-none" />
                   <select
@@ -156,7 +156,7 @@ const LMTDCalculator = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="text-blue-600">{t?.inputs?.coldIn || 'Cold In'}</Label>
+                <Label className="text-blue-600 dark:text-blue-400">{t?.inputs?.coldIn || 'Cold In'}</Label>
                 <div className="flex min-w-0">
                   <Input type="number" value={coldIn} onChange={(e) => setColdIn(e.target.value)} className="min-w-0 flex-1 rounded-r-none" />
                   <select
@@ -172,7 +172,7 @@ const LMTDCalculator = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="text-blue-600">{t?.inputs?.coldOut || 'Cold Out'}</Label>
+                <Label className="text-blue-600 dark:text-blue-400">{t?.inputs?.coldOut || 'Cold Out'}</Label>
                 <div className="flex min-w-0">
                   <Input type="number" value={coldOut} onChange={(e) => setColdOut(e.target.value)} className="min-w-0 flex-1 rounded-r-none" />
                   <select

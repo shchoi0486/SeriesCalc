@@ -5,7 +5,7 @@ import { calculatorCategories } from '@/data/calculators';
 import { MoreHorizontal } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
 
-const categoryStyle = { color: 'text-gray-600', border: 'border-gray-200 hover:border-gray-400', text: 'text-gray-600' };
+const categoryStyle = { color: 'text-gray-600 dark:text-gray-400', border: 'border-gray-200 hover:border-gray-400', text: 'text-gray-600 dark:text-gray-400' };
 
 export default function CalculatorCategories() {
   const { dict, locale } = useI18n();

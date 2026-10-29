@@ -252,11 +252,11 @@ const InvoiceGenerator: React.FC = () => {
 
   const fullWidthSection = showPreview ? (
     <div className="space-y-4 print:shadow-none">
-      <div className="border-2 border-gray-800 p-6 bg-white text-black">
+      <div className="border-2 border-gray-800 p-6 bg-white dark:bg-gray-900 text-black dark:text-white">
         <div className="flex justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold">{invoice.companyName || t.inputs.companyName}</h2>
-            <p className="text-sm text-gray-600">{invoice.companyAddress}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">{invoice.companyAddress}</p>
           </div>
           <div className="text-right">
             <h3 className="text-lg font-bold">{t.preview.invoiceLabel}</h3>
@@ -266,9 +266,9 @@ const InvoiceGenerator: React.FC = () => {
         </div>
 
         <div className="mb-6">
-          <h4 className="font-semibold text-sm text-gray-500 mb-1">{t.preview.billTo}</h4>
+          <h4 className="font-semibold text-sm text-gray-500 dark:text-gray-400 mb-1">{t.preview.billTo}</h4>
           <p className="font-semibold">{invoice.clientName || t.inputs.clientName}</p>
-          <p className="text-sm text-gray-600">{invoice.clientAddress}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{invoice.clientAddress}</p>
         </div>
 
         <table className="w-full mb-6 text-sm">
@@ -311,7 +311,7 @@ const InvoiceGenerator: React.FC = () => {
 
         {invoice.notes && (
           <div className="mt-6 pt-4 border-t border-gray-200">
-            <h4 className="font-semibold text-sm text-gray-500 mb-1">{t.preview.notesLabel}</h4>
+            <h4 className="font-semibold text-sm text-gray-500 dark:text-gray-400 mb-1">{t.preview.notesLabel}</h4>
             <p className="text-sm">{invoice.notes}</p>
           </div>
         )}

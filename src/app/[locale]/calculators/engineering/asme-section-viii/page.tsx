@@ -74,10 +74,10 @@ export default function AsmeSectionViiiPage({
         </div>
         <ul className="space-y-2 text-sm">
           <li><strong>t</strong> — {L('필요 벽 두께 [mm (Metric) 또는 in (Imperial)]', 'Required wall thickness [mm (Metric) or in (Imperial)]')}</li>
-          <li><strong className="font-semibold text-red-600">P</strong> — {L('내부 설계 압력 [MPa (Metric) 또는 psi (Imperial)]', 'Internal design pressure [MPa (Metric) or psi (Imperial)]')}</li>
-          <li><strong className="font-semibold text-green-600">R</strong> — {L('내경 반경 (Inside radius) [mm (Metric) 또는 in (Imperial)]', 'Inside radius [mm (Metric) or in (Imperial)]')}</li>
-          <li><strong className="font-semibold text-purple-600">S</strong> — {L('최대 허용 응력값 [MPa (Metric) 또는 psi (Imperial)]', 'Maximum allowable stress value [MPa (Metric) or psi (Imperial)]')}</li>
-          <li><strong className="font-semibold text-orange-600">E</strong> — {L('접합 효율 (0.1 ~ 1.0)', 'Joint efficiency (0.1 ~ 1.0)')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">P</strong> — {L('내부 설계 압력 [MPa (Metric) 또는 psi (Imperial)]', 'Internal design pressure [MPa (Metric) or psi (Imperial)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">R</strong> — {L('내경 반경 (Inside radius) [mm (Metric) 또는 in (Imperial)]', 'Inside radius [mm (Metric) or in (Imperial)]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">S</strong> — {L('최대 허용 응력값 [MPa (Metric) 또는 psi (Imperial)]', 'Maximum allowable stress value [MPa (Metric) or psi (Imperial)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">E</strong> — {L('접합 효율 (0.1 ~ 1.0)', 'Joint efficiency (0.1 ~ 1.0)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

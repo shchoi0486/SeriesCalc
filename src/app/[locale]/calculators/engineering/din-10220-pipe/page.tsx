@@ -80,10 +80,10 @@ export default function Din10220PipePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">P_b</strong> — {L('파열 압력 [MPa]', 'Burst pressure [MPa]')}</li>
-          <li><strong className="font-semibold text-green-600">S</strong> — {L('재질 항복 강도 [MPa] (예: St37.0 = 235 MPa)', 'Material yield strength [MPa] (e.g. St37.0 = 235 MPa)')}</li>
-          <li><strong className="font-semibold text-purple-600">t, D</strong> — {L('배관 두께 및 외경 [mm]', 'Wall thickness and outer diameter [mm]')}</li>
-          <li><strong className="font-semibold text-orange-600">FS</strong> — {L('안전율 (설계 여유 계수)', 'Safety factor (design margin)')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">P_b</strong> — {L('파열 압력 [MPa]', 'Burst pressure [MPa]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">S</strong> — {L('재질 항복 강도 [MPa] (예: St37.0 = 235 MPa)', 'Material yield strength [MPa] (e.g. St37.0 = 235 MPa)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">t, D</strong> — {L('배관 두께 및 외경 [mm]', 'Wall thickness and outer diameter [mm]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">FS</strong> — {L('안전율 (설계 여유 계수)', 'Safety factor (design margin)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

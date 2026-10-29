@@ -257,22 +257,22 @@ const ScientificCalculator: React.FC = () => {
     const actionButtons = ['Ans', 'M+', 'M-', 'MR', 'AC', '=', '⌫'];
 
     if (scientificButtons.includes(button)) {
-      return `${baseClass} ${spanClass} bg-blue-100 text-blue-800 hover:bg-blue-200`;
+      return `${baseClass} ${spanClass} bg-blue-100 text-blue-800 dark:text-blue-300 hover:bg-blue-200`;
     }
     if (numberButtons.includes(button)) {
-      return `${baseClass} ${spanClass} bg-gray-100 text-gray-800 hover:bg-gray-200`;
+      return `${baseClass} ${spanClass} bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:bg-gray-700`;
     }
     if (operatorButtons.includes(button)) {
-      return `${baseClass} ${spanClass} bg-gray-100 text-gray-800 hover:bg-gray-200`;
+      return `${baseClass} ${spanClass} bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:bg-gray-700`;
     }
     if (actionButtons.includes(button)) {
       return `${baseClass} ${spanClass} bg-blue-500 text-white hover:bg-blue-600`;
     }
     if (['(', ')', '1/x', '%', 'n!', '±', 'RND'].includes(button)) {
-        return `${baseClass} ${spanClass} bg-gray-100 text-gray-800 hover:bg-gray-200`;
+        return `${baseClass} ${spanClass} bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:bg-gray-700`;
     }
 
-    return `${baseClass} ${spanClass} bg-gray-200 text-gray-800 hover:bg-gray-300`;
+    return `${baseClass} ${spanClass} bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300`;
   };
 
   // 함수키 (sin/cos/tan은 렌더에서 별도 배치)
@@ -316,7 +316,7 @@ const ScientificCalculator: React.FC = () => {
       <CardContent className="p-4">
         {/* 계산 히스토리 */}
         {history.length > 0 && (
-          <div className="mb-2 text-sm text-gray-500 max-h-20 overflow-y-auto">
+          <div className="mb-2 text-sm text-gray-500 dark:text-gray-400 max-h-20 overflow-y-auto">
             {history.map((item, index) => (
               <div key={index}>{item}</div>
             ))}
@@ -327,7 +327,7 @@ const ScientificCalculator: React.FC = () => {
           type="text"
           readOnly
           value={display}
-          className="w-full h-10 text-2xl text-right mb-3 pr-4 bg-gray-100 rounded-md"
+          className="w-full h-10 text-2xl text-right mb-3 pr-4 bg-gray-100 dark:bg-gray-800 rounded-md"
         />
 
         {/* 함수키 영역 5열: sin/cos/tan + Deg/Rad + 나머지 함수키 */}

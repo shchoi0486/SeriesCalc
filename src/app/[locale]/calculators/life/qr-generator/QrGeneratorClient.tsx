@@ -159,7 +159,7 @@ const QRGenerator = ({ infoSection }: QRGeneratorProps) => {
     <div className="flex flex-col items-center space-y-4">
       {qrGenerated ? (
         <>
-          <div className="border rounded-lg p-4 bg-white">
+          <div className="border rounded-lg p-4 bg-white dark:bg-gray-900">
             <canvas ref={canvasRef} />
           </div>
           <Button onClick={downloadQR}>{t.downloadButton}</Button>

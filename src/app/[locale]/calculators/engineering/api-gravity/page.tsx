@@ -81,15 +81,15 @@ export default function ApiGravityPage({
           </p>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-orange-600">°API</strong> — {L('API 비중 (단위 없는 척도, 물 ≈ 10°API)', 'API gravity (dimensionless scale, water ≈ 10°API)')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">°API</strong> — {L('API 비중 (단위 없는 척도, 물 ≈ 10°API)', 'API gravity (dimensionless scale, water ≈ 10°API)')}</li>
           <li><strong className="font-semibold text-teal-600">SG</strong> — {L('비중 = 액체 밀도 / 물 밀도 (60°F 기준, 무차원)', 'Specific gravity = liquid density / water density (at 60°F, dimensionless)')}</li>
           <li><strong>ρ</strong> — {L('액체 밀도 [kg/m³ 또는 lb/ft³]', 'Liquid density [kg/m³ or lb/ft³]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('원유 분류 (기준)', 'Crude oil classification')}</h4>
           <ul className="list-disc pl-5 space-y-1 text-sm">
-            <li><strong className="font-semibold text-orange-600">Light Crude</strong> — {L('> 31.1 °API (물보다 가벼움)', '> 31.1 °API (lighter than water)')}</li>
-            <li><strong className="font-semibold text-orange-700">Medium Crude</strong> — {L('22.3 ~ 31.1 °API', '22.3 ~ 31.1 °API')}</li>
+            <li><strong className="font-semibold text-orange-600 dark:text-orange-400">Light Crude</strong> — {L('> 31.1 °API (물보다 가벼움)', '> 31.1 °API (lighter than water)')}</li>
+            <li><strong className="font-semibold text-orange-700 dark:text-orange-400">Medium Crude</strong> — {L('22.3 ~ 31.1 °API', '22.3 ~ 31.1 °API')}</li>
             <li><strong className="font-semibold text-orange-800">Heavy Crude</strong> — {L('10 ~ 22.3 °API', '10 ~ 22.3 °API')}</li>
             <li><strong className="font-semibold text-orange-900">Extra Heavy</strong> — {L('< 10 °API (물보다 무거워 가라앉음, 비투멘)', '< 10 °API (sinks in water, e.g. bitumen)')}</li>
           </ul>

@@ -68,12 +68,12 @@ export default function RadiationHeatPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">q</strong> — {L('순 복사 열전달량 [W 또는 Btu/hr]', 'Net radiation heat transfer [W or Btu/hr]')}</li>
-          <li><strong className="font-semibold text-blue-600">ε</strong> — {L('방사율 (0~1, 흑체는 1, 거울면은 ≈0)', 'Emissivity (0–1; 1 for a black body, ≈0 for a mirror)')}</li>
-          <li><strong className="font-semibold text-purple-600">σ</strong> — {L('슈테판-볼츠만 상수 (5.67×10⁻⁸ W/(m²·K⁴) 또는 0.1714×10⁻⁸ Btu/(hr·ft²·°R⁴))', 'Stefan-Boltzmann constant (5.67×10⁻⁸ W/(m²·K⁴) or 0.1714×10⁻⁸ Btu/(hr·ft²·°R⁴))')}</li>
-          <li><strong className="font-semibold text-green-600">A</strong> — {L('복사 표면적 [m² 또는 ft²]', 'Surface area [m² or ft²]')}</li>
-          <li><strong className="font-semibold text-yellow-600">T₁</strong> — {L('물체의 절대 온도 [K 또는 °R]', 'Absolute temperature of the body [K or °R]')}</li>
-          <li><strong className="font-semibold text-yellow-600">T₂</strong> — {L('주위의 절대 온도 [K 또는 °R]', 'Absolute temperature of surroundings [K or °R]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">q</strong> — {L('순 복사 열전달량 [W 또는 Btu/hr]', 'Net radiation heat transfer [W or Btu/hr]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">ε</strong> — {L('방사율 (0~1, 흑체는 1, 거울면은 ≈0)', 'Emissivity (0–1; 1 for a black body, ≈0 for a mirror)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">σ</strong> — {L('슈테판-볼츠만 상수 (5.67×10⁻⁸ W/(m²·K⁴) 또는 0.1714×10⁻⁸ Btu/(hr·ft²·°R⁴))', 'Stefan-Boltzmann constant (5.67×10⁻⁸ W/(m²·K⁴) or 0.1714×10⁻⁸ Btu/(hr·ft²·°R⁴))')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">A</strong> — {L('복사 표면적 [m² 또는 ft²]', 'Surface area [m² or ft²]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">T₁</strong> — {L('물체의 절대 온도 [K 또는 °R]', 'Absolute temperature of the body [K or °R]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">T₂</strong> — {L('주위의 절대 온도 [K 또는 °R]', 'Absolute temperature of surroundings [K or °R]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미', 'How the formula works')}</h4>

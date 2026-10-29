@@ -70,13 +70,13 @@ export default function ManningsEquationPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">V</strong> — {L('단면 평균 유속 [m/s (ft/s)]', 'Cross-sectional average velocity [m/s (ft/s)]')}</li>
-          <li><strong className="font-semibold text-green-600">Q</strong> — {L('유량(Discharge) [m³/s (ft³/s)]', 'Discharge / flow rate [m³/s (ft³/s)]')}</li>
-          <li><strong className="font-semibold text-purple-600">k</strong> — {L('단위 변환 계수 (SI는 1.0, 미국 단위는 1.486)', 'Conversion factor (1.0 for SI, 1.486 for US customary)')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">V</strong> — {L('단면 평균 유속 [m/s (ft/s)]', 'Cross-sectional average velocity [m/s (ft/s)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">Q</strong> — {L('유량(Discharge) [m³/s (ft³/s)]', 'Discharge / flow rate [m³/s (ft³/s)]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">k</strong> — {L('단위 변환 계수 (SI는 1.0, 미국 단위는 1.486)', 'Conversion factor (1.0 for SI, 1.486 for US customary)')}</li>
           <li><strong className="font-semibold text-red-500">n</strong> — {L('매닝 조도 계수 (단위 없음, 0.01~0.04 범위)', 'Manning roughness coefficient (dimensionless, typically 0.01–0.04)')}</li>
-          <li><strong className="font-semibold text-orange-600">R</strong> — {L('경심(단면적/젖음둘레, A/P) [m (ft)]', 'Hydraulic radius (A/P) [m (ft)]')}</li>
-          <li><strong className="font-semibold text-gray-600">S</strong> — {L('수면 또는 수로 바닥의 경사 (m/m 또는 ft/ft)', 'Slope of water surface or channel bed (m/m or ft/ft)')}</li>
-          <li><strong className="font-semibold text-gray-600">A</strong> — {L('흐르는 단면적(통수 단면적) [m² (ft²)]', 'Flow (wetted) cross-sectional area [m² (ft²)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">R</strong> — {L('경심(단면적/젖음둘레, A/P) [m (ft)]', 'Hydraulic radius (A/P) [m (ft)]')}</li>
+          <li><strong className="font-semibold text-gray-600 dark:text-gray-400">S</strong> — {L('수면 또는 수로 바닥의 경사 (m/m 또는 ft/ft)', 'Slope of water surface or channel bed (m/m or ft/ft)')}</li>
+          <li><strong className="font-semibold text-gray-600 dark:text-gray-400">A</strong> — {L('흐르는 단면적(통수 단면적) [m² (ft²)]', 'Flow (wetted) cross-sectional area [m² (ft²)]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

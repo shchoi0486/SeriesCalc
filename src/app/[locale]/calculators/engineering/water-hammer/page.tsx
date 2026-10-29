@@ -69,9 +69,9 @@ export default function WaterHammerPage({
         </div>
         <ul className="space-y-2 text-sm">
           <li><strong className="font-semibold text-red-500">ΔP</strong> — {L('압력 상승분(서지) [Pa 또는 psi]', 'Pressure surge [Pa or psi]')}</li>
-          <li><strong className="font-semibold text-blue-600">ρ</strong> — {L('유체 밀도 [kg/m³ 또는 lb/ft³]', 'Fluid density [kg/m³ or lb/ft³]')}</li>
-          <li><strong className="font-semibold text-green-600">a</strong> — {L('파동 속도(음속) [m/s 또는 ft/s]', 'Wave speed / celerity [m/s or ft/s]')}</li>
-          <li><strong className="font-semibold text-purple-600">Δv</strong> — {L('유속 변화량 [m/s 또는 ft/s]', 'Change in fluid velocity [m/s or ft/s]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">ρ</strong> — {L('유체 밀도 [kg/m³ 또는 lb/ft³]', 'Fluid density [kg/m³ or lb/ft³]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">a</strong> — {L('파동 속도(음속) [m/s 또는 ft/s]', 'Wave speed / celerity [m/s or ft/s]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">Δv</strong> — {L('유속 변화량 [m/s 또는 ft/s]', 'Change in fluid velocity [m/s or ft/s]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미와 파동 속도', 'How it works & wave speed')}</h4>

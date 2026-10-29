@@ -75,12 +75,12 @@ export default function NpshPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">P_surf</strong> — {L('탱크 표면의 절대 압력 (대기개방 시 대기압) [Pa (psi, psf)]', 'Absolute pressure at the tank surface (atmospheric if open) [Pa (psi, psf)]')}</li>
-          <li><strong className="font-semibold text-purple-600">P_vap</strong> — {L('유체의 증기압 (온도에 따라 결정) [Pa (psi, psf)]', 'Fluid vapor pressure (set by temperature) [Pa (psi, psf)]')}</li>
-          <li><strong className="font-semibold text-red-600">ρ</strong> — {L('액체 밀도 [kg/m³ (lb/ft³)]', 'Liquid density [kg/m³ (lb/ft³)]')}</li>
-          <li><strong className="font-semibold text-orange-600">g</strong> — {L('중력 가속도 (9.81 m/s² 또는 32.174 ft/s²)', 'Gravitational acceleration (9.81 m/s² or 32.174 ft/s²)')}</li>
-          <li><strong className="font-semibold text-green-600">Z</strong> — {L('펌프 대비 액면 높이(위치 수두) [m (ft)]', 'Liquid-level elevation relative to pump (position head) [m (ft)]')}</li>
-          <li><strong className="font-semibold text-yellow-600">H_l</strong> — {L('흡입 측 마찰·국부 손실 수두 [m (ft)]', 'Suction-side friction and minor loss head [m (ft)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">P_surf</strong> — {L('탱크 표면의 절대 압력 (대기개방 시 대기압) [Pa (psi, psf)]', 'Absolute pressure at the tank surface (atmospheric if open) [Pa (psi, psf)]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">P_vap</strong> — {L('유체의 증기압 (온도에 따라 결정) [Pa (psi, psf)]', 'Fluid vapor pressure (set by temperature) [Pa (psi, psf)]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">ρ</strong> — {L('액체 밀도 [kg/m³ (lb/ft³)]', 'Liquid density [kg/m³ (lb/ft³)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">g</strong> — {L('중력 가속도 (9.81 m/s² 또는 32.174 ft/s²)', 'Gravitational acceleration (9.81 m/s² or 32.174 ft/s²)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">Z</strong> — {L('펌프 대비 액면 높이(위치 수두) [m (ft)]', 'Liquid-level elevation relative to pump (position head) [m (ft)]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">H_l</strong> — {L('흡입 측 마찰·국부 손실 수두 [m (ft)]', 'Suction-side friction and minor loss head [m (ft)]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

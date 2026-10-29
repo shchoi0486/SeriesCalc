@@ -77,8 +77,8 @@ const NewUnitConverter = ({ category }: { category: string }) => {
       <div className="grid grid-cols-2 gap-4">
         {units.map(unit => (
           <div key={unit} className="grid grid-cols-[1fr_auto] items-center gap-2">
-            <span className="text-right text-xs py-2 px-3 bg-gray-100 rounded-md shadow-inner truncate">{convertedValues[unit]?.toFixed(2) || ''}</span>
-            <span className="w-10 shrink-0 text-xs text-black text-left font-bold">{unit}</span>
+            <span className="text-right text-xs py-2 px-3 bg-gray-100 dark:bg-gray-800 rounded-md shadow-inner truncate">{convertedValues[unit]?.toFixed(2) || ''}</span>
+            <span className="w-10 shrink-0 text-xs text-black dark:text-white text-left font-bold">{unit}</span>
           </div>
         ))}
       </div>
@@ -102,15 +102,15 @@ const CombinedUnitConverter = () => {
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm h-full flex flex-col">
       <Tabs defaultValue="basic" className="w-full h-full flex flex-col">
         <TabsList className="grid w-full grid-cols-2 h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
-          <TabsTrigger value="basic" className="inline-flex items-center justify-center  px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-gray-800 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">{dict.common.basicUnits}</TabsTrigger>
-          <TabsTrigger value="engineering" className="inline-flex items-center justify-center  px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-gray-800 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">{dict.common.engineeringUnits}</TabsTrigger>
+          <TabsTrigger value="basic" className="inline-flex items-center justify-center  px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">{dict.common.basicUnits}</TabsTrigger>
+          <TabsTrigger value="engineering" className="inline-flex items-center justify-center  px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 data-[state=active]:bg-blue-500 data-[state=active]:text-white data-[state=active]:shadow-sm">{dict.common.engineeringUnits}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="basic" className="flex-grow">
           <Tabs defaultValue={unitCategories.group1[0].id} className="w-full h-full flex flex-col">
-            <TabsList className="inline-flex h-10 items-center justify-start bg-white p-1 text-muted-foreground flex-wrap">
+            <TabsList className="inline-flex h-10 items-center justify-start bg-white dark:bg-gray-900 p-1 text-muted-foreground flex-wrap">
               {unitCategories.group1.map((category) => (
-                <TabsTrigger key={category.id} value={category.id} className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-gray-800 data-[state=active]:bg-white data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500  ">{category.name}</TabsTrigger>
+                <TabsTrigger key={category.id} value={category.id} className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 data-[state=active]:bg-white dark:bg-gray-900 data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500  ">{category.name}</TabsTrigger>
               ))}
             </TabsList>
             {unitCategories.group1.map((category) => (
@@ -123,9 +123,9 @@ const CombinedUnitConverter = () => {
 
         <TabsContent value="engineering" className="flex-grow">
           <Tabs defaultValue={unitCategories.group2[0].id} className="w-full h-full flex flex-col">
-            <TabsList className="inline-flex h-10 items-center justify-start bg-white p-1 text-muted-foreground flex-wrap">
+            <TabsList className="inline-flex h-10 items-center justify-start bg-white dark:bg-gray-900 p-1 text-muted-foreground flex-wrap">
               {unitCategories.group2.map((category) => (
-                <TabsTrigger key={category.id} value={category.id} className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-gray-800 data-[state=active]:bg-white data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500  ">{category.name}</TabsTrigger>
+                <TabsTrigger key={category.id} value={category.id} className="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 data-[state=active]:bg-white dark:bg-gray-900 data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500  ">{category.name}</TabsTrigger>
               ))}
             </TabsList>
             {unitCategories.group2.map((category) => (

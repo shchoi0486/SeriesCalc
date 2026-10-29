@@ -68,10 +68,10 @@ export default function ConvectionHeatTransferPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">q</strong> — {L('열유속 [W/m²]', 'Heat flux [W/m²]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">q</strong> — {L('열유속 [W/m²]', 'Heat flux [W/m²]')}</li>
           <li><strong className="font-semibold text-red-500">h</strong> — {L('대류 열전달 계수 [W/(m²·K)]', 'Convection heat transfer coefficient [W/(m²·K)]')}</li>
-          <li><strong className="font-semibold text-blue-600">T<sub>s</sub></strong> — {L('표면 온도 [°C 또는 K]', 'Surface temperature [°C or K]')}</li>
-          <li><strong className="font-semibold text-orange-600">T<sub>∞</sub></strong> — {L('유체 온도 (자유 유류) [°C 또는 K]', 'Fluid temperature (free stream) [°C or K]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">T<sub>s</sub></strong> — {L('표면 온도 [°C 또는 K]', 'Surface temperature [°C or K]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">T<sub>∞</sub></strong> — {L('유체 온도 (자유 유류) [°C 또는 K]', 'Fluid temperature (free stream) [°C or K]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('뉴셀 수 관계식', 'Nusselt number correlations')}</h4>
@@ -102,9 +102,9 @@ export default function ConvectionHeatTransferPage({
             <BlockMath math="h = \dfrac{Nu\,k}{L}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
-            <li><strong className="font-semibold text-green-600">Nu</strong> — {L('뉴스셀 수 (무차원)', 'Nusselt number (dimensionless)')}</li>
+            <li><strong className="font-semibold text-green-600 dark:text-green-400">Nu</strong> — {L('뉴스셀 수 (무차원)', 'Nusselt number (dimensionless)')}</li>
             <li><strong className="font-semibold text-red-500">k</strong> — {L('유체의 열전도율 [W/(m·K)]', 'Thermal conductivity of fluid [W/(m·K)]')}</li>
-            <li><strong className="font-semibold text-blue-600">L</strong> — {L('특성 길이 [m] (원관: 직경, 평판: 판 길이)', 'Characteristic length [m] (tube: diameter, plate: length)')}</li>
+            <li><strong className="font-semibold text-blue-600 dark:text-blue-400">L</strong> — {L('특성 길이 [m] (원관: 직경, 평판: 판 길이)', 'Characteristic length [m] (tube: diameter, plate: length)')}</li>
           </ul>
         </div>
         <div>
@@ -114,10 +114,10 @@ export default function ConvectionHeatTransferPage({
             <BlockMath math="Pr = \dfrac{\mu c_p}{k}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
-            <li><strong className="font-semibold text-green-600">Re</strong> — {L('레이놀즈 수: 관성력/점성력 비 (Re > 2300: 천이, Re > 10⁴:난류)', 'Reynolds number: ratio of inertial to viscous forces (Re > 2300: transition, Re > 10⁴: turbulent)')}</li>
+            <li><strong className="font-semibold text-green-600 dark:text-green-400">Re</strong> — {L('레이놀즈 수: 관성력/점성력 비 (Re > 2300: 천이, Re > 10⁴:난류)', 'Reynolds number: ratio of inertial to viscous forces (Re > 2300: transition, Re > 10⁴: turbulent)')}</li>
             <li><strong className="font-semibold text-red-500">Pr</strong> — {L('프란들 수: 운동점성율/열확산율 비 (공기 ≈ 0.71, 물 ≈ 7.0)', 'Prandtl number: ratio of momentum to thermal diffusivity (air ≈ 0.71, water ≈ 7.0)')}</li>
-            <li><strong className="font-semibold text-blue-600">μ</strong> — {L('동점성 계수 [Pa·s]', 'Dynamic viscosity [Pa·s]')}</li>
-            <li><strong className="font-semibold text-orange-600">v</strong> — {L('유속 [m/s]', 'Velocity [m/s]')}</li>
+            <li><strong className="font-semibold text-blue-600 dark:text-blue-400">μ</strong> — {L('동점성 계수 [Pa·s]', 'Dynamic viscosity [Pa·s]')}</li>
+            <li><strong className="font-semibold text-orange-600 dark:text-orange-400">v</strong> — {L('유속 [m/s]', 'Velocity [m/s]')}</li>
           </ul>
         </div>
       </div>

@@ -47,7 +47,7 @@ const DiceFace: React.FC<{ value: number; isRolling: boolean }> = ({ value, isRo
 
   return (
     <div
-      className={`w-20 h-20 bg-white rounded-xl border-2 border-gray-300 shadow-lg p-2 transition-all duration-200 ${
+      className={`w-20 h-20 bg-white dark:bg-gray-900 rounded-xl border-2 border-gray-300 shadow-lg p-2 transition-all duration-200 ${
         isRolling ? 'animate-bounce' : ''
       }`}
     >
@@ -191,7 +191,7 @@ const VirtualDice = ({ infoSection }: VirtualDiceProps) => {
               {rollHistory.map((sum, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+                  className="px-3 py-1 bg-blue-100 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium"
                 >
                   {sum}
                 </span>

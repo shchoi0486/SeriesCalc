@@ -167,14 +167,14 @@ const SpecificSpeedCalculator = () => {
                   <span className="text-sm font-medium text-muted-foreground mb-2">
                     {t?.results?.specificSpeed || 'Specific Speed (N_s)'}
                   </span>
-                  <span className="text-4xl font-bold text-blue-600">{specificSpeed.toFixed(0)}</span>
+                  <span className="text-4xl font-bold text-blue-600 dark:text-blue-400">{specificSpeed.toFixed(0)}</span>
                 </div>
 
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-primary/20 shadow-sm flex flex-col items-center justify-center">
                   <span className="text-sm font-medium text-muted-foreground mb-2">
                     {t?.results?.impellerType || 'Recommended Impeller'}
                   </span>
-                  <span className="text-xl font-bold text-green-600">{impellerType}</span>
+                  <span className="text-xl font-bold text-green-600 dark:text-green-400">{impellerType}</span>
                 </div>
               </div>
             </CardContent>

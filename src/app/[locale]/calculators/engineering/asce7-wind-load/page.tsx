@@ -83,14 +83,14 @@ export default function Asce7WindLoadPage({
           </p>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">V</strong> — {L('기본 풍속 [mph (Imperial) 또는 m/s (Metric)]', 'Basic Wind Speed [mph (Imperial) or m/s (Metric)]')}</li>
-          <li><strong className="font-semibold text-green-600">z</strong> — {L('지면으로부터의 높이 [ft (Imperial) 또는 m (Metric)]', 'Height above ground level [ft (Imperial) or m (Metric)]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">V</strong> — {L('기본 풍속 [mph (Imperial) 또는 m/s (Metric)]', 'Basic Wind Speed [mph (Imperial) or m/s (Metric)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">z</strong> — {L('지면으로부터의 높이 [ft (Imperial) 또는 m (Metric)]', 'Height above ground level [ft (Imperial) or m (Metric)]')}</li>
           <li><strong>K_z</strong> — {L('높이 z에서의 노출 계수 (무차원)', 'Exposure coefficient at height z [dimensionless]')}</li>
           <li><strong>K_zt</strong> — {L('지형(언덕·능선) 계수 (보통 1.0)', 'Topographic (hill/ridge) factor (usually 1.0)')}</li>
           <li><strong>K_d</strong> — {L('방향성(중요도) 계수 (보통 1.0)', 'Directionality/importance factor (usually 1.0)')}</li>
-          <li><strong className="font-semibold text-purple-600">Exposure B</strong> — {L('α = 7.0, z_g = 1200 ft (도심/교외)', 'α = 7.0, z_g = 1200 ft (Urban/Suburban)')}</li>
-          <li><strong className="font-semibold text-orange-600">Exposure C</strong> — {L('α = 9.5, z_g = 900 ft (개활지/평탄 지형)', 'α = 9.5, z_g = 900 ft (Open Terrain)')}</li>
-          <li><strong className="font-semibold text-blue-600">Exposure D</strong> — {L('α = 11.5, z_g = 700 ft (장애물 없는 평탄/해안 지형)', 'α = 11.5, z_g = 700 ft (Flat, Unobstructed/coastal)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">Exposure B</strong> — {L('α = 7.0, z_g = 1200 ft (도심/교외)', 'α = 7.0, z_g = 1200 ft (Urban/Suburban)')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">Exposure C</strong> — {L('α = 9.5, z_g = 900 ft (개활지/평탄 지형)', 'α = 9.5, z_g = 900 ft (Open Terrain)')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">Exposure D</strong> — {L('α = 11.5, z_g = 700 ft (장애물 없는 평탄/해안 지형)', 'α = 11.5, z_g = 700 ft (Flat, Unobstructed/coastal)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

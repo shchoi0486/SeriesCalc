@@ -161,10 +161,10 @@ export default function HeatCapacityPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">Q</strong> — {L('필요 열에너지 [J, kJ, kcal, BTU]', 'Required heat energy [J, kJ, kcal, BTU]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">Q</strong> — {L('필요 열에너지 [J, kJ, kcal, BTU]', 'Required heat energy [J, kJ, kcal, BTU]')}</li>
           <li><strong className="font-semibold text-red-500">m</strong> — {L('질량 [kg, g, lb]', 'Mass [kg, g, lb]')}</li>
-          <li><strong className="font-semibold text-blue-600">c</strong> — {L('비열 용량 [J/(kg·K), kJ/(kg·°C), kcal/(kg·°C), BTU/(lb·°F)]', 'Specific heat capacity [J/(kg·K), kJ/(kg·°C), kcal/(kg·°C), BTU/(lb·°F)]')}</li>
-          <li><strong className="font-semibold text-orange-600">ΔT</strong> — {L('온도 변화량 [K, °C, °F] (T_final − T_initial)', 'Temperature change [K, °C, °F] (T_final − T_initial)')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">c</strong> — {L('비열 용량 [J/(kg·K), kJ/(kg·°C), kcal/(kg·°C), BTU/(lb·°F)]', 'Specific heat capacity [J/(kg·K), kJ/(kg·°C), kcal/(kg·°C), BTU/(lb·°F)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">ΔT</strong> — {L('온도 변화량 [K, °C, °F] (T_final − T_initial)', 'Temperature change [K, °C, °F] (T_final − T_initial)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('일반적인 비열 용량 참고값 (상온)', 'Common specific heat capacity values (at room temperature)')}</h4>

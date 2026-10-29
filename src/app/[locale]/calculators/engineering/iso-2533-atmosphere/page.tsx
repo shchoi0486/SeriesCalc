@@ -71,13 +71,13 @@ export default function Iso2533AtmospherePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">T, P, ρ, a</strong> — {L('해당 고도의 온도 [K], 압력 [Pa], 밀도 [kg/m³], 음속 [m/s]', 'Temperature [K], pressure [Pa], density [kg/m³], and speed of sound [m/s] at altitude')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">T, P, ρ, a</strong> — {L('해당 고도의 온도 [K], 압력 [Pa], 밀도 [kg/m³], 음속 [m/s]', 'Temperature [K], pressure [Pa], density [kg/m³], and speed of sound [m/s] at altitude')}</li>
           <li><strong className="font-semibold text-teal-600">h</strong> — {L('고도 [m]', 'Altitude [m]')}</li>
-          <li><strong className="font-semibold text-green-600">T₀, P₀</strong> — {L('해수면 표준 온도(288.15 K)와 압력(101,325 Pa)', 'Sea-level standard temperature (288.15 K) and pressure (101,325 Pa)')}</li>
-          <li><strong className="font-semibold text-purple-600">L</strong> — {L('온도 감률 (−0.0065 K/m)', 'Temperature lapse rate (−0.0065 K/m)')}</li>
-          <li><strong className="font-semibold text-orange-600">R</strong> — {L('공기의 기체 상수 (287.05 J/(kg·K))', 'Specific gas constant for air (287.05 J/(kg·K))')}</li>
-          <li><strong className="font-semibold text-red-600">γ</strong> — {L('공기의 비열비 (1.4)', 'Heat capacity ratio for air (1.4)')}</li>
-          <li><strong className="font-semibold text-yellow-600">g</strong> — {L('중력 가속도 (9.80665 m/s²)', 'Acceleration of gravity (9.80665 m/s²)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">T₀, P₀</strong> — {L('해수면 표준 온도(288.15 K)와 압력(101,325 Pa)', 'Sea-level standard temperature (288.15 K) and pressure (101,325 Pa)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">L</strong> — {L('온도 감률 (−0.0065 K/m)', 'Temperature lapse rate (−0.0065 K/m)')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">R</strong> — {L('공기의 기체 상수 (287.05 J/(kg·K))', 'Specific gas constant for air (287.05 J/(kg·K))')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">γ</strong> — {L('공기의 비열비 (1.4)', 'Heat capacity ratio for air (1.4)')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">g</strong> — {L('중력 가속도 (9.80665 m/s²)', 'Acceleration of gravity (9.80665 m/s²)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

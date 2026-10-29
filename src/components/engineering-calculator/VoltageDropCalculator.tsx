@@ -141,7 +141,7 @@ export default function VoltageDropCalculator() {
                 onChange={(e) => setCurrent(e.target.value)}
                 className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
               />
-              <span className="w-16 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+              <span className="w-16 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
                 A
               </span>
             </div>
@@ -159,7 +159,7 @@ export default function VoltageDropCalculator() {
                 onChange={(e) => setDistance(e.target.value)}
                 className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
               />
-              <span className="w-16 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+              <span className="w-16 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
                 {units.distance}
               </span>
             </div>
@@ -177,7 +177,7 @@ export default function VoltageDropCalculator() {
                 onChange={(e) => setWireSize(e.target.value)}
                 className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
               />
-              <span className="w-16 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+              <span className="w-16 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
                 {units.wireSize}
               </span>
             </div>
@@ -250,7 +250,7 @@ export default function VoltageDropCalculator() {
                 <span className="text-xs">{endVoltage !== null ? endVoltage.toFixed(1) : '?'}V</span>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-2 text-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
               * A voltage drop of less than 3% to 5% is generally recommended for optimal performance.
             </p>
           </div>

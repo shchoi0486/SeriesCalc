@@ -71,11 +71,11 @@ export default function SpringRatePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-gray-700">k</strong> — {L('스프링 상수 [N/m 또는 lb/in]', 'Spring rate [N/m or lb/in]')}</li>
-          <li><strong className="font-semibold text-blue-600">G</strong> — {L('전단 탄성 계수(Shear Modulus) [Pa 또는 psi]', 'Shear modulus [Pa or psi]')}</li>
-          <li><strong className="font-semibold text-green-600">d</strong> — {L('와이어(소선) 지름 [m 또는 in]', 'Wire diameter [m or in]')}</li>
-          <li><strong className="font-semibold text-red-600">D</strong> — {L('평균 코일 지름(유효경) [m 또는 in]', 'Mean coil diameter [m or in]')}</li>
-          <li><strong className="font-semibold text-purple-600">n</strong> — {L('유효 권수(active coils)', 'Number of active coils')}</li>
+          <li><strong className="font-semibold text-gray-700 dark:text-gray-300">k</strong> — {L('스프링 상수 [N/m 또는 lb/in]', 'Spring rate [N/m or lb/in]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">G</strong> — {L('전단 탄성 계수(Shear Modulus) [Pa 또는 psi]', 'Shear modulus [Pa or psi]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">d</strong> — {L('와이어(소선) 지름 [m 또는 in]', 'Wire diameter [m or in]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">D</strong> — {L('평균 코일 지름(유효경) [m 또는 in]', 'Mean coil diameter [m or in]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">n</strong> — {L('유효 권수(active coils)', 'Number of active coils')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

@@ -69,12 +69,12 @@ export default function BearingLifePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">L₁₀</strong> — {L('기본 정격 수명 (백만 회전 단위)', 'Basic rating life (in millions of revolutions)')}</li>
-          <li><strong className="font-semibold text-green-600">L₁₀h</strong> — {L('작동 시간 기준 기본 정격 수명 [h]', 'Basic rating life in operating hours [h]')}</li>
-          <li><strong className="font-semibold text-purple-600">C</strong> — {L('기본 동적 정격 하중 [N (lbf)] (베어링 카탈로그 제공값)', 'Basic dynamic load rating [N (lbf)] — given in the bearing catalog')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">L₁₀</strong> — {L('기본 정격 수명 (백만 회전 단위)', 'Basic rating life (in millions of revolutions)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">L₁₀h</strong> — {L('작동 시간 기준 기본 정격 수명 [h]', 'Basic rating life in operating hours [h]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">C</strong> — {L('기본 동적 정격 하중 [N (lbf)] (베어링 카탈로그 제공값)', 'Basic dynamic load rating [N (lbf)] — given in the bearing catalog')}</li>
           <li><strong className="font-semibold text-red-500">P</strong> — {L('등가 동하중 (반경·축방향 하중을 합성한 값) [N (lbf)]', 'Equivalent dynamic bearing load (combined radial/axial load) [N (lbf)]')}</li>
-          <li><strong className="font-semibold text-orange-600">p</strong> — {L('수명 지수 (볼 베어링 = 3, 롤러 베어링 = 10/3)', 'Life exponent (3 for ball bearings, 10/3 for roller bearings)')}</li>
-          <li><strong className="font-semibold text-gray-600">N</strong> — {L('회전 속도 [RPM]', 'Rotational speed [RPM]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">p</strong> — {L('수명 지수 (볼 베어링 = 3, 롤러 베어링 = 10/3)', 'Life exponent (3 for ball bearings, 10/3 for roller bearings)')}</li>
+          <li><strong className="font-semibold text-gray-600 dark:text-gray-400">N</strong> — {L('회전 속도 [RPM]', 'Rotational speed [RPM]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

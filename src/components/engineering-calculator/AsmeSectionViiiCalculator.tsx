@@ -207,7 +207,7 @@ export default function AsmeSectionViiiCalculator() {
               onChange={(e) => setEfficiency(e.target.value)}
               className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
             />
-            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
               -
             </span>
           </div>
@@ -245,14 +245,14 @@ export default function AsmeSectionViiiCalculator() {
             </h4>
             <div className="relative w-full h-48 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 flex items-center justify-center overflow-hidden">
               {vesselType === 'cylinder' ? (
-                <div className="relative w-40 h-24 bg-gray-300 dark:bg-gray-500 border-4 border-gray-400 dark:border-gray-400 rounded-sm flex items-center justify-center">
+                <div className="relative w-40 h-24 bg-gray-300 dark:bg-gray-50 dark:bg-gray-9000 border-4 border-gray-400 dark:border-gray-400 rounded-sm flex items-center justify-center">
                   <div className="w-full h-16 bg-blue-100 dark:bg-blue-900/40 shadow-inner flex items-center justify-center">
                     <span className="text-blue-600 dark:text-blue-400 text-lg font-bold">P →</span>
                   </div>
                   <div className="absolute -top-4 w-full text-center text-xs font-mono">Cylindrical Shell</div>
                 </div>
               ) : (
-                <div className="relative w-32 h-32 rounded-full border-4 border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-500 flex items-center justify-center">
+                <div className="relative w-32 h-32 rounded-full border-4 border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-50 dark:bg-gray-9000 flex items-center justify-center">
                   <div className="w-24 h-24 rounded-full bg-blue-100 dark:bg-blue-900/40 shadow-inner flex items-center justify-center">
                     <span className="text-blue-600 dark:text-blue-400 text-lg font-bold">⤡ P ⤢</span>
                   </div>

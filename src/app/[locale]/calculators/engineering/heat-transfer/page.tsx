@@ -79,12 +79,12 @@ export default function HeatTransferPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">Q</strong> — {L(`열전달률 [${qUnit}]`, `Heat transfer rate [${qUnit}]`)}</li>
-          <li><strong className="font-semibold text-orange-600">q</strong> — {L(`열유속 (단위 면적당 열전달률) [${imperial ? 'BTU/(hr·ft²)' : 'W/m²'}]`, `Heat flux (rate per unit area) [${imperial ? 'BTU/(hr·ft²)' : 'W/m²'}]`)}</li>
-          <li><strong className="font-semibold text-green-600">k</strong> — {L(`재료의 열전도율 [${kUnit}]`, `Thermal conductivity of the material [${kUnit}]`)}</li>
-          <li><strong className="font-semibold text-blue-600">A</strong> — {L(`열이 통과하는 단면적 [${aUnit}]`, `Cross-sectional area for heat flow [${aUnit}]`)}</li>
-          <li><strong className="font-semibold text-purple-600">d</strong> — {L(`재료의 두께 [${dUnit}]`, `Material thickness [${dUnit}]`)}</li>
-          <li><strong className="font-semibold text-yellow-600">ΔT</strong> — {L(`양쪽 표면의 온도차 [${tUnit}]`, `Temperature difference across the faces [${tUnit}]`)}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">Q</strong> — {L(`열전달률 [${qUnit}]`, `Heat transfer rate [${qUnit}]`)}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">q</strong> — {L(`열유속 (단위 면적당 열전달률) [${imperial ? 'BTU/(hr·ft²)' : 'W/m²'}]`, `Heat flux (rate per unit area) [${imperial ? 'BTU/(hr·ft²)' : 'W/m²'}]`)}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">k</strong> — {L(`재료의 열전도율 [${kUnit}]`, `Thermal conductivity of the material [${kUnit}]`)}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">A</strong> — {L(`열이 통과하는 단면적 [${aUnit}]`, `Cross-sectional area for heat flow [${aUnit}]`)}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">d</strong> — {L(`재료의 두께 [${dUnit}]`, `Material thickness [${dUnit}]`)}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">ΔT</strong> — {L(`양쪽 표면의 온도차 [${tUnit}]`, `Temperature difference across the faces [${tUnit}]`)}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

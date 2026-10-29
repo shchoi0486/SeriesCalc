@@ -70,9 +70,9 @@ export default function PumpAffinityPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-gray-700">N</strong> — {L('펌프 회전수 [RPM] 또는 임펠러 직경 [m 또는 ft]', 'Pump speed [RPM] or impeller diameter [m or ft]')}</li>
-          <li><strong className="font-semibold text-blue-600">Q</strong> — {L('체적 유량 [m³/h 또는 gpm]', 'Volumetric flow rate [m³/h or gpm]')}</li>
-          <li><strong className="font-semibold text-orange-600">H</strong> — {L('펌프 양정 [m 또는 ft]', 'Pump head [m or ft]')}</li>
+          <li><strong className="font-semibold text-gray-700 dark:text-gray-300">N</strong> — {L('펌프 회전수 [RPM] 또는 임펠러 직경 [m 또는 ft]', 'Pump speed [RPM] or impeller diameter [m or ft]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">Q</strong> — {L('체적 유량 [m³/h 또는 gpm]', 'Volumetric flow rate [m³/h or gpm]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">H</strong> — {L('펌프 양정 [m 또는 ft]', 'Pump head [m or ft]')}</li>
           <li><strong className="font-semibold text-red-500">P</strong> — {L('소비 동력 [kW 또는 hp]', 'Power consumption [kW or hp]')}</li>
         </ul>
         <div>

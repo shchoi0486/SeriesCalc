@@ -108,9 +108,9 @@ const Notepad = ({ infoSection }: NotepadProps) => {
         <div className="text-sm text-muted-foreground">
           {isSaved ? (
             savedAt ? (
-              <span className="text-green-600">{t.savedAt.replace('{time}', savedAt)}</span>
+              <span className="text-green-600 dark:text-green-400">{t.savedAt.replace('{time}', savedAt)}</span>
             ) : (
-              <span className="text-green-600">{t.saved}</span>
+              <span className="text-green-600 dark:text-green-400">{t.saved}</span>
             )
           ) : (
             <span className="text-orange-500">{t.saving}</span>
@@ -128,19 +128,19 @@ const Notepad = ({ infoSection }: NotepadProps) => {
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-blue-50 p-3 rounded-lg text-center">
               <p className="text-sm text-muted-foreground">{t.charCount}</p>
-              <p className="text-2xl font-bold text-blue-600">{charCount.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{charCount.toLocaleString()}</p>
             </div>
             <div className="bg-green-50 p-3 rounded-lg text-center">
               <p className="text-sm text-muted-foreground">{t.wordCount}</p>
-              <p className="text-2xl font-bold text-green-600">{wordCount.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400">{wordCount.toLocaleString()}</p>
             </div>
             <div className="bg-purple-50 p-3 rounded-lg text-center">
               <p className="text-sm text-muted-foreground">{t.lineCount}</p>
-              <p className="text-2xl font-bold text-purple-600">{lineCount.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">{lineCount.toLocaleString()}</p>
             </div>
             <div className="bg-orange-50 p-3 rounded-lg text-center">
               <p className="text-sm text-muted-foreground">{t.byteCount}</p>
-              <p className="text-2xl font-bold text-orange-600">{byteSize.toLocaleString()}</p>
+              <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">{byteSize.toLocaleString()}</p>
             </div>
           </div>
         </CardContent>

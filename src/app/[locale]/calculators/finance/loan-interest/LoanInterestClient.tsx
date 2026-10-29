@@ -211,7 +211,7 @@ const LoanInterestCalculator = ({ infoSection }: LoanInterestCalculatorProps) =>
               <div className="font-medium">{t.results.totalPrincipal}</div>
               <div className="text-right">{formatCurrency(data.totalPrincipal)}</div>
               <div className="font-medium">{t.results.totalInterest}</div>
-              <div className="text-right text-red-600">{formatCurrency(data.totalInterest)}</div>
+              <div className="text-right text-red-600 dark:text-red-400">{formatCurrency(data.totalInterest)}</div>
               <div className="font-medium">{t.results.totalRepayment}</div>
               <div className="text-right font-bold">{formatCurrency(data.totalRepayment)}</div>
               {data.monthlyPayment && (
@@ -219,7 +219,7 @@ const LoanInterestCalculator = ({ infoSection }: LoanInterestCalculatorProps) =>
                   <div className="font-medium">
                     {isBullet ? t.results.monthlyInterest : t.results.monthlyPayment}
                   </div>
-                  <div className="text-right font-bold text-blue-600">
+                  <div className="text-right font-bold text-blue-600 dark:text-blue-400">
                     {formatCurrency(data.monthlyPayment)}
                   </div>
                 </>
@@ -227,9 +227,9 @@ const LoanInterestCalculator = ({ infoSection }: LoanInterestCalculatorProps) =>
               {data.firstMonthPayment && data.lastMonthPayment && (
                 <>
                   <div className="font-medium">{t.results.firstPayment}</div>
-                  <div className="text-right font-bold text-blue-600">{formatCurrency(data.firstMonthPayment)}</div>
+                  <div className="text-right font-bold text-blue-600 dark:text-blue-400">{formatCurrency(data.firstMonthPayment)}</div>
                   <div className="font-medium">{t.results.lastPayment}</div>
-                  <div className="text-right font-bold text-blue-600">{formatCurrency(data.lastMonthPayment)}</div>
+                  <div className="text-right font-bold text-blue-600 dark:text-blue-400">{formatCurrency(data.lastMonthPayment)}</div>
                 </>
               )}
             </div>

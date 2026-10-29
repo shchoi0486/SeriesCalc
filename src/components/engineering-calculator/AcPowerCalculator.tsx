@@ -161,7 +161,7 @@ const AcPowerCalculator = () => {
                   <span className="text-xs font-medium text-muted-foreground mb-1 text-center">
                     {t?.results?.realPower || 'Real Power (P)'}
                   </span>
-                  <div className="text-lg font-bold text-green-600">
+                  <div className="text-lg font-bold text-green-600 dark:text-green-400">
                     {realPower.toFixed(2)} <span className="text-sm font-normal">W</span>
                   </div>
                 </div>
@@ -179,7 +179,7 @@ const AcPowerCalculator = () => {
                   <span className="text-xs font-medium text-muted-foreground mb-1 text-center">
                     {t?.results?.apparentPower || 'Apparent Power (S)'}
                   </span>
-                  <div className="text-lg font-bold text-blue-600">
+                  <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
                     {apparentPower.toFixed(2)} <span className="text-sm font-normal">VA</span>
                   </div>
                 </div>
@@ -188,7 +188,7 @@ const AcPowerCalculator = () => {
                   <span className="text-xs font-medium text-muted-foreground mb-1 text-center">
                     {t?.results?.powerFactor || 'Power Factor (PF)'}
                   </span>
-                  <div className="text-lg font-bold text-purple-600">
+                  <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
                     {powerFactor.toFixed(4)}
                   </div>
                 </div>

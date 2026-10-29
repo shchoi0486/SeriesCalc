@@ -132,19 +132,19 @@ const Iso2533AtmosphereCalculator = () => {
                 </div>
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex flex-col justify-center items-center">
                   <span className="text-xs font-medium text-muted-foreground mb-1">{t?.results?.pressure || 'Pressure'}</span>
-                  <div className="text-lg font-bold text-blue-600">
+                  <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
                     {isImperial ? displayPressure.toFixed(3) : displayPressure.toFixed(0)} <span className="text-xs font-normal text-muted-foreground">{pressUnit}</span>
                   </div>
                 </div>
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex flex-col justify-center items-center">
                   <span className="text-xs font-medium text-muted-foreground mb-1">{t?.results?.density || 'Air Density'}</span>
-                  <div className="text-lg font-bold text-green-600">
+                  <div className="text-lg font-bold text-green-600 dark:text-green-400">
                     {displayDensity.toFixed(4)} <span className="text-xs font-normal text-muted-foreground">{denUnit}</span>
                   </div>
                 </div>
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex flex-col justify-center items-center">
                   <span className="text-xs font-medium text-muted-foreground mb-1">{t?.results?.speedOfSound || 'Speed of Sound'}</span>
-                  <div className="text-lg font-bold text-purple-600">
+                  <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
                     {displaySpeed.toFixed(1)} <span className="text-xs font-normal text-muted-foreground">{speedUnit}</span>
                   </div>
                 </div>

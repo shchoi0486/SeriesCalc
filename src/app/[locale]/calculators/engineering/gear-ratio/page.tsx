@@ -72,11 +72,11 @@ export default function GearRatioPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">N₁</strong> — {L('구동 기어 잇수', 'Driving gear teeth')}</li>
-          <li><strong className="font-semibold text-green-600">N₂</strong> — {L('피동 기어 잇수', 'Driven gear teeth')}</li>
-          <li><strong className="font-semibold text-purple-600">GR</strong> — {L('기어비 (무차원)', 'Gear ratio (dimensionless)')}</li>
-          <li><strong className="font-semibold text-orange-600">RPM₁, RPM₂</strong> — {L('구동/피동 기어 회전 속도 [rpm]', 'Driving / driven gear speed [rpm]')}</li>
-          <li><strong className="font-semibold text-red-600">τ₁, τ₂</strong> — {L(`구동/피동 기어 토크 [${torqueUnit}]`, `Driving / driven gear torque [${torqueUnit}]`)}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">N₁</strong> — {L('구동 기어 잇수', 'Driving gear teeth')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">N₂</strong> — {L('피동 기어 잇수', 'Driven gear teeth')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">GR</strong> — {L('기어비 (무차원)', 'Gear ratio (dimensionless)')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">RPM₁, RPM₂</strong> — {L('구동/피동 기어 회전 속도 [rpm]', 'Driving / driven gear speed [rpm]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">τ₁, τ₂</strong> — {L(`구동/피동 기어 토크 [${torqueUnit}]`, `Driving / driven gear torque [${torqueUnit}]`)}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

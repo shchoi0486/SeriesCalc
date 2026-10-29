@@ -57,7 +57,7 @@ export default function CalculatorLayout({
 
           <button
             onClick={() => router.push(parentHref)}
-            className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-1 px-3 rounded-lg flex items-center gap-2 transition-colors"
+            className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-1 px-3 rounded-lg flex items-center gap-2 transition-colors"
           >
             <ArrowLeft size={16} />
             <span className="text-sm">{backLabel}</span>

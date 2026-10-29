@@ -345,7 +345,7 @@ const ConvectionHeatTransfer = () => {
                 </span>
                 <span
                   className={`text-sm font-bold ${
-                    results.regime === 'laminar' ? 'text-blue-600' : 'text-red-600'
+                    results.regime === 'laminar' ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'
                   }`}
                 >
                   {results.regime === 'laminar'

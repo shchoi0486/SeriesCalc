@@ -141,8 +141,8 @@ const TypingSpeed = ({ infoSection }: TypingSpeedProps) => {
 
   const getCharClass = (index: number): string => {
     if (index >= userInput.length) return 'text-gray-400';
-    if (userInput[index] === text[index]) return 'text-green-600 bg-green-50';
-    return 'text-red-600 bg-red-50 line-through';
+    if (userInput[index] === text[index]) return 'text-green-600 dark:text-green-400 bg-green-50';
+    return 'text-red-600 dark:text-red-400 bg-red-50 line-through';
   };
 
   const inputSection = (
@@ -171,7 +171,7 @@ const TypingSpeed = ({ infoSection }: TypingSpeedProps) => {
             value={userInput}
             onChange={handleInput}
             disabled={isFinished}
-            className="w-full min-h-[120px] p-4 text-lg border rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50"
+            className="w-full min-h-[120px] p-4 text-lg border rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 dark:bg-gray-900"
             placeholder={t.typingPrompt}
           />
 

@@ -169,7 +169,7 @@ export default function IdealGasCalculator() {
           <div className="space-y-4 flex-1">
             {/* 압력 */}
             <div className="flex flex-col sm:flex-row sm:items-center">
-              <label className={`text-sm font-medium mb-1 sm:mb-0 sm:w-1/2 sm:pr-2 ${calcTarget === 'P' ? 'text-blue-600 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
+              <label className={`text-sm font-medium mb-1 sm:mb-0 sm:w-1/2 sm:pr-2 ${calcTarget === 'P' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
                 {t?.inputs?.pressure || "Pressure (P)"}
               </label>
               <div className="sm:w-1/2 flex min-w-0">
@@ -179,7 +179,7 @@ export default function IdealGasCalculator() {
                   onChange={(e) => setP(e.target.value)}
                   disabled={calcTarget === 'P'}
                   placeholder={calcTarget === 'P' ? '?' : ''}
-                  className={`flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${calcTarget === 'P' ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 font-bold' : 'dark:bg-gray-800 dark:text-white'}`}
+                  className={`flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${calcTarget === 'P' ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-bold' : 'dark:bg-gray-800 dark:text-white'}`}
                 />
                 <select
                   value={pUnit}
@@ -196,7 +196,7 @@ export default function IdealGasCalculator() {
 
             {/* 부피 */}
             <div className="flex flex-col sm:flex-row sm:items-center">
-              <label className={`text-sm font-medium mb-1 sm:mb-0 sm:w-1/2 sm:pr-2 ${calcTarget === 'V' ? 'text-blue-600 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
+              <label className={`text-sm font-medium mb-1 sm:mb-0 sm:w-1/2 sm:pr-2 ${calcTarget === 'V' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
                 {t?.inputs?.volume || "Volume (V)"}
               </label>
               <div className="sm:w-1/2 flex min-w-0">
@@ -206,7 +206,7 @@ export default function IdealGasCalculator() {
                   onChange={(e) => setV(e.target.value)}
                   disabled={calcTarget === 'V'}
                   placeholder={calcTarget === 'V' ? '?' : ''}
-                  className={`flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${calcTarget === 'V' ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 font-bold' : 'dark:bg-gray-800 dark:text-white'}`}
+                  className={`flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${calcTarget === 'V' ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-bold' : 'dark:bg-gray-800 dark:text-white'}`}
                 />
                 <select
                   value={vUnit}
@@ -222,7 +222,7 @@ export default function IdealGasCalculator() {
 
             {/* 몰수 */}
             <div className="flex flex-col sm:flex-row sm:items-center">
-              <label className={`text-sm font-medium mb-1 sm:mb-0 sm:w-1/2 sm:pr-2 ${calcTarget === 'n' ? 'text-blue-600 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
+              <label className={`text-sm font-medium mb-1 sm:mb-0 sm:w-1/2 sm:pr-2 ${calcTarget === 'n' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
                 {t?.inputs?.moles || "Moles (n)"}
               </label>
               <div className="sm:w-1/2 flex min-w-0">
@@ -232,9 +232,9 @@ export default function IdealGasCalculator() {
                   onChange={(e) => setN(e.target.value)}
                   disabled={calcTarget === 'n'}
                   placeholder={calcTarget === 'n' ? '?' : ''}
-                  className={`flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${calcTarget === 'n' ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 font-bold' : 'dark:bg-gray-800 dark:text-white'}`}
+                  className={`flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${calcTarget === 'n' ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-bold' : 'dark:bg-gray-800 dark:text-white'}`}
                 />
-                <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs">
+                <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs">
                   mol
                 </span>
               </div>
@@ -242,7 +242,7 @@ export default function IdealGasCalculator() {
 
             {/* 온도 */}
             <div className="flex flex-col sm:flex-row sm:items-center">
-              <label className={`text-sm font-medium mb-1 sm:mb-0 sm:w-1/2 sm:pr-2 ${calcTarget === 'T' ? 'text-blue-600 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
+              <label className={`text-sm font-medium mb-1 sm:mb-0 sm:w-1/2 sm:pr-2 ${calcTarget === 'T' ? 'text-blue-600 dark:text-blue-400 font-bold' : 'text-gray-700 dark:text-gray-300'}`}>
                 {t?.inputs?.temperature || "Temperature (T)"}
               </label>
               <div className="sm:w-1/2 flex min-w-0">
@@ -252,7 +252,7 @@ export default function IdealGasCalculator() {
                   onChange={(e) => setTInput(e.target.value)}
                   disabled={calcTarget === 'T'}
                   placeholder={calcTarget === 'T' ? '?' : ''}
-                  className={`flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${calcTarget === 'T' ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 font-bold' : 'dark:bg-gray-800 dark:text-white'}`}
+                  className={`flex-1 min-w-0 px-2 py-1.5 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm ${calcTarget === 'T' ? 'bg-gray-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400 font-bold' : 'dark:bg-gray-800 dark:text-white'}`}
                 />
                 <select
                   value={tUnit}

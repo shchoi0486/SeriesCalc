@@ -172,7 +172,7 @@ export default function SalaryCalculatorClient({ infoSection }: SalaryCalculator
       <CardContent className="space-y-6">
         <div className="text-center">
           <p className="text-lg">{isKo ? '월 실수령액' : 'Monthly Net Pay'}</p>
-          <p className="text-3xl font-bold text-blue-600">{formatNumber(Math.round(result.netMonthlySalary))}{isKo ? '원' : ' KRW'}</p>
+          <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{formatNumber(Math.round(result.netMonthlySalary))}{isKo ? '원' : ' KRW'}</p>
           <p className="text-muted-foreground mt-1">{isKo ? '연 실수령액: ' : 'Annual Net Pay: '}{formatNumber(Math.round(result.netAnnualSalary))}{isKo ? '원' : ' KRW'}</p>
         </div>
       </CardContent>

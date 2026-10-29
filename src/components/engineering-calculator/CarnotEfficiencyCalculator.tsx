@@ -106,7 +106,7 @@ const CarnotEfficiencyCalculator = () => {
                     </div>
 
                     {/* Heat Engine */}
-                    <div className="w-16 h-16 rounded-full border-4 border-primary flex items-center justify-center bg-white z-10">
+                    <div className="w-16 h-16 rounded-full border-4 border-primary flex items-center justify-center bg-white dark:bg-gray-900 z-10">
                       <span className="text-xs font-bold text-primary">HE</span>
                     </div>
 

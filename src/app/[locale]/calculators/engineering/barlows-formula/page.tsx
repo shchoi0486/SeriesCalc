@@ -74,12 +74,12 @@ export default function BarlowsFormulaPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-orange-600">P_y</strong> — {L('항복 압력 (Yield pressure) [MPa (Metric) 또는 psi (Imperial)]', 'Pressure at yield [MPa (Metric) or psi (Imperial)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">P_y</strong> — {L('항복 압력 (Yield pressure) [MPa (Metric) 또는 psi (Imperial)]', 'Pressure at yield [MPa (Metric) or psi (Imperial)]')}</li>
           <li><strong className="font-semibold text-red-500">P_t</strong> — {L('파열(최종) 압력 [MPa 또는 psi]', 'Burst (ultimate) pressure [MPa or psi]')}</li>
-          <li><strong className="font-semibold text-blue-600">P_a</strong> — {L('최대 허용 압력 [MPa 또는 psi]', 'Maximum allowable pressure [MPa or psi]')}</li>
-          <li><strong className="font-semibold text-green-600">S_y, S_t</strong> — {L('항복/인장 강도 [MPa (Metric) 또는 psi (Imperial)]', 'Yield / Ultimate tensile strength [MPa (Metric) or psi (Imperial)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">P_a</strong> — {L('최대 허용 압력 [MPa 또는 psi]', 'Maximum allowable pressure [MPa or psi]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">S_y, S_t</strong> — {L('항복/인장 강도 [MPa (Metric) 또는 psi (Imperial)]', 'Yield / Ultimate tensile strength [MPa (Metric) or psi (Imperial)]')}</li>
           <li><strong>t</strong> — {L('벽 두께 [mm (Metric) 또는 in (Imperial)]', 'Wall thickness [mm (Metric) or in (Imperial)]')}</li>
-          <li><strong className="font-semibold text-purple-600">D_o</strong> — {L('관 외경 [mm (Metric) 또는 in (Imperial)]', 'Pipe outside diameter [mm (Metric) or in (Imperial)]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">D_o</strong> — {L('관 외경 [mm (Metric) 또는 in (Imperial)]', 'Pipe outside diameter [mm (Metric) or in (Imperial)]')}</li>
           <li><strong>F_d, F_e, F_t</strong> — {L('설계·이음·온도 계수 (보통 0.72·1.0·1.0)', 'Design / Joint / Temperature factors (often 0.72 · 1.0 · 1.0)')}</li>
         </ul>
         <div>

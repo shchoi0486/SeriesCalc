@@ -203,7 +203,7 @@ const ManningsEquationCalculator = () => {
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex justify-between items-center">
                   <span className="text-sm font-medium text-muted-foreground">{t?.results?.velocity || 'Flow Velocity (V)'}</span>
                   <div className="text-right">
-                    <div className="text-xl font-bold text-blue-600">{velocity.toFixed(3)}</div>
+                    <div className="text-xl font-bold text-blue-600 dark:text-blue-400">{velocity.toFixed(3)}</div>
                     <div className="text-xs text-muted-foreground">{velocityUnit}</div>
                   </div>
                 </div>
@@ -211,7 +211,7 @@ const ManningsEquationCalculator = () => {
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex justify-between items-center">
                   <span className="text-sm font-medium text-muted-foreground">{t?.results?.discharge || 'Discharge (Q)'}</span>
                   <div className="text-right">
-                    <div className="text-xl font-bold text-green-600">{discharge.toFixed(3)}</div>
+                    <div className="text-xl font-bold text-green-600 dark:text-green-400">{discharge.toFixed(3)}</div>
                     <div className="text-xs text-muted-foreground">{dischargeUnit}</div>
                   </div>
                 </div>

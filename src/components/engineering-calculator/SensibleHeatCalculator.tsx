@@ -267,13 +267,13 @@ export default function SensibleHeatCalculator() {
                 <div className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-300 flex items-center justify-center shadow-md">
                   <span className="font-bold text-sm">{t1}{t1Unit}</span>
                 </div>
-                <span className="text-xs mt-1 text-gray-500">T₁</span>
+                <span className="text-xs mt-1 text-gray-500 dark:text-gray-400">T₁</span>
               </div>
 
               {/* Coil/Heat Exchanger */}
               <div className="flex-1 mx-4 relative flex items-center justify-center">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full h-2 bg-gray-300 dark:bg-gray-500 rounded"></div>
+                  <div className="w-full h-2 bg-gray-300 dark:bg-gray-50 dark:bg-gray-9000 rounded"></div>
                 </div>
 
                 {heatLoad !== null && heatLoad > 0 && (
@@ -299,7 +299,7 @@ export default function SensibleHeatCalculator() {
                 <div className="w-12 h-12 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-300 flex items-center justify-center shadow-md">
                   <span className="font-bold text-sm">{t2}{t2Unit}</span>
                 </div>
-                <span className="text-xs mt-1 text-gray-500">T₂</span>
+                <span className="text-xs mt-1 text-gray-500 dark:text-gray-400">T₂</span>
               </div>
 
               {/* Flow Direction */}

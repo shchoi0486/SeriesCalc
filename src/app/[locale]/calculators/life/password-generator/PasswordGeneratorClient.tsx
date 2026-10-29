@@ -184,7 +184,7 @@ const PasswordGenerator = ({ infoSection }: PasswordGeneratorProps) => {
                 <span>{t.results.strength}:</span>
                 <span className="font-bold">{strength.label}</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
                 <div
                   className={`${strength.color} h-3 rounded-full transition-all duration-300`}
                   style={{ width: `${strength.percent}%` }}

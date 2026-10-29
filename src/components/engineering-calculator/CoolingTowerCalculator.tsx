@@ -164,7 +164,7 @@ const CoolingTowerCalculator = () => {
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex justify-between items-center">
                   <span className="text-sm font-medium text-muted-foreground">{t?.results?.approach || 'Approach'}</span>
                   <div className="text-right">
-                    <div className="text-xl font-bold text-blue-600">{approach.toFixed(1)}</div>
+                    <div className="text-xl font-bold text-blue-600 dark:text-blue-400">{approach.toFixed(1)}</div>
                     <div className="text-xs text-muted-foreground">Δ{tempUnit}</div>
                   </div>
                 </div>
@@ -172,7 +172,7 @@ const CoolingTowerCalculator = () => {
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex justify-between items-center">
                   <span className="text-sm font-medium text-muted-foreground">{t?.results?.effectiveness || 'Effectiveness (η)'}</span>
                   <div className="text-right">
-                    <div className="text-xl font-bold text-green-600">{effectiveness.toFixed(1)}</div>
+                    <div className="text-xl font-bold text-green-600 dark:text-green-400">{effectiveness.toFixed(1)}</div>
                     <div className="text-xs text-muted-foreground">%</div>
                   </div>
                 </div>

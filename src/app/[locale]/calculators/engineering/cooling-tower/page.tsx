@@ -71,8 +71,8 @@ export default function CoolingTowerPage({
         </div>
         <ul className="space-y-2 text-sm">
           <li><strong className="font-semibold text-red-500">T_hw</strong> — {L('입구 온수 온도 (탑으로 들어오는 뜨거운 물) [°C (°F)]', 'Hot-water temperature entering the tower [°C (°F)]')}</li>
-          <li><strong className="font-semibold text-blue-600">T_cw</strong> — {L('출구 냉수 온도 (탑에서 나가는 냉각된 물) [°C (°F)]', 'Cold-water temperature leaving the tower [°C (°F)]')}</li>
-          <li><strong className="font-semibold text-green-600">T_wb</strong> — {L('대기 습구 온도 (냉각의 이론적 한계) [°C (°F)]', 'Ambient air wet-bulb temperature (theoretical cooling limit) [°C (°F)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">T_cw</strong> — {L('출구 냉수 온도 (탑에서 나가는 냉각된 물) [°C (°F)]', 'Cold-water temperature leaving the tower [°C (°F)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">T_wb</strong> — {L('대기 습구 온도 (냉각의 이론적 한계) [°C (°F)]', 'Ambient air wet-bulb temperature (theoretical cooling limit) [°C (°F)]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formulas work')}</h4>

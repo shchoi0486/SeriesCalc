@@ -72,11 +72,11 @@ export default function UValuePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">R_t</strong> — {L('총 열저항 [m²·K/W 또는 h·ft²·°F/Btu]', 'Total thermal resistance [m²·K/W or h·ft²·°F/Btu]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">R_t</strong> — {L('총 열저항 [m²·K/W 또는 h·ft²·°F/Btu]', 'Total thermal resistance [m²·K/W or h·ft²·°F/Btu]')}</li>
           <li><strong className="font-semibold text-red-500">U</strong> — {L('열관류율 [W/(m²·K) 또는 Btu/(h·ft²·°F)]', 'Thermal transmittance / U-value [W/(m²·K) or Btu/(h·ft²·°F)]')}</li>
-          <li><strong className="font-semibold text-purple-600">h</strong> — {L('대류 열전달 계수 [W/(m²·K)]', 'Convective heat transfer coefficient [W/(m²·K)]')}</li>
-          <li><strong className="font-semibold text-green-600">k</strong> — {L('재질 열전도율 [W/(m·K)]', 'Thermal conductivity of material [W/(m·K)]')}</li>
-          <li><strong className="font-semibold text-orange-600">d</strong> — {L('재질 두께 [m]', 'Material thickness [m]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">h</strong> — {L('대류 열전달 계수 [W/(m²·K)]', 'Convective heat transfer coefficient [W/(m²·K)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">k</strong> — {L('재질 열전도율 [W/(m·K)]', 'Thermal conductivity of material [W/(m·K)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">d</strong> — {L('재질 두께 [m]', 'Material thickness [m]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

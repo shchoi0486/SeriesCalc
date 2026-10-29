@@ -71,12 +71,12 @@ export default function CycloneEfficiencyPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-purple-600">d₅₀</strong> — {L('분리 한계 입경 (포집 효율 50%인 입자 직경) [m 또는 µm]', 'Cut size — particle diameter collected at 50% efficiency [m or µm]')}</li>
-          <li><strong className="font-semibold text-green-600">μ</strong> — {L('가스의 점성 계수 [kg/(m·s)]', 'Gas dynamic viscosity [kg/(m·s)]')}</li>
-          <li><strong className="font-semibold text-blue-600">W</strong> — {L('입구 폭 [m]', 'Inlet width [m]')}</li>
-          <li><strong className="font-semibold text-red-600">V_i</strong> — {L('입구 가스 유속 [m/s]', 'Inlet gas velocity [m/s]')}</li>
-          <li><strong className="font-semibold text-yellow-600">Nₑ</strong> — {L('유효 회전수 (표준 사이클론에서 보통 ≈ 5)', 'Effective number of turns (typically ≈ 5 for a standard cyclone)')}</li>
-          <li><strong className="font-semibold text-orange-600">ρ_p, ρ_g</strong> — {L('각각 입자 밀도와 가스 밀도 [kg/m³]', 'Particle density and gas density respectively [kg/m³]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">d₅₀</strong> — {L('분리 한계 입경 (포집 효율 50%인 입자 직경) [m 또는 µm]', 'Cut size — particle diameter collected at 50% efficiency [m or µm]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">μ</strong> — {L('가스의 점성 계수 [kg/(m·s)]', 'Gas dynamic viscosity [kg/(m·s)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">W</strong> — {L('입구 폭 [m]', 'Inlet width [m]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">V_i</strong> — {L('입구 가스 유속 [m/s]', 'Inlet gas velocity [m/s]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">Nₑ</strong> — {L('유효 회전수 (표준 사이클론에서 보통 ≈ 5)', 'Effective number of turns (typically ≈ 5 for a standard cyclone)')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">ρ_p, ρ_g</strong> — {L('각각 입자 밀도와 가스 밀도 [kg/m³]', 'Particle density and gas density respectively [kg/m³]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

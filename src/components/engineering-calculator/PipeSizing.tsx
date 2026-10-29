@@ -190,7 +190,7 @@ const PipeSizing = () => {
                 <span className="text-sm font-medium text-muted-foreground">
                   {L('유동 체제', 'Flow Regime')}
                 </span>
-                <span className={`text-lg font-bold ${results.regime === 'laminar' ? 'text-blue-600' : results.regime === 'turbulent' ? 'text-red-600' : 'text-orange-600'}`}>
+                <span className={`text-lg font-bold ${results.regime === 'laminar' ? 'text-blue-600 dark:text-blue-400' : results.regime === 'turbulent' ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400'}`}>
                   {results.regime === 'laminar'
                     ? L('계류 유동', 'Laminar')
                     : results.regime === 'turbulent'

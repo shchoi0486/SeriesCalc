@@ -73,11 +73,11 @@ export default function Iso1127PipePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">W</strong> — {L('단위 길이당 무게 [kg/m]', 'Weight per unit length [kg/m]')}</li>
-          <li><strong className="font-semibold text-green-600">D</strong> — {L('외경 [mm]', 'Outer diameter [mm]')}</li>
-          <li><strong className="font-semibold text-purple-600">t</strong> — {L('벽 두께 [mm]', 'Wall thickness [mm]')}</li>
-          <li><strong className="font-semibold text-blue-600">A</strong> — {L('내부 유로 단면적 [mm²]', 'Internal flow area [mm²]')}</li>
-          <li><strong className="font-semibold text-orange-600">0.0246615</strong> — {L('강철 밀도 상수 (7.85 g/cm³ 기준)', 'Density constant for steel (based on 7.85 g/cm³)')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">W</strong> — {L('단위 길이당 무게 [kg/m]', 'Weight per unit length [kg/m]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">D</strong> — {L('외경 [mm]', 'Outer diameter [mm]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">t</strong> — {L('벽 두께 [mm]', 'Wall thickness [mm]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">A</strong> — {L('내부 유로 단면적 [mm²]', 'Internal flow area [mm²]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">0.0246615</strong> — {L('강철 밀도 상수 (7.85 g/cm³ 기준)', 'Density constant for steel (based on 7.85 g/cm³)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

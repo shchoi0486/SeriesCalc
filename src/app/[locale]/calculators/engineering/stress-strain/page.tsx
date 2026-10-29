@@ -71,11 +71,11 @@ export default function StressStrainPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">F</strong> — {L('작용 하중(인장/압축) [N 또는 lbf]', 'Applied axial force [N or lbf]')}</li>
-          <li><strong className="font-semibold text-green-600">A</strong> — {L('단면적 [m² 또는 in²]', 'Cross-sectional area [m² or in²]')}</li>
-          <li><strong className="font-semibold text-purple-600">L₀</strong> — {L('원래 길이 [m 또는 in]', 'Original length [m or in]')}</li>
-          <li><strong className="font-semibold text-red-600">ΔL</strong> — {L('길이 변화량 [m 또는 in]', 'Change in length [m or in]')}</li>
-          <li><strong className="font-semibold text-yellow-600">σ, ε, E</strong> — {L('각각 응력 [Pa], 변형률 [무차원], 영률 [Pa]', 'Stress [Pa], strain [dimensionless], Young\'s modulus [Pa]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">F</strong> — {L('작용 하중(인장/압축) [N 또는 lbf]', 'Applied axial force [N or lbf]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">A</strong> — {L('단면적 [m² 또는 in²]', 'Cross-sectional area [m² or in²]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">L₀</strong> — {L('원래 길이 [m 또는 in]', 'Original length [m or in]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">ΔL</strong> — {L('길이 변화량 [m 또는 in]', 'Change in length [m or in]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">σ, ε, E</strong> — {L('각각 응력 [Pa], 변형률 [무차원], 영률 [Pa]', 'Stress [Pa], strain [dimensionless], Young\'s modulus [Pa]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

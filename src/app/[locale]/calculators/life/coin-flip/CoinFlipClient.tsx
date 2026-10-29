@@ -129,7 +129,7 @@ const CoinFlip = ({ infoSection }: CoinFlipProps) => {
         <Card>
           <CardContent className="p-4 text-center">
             <p className="text-sm text-muted-foreground">{t.results.tailsCount}</p>
-            <p className="text-3xl font-bold text-gray-500">{tailsCount}</p>
+            <p className="text-3xl font-bold text-gray-500 dark:text-gray-400">{tailsCount}</p>
             <p className="text-xs text-muted-foreground">
               {totalFlips > 0 ? Math.round((tailsCount / totalFlips) * 100) : 0}%
             </p>
@@ -148,7 +148,7 @@ const CoinFlip = ({ infoSection }: CoinFlipProps) => {
                   className={`px-2 py-1 rounded text-xs font-medium ${
                     flip === 'heads'
                       ? 'bg-yellow-100 text-yellow-800'
-                      : 'bg-gray-100 text-gray-800'
+                      : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200'
                   }`}
                 >
                   {flip === 'heads' ? (isKo ? '앞' : 'Heads') : (isKo ? '뒷' : 'Tails')}
@@ -163,7 +163,7 @@ const CoinFlip = ({ infoSection }: CoinFlipProps) => {
         <Card>
           <CardContent className="p-4">
             <p className="text-sm font-medium mb-2">{t.results.headsTailsRatio}</p>
-            <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
               <div
                 className="bg-yellow-400 h-4 transition-all duration-300"
                 style={{ width: `${(headsCount / totalFlips) * 100}%` }}

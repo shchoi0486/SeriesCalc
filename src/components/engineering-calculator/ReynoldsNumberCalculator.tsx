@@ -317,10 +317,10 @@ export default function ReynoldsNumberCalculator() {
 
               {reynolds !== null && (
                 <div
-                  className="absolute top-0 bottom-0 w-0.5 bg-gray-900 dark:bg-white z-10"
+                  className="absolute top-0 bottom-0 w-0.5 bg-gray-900 dark:bg-white dark:bg-gray-900 z-10"
                   style={{ left: `${markerPct}%` }}
                 >
-                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 bg-gray-900 dark:bg-white"></div>
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 bg-gray-900 dark:bg-white dark:bg-gray-900"></div>
                 </div>
               )}
             </div>

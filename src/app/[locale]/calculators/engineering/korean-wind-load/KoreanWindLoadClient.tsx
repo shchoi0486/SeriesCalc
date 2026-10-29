@@ -30,10 +30,10 @@ const WIND_SPEED_TABLE = [
 ];
 
 const WIND_PRESSURE_LEVELS = [
-  { max: 500, label: { ko: '낮음', en: 'Low' }, color: 'text-green-600 bg-green-50 dark:bg-green-900/20' },
-  { max: 1500, label: { ko: '보통', en: 'Moderate' }, color: 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20' },
-  { max: 3000, label: { ko: '높음', en: 'High' }, color: 'text-orange-600 bg-orange-50 dark:bg-orange-900/20' },
-  { max: Infinity, label: { ko: '매우 높음', en: 'Very High' }, color: 'text-red-600 bg-red-50 dark:bg-red-900/20' },
+  { max: 500, label: { ko: '낮음', en: 'Low' }, color: 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20' },
+  { max: 1500, label: { ko: '보통', en: 'Moderate' }, color: 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20' },
+  { max: 3000, label: { ko: '높음', en: 'High' }, color: 'text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20' },
+  { max: Infinity, label: { ko: '매우 높음', en: 'Very High' }, color: 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20' },
 ];
 
 interface InfoSection {

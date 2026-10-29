@@ -69,10 +69,10 @@ export default function SpecificSpeedPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">N<sub>s</sub></strong> — {L('비속도 (무차원, 단위계에 따라 수치 범위가 다름)', 'Specific speed (dimensionless; numerical range depends on the unit system)')}</li>
-          <li><strong className="font-semibold text-green-600">N</strong> — {L('펌프 회전수 [RPM]', 'Pump speed [RPM]')}</li>
-          <li><strong className="font-semibold text-purple-600">Q</strong> — {L('최고효율점 유량 [m³/h 또는 US gpm]', 'Flow rate at best efficiency point [m³/h or US gpm]')}</li>
-          <li><strong className="font-semibold text-red-600">H</strong> — {L('1단 양정(최고효율점) [m 또는 ft]', 'Head per stage at best efficiency point [m or ft]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">N<sub>s</sub></strong> — {L('비속도 (무차원, 단위계에 따라 수치 범위가 다름)', 'Specific speed (dimensionless; numerical range depends on the unit system)')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">N</strong> — {L('펌프 회전수 [RPM]', 'Pump speed [RPM]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">Q</strong> — {L('최고효율점 유량 [m³/h 또는 US gpm]', 'Flow rate at best efficiency point [m³/h or US gpm]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">H</strong> — {L('1단 양정(최고효율점) [m 또는 ft]', 'Head per stage at best efficiency point [m or ft]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

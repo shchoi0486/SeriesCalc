@@ -68,11 +68,11 @@ export default function IdealGasPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-purple-600">P</strong> — {L('압력 [Pa, atm, psi]', 'Pressure [Pa, atm, psi]')}</li>
-          <li><strong className="font-semibold text-blue-600">V</strong> — {L('부피 [m³, L, ft³]', 'Volume [m³, L, ft³]')}</li>
-          <li><strong className="font-semibold text-green-600">n</strong> — {L('몰수 [mol]', 'Number of moles [mol]')}</li>
-          <li><strong className="font-semibold text-red-600">T</strong> — {L('절대 온도 [K]', 'Absolute temperature [K]')}</li>
-          <li><strong className="font-semibold text-yellow-600">R</strong> — {L('이상기체 상수 (≈ 8.314 J/(mol·K) 또는 0.08206 L·atm/(mol·K))', 'Ideal gas constant (≈ 8.314 J/(mol·K) or 0.08206 L·atm/(mol·K))')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">P</strong> — {L('압력 [Pa, atm, psi]', 'Pressure [Pa, atm, psi]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">V</strong> — {L('부피 [m³, L, ft³]', 'Volume [m³, L, ft³]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">n</strong> — {L('몰수 [mol]', 'Number of moles [mol]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">T</strong> — {L('절대 온도 [K]', 'Absolute temperature [K]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">R</strong> — {L('이상기체 상수 (≈ 8.314 J/(mol·K) 또는 0.08206 L·atm/(mol·K))', 'Ideal gas constant (≈ 8.314 J/(mol·K) or 0.08206 L·atm/(mol·K))')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

@@ -80,10 +80,10 @@ export default function AsmeB313Page({
         </div>
         <ul className="space-y-2 text-sm">
           <li><strong>t</strong> — {L('필요 벽 두께 [mm (Metric) 또는 in (Imperial)]', 'Required wall thickness [mm (Metric) or in (Imperial)]')}</li>
-          <li><strong className="font-semibold text-red-600">P</strong> — {L('내부 설계 압력 [MPa (Metric) 또는 psi (Imperial)]', 'Internal design pressure [MPa (Metric) or psi (Imperial)]')}</li>
-          <li><strong className="font-semibold text-green-600">D</strong> — {L('배관 외경 [mm (Metric) 또는 in (Imperial)]', 'Outside diameter of pipe [mm (Metric) or in (Imperial)]')}</li>
-          <li><strong className="font-semibold text-purple-600">S</strong> — {L('허용 인장 응력 [MPa (Metric) 또는 psi (Imperial)]', 'Allowable tensile stress [MPa (Metric) or psi (Imperial)]')}</li>
-          <li><strong className="font-semibold text-orange-600">E</strong> — {L('품질(용접) 계수 (0.1 ~ 1.0)', 'Quality (weld joint) factor (0.1 ~ 1.0)')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">P</strong> — {L('내부 설계 압력 [MPa (Metric) 또는 psi (Imperial)]', 'Internal design pressure [MPa (Metric) or psi (Imperial)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">D</strong> — {L('배관 외경 [mm (Metric) 또는 in (Imperial)]', 'Outside diameter of pipe [mm (Metric) or in (Imperial)]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">S</strong> — {L('허용 인장 응력 [MPa (Metric) 또는 psi (Imperial)]', 'Allowable tensile stress [MPa (Metric) or psi (Imperial)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">E</strong> — {L('품질(용접) 계수 (0.1 ~ 1.0)', 'Quality (weld joint) factor (0.1 ~ 1.0)')}</li>
           <li><strong>Y</strong> — {L('벽 두께 계수 (일반적으로 0.4)', 'Wall-thickness coefficient (commonly 0.4)')}</li>
           <li><strong>α</strong> — {L('제조 두께 공차 (예: 12.5%)', 'Manufacturer thickness tolerance (e.g. 12.5%)')}</li>
         </ul>

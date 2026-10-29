@@ -74,12 +74,12 @@ export default function RcCircuitPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-yellow-600">τ</strong> — {L('시정수 [초, s]', 'Time constant [seconds, s]')}</li>
-          <li><strong className="font-semibold text-blue-600">R</strong> — {L('저항 [옴, Ω]', 'Resistance [ohms, Ω]')}</li>
-          <li><strong className="font-semibold text-green-600">C</strong> — {L('정전 용량(커패시턴스) [패럿, F]', 'Capacitance [farads, F]')}</li>
-          <li><strong className="font-semibold text-purple-600">V</strong> — {L('공급 전압 [볼트, V]', 'Source voltage [volts, V]')}</li>
-          <li><strong className="font-semibold text-purple-600">t</strong> — {L('경과 시간 [초, s]', 'Elapsed time [seconds, s]')}</li>
-          <li><strong className="font-semibold text-purple-600">Q</strong> — {L('축전기 전하량 [쿨롱, C]', 'Capacitor charge [coulombs, C]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">τ</strong> — {L('시정수 [초, s]', 'Time constant [seconds, s]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">R</strong> — {L('저항 [옴, Ω]', 'Resistance [ohms, Ω]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">C</strong> — {L('정전 용량(커패시턴스) [패럿, F]', 'Capacitance [farads, F]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">V</strong> — {L('공급 전압 [볼트, V]', 'Source voltage [volts, V]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">t</strong> — {L('경과 시간 [초, s]', 'Elapsed time [seconds, s]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">Q</strong> — {L('축전기 전하량 [쿨롱, C]', 'Capacitor charge [coulombs, C]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미', 'How the formula works')}</h4>

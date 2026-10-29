@@ -39,9 +39,9 @@ const DsrCalculator = ({ infoSection }: DsrCalculatorProps) => {
   };
 
   const getDsrColor = (value: number) => {
-    if (value < 30) return { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', label: isKo ? '양호' : 'Good' };
-    if (value <= 40) return { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200', label: isKo ? '주의' : 'Caution' };
-    return { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', label: isKo ? '위험' : 'Risk' };
+    if (value < 30) return { bg: 'bg-green-50', text: 'text-green-700 dark:text-green-400', border: 'border-green-200', label: isKo ? '양호' : 'Good' };
+    if (value <= 40) return { bg: 'bg-yellow-50', text: 'text-yellow-700 dark:text-yellow-400', border: 'border-yellow-200', label: isKo ? '주의' : 'Caution' };
+    return { bg: 'bg-red-50', text: 'text-red-700 dark:text-red-400', border: 'border-red-200', label: isKo ? '위험' : 'Risk' };
   };
 
   const inputSection = (
@@ -136,7 +136,7 @@ const DsrCalculator = ({ infoSection }: DsrCalculatorProps) => {
           </div>
 
           {dsr > 40 && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 dark:text-red-400">
               {isKo
                 ? '⚠️ DSR 40%를 초과합니다. 총대출 1억원 이상인 경우 DSR 40% 규제가 적용되어 대출이 제한될 수 있습니다.'
                 : '⚠️ DSR exceeds 40%. Loans may be restricted under the 40% DSR regulation when total loans exceed 100 million won.'}

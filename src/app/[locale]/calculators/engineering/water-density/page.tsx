@@ -161,7 +161,7 @@ export default function WaterDensityPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">ρ(T)</strong> — {L('온도 T에서의 물 밀도 [kg/m³]', 'Water density at temperature T [kg/m³]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">ρ(T)</strong> — {L('온도 T에서의 물 밀도 [kg/m³]', 'Water density at temperature T [kg/m³]')}</li>
           <li><strong className="font-semibold text-red-500">T</strong> — {L('섭씨 온도 [°C] (0~100°C)', 'Temperature in Celsius [°C] (0–100°C)')}</li>
         </ul>
         <div>

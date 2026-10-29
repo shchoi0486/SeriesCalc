@@ -67,12 +67,12 @@ export default function CookieConsent({ locale = 'en' }: { locale?: string }) {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-2xl rounded-lg border border-zinc-200 bg-white p-4 shadow-lg dark:border-zinc-700 dark:bg-zinc-900 sm:right-4">
+    <div className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-2xl rounded-lg border border-zinc-200 bg-white dark:bg-gray-900 p-4 shadow-lg dark:border-zinc-700 dark:bg-zinc-900 sm:right-4">
       <p className="mb-3 text-sm text-zinc-800 dark:text-zinc-100">{t.body}</p>
       <div className="flex justify-end gap-2">
         <button
           onClick={handleDecline}
-          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-700 hover:bg-zinc-100 dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-800"
+          className="rounded-md border border-zinc-300 px-3 py-1.5 text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:border-zinc-600 dark:text-zinc-200 dark:hover:bg-zinc-800"
         >
           {t.decline}
         </button>

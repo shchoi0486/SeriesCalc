@@ -223,19 +223,19 @@ const InternetSpeedTest: React.FC = () => {
               <Clock className="w-6 h-6 mx-auto mb-2 text-blue-500" />
               <div className="text-2xl font-bold">{result.ping}</div>
               <div className="text-xs text-muted-foreground">{t.results.ping}</div>
-              <div className="text-xs text-green-600 font-medium mt-1">{getSpeedRating(result.ping, 'ping')}</div>
+              <div className="text-xs text-green-600 dark:text-green-400 font-medium mt-1">{getSpeedRating(result.ping, 'ping')}</div>
             </div>
             <div className="p-4 bg-muted rounded-lg">
               <Download className="w-6 h-6 mx-auto mb-2 text-green-500" />
               <div className="text-2xl font-bold">{result.downloadSpeed}</div>
               <div className="text-xs text-muted-foreground">{t.results.download}</div>
-              <div className="text-xs text-green-600 font-medium mt-1">{getSpeedRating(result.downloadSpeed, 'download')}</div>
+              <div className="text-xs text-green-600 dark:text-green-400 font-medium mt-1">{getSpeedRating(result.downloadSpeed, 'download')}</div>
             </div>
             <div className="p-4 bg-muted rounded-lg">
               <Upload className="w-6 h-6 mx-auto mb-2 text-orange-500" />
               <div className="text-2xl font-bold">{result.uploadSpeed}</div>
               <div className="text-xs text-muted-foreground">{t.results.upload}</div>
-              <div className="text-xs text-green-600 font-medium mt-1">{getSpeedRating(result.uploadSpeed, 'upload')}</div>
+              <div className="text-xs text-green-600 dark:text-green-400 font-medium mt-1">{getSpeedRating(result.uploadSpeed, 'upload')}</div>
             </div>
           </div>
 

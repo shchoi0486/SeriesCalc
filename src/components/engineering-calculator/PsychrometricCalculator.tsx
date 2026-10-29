@@ -147,7 +147,7 @@ const PsychrometricCalculator = () => {
                     {t?.results?.dewPoint || 'Dew Point (T_dp)'}
                   </span>
                   <div className="text-right">
-                    <span className="text-xl font-bold text-blue-600">{dewPoint.toFixed(2)}</span>
+                    <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{dewPoint.toFixed(2)}</span>
                     <span className="text-xs font-normal text-muted-foreground ml-1">{tempUnit}</span>
                   </div>
                 </div>
@@ -157,7 +157,7 @@ const PsychrometricCalculator = () => {
                     {t?.results?.humidityRatio || 'Absolute Humidity (W)'}
                   </span>
                   <div className="text-right">
-                    <span className="text-xl font-bold text-green-600">{humidityRatio.toFixed(2)}</span>
+                    <span className="text-xl font-bold text-green-600 dark:text-green-400">{humidityRatio.toFixed(2)}</span>
                     <span className="text-xs font-normal text-muted-foreground ml-1">{hrUnit}</span>
                   </div>
                 </div>

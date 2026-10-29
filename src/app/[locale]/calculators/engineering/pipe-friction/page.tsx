@@ -69,13 +69,13 @@ export default function PipeFrictionPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">h_f</strong> — {L('마찰 수두 손실 [m (ft)]', 'Friction head loss [m (ft)]')}</li>
-          <li><strong className="font-semibold text-green-600">ΔP</strong> — {L('압력 손실 [Pa (psi)]', 'Pressure loss [Pa (psi)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">h_f</strong> — {L('마찰 수두 손실 [m (ft)]', 'Friction head loss [m (ft)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">ΔP</strong> — {L('압력 손실 [Pa (psi)]', 'Pressure loss [Pa (psi)]')}</li>
           <li><strong className="font-semibold text-red-500">f</strong> — {L('데르시 마찰 계수 (무차원; 무디 선도에서 결정)', 'Darcy friction factor (dimensionless; from the Moody chart)')}</li>
-          <li><strong className="font-semibold text-purple-600">L</strong> — {L('관 길이 [m (ft)]', 'Pipe length [m (ft)]')}</li>
-          <li><strong className="font-semibold text-orange-600">D</strong> — {L('관 내경 [m (in)]', 'Inner diameter [m (in)]')}</li>
-          <li><strong className="font-semibold text-yellow-600">v</strong> — {L('유속 [m/s (ft/s)]', 'Flow velocity [m/s (ft/s)]')}</li>
-          <li><strong className="font-semibold text-gray-600">ρ, g</strong> — {L('유체 밀도 [kg/m³ (lb/ft³)]와 중력가속도 (9.81 m/s² 또는 32.174 ft/s²)', 'Fluid density [kg/m³ (lb/ft³)] and gravity (9.81 m/s² or 32.174 ft/s²)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">L</strong> — {L('관 길이 [m (ft)]', 'Pipe length [m (ft)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">D</strong> — {L('관 내경 [m (in)]', 'Inner diameter [m (in)]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">v</strong> — {L('유속 [m/s (ft/s)]', 'Flow velocity [m/s (ft/s)]')}</li>
+          <li><strong className="font-semibold text-gray-600 dark:text-gray-400">ρ, g</strong> — {L('유체 밀도 [kg/m³ (lb/ft³)]와 중력가속도 (9.81 m/s² 또는 32.174 ft/s²)', 'Fluid density [kg/m³ (lb/ft³)] and gravity (9.81 m/s² or 32.174 ft/s²)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

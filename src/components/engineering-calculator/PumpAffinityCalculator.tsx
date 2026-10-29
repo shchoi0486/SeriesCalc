@@ -45,7 +45,7 @@ const PumpAffinityCalculator = () => {
             <h3 className="font-semibold mb-4 text-lg border-b pb-2">Inputs</h3>
             
             <div className="pt-2 pb-1">
-              <h4 className="font-medium text-sm text-blue-600">Initial State (1)</h4>
+              <h4 className="font-medium text-sm text-blue-600 dark:text-blue-400">Initial State (1)</h4>
             </div>
 
             <div className="space-y-2">
@@ -75,7 +75,7 @@ const PumpAffinityCalculator = () => {
             </div>
 
             <div className="pt-4 pb-1 border-t">
-              <h4 className="font-medium text-sm text-green-600">Target State (2)</h4>
+              <h4 className="font-medium text-sm text-green-600 dark:text-green-400">Target State (2)</h4>
             </div>
 
             <div className="space-y-2">
@@ -100,7 +100,7 @@ const PumpAffinityCalculator = () => {
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex justify-between items-center">
                   <span className="text-sm font-medium text-muted-foreground">{t?.results?.flow2 || 'New Flow (Q₂)'}</span>
                   <div className="text-right flex items-center gap-2">
-                    <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded">∝ N</span>
+                    <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 dark:text-blue-400 rounded">∝ N</span>
                     <div className="text-xl font-bold text-primary">{flow2.toFixed(1)}</div>
                     <div className="text-xs text-muted-foreground w-8 text-left">{flowUnit}</div>
                   </div>
@@ -109,7 +109,7 @@ const PumpAffinityCalculator = () => {
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex justify-between items-center">
                   <span className="text-sm font-medium text-muted-foreground">{t?.results?.head2 || 'New Head (H₂)'}</span>
                   <div className="text-right flex items-center gap-2">
-                    <span className="text-xs px-2 py-0.5 bg-orange-100 text-orange-700 rounded">∝ N²</span>
+                    <span className="text-xs px-2 py-0.5 bg-orange-100 text-orange-700 dark:text-orange-400 rounded">∝ N²</span>
                     <div className="text-xl font-bold text-primary">{head2.toFixed(1)}</div>
                     <div className="text-xs text-muted-foreground w-8 text-left">{headUnit}</div>
                   </div>
@@ -118,7 +118,7 @@ const PumpAffinityCalculator = () => {
                 <div className="bg-white dark:bg-gray-800 p-3 rounded-lg border border-primary/20 shadow-sm flex justify-between items-center">
                   <span className="text-sm font-medium text-muted-foreground">{t?.results?.power2 || 'New Power (P₂)'}</span>
                   <div className="text-right flex items-center gap-2">
-                    <span className="text-xs px-2 py-0.5 bg-red-100 text-red-700 rounded">∝ N³</span>
+                    <span className="text-xs px-2 py-0.5 bg-red-100 text-red-700 dark:text-red-400 rounded">∝ N³</span>
                     <div className="text-xl font-bold text-primary">{power2.toFixed(1)}</div>
                     <div className="text-xs text-muted-foreground w-8 text-left">{powerUnit}</div>
                   </div>
@@ -162,11 +162,11 @@ const PumpAffinityCalculator = () => {
                 {/* Legend */}
                 <div className="absolute top-2 right-2 flex flex-col gap-1">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 border border-dashed border-gray-500 bg-gray-200 opacity-50"></div>
+                    <div className="w-3 h-3 border border-dashed border-gray-500 bg-gray-200 dark:bg-gray-700 opacity-50"></div>
                     <span className="text-[10px] text-muted-foreground">State 1</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-gray-500"></div>
+                    <div className="w-3 h-3 bg-gray-50 dark:bg-gray-9000"></div>
                     <span className="text-[10px] text-muted-foreground">State 2</span>
                   </div>
                 </div>

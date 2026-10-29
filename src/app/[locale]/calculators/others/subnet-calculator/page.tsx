@@ -83,7 +83,7 @@ export default function SubnetCalculatorPage({
             {L('서브넷 계산 공식', 'Subnet Calculation Formulas')}
           </h4>
           <div className="p-4 bg-muted rounded-lg space-y-3">
-            <div className="text-center text-blue-600 space-y-1">
+            <div className="text-center text-blue-600 dark:text-blue-400 space-y-1">
               <BlockMath math="\text{네트워크 주소} = \text{IP} \wedge \text{마스크}" />
               <BlockMath math="\text{브로드캐스트 주소} = \text{네트워크} \vee \neg(\text{마스크})" />
               <BlockMath math="\text{전체 IP 수} = 2^{(32 - \text{CIDR})}" />

@@ -334,20 +334,20 @@ export default function HeatTransferCalculator() {
             </h4>
             <div className="relative w-full h-40 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden flex items-center justify-center">
               <div className="absolute left-0 w-1/4 h-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center border-r border-red-300">
-                <span className="text-red-600 font-bold">T₁: {t1}{tempUnit}</span>
+                <span className="text-red-600 dark:text-red-400 font-bold">T₁: {t1}{tempUnit}</span>
               </div>
 
-              <div className="absolute left-1/4 w-1/2 h-full bg-gray-300 dark:bg-gray-500 border-x-4 border-gray-400 dark:border-gray-400 flex flex-col items-center justify-between py-2">
+              <div className="absolute left-1/4 w-1/2 h-full bg-gray-300 dark:bg-gray-50 dark:bg-gray-9000 border-x-4 border-gray-400 dark:border-gray-400 flex flex-col items-center justify-between py-2">
                 <span className="text-xs font-mono">k = {conductivity} {conductivityUnit}</span>
                 <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
                   <line x1="0" y1="20%" x2="100%" y2="80%" stroke="currentColor" strokeWidth="2" className="text-orange-500" strokeDasharray="4 4" />
                 </svg>
-                <div className="bg-white/80 dark:bg-black/50 px-2 py-1 rounded text-xs z-10 font-bold text-orange-600">Q ➔</div>
+                <div className="bg-white dark:bg-gray-900/80 dark:bg-black/50 px-2 py-1 rounded text-xs z-10 font-bold text-orange-600 dark:text-orange-400">Q ➔</div>
                 <span className="text-xs font-mono">d = {thickness} {thicknessUnit}</span>
               </div>
 
               <div className="absolute right-0 w-1/4 h-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center border-l border-blue-300">
-                <span className="text-blue-600 font-bold">T₂: {t2}{tempUnit}</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold">T₂: {t2}{tempUnit}</span>
               </div>
             </div>
           </div>

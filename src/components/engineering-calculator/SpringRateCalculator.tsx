@@ -175,7 +175,7 @@ export default function SpringRateCalculator() {
                 onChange={(e) => setActiveCoils(e.target.value)}
                 className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
               />
-              <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+              <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
                 -
               </span>
             </div>
@@ -229,7 +229,7 @@ export default function SpringRateCalculator() {
           </div>
 
           <div className="text-center mb-6">
-            <span className="text-sm text-gray-500">{t?.results?.meanDiameter || 'Mean Diameter (D)'}: </span>
+            <span className="text-sm text-gray-500 dark:text-gray-400">{t?.results?.meanDiameter || 'Mean Diameter (D)'}: </span>
             <span className="font-semibold text-gray-700 dark:text-gray-300">{displayMeanDiameter !== null ? displayMeanDiameter.toFixed(2) : '-'} {diameterUnit}</span>
           </div>
 
@@ -265,10 +265,10 @@ export default function SpringRateCalculator() {
               </svg>
 
               {/* Annotations */}
-              <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-[10px] font-mono bg-gray-100 dark:bg-gray-700 px-1 text-gray-500">
+              <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-[10px] font-mono bg-gray-100 dark:bg-gray-700 px-1 text-gray-500 dark:text-gray-400">
                 D_o = {outerDiameter} {outerDiameterUnit}
               </div>
-              <div className="absolute bottom-1 right-12 text-[10px] font-mono text-gray-500">
+              <div className="absolute bottom-1 right-12 text-[10px] font-mono text-gray-500 dark:text-gray-400">
                 d = {wireDiameter} {wireDiameterUnit}
               </div>
             </div>

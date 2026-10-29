@@ -69,11 +69,11 @@ export default function SensibleHeatPage({
         </div>
         <ul className="space-y-2 text-sm">
           <li><strong className="font-semibold text-cyan-600">Q</strong> — {L('현열 부하(열량률) [kW 또는 BTU/s]', 'Sensible heat load (heat rate) [kW or BTU/s]')}</li>
-          <li><strong className="font-semibold text-blue-600">m</strong> — {L('질량 유량 [kg/s 또는 lb/s]', 'Mass flow rate [kg/s or lb/s]')}</li>
-          <li><strong className="font-semibold text-green-600">C_p</strong> — {L('비열(단위질량당 열용량) [kJ/(kg·K) 또는 BTU/(lb·°F)]', 'Specific heat [kJ/(kg·K) or BTU/(lb·°F)]')}</li>
-          <li><strong className="font-semibold text-orange-600">T₁</strong> — {L('초기 온도 [°C 또는 °F]', 'Initial temperature [°C or °F]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">m</strong> — {L('질량 유량 [kg/s 또는 lb/s]', 'Mass flow rate [kg/s or lb/s]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">C_p</strong> — {L('비열(단위질량당 열용량) [kJ/(kg·K) 또는 BTU/(lb·°F)]', 'Specific heat [kJ/(kg·K) or BTU/(lb·°F)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">T₁</strong> — {L('초기 온도 [°C 또는 °F]', 'Initial temperature [°C or °F]')}</li>
           <li><strong className="font-semibold text-red-500">T₂</strong> — {L('최종 온도 [°C 또는 °F]', 'Final temperature [°C or °F]')}</li>
-          <li><strong className="font-semibold text-purple-600">ΔT</strong> — {L('온도 변화 (T₂ − T₁) [K 또는 °F]', 'Temperature change (T₂ − T₁) [K or °F]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">ΔT</strong> — {L('온도 변화 (T₂ − T₁) [K 또는 °F]', 'Temperature change (T₂ − T₁) [K or °F]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미', 'How the formula works')}</h4>

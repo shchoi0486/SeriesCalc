@@ -68,11 +68,11 @@ export default function BernoulliPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">P</strong> — {L('정압 [Pa (psf)]', 'Static pressure [Pa (psf)]')}</li>
-          <li><strong className="font-semibold text-green-600">ρ</strong> — {L('유체 밀도 [kg/m³ (lb/ft³)]', 'Fluid density [kg/m³ (lb/ft³)]')}</li>
-          <li><strong className="font-semibold text-purple-600">v</strong> — {L('유속 [m/s (ft/s)]', 'Fluid velocity [m/s (ft/s)]')}</li>
-          <li><strong className="font-semibold text-red-600">g</strong> — {L('중력 가속도 [9.81 m/s² (32.17 ft/s²)]', 'Acceleration of gravity [9.81 m/s² (32.17 ft/s²)]')}</li>
-          <li><strong className="font-semibold text-yellow-600">h</strong> — {L('높이(수두) [m (ft)]', 'Elevation height [m (ft)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">P</strong> — {L('정압 [Pa (psf)]', 'Static pressure [Pa (psf)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">ρ</strong> — {L('유체 밀도 [kg/m³ (lb/ft³)]', 'Fluid density [kg/m³ (lb/ft³)]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">v</strong> — {L('유속 [m/s (ft/s)]', 'Fluid velocity [m/s (ft/s)]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">g</strong> — {L('중력 가속도 [9.81 m/s² (32.17 ft/s²)]', 'Acceleration of gravity [9.81 m/s² (32.17 ft/s²)]')}</li>
+          <li><strong className="font-semibold text-yellow-600 dark:text-yellow-400">h</strong> — {L('높이(수두) [m (ft)]', 'Elevation height [m (ft)]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

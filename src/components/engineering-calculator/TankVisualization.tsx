@@ -189,10 +189,10 @@ export default function TankVisualization({
       <div className="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg overflow-hidden flex items-center justify-center">
         <div className="text-center p-8">
           <div className="text-6xl mb-4">🛢️</div>
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
             {currentName || (isKo ? 'Tank 시각화' : 'Tank Visualization')}
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             {isKo ? '이미지를 불러올 수 없습니다' : 'Image could not be loaded'}
           </p>
         </div>
@@ -204,23 +204,23 @@ export default function TankVisualization({
     <div className="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg overflow-hidden relative">
       {/* 로딩 상태 */}
       {!imageLoaded && !imageError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-            <p className="text-sm text-gray-600">{isKo ? '이미지 로딩 중...' : 'Loading image...'}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">{isKo ? '이미지 로딩 중...' : 'Loading image...'}</p>
           </div>
         </div>
       )}
 
       {/* 에러 상태 */}
       {imageError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800">
           <div className="text-center p-8">
             <div className="text-4xl mb-4">⚠️</div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">
+            <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">
               {currentName}
             </h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {isKo ? '이미지를 불러올 수 없습니다' : 'Image could not be loaded'}
             </p>
           </div>
@@ -243,11 +243,11 @@ export default function TankVisualization({
         
         {/* Tank 타입 정보 오버레이 */}
         {imageLoaded && (
-          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-            <h3 className="font-semibold text-gray-800 mb-1">
+          <div className="absolute top-4 left-4 bg-white dark:bg-gray-900/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
+            <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-1">
               {currentName}
             </h3>
-            <p className="text-xs text-gray-600">
+            <p className="text-xs text-gray-600 dark:text-gray-400">
               {tankType}
             </p>
           </div>
@@ -255,13 +255,13 @@ export default function TankVisualization({
 
         {/* 치수 정보 오버레이 */}
         {imageLoaded && dimensionInfo.length > 0 && (
-          <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg max-w-xs">
-              <h4 className="font-semibold text-gray-800 mb-2 text-sm">
+          <div className="absolute bottom-4 right-4 bg-white dark:bg-gray-900/90 backdrop-blur-sm rounded-lg p-3 shadow-lg max-w-xs">
+              <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">
               {isKo ? '📏 치수 정보' : '📏 Dimension Info'}
             </h4>
             <div className="space-y-1">
               {dimensionInfo.map((dimension, index) => (
-                <p key={index} className="text-xs text-gray-600 font-mono">
+                <p key={index} className="text-xs text-gray-600 dark:text-gray-400 font-mono">
                   {dimension}
                 </p>
               ))}

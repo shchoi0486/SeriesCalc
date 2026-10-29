@@ -199,7 +199,7 @@ export default function PumpPowerCalculator() {
                 onChange={(e) => setPumpEfficiency(e.target.value)}
                 className="flex-1 min-w-0 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
               />
-              <span className="w-12 shrink-0 px-2 py-1 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs">
+              <span className="w-12 shrink-0 px-2 py-1 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs">
                 %
               </span>
             </div>
@@ -217,7 +217,7 @@ export default function PumpPowerCalculator() {
                 onChange={(e) => setMotorEfficiency(e.target.value)}
                 className="flex-1 min-w-0 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
               />
-              <span className="w-12 shrink-0 px-2 py-1 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs">
+              <span className="w-12 shrink-0 px-2 py-1 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs">
                 %
               </span>
             </div>
@@ -260,7 +260,7 @@ export default function PumpPowerCalculator() {
                     {result.powerUnit}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                   {dict?.pumpPower?.results?.motorPowerDesc || "* The total power required to drive the pump, accounting for motor efficiency."}
                 </p>
               </div>

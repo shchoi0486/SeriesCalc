@@ -72,9 +72,9 @@ export default function WireGaugePage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">d(n)</strong> — {L('게이지 번호 n에서의 와이어 직경 [mm 또는 inch]', 'Wire diameter at gauge number n [mm or inch]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">d(n)</strong> — {L('게이지 번호 n에서의 와이어 직경 [mm 또는 inch]', 'Wire diameter at gauge number n [mm or inch]')}</li>
           <li><strong className="font-semibold text-red-500">n</strong> — {L('AWG 게이지 번호 (0000=−3, 00=−2, 0=−1, 1~50)', 'AWG gauge number (0000=−3, 00=−2, 0=−1, 1–50)')}</li>
-          <li><strong className="font-semibold text-blue-600">92</strong> — {L('직경 비율 기수 (10^((36-n)/39)에서의 밑)', 'Diameter ratio base in the 92^((36-n)/39) formula')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">92</strong> — {L('직경 비율 기수 (10^((36-n)/39)에서의 밑)', 'Diameter ratio base in the 92^((36-n)/39) formula')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('단면적·저항 관계식', 'Cross-section and resistance relationships')}</h4>
@@ -83,10 +83,10 @@ export default function WireGaugePage({
             <BlockMath math="R = \dfrac{\rho L}{A}" />
           </div>
           <ul className="space-y-2 text-sm mt-2">
-            <li><strong className="font-semibold text-green-600">A</strong> — {L('단면적 [mm², cmil]', 'Cross-sectional area [mm², cmil]')}</li>
+            <li><strong className="font-semibold text-green-600 dark:text-green-400">A</strong> — {L('단면적 [mm², cmil]', 'Cross-sectional area [mm², cmil]')}</li>
             <li><strong className="font-semibold text-red-500">R</strong> — {L('저항 [Ω]', 'Resistance [Ω]')}</li>
-            <li><strong className="font-semibold text-blue-600">ρ</strong> — {L('전기 저항률 [Ω·m] (구리: 1.68×10⁻⁸)', 'Electrical resistivity [Ω·m] (copper: 1.68×10⁻⁸)')}</li>
-            <li><strong className="font-semibold text-orange-600">L</strong> — {L('와이어 길이 [m]', 'Wire length [m]')}</li>
+            <li><strong className="font-semibold text-blue-600 dark:text-blue-400">ρ</strong> — {L('전기 저항률 [Ω·m] (구리: 1.68×10⁻⁸)', 'Electrical resistivity [Ω·m] (copper: 1.68×10⁻⁸)')}</li>
+            <li><strong className="font-semibold text-orange-600 dark:text-orange-400">L</strong> — {L('와이어 길이 [m]', 'Wire length [m]')}</li>
           </ul>
         </div>
         <div>

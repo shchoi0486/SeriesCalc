@@ -70,11 +70,11 @@ export default function ThermalExpansionPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">ΔL</strong> — {L('길이 변화량 [m 또는 ft]', 'Change in length [m or ft]')}</li>
-          <li><strong className="font-semibold text-purple-600">α</strong> — {L('선팽창 계수 [1/°C 또는 1/°F]', 'Linear expansion coefficient [1/°C or 1/°F]')}</li>
-          <li><strong className="font-semibold text-blue-600">L₀</strong> — {L('초기 길이 [m 또는 ft]', 'Initial length [m or ft]')}</li>
-          <li><strong className="font-semibold text-green-600">ΔT</strong> — {L('온도 변화 (T₂ − T₁) [°C 또는 °F]', 'Temperature change (T₂ − T₁) [°C or °F]')}</li>
-          <li><strong className="font-semibold text-orange-600">L₁</strong> — {L('최종 길이 [m 또는 ft]', 'Final length [m or ft]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">ΔL</strong> — {L('길이 변화량 [m 또는 ft]', 'Change in length [m or ft]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">α</strong> — {L('선팽창 계수 [1/°C 또는 1/°F]', 'Linear expansion coefficient [1/°C or 1/°F]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">L₀</strong> — {L('초기 길이 [m 또는 ft]', 'Initial length [m or ft]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">ΔT</strong> — {L('온도 변화 (T₂ − T₁) [°C 또는 °F]', 'Temperature change (T₂ − T₁) [°C or °F]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">L₁</strong> — {L('최종 길이 [m 또는 ft]', 'Final length [m or ft]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

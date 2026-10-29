@@ -503,7 +503,7 @@ export default function NPSHCalculator({ dict }: { dict?: any }) {
                   <label className="w-full sm:w-1/2 text-sm font-medium text-gray-700 dark:text-gray-300 pr-2 mb-2 sm:mb-0">
                     {dict?.inputs?.surfacePressure || "Surface pressure"}
                     {tankType === 'open' && (
-                      <span className="text-xs text-gray-500 block">{dict?.inputs?.sameAsAtmospheric || "(Same as atmospheric)"}</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400 block">{dict?.inputs?.sameAsAtmospheric || "(Same as atmospheric)"}</span>
                     )}
                   </label>
                   <div className="w-full sm:w-1/2 flex min-w-0">
@@ -514,7 +514,7 @@ export default function NPSHCalculator({ dict }: { dict?: any }) {
                       disabled={tankType === 'open'}
                       className={`flex-1 min-w-0 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm ${
                         tankType === 'open' 
-                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed' 
+                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed' 
                           : ''
                       }`}
                       placeholder="0"
@@ -534,7 +534,7 @@ export default function NPSHCalculator({ dict }: { dict?: any }) {
                       disabled={tankType === 'open'}
                       className={`w-16 shrink-0 px-1 py-1 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-xs ${
                         tankType === 'open' 
-                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-500 cursor-not-allowed appearance-none' 
+                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 cursor-not-allowed appearance-none' 
                           : ''
                       }`}
                       style={tankType === 'open' ? {
@@ -1030,9 +1030,9 @@ export default function NPSHCalculator({ dict }: { dict?: any }) {
             {dict?.details?.title || 'Detailed Formulas & Theory'}
           </h3>
           {showFormulas ? (
-            <ChevronUp className="w-5 h-5 text-gray-500" />
+            <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
           ) : (
-            <ChevronDown className="w-5 h-5 text-gray-500" />
+            <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
           )}
         </button>
 

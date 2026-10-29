@@ -69,11 +69,11 @@ export default function PressureConverterPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-green-600">Pa (Pascal)</strong> — {L('SI 기본 단위, 1 N/m²', 'SI base unit, 1 N/m²')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">Pa (Pascal)</strong> — {L('SI 기본 단위, 1 N/m²', 'SI base unit, 1 N/m²')}</li>
           <li><strong className="font-semibold text-red-500">atm (표준 대기압)</strong> — {L('해수면에서의 표준 대기압', 'Standard atmospheric pressure at sea level')}</li>
-          <li><strong className="font-semibold text-blue-600">bar</strong> — {L('100,000 Pa와 정확히 일치', 'Exactly equal to 100,000 Pa')}</li>
-          <li><strong className="font-semibold text-orange-600">psi</strong> — {L('미국·영국에서 흔히 사용, 1 lbf/in²', 'Commonly used in US/UK, 1 lbf/in²')}</li>
-          <li><strong className="font-semibold text-purple-600">mmHg</strong> — {L('수은주 압력계 기반, 의료 분야에서 사용', 'Based on mercury column, used in medical fields')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">bar</strong> — {L('100,000 Pa와 정확히 일치', 'Exactly equal to 100,000 Pa')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">psi</strong> — {L('미국·영국에서 흔히 사용, 1 lbf/in²', 'Commonly used in US/UK, 1 lbf/in²')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">mmHg</strong> — {L('수은주 압력계 기반, 의료 분야에서 사용', 'Based on mercury column, used in medical fields')}</li>
           <li><strong className="font-semibold text-teal-600">cmH₂O / inH₂O</strong> — {L('수주 압력계 기반, 저압 측정에 적합', 'Water column based, suitable for low-pressure measurement')}</li>
         </ul>
         <div>

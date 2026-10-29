@@ -78,11 +78,11 @@ export default function FreeFallPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">v</strong> — {L(`최종 속도 [${velUnit}]`, `Final velocity [${velUnit}]`)}</li>
-          <li><strong className="font-semibold text-green-600">v₀</strong> — {L(`초기 속도 [${velUnit}]`, `Initial velocity [${velUnit}]`)}</li>
-          <li><strong className="font-semibold text-purple-600">s</strong> — {L(`이동 거리 [${lenUnit}]`, `Distance traveled [${lenUnit}]`)}</li>
-          <li><strong className="font-semibold text-red-600">t</strong> — {L('낙하 시간 [s]', 'Time of fall [s]')}</li>
-          <li><strong className="font-semibold text-orange-600">g</strong> — {L(`중력 가속도 (${gVal})`, `Acceleration of gravity (${gVal})`)}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">v</strong> — {L(`최종 속도 [${velUnit}]`, `Final velocity [${velUnit}]`)}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">v₀</strong> — {L(`초기 속도 [${velUnit}]`, `Initial velocity [${velUnit}]`)}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">s</strong> — {L(`이동 거리 [${lenUnit}]`, `Distance traveled [${lenUnit}]`)}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">t</strong> — {L('낙하 시간 [s]', 'Time of fall [s]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">g</strong> — {L(`중력 가속도 (${gVal})`, `Acceleration of gravity (${gVal})`)}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

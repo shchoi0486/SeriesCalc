@@ -68,11 +68,11 @@ export default function EulerBucklingPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">P_cr</strong> — {L('임계 좌굴 하중 [N (lbf)]', 'Critical buckling load [N (lbf)]')}</li>
-          <li><strong className="font-semibold text-blue-600">E</strong> — {L('영률 (탄성 계수) [Pa (psi)]', "Young's modulus [Pa (psi)]")}</li>
-          <li><strong className="font-semibold text-green-600">I</strong> — {L('단면 2차 모멘트 (최소값 사용) [m⁴ (in⁴)]', 'Area moment of inertia (use the minimum) [m⁴ (in⁴)]')}</li>
-          <li><strong className="font-semibold text-purple-600">L</strong> — {L('기둥의 지지되지 않은 길이 [m (in)]', 'Unsupported length of column [m (in)]')}</li>
-          <li><strong className="font-semibold text-orange-600">K</strong> — {L('기둥의 유효 길이 계수 (양단 힌지=1.0, 양단 고정=0.5, 고정-자유=2.0)', 'Column effective-length factor (pinned–pinned = 1.0, fixed–fixed = 0.5, fixed–free = 2.0)')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">P_cr</strong> — {L('임계 좌굴 하중 [N (lbf)]', 'Critical buckling load [N (lbf)]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">E</strong> — {L('영률 (탄성 계수) [Pa (psi)]', "Young's modulus [Pa (psi)]")}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">I</strong> — {L('단면 2차 모멘트 (최소값 사용) [m⁴ (in⁴)]', 'Area moment of inertia (use the minimum) [m⁴ (in⁴)]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">L</strong> — {L('기둥의 지지되지 않은 길이 [m (in)]', 'Unsupported length of column [m (in)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">K</strong> — {L('기둥의 유효 길이 계수 (양단 힌지=1.0, 양단 고정=0.5, 고정-자유=2.0)', 'Column effective-length factor (pinned–pinned = 1.0, fixed–fixed = 0.5, fixed–free = 2.0)')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

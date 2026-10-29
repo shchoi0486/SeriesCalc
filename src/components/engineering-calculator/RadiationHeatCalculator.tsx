@@ -229,7 +229,7 @@ export default function RadiationHeatCalculator() {
 
               {/* Surroundings */}
               <div className="absolute inset-0 border-8 border-gray-200 dark:border-gray-600 flex justify-between p-2">
-                <span className="text-xs font-mono font-bold text-gray-500">Surroundings: {t2}{t2Unit}</span>
+                <span className="text-xs font-mono font-bold text-gray-500 dark:text-gray-400">Surroundings: {t2}{t2Unit}</span>
               </div>
 
               {/* Central Object */}
@@ -237,7 +237,7 @@ export default function RadiationHeatCalculator() {
                    style={{
                      backgroundColor: heatTransfer !== null && heatTransfer > 0 ? '#fca5a5' : '#93c5fd', // red-300 or blue-300
                    }}>
-                <span className="font-bold text-gray-900">{t1}{t1Unit}</span>
+                <span className="font-bold text-gray-900 dark:text-gray-100">{t1}{t1Unit}</span>
               </div>
 
               {/* Radiation Waves */}

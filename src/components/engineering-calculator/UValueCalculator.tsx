@@ -146,7 +146,7 @@ const UValueCalculator = () => {
             </div>
 
             <div className="pt-2 pb-1 border-t">
-              <h4 className="font-medium text-sm text-blue-600">Layer 1</h4>
+              <h4 className="font-medium text-sm text-blue-600 dark:text-blue-400">Layer 1</h4>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -184,7 +184,7 @@ const UValueCalculator = () => {
             </div>
 
             <div className="pt-2 pb-1 border-t">
-              <h4 className="font-medium text-sm text-gray-600">Layer 2</h4>
+              <h4 className="font-medium text-sm text-gray-600 dark:text-gray-400">Layer 2</h4>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">

@@ -70,11 +70,11 @@ export default function HydraulicJumpPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">Fr₁</strong> — {L('상류측(도약 전) 프루드 수 (무차원)', 'Upstream (pre-jump) Froude number (dimensionless)')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">Fr₁</strong> — {L('상류측(도약 전) 프루드 수 (무차원)', 'Upstream (pre-jump) Froude number (dimensionless)')}</li>
           <li><strong className="font-semibold text-teal-600">v₁</strong> — {L('도약 전 유속 [m/s]', 'Velocity before the jump [m/s]')}</li>
-          <li><strong className="font-semibold text-green-600">y₁, y₂</strong> — {L('도약 전 수심 / 도약 후 수심(sequent depth) [m]', 'Depth before the jump / sequent depth after the jump [m]')}</li>
-          <li><strong className="font-semibold text-purple-600">g</strong> — {L('중력 가속도 (9.81 m/s²)', 'Acceleration of gravity (9.81 m/s²)')}</li>
-          <li><strong className="font-semibold text-red-600">ΔE</strong> — {L('단위 무게당 에너지 손실(수두 손실) [m]', 'Energy (head) loss per unit weight [m]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">y₁, y₂</strong> — {L('도약 전 수심 / 도약 후 수심(sequent depth) [m]', 'Depth before the jump / sequent depth after the jump [m]')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">g</strong> — {L('중력 가속도 (9.81 m/s²)', 'Acceleration of gravity (9.81 m/s²)')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">ΔE</strong> — {L('단위 무게당 에너지 손실(수두 손실) [m]', 'Energy (head) loss per unit weight [m]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

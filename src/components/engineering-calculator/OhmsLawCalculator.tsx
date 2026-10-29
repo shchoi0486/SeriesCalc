@@ -119,7 +119,7 @@ export default function OhmsLawCalculator() {
                 onChange={(e) => setV(e.target.value)}
                 className={`flex-1 min-w-0 px-2 py-1.5 border ${v ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white text-sm`}
               />
-              <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+              <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
                 V
               </span>
             </div>
@@ -137,7 +137,7 @@ export default function OhmsLawCalculator() {
                 onChange={(e) => setI(e.target.value)}
                 className={`flex-1 min-w-0 px-2 py-1.5 border ${i ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white text-sm`}
               />
-              <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+              <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
                 A
               </span>
             </div>
@@ -155,7 +155,7 @@ export default function OhmsLawCalculator() {
                 onChange={(e) => setR(e.target.value)}
                 className={`flex-1 min-w-0 px-2 py-1.5 border ${r ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white text-sm`}
               />
-              <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+              <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
                 Ω
               </span>
             </div>
@@ -173,7 +173,7 @@ export default function OhmsLawCalculator() {
                 onChange={(e) => setP(e.target.value)}
                 className={`flex-1 min-w-0 px-2 py-1.5 border ${p ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-gray-300 dark:border-gray-600'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white text-sm`}
               />
-              <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+              <span className="w-12 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-l-0 border border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
                 W
               </span>
             </div>
@@ -205,10 +205,10 @@ export default function OhmsLawCalculator() {
           {/* 중앙 원 (변수들) */}
           <div className="absolute w-28 h-28 sm:w-36 sm:h-36 bg-white dark:bg-gray-800 rounded-full border-4 border-gray-300 dark:border-gray-600 z-10 flex items-center justify-center shadow-lg">
             <div className="grid grid-cols-2 grid-rows-2 w-full h-full text-center">
-              <div className="flex items-center justify-center border-r-2 border-b-2 border-gray-200 dark:border-gray-700 font-bold text-xl sm:text-2xl text-blue-600">V</div>
-              <div className="flex items-center justify-center border-b-2 border-gray-200 dark:border-gray-700 font-bold text-xl sm:text-2xl text-green-600">P</div>
-              <div className="flex items-center justify-center border-r-2 border-gray-200 dark:border-gray-700 font-bold text-xl sm:text-2xl text-red-600">R</div>
-              <div className="flex items-center justify-center font-bold text-xl sm:text-2xl text-yellow-600">I</div>
+              <div className="flex items-center justify-center border-r-2 border-b-2 border-gray-200 dark:border-gray-700 font-bold text-xl sm:text-2xl text-blue-600 dark:text-blue-400">V</div>
+              <div className="flex items-center justify-center border-b-2 border-gray-200 dark:border-gray-700 font-bold text-xl sm:text-2xl text-green-600 dark:text-green-400">P</div>
+              <div className="flex items-center justify-center border-r-2 border-gray-200 dark:border-gray-700 font-bold text-xl sm:text-2xl text-red-600 dark:text-red-400">R</div>
+              <div className="flex items-center justify-center font-bold text-xl sm:text-2xl text-yellow-600 dark:text-yellow-400">I</div>
             </div>
           </div>
 

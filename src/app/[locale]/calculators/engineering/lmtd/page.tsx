@@ -68,10 +68,10 @@ export default function LmtdPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-blue-600">LMTD</strong> — {L('대수평균온도차 [°C 또는 K]', 'Logarithmic mean temperature difference [°C or K]')}</li>
-          <li><strong className="font-semibold text-green-600">{L('대향류', 'Counter-flow')}</strong> — {L('ΔT₁ = T_h,in − T_c,out | ΔT₂ = T_h,out − T_c,in', 'ΔT₁ = T_h,in − T_c,out | ΔT₂ = T_h,out − T_c,in')}</li>
-          <li><strong className="font-semibold text-purple-600">{L('평행류', 'Parallel-flow')}</strong> — {L('ΔT₁ = T_h,in − T_c,in | ΔT₂ = T_h,out − T_c,out', 'ΔT₁ = T_h,in − T_c,in | ΔT₂ = T_h,out − T_c,out')}</li>
-          <li><strong className="font-semibold text-orange-600">T_h, T_c</strong> — {L('뜨거운/차가운 유체 온도, 첨자 in/out은 입구/출구 [°C]', 'Hot / cold fluid temperatures; subscripts in/out mean inlet/outlet [°C]')}</li>
+          <li><strong className="font-semibold text-blue-600 dark:text-blue-400">LMTD</strong> — {L('대수평균온도차 [°C 또는 K]', 'Logarithmic mean temperature difference [°C or K]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">{L('대향류', 'Counter-flow')}</strong> — {L('ΔT₁ = T_h,in − T_c,out | ΔT₂ = T_h,out − T_c,in', 'ΔT₁ = T_h,in − T_c,out | ΔT₂ = T_h,out − T_c,in')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">{L('평행류', 'Parallel-flow')}</strong> — {L('ΔT₁ = T_h,in − T_c,in | ΔT₂ = T_h,out − T_c,out', 'ΔT₁ = T_h,in − T_c,in | ΔT₂ = T_h,out − T_c,out')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">T_h, T_c</strong> — {L('뜨거운/차가운 유체 온도, 첨자 in/out은 입구/출구 [°C]', 'Hot / cold fluid temperatures; subscripts in/out mean inlet/outlet [°C]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

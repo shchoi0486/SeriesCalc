@@ -269,7 +269,7 @@ export default function AsmeB313Calculator() {
               onChange={(e) => setQualityFactor(e.target.value)}
               className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
             />
-            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
               -
             </span>
           </div>
@@ -287,7 +287,7 @@ export default function AsmeB313Calculator() {
               onChange={(e) => setCoefficientY(e.target.value)}
               className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
             />
-            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
               -
             </span>
           </div>
@@ -305,7 +305,7 @@ export default function AsmeB313Calculator() {
               onChange={(e) => setTolerance(e.target.value)}
               className="flex-1 min-w-0 rounded-r-none focus-visible:ring-1"
             />
-            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 flex items-center justify-center text-xs font-semibold">
+            <span className="w-20 shrink-0 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 border-y border-r border-gray-300 dark:border-gray-600 rounded-r-md text-gray-500 dark:text-gray-400 flex items-center justify-center text-xs font-semibold">
               %
             </span>
           </div>

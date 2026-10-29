@@ -275,11 +275,11 @@ export default function BeamDeflectionCalculator() {
             <div className="relative w-full h-40 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden flex items-center justify-center">
               <div className="absolute left-0 top-0 w-8 h-full bg-gray-400 dark:bg-gray-600 border-r-4 border-gray-500 dark:border-gray-500 flex flex-col justify-evenly overflow-hidden">
                 {[...Array(10)].map((_, i) => (
-                  <div key={i} className="w-16 h-0.5 bg-gray-500 dark:bg-gray-500 transform -rotate-45 -ml-4" />
+                  <div key={i} className="w-16 h-0.5 bg-gray-50 dark:bg-gray-9000 dark:bg-gray-50 dark:bg-gray-9000 transform -rotate-45 -ml-4" />
                 ))}
               </div>
 
-              <div className="absolute left-8 top-12 w-[80%] h-4 bg-gray-300 dark:bg-gray-500 opacity-50 rounded-r-sm"></div>
+              <div className="absolute left-8 top-12 w-[80%] h-4 bg-gray-300 dark:bg-gray-50 dark:bg-gray-9000 opacity-50 rounded-r-sm"></div>
 
               <div className="absolute left-8 top-12 w-[80%] h-16 border-t-4 border-r-4 border-blue-500 dark:border-blue-400 rounded-tr-[100%] bg-transparent"></div>
 

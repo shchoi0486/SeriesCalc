@@ -78,10 +78,10 @@ export default function Api650TankPage({
           </div>
         </div>
         <ul className="space-y-2 text-sm">
-          <li><strong className="font-semibold text-red-600">D, H</strong> — {L('탱크 직경 및 액체 높이 [ft (Imperial) 또는 m (Metric)]', 'Tank Diameter and Liquid Height [ft (Imperial) or m (Metric)]')}</li>
-          <li><strong className="font-semibold text-green-600">G</strong> — {L('저장 액체의 비중 (물 = 1.0)', 'Specific Gravity of liquid (water = 1.0)')}</li>
-          <li><strong className="font-semibold text-purple-600">S_d, S_t</strong> — {L('설계 및 시험 허용 응력 [psi (Imperial) 또는 MPa (Metric)]', 'Allowable Design and Test Stress [psi (Imperial) or MPa (Metric)]')}</li>
-          <li><strong className="font-semibold text-orange-600">CA</strong> — {L('부식 여유 (Corrosion Allowance) [in (Imperial) 또는 mm (Metric)]', 'Corrosion Allowance (CA) [in (Imperial) or mm (Metric)]')}</li>
+          <li><strong className="font-semibold text-red-600 dark:text-red-400">D, H</strong> — {L('탱크 직경 및 액체 높이 [ft (Imperial) 또는 m (Metric)]', 'Tank Diameter and Liquid Height [ft (Imperial) or m (Metric)]')}</li>
+          <li><strong className="font-semibold text-green-600 dark:text-green-400">G</strong> — {L('저장 액체의 비중 (물 = 1.0)', 'Specific Gravity of liquid (water = 1.0)')}</li>
+          <li><strong className="font-semibold text-purple-600 dark:text-purple-400">S_d, S_t</strong> — {L('설계 및 시험 허용 응력 [psi (Imperial) 또는 MPa (Metric)]', 'Allowable Design and Test Stress [psi (Imperial) or MPa (Metric)]')}</li>
+          <li><strong className="font-semibold text-orange-600 dark:text-orange-400">CA</strong> — {L('부식 여유 (Corrosion Allowance) [in (Imperial) 또는 mm (Metric)]', 'Corrosion Allowance (CA) [in (Imperial) or mm (Metric)]')}</li>
         </ul>
         <div>
           <h4 className="font-bold text-base mb-2">{L('식의 의미 (어떻게 구하나)', 'How the formula works')}</h4>

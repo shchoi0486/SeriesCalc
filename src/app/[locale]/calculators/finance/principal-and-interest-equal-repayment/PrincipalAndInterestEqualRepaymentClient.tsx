@@ -159,7 +159,7 @@ export default function LevelPaymentPage() {
                 <Separator />
                 <div className="flex justify-between items-center text-xl font-semibold">
                     <span>{isKo ? '총 상환 금액' : 'Total repayment'}</span>
-                    <span className="text-blue-600">{formatNumber(calculationResults.totalRepayment)} {isKo ? '원' : 'KRW'}</span>
+                    <span className="text-blue-600 dark:text-blue-400">{formatNumber(calculationResults.totalRepayment)} {isKo ? '원' : 'KRW'}</span>
                 </div>
             </CardContent>
         </>

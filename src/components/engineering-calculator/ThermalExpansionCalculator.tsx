@@ -300,14 +300,14 @@ export default function ThermalExpansionCalculator() {
             {/* Diagram */}
             <div className="relative w-full h-24 bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden flex flex-col justify-center px-4">
               {/* L0 Bar */}
-              <div className="w-[70%] h-4 bg-gray-400 dark:bg-gray-500 rounded relative">
+              <div className="w-[70%] h-4 bg-gray-400 dark:bg-gray-50 dark:bg-gray-9000 rounded relative">
                 <span className="absolute -top-5 left-1/2 transform -translate-x-1/2 text-xs font-bold text-gray-600 dark:text-gray-300">L₀</span>
               </div>
 
               {/* Delta L expansion visualization */}
               {changeInLength !== null && changeInLength > 0 && (
                 <div className="w-[85%] flex items-center mt-2">
-                  <div className="w-[82.35%] h-4 bg-gray-400 dark:bg-gray-500 rounded-l"></div>
+                  <div className="w-[82.35%] h-4 bg-gray-400 dark:bg-gray-50 dark:bg-gray-9000 rounded-l"></div>
                   <div className="w-[17.65%] h-4 bg-red-500 dark:bg-red-400 rounded-r relative flex items-center">
                     <span className="absolute -right-6 text-xs font-bold text-red-600 dark:text-red-400 ml-1">+ΔL</span>
                   </div>
@@ -315,7 +315,7 @@ export default function ThermalExpansionCalculator() {
               )}
               {changeInLength !== null && changeInLength < 0 && (
                 <div className="w-[70%] flex items-center mt-2">
-                  <div className="w-[80%] h-4 bg-gray-400 dark:bg-gray-500 rounded-l"></div>
+                  <div className="w-[80%] h-4 bg-gray-400 dark:bg-gray-50 dark:bg-gray-9000 rounded-l"></div>
                   <div className="w-[20%] h-4 bg-blue-300 dark:bg-blue-800 rounded-r relative flex items-center border border-dashed border-blue-500">
                     <span className="absolute -right-6 text-xs font-bold text-blue-600 dark:text-blue-400 ml-1">-ΔL</span>
                   </div>
