@@ -61,11 +61,11 @@ const AcquisitionTaxClient = ({ infoSection }: { infoSection: InfoSection }) => 
   )
 
   const resultSection = (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '적용 세율' : 'Effective rate'}</p><p className="text-2xl font-bold mt-1">{(rate * 100).toFixed(0)}%</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '취득세' : 'Acquisition tax'}</p><p className="text-2xl font-bold mt-1">{fmt(baseTax)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '지방교육세(10%)' : 'Edu. tax (10%)'}</p><p className="text-2xl font-bold mt-1">{fmt(eduTax)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '합계' : 'Total'}</p><p className="text-2xl font-bold mt-1">{fmt(total)}</p></div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '적용 세율' : 'Effective rate'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{(rate * 100).toFixed(0)}%</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '취득세' : 'Acquisition tax'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(baseTax)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '지방교육세(10%)' : 'Edu. tax (10%)'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(eduTax)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '합계' : 'Total'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(total)}</p></div>
     </div>
   )
 

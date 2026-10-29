@@ -9,10 +9,11 @@ const SITE_URL =
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPaths = ["", "/calculators", "/guides", "/about", "/editorial-policy", "/privacy-policy", "/terms-of-service", "/contact"];
   const guidePaths = [
-    "/guides/compound-interest-power",
+    "/guides/salary-take-home-table",
+    "/guides/salary-take-home",
     "/guides/jeonse-vs-wolse",
     "/guides/mortgage-repayment-types",
-    "/guides/salary-take-home",
+    "/guides/compound-interest-power",
     "/guides/dti-dsr",
     "/guides/deposit-savings",
     "/guides/npsh-cavitation",

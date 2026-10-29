@@ -316,7 +316,7 @@ export default function CategoryEditorial({ categoryId, locale }: Props) {
   };
 
   return (
-    <div className="mt-14 max-w-3xl mx-auto">
+    <div className="mt-14 max-w-5xl mx-auto">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}

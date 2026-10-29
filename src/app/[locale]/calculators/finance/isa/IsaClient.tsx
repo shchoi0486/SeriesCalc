@@ -63,11 +63,11 @@ const IsaClient = ({ infoSection }: { infoSection: InfoSection }) => {
   )
 
   const resultSection = (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '만기 예상 수령액' : 'Maturity value'}</p><p className="text-2xl font-bold mt-1">{fmt(fv)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '총 납입 원금' : 'Total contributed'}</p><p className="text-2xl font-bold mt-1">{fmt(totalContrib)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '세후 이자' : 'After-tax interest'}</p><p className="text-2xl font-bold mt-1">{fmt(interest - tax)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '일반계좌 대비 절세' : 'Tax saved vs normal'}</p><p className="text-2xl font-bold mt-1">{fmt(savedVsNormal)}</p></div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '만기 예상 수령액' : 'Maturity value'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(fv)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '총 납입 원금' : 'Total contributed'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(totalContrib)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '세후 이자' : 'After-tax interest'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(interest - tax)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '일반계좌 대비 절세' : 'Tax saved vs normal'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(savedVsNormal)}</p></div>
     </div>
   )
 

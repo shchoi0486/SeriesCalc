@@ -80,7 +80,7 @@ const NewUnitConverter = ({ category }: { category: string }) => {
         {units.map(unit => (
           <div key={unit} className="flex items-center justify-start gap-2">
             <span className="text-right w-[120px] text-xs py-2 px-3 bg-muted rounded-md shadow-inner">{convertedValues[unit]?.toFixed(2) || ''}</span>
-            <span className="text-xs text-foreground whitespace-nowrap text-left font-bold">{unit}</span>
+            <span className="text-xs text-foreground text-left font-bold">{unit}</span>
           </div>
         ))}
       </div>

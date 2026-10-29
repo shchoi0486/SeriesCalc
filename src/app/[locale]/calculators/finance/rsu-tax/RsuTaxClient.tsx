@@ -48,13 +48,13 @@ const RsuTaxClient = ({ infoSection }: { infoSection: InfoSection }) => {
   )
 
   const resultSection = (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '총 과세 가치' : 'Total taxable value'}</p><p className="text-2xl font-bold mt-1">{fmt(gross)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '연방세' : 'Federal tax'}</p><p className="text-2xl font-bold mt-1">{fmt(fed)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '주세' : 'State tax'}</p><p className="text-2xl font-bold mt-1">{fmt(state)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">FICA</p><p className="text-2xl font-bold mt-1">{fmt(fica)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '총 세금' : 'Total tax'}</p><p className="text-2xl font-bold mt-1">{fmt(totalTax)}</p></div>
-      <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '세후 실수령액' : 'After-tax value'}</p><p className="text-2xl font-bold mt-1">{fmt(net)}</p></div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '총 과세 가치' : 'Total taxable value'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(gross)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '연방세' : 'Federal tax'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(fed)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '주세' : 'State tax'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(state)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">FICA</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(fica)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '총 세금' : 'Total tax'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(totalTax)}</p></div>
+      <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '세후 실수령액' : 'After-tax value'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(net)}</p></div>
     </div>
   )
 

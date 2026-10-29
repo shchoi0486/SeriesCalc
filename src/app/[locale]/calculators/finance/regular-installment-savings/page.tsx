@@ -87,7 +87,7 @@ export default function RegularInstallmentSavingsPage({
     ),
     usefulTips: (
       <div className="text-base leading-relaxed space-y-8">
-        <h2 className="text-2xl font-bold mt-10 mb-4">{isKo ? "💡 정기적금 200% 활용 가이드" : "💡 Getting the Most from Installment Savings"}</h2>
+        <h2 className="text-xl sm:text-2xl font-bold mt-1 tabular-nums0 mb-4">{isKo ? "💡 정기적금 200% 활용 가이드" : "💡 Getting the Most from Installment Savings"}</h2>
         <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
           <h3 className="font-bold text-lg text-primary">{isKo ? "1. '단리 vs 복리' 신화와 진실" : "1. Simple vs Compound — Myth and Truth"}</h3>
           <p className="mt-2">{isKo ? "흔히 복리는 무조건 좋다고 알려져 있지만, 1년 만기 정기적금에서는 단리와 월복리의 차이가 미미할 수 있습니다. 하지만 적금 기간이 길어지고 월 납입액이 커질수록 복리의 마법은 강력해집니다." : "Compound is often said to be always better, but for a 1-year installment plan the difference from simple interest is tiny. Over longer terms and larger deposits, however, compounding becomes powerful."}</p>

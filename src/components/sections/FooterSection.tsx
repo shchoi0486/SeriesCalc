@@ -14,7 +14,7 @@ const FooterSection: React.FC<FooterSectionProps> = ({ dict, locale }) => {
 
   return (
     <footer className="bg-card py-12 md:py-16 lg:py-10 mt-20 border-t border-border">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between lg:gap-16 mb-12">
         {/* 왼쪽 섹션 - 로고 */}
         <div className="lg:w-1/3 mb-8 lg:mb-0">

@@ -8,8 +8,8 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
   return {
     title: isKo ? "펌프 선정 가이드: 유량·양정·동력 읽는 법" : "Pump Selection Guide: How to Read Flow, Head and Power",
     description: isKo
-      ? "필요 유량과 전양정 구하는 법, 펌프 동력·효율 해석과 캐비테이션 회피 선정 순서를 정리했습니다."
-      : "How to find required flow and total head, interpret pump power and efficiency, and select against cavitation.",
+      ? "필요 유량과 전양정 구하는 법, 펌프 동력·효율 해석과 캐비테이션 회피 선정 순서를 정리했습니다. 성능곡선 읽는 법과 자주 하는 실수 포함."
+      : "How to find required flow and total head, interpret pump power and efficiency, and select against cavitation. Includes reading performance curves and common mistakes.",
   };
 }
 
@@ -38,6 +38,20 @@ export default function Page({ params }: { params: { locale: string } }) {
       a: L(
         "수동력은 물에 실제로 전달되는 동력(ρgQH)이고, 축동력은 펌프 효율을 나눈 모터가 내야 하는 동력입니다. 모터 정격은 축동력에 여유율(10~25%)을 더해 선정합니다.",
         "Hydraulic power (ρgQH) is what the water actually receives; shaft power divides by pump efficiency to give what the motor must deliver. Size the motor rating with a 10–25% margin over shaft power.",
+      ),
+    },
+    {
+      q: L("인버터(가변속)를 쓰면 어떤 장점이 있나요?", "What are the benefits of an inverter (VFD)?"),
+      a: L(
+        "유량 변화에 따라 회전수를 조절해 에너지 소비를 줄이고, 기동 전류를 낮추며, 캐비테이션 위험을 관리할 수 있습니다. 다만 고조파·EMI 대책이 필요합니다.",
+        "A VFD adjusts speed to match flow, saving energy, reducing inrush current and managing cavitation risk. Harmonics and EMI mitigation are required.",
+      ),
+    },
+    {
+      q: L("병렬·직렬 운전은 언제 쓰나요?", "When do I use parallel or series operation?"),
+      a: L(
+        "병렬은 유량을 늘릴 때, 직렬은 양정을 높일 때 사용합니다. 동일 펌프 여러 대로 구성하면 예비 운전과 부분 부하 효율 개선이 가능합니다.",
+        "Parallel boosts flow; series boosts head. Multiple identical pumps allow standby operation and better part-load efficiency.",
       ),
     },
   ];
@@ -89,6 +103,21 @@ export default function Page({ params }: { params: { locale: string } }) {
               "Parallel or series operation and inverter (speed) control handle flow variation. Preview how flow, head and power shift with speed via the affinity laws — check with the pump affinity calculator.",
             )}
           </p>
+          <p>
+            <Link href={`${base}/pump-affinity`} className="text-primary underline">{L("펌프 상사법칙 계산기", "Pump Affinity Calculator")}</Link>
+            {L(" · ", " · ")}
+            <Link href={`${base}/pump-curve`} className="text-primary underline">{L("펌프 성능곡선 계산기", "Pump Curve Calculator")}</Link>
+            .
+          </p>
+        </ProseSection>
+
+        <ProseSection title={L("전양정 구성 요소", "Components of total head")}>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>{L("실양정: 흡입면과 토출면의 높이 차", "Static head: elevation difference between suction and discharge")}</li>
+            <li>{L("마찰 손실: 배관·밸브·엘보의 마찰 수두 (Darcy-Weisbach)", "Friction loss: head loss in pipes, valves and fittings (Darcy-Weisbach)")}</li>
+            <li>{L("속도 수두: 유속에 의한 동압 (v²/2g)", "Velocity head: dynamic pressure from flow (v²/2g)")}</li>
+            <li>{L("말단 압력: 탱크·스프링클러 등 필요 압력", "End pressure: pressure required by tanks, sprinklers, etc.")}</li>
+          </ul>
         </ProseSection>
 
         <ProseSection title={L("자주 하는 실수", "Common mistakes")}>
@@ -96,19 +125,29 @@ export default function Page({ params }: { params: { locale: string } }) {
             <li>{L("마찰 손실 누락: 배관이 길수록 전양정의 절반 이상이 마찰일 수 있습니다.", "Ignoring friction losses: on long runs, friction can exceed half of total head.")}</li>
             <li>{L("단위 혼동: m³/h와 L/min, mAq와 kPa를 섞어 입력하면 선정이 통째로 틀어집니다.", "Mixing units: confusing m³/h with L/min or mAq with kPa ruins the whole selection.")}</li>
             <li>{L("여유 과다: 2배 펌프는 2배 전기요금이 아니라 그 이상이 될 수 있습니다.", "Excessive margin: a 2× pump can cost far more than 2× in electricity.")}</li>
+            <li>{L("NPSH 미검토: 캐비테이션으로 임펠러가 빠르게 손상됩니다.", "Skipping NPSH: cavitation rapidly damages the impeller.")}</li>
           </ul>
         </ProseSection>
 
         <ProseSection title={L("자주 묻는 질문", "Frequently Asked Questions")}>
           <div className="space-y-4">
             {faq.map((f, i) => (
-              <div key={i}>
+              <div key={i} className="rounded-xl border p-4">
                 <p className="font-semibold">{f.q}</p>
-                <p className="mt-1">{f.a}</p>
+                <p className="mt-2 text-muted-foreground">{f.a}</p>
               </div>
             ))}
           </div>
         </ProseSection>
+
+        <div className="rounded-xl border p-4 bg-muted/20">
+          <p className="text-sm text-muted-foreground">
+            {L(
+              "면책: 본 페이지의 예시와 설명은 일반적인 정보 제공 목적이며, 설계·시공 자문이 아닙니다. 실제 선정은 제조사 카탈로그와 현장 조건에 따릅니다.",
+              "Disclaimer: The examples and explanations here are for general information only and do not constitute design or construction advice. Actual selection follows manufacturer catalogs and site conditions.",
+            )}
+          </p>
+        </div>
 
         <AffiliateSlot placement="guide" />
       </ProsePage>

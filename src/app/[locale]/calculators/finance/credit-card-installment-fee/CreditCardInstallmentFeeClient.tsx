@@ -403,10 +403,10 @@ const CreditCardInstallmentFeeCalculator = ({ infoSection }: CreditCardInstallme
             <TableHeader>
               <TableRow>
                 <TableHead className="whitespace-nowrap w-[50px] text-xs">{isKo ? '회차' : 'Period'}</TableHead>
-                <TableHead className="text-right whitespace-nowrap">{isKo ? '원금' : 'Principal'}</TableHead>
-                <TableHead className="text-right whitespace-nowrap">{isKo ? '수수료' : 'Fee'}</TableHead>
-                <TableHead className="text-right whitespace-nowrap">{isKo ? '월 납부' : 'Monthly'}</TableHead>
-                <TableHead className="text-right whitespace-nowrap">{isKo ? '누적 상환' : 'Cumulative'}</TableHead>
+                <TableHead className="text-right">{isKo ? '원금' : 'Principal'}</TableHead>
+                <TableHead className="text-right">{isKo ? '수수료' : 'Fee'}</TableHead>
+                <TableHead className="text-right">{isKo ? '월 납부' : 'Monthly'}</TableHead>
+                <TableHead className="text-right">{isKo ? '누적 상환' : 'Cumulative'}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

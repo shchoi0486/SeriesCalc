@@ -8,8 +8,8 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
   return {
     title: isKo ? "예금·적금 이자 가이드: 단리·복리·세후 수령액 비교법" : "Savings Interest Guide: Simple vs Compound, After Tax",
     description: isKo
-      ? "같은 금리인데 수령액이 다른 이유. 단리·복리·월복리 차이와 세후 실수령액 계산법을 예시와 함께 정리했습니다."
-      : "Why the same rate pays differently — simple vs compound vs monthly compounding and after-tax returns, with examples.",
+      ? "같은 금리인데 수령액이 다른 이유. 단리·복리·월복리 차이와 세후 실수령액 계산법을 예시·표와 함께 정리했습니다."
+      : "Why the same rate pays differently — simple vs compound vs monthly compounding and after-tax returns, with examples and tables.",
   };
 }
 
@@ -38,6 +38,20 @@ export default function Page({ params }: { params: { locale: string } }) {
       a: L(
         "같은 표시 금리라면 월복리가 유리합니다. 다만 표시 금리가 다른 상품끼리는 총이자를 직접 비교해야 합니다. 월복리 적금 계산기와 일반 적금 계산기에 같은 납입 조건을 넣고 세후 수령액을 비교하세요.",
         "At the same advertised rate, monthly compounding wins. But across different advertised rates you must compare total interest head-to-head — run identical contributions in both calculators and judge after-tax maturity values.",
+      ),
+    },
+    {
+      q: L("예금과 적금 중 어느 쪽이 더 유리한가요?", "Which is better, a deposit or installment savings?"),
+      a: L(
+        "목돈이 있으면 예금이 유리하고, 매달 모으는 구조라면 적금이 맞습니다. 같은 금리·기간이라면 예금이 이자 기준점이 높아 총이자가 더 큽니다.",
+        "A lump sum favors a term deposit; monthly saving favors installment plans. At the same rate and term, deposits earn more interest because the principal is larger throughout.",
+      ),
+    },
+    {
+      q: L("우대금리 조건은 어떻게 확인하나요?", "How do I check bonus-rate conditions?"),
+      a: L(
+        "카드 사용 실적, 급여이체, 자동이체 등 조건을 충족해야 우대금리가 적용됩니다. 미달성 시 기본 금리로 계산되므로, 기본 금리 기준으로 먼저 비교한 뒤 우대조건을 더해 최종 수령액을 계산하세요.",
+        "Bonus rates require meeting conditions like card spending or payroll transfer. If unmet, the base rate applies — compare on the base rate first, then add bonus conditions for the final figure.",
       ),
     },
   ];
@@ -77,6 +91,37 @@ export default function Page({ params }: { params: { locale: string } }) {
           </p>
         </ProseSection>
 
+        <ProseSection title={L("1,000만원 3년 예시", "A 10M KRW, 3-year example")}>
+          <div className="overflow-x-auto mt-3">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-muted/60">
+                  <th className="border p-2 text-left">{L("방식", "Method")}</th>
+                  <th className="border p-2 text-right">{L("세전 이자", "Gross interest")}</th>
+                  <th className="border p-2 text-right">{L("세후 이자", "After-tax")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td className="border p-2">{L("단리 (연 4%)", "Simple (4%/yr)")}</td><td className="border p-2 text-right">1,200,000원</td><td className="border p-2 text-right">1,015,200원</td></tr>
+                <tr className="bg-muted/20"><td className="border p-2">{L("연복리 (연 4%)", "Annual compound (4%/yr)")}</td><td className="border p-2 text-right">1,248,640원</td><td className="border p-2 text-right">1,056,350원</td></tr>
+                <tr><td className="border p-2">{L("월복리 (연 4%)", "Monthly compound (4%/yr)")}</td><td className="border p-2 text-right">1,268,242원</td><td className="border p-2 text-right">1,072,933원</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            {L(
+              "* 단순화된 예시입니다. 실제 수령액은 세금·우대금리·중도해지 이자율에 따라 달라집니다.",
+              "* Simplified example; actual proceeds vary with taxes, bonus rates and early-withdrawal penalties.",
+            )}
+          </p>
+          <p>
+            {L(
+              "같은 표시 금리 4%라도 월복리가 단리보다 약 6.8만원 더 받습니다. 기간이 길어질수록 격차는 눈덩이처럼 커집니다.",
+              "At the same 4% advertised rate, monthly compounding pays about 68K more than simple over 3 years. The gap snowballs over longer terms.",
+            )}
+          </p>
+        </ProseSection>
+
         <ProseSection title={L("세후 실수령액 계산법", "Computing after-tax returns")}>
           <p>
             {L(
@@ -113,6 +158,7 @@ export default function Page({ params }: { params: { locale: string } }) {
             <li>{L("목표 기간 확정: 1년 이내 단기라면 세후 단기 금리 순으로, 3년 이상이면 복리 효과가 큰 상품 순으로 봅니다.", "Fix the horizon: for under a year rank by short-term after-tax rates; for 3+ years rank by compounding power.")}</li>
             <li>{L("납입 방식 매칭: 목돈이 있으면 예금, 매달 모으면 적금. 자유적금은 목표 금액에서 역산해 월 납입액을 정하세요.", "Match the deposit style: lump sums go to term deposits, monthly savers to installment plans. For flexible goals, back-calculate the monthly amount from the target.")}</li>
             <li>{L("우대조건 현실성: 카드 실적·급여이체 같은 우대조건을 실제 달성 가능한지 따지고, 미달성 시 기본 금리로 비교하세요.", "Check bonus-rate realism: judge by the base rate if you cannot reliably meet card-spending or payroll conditions.")}</li>
+            <li>{L("중도해지 이자율 확인: 긴급 인출 시 이자 삭감 폭이 큰 상품은 피하세요.", "Check early-withdrawal penalties: avoid products with steep interest cuts on early withdrawal.")}</li>
           </ul>
           <p>
             <Link href={`${base}/free-installment-savings`} className="text-primary underline">{L("자유적금 계산기", "Flexible Savings Calculator")}</Link>
@@ -125,13 +171,22 @@ export default function Page({ params }: { params: { locale: string } }) {
         <ProseSection title={L("자주 묻는 질문", "Frequently Asked Questions")}>
           <div className="space-y-4">
             {faq.map((f, i) => (
-              <div key={i}>
+              <div key={i} className="rounded-xl border p-4">
                 <p className="font-semibold">{f.q}</p>
-                <p className="mt-1">{f.a}</p>
+                <p className="mt-2 text-muted-foreground">{f.a}</p>
               </div>
             ))}
           </div>
         </ProseSection>
+
+        <div className="rounded-xl border p-4 bg-muted/20">
+          <p className="text-sm text-muted-foreground">
+            {L(
+              "면책: 본 페이지의 예시와 설명은 일반적인 정보 제공 목적이며, 금융·세무 자문이 아닙니다. 실제 수령액은 금융기관 약관과 세법에 따릅니다.",
+              "Disclaimer: The examples and explanations here are for general information only and do not constitute financial or tax advice. Actual proceeds follow your bank's terms and tax law.",
+            )}
+          </p>
+        </div>
 
         <AffiliateSlot placement="guide" />
       </ProsePage>

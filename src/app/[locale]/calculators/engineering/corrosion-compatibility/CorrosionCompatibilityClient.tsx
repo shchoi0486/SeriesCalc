@@ -1214,7 +1214,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                         const firstResult = compatibilityResults[0];
                         if (firstResult && firstResult.chemicalNames) {
                           return firstResult.chemicalNames.map((chemName, idx) => (
-                            <th key={idx} className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider whitespace-nowrap">
+                            <th key={idx} className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
                               {chemName} {t.concentration}
                             </th>
                           ));
@@ -1223,13 +1223,13 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
 
                       // 2개 화학물질인 경우 (기존 로직)
                       return chemicalParts.map((chemName, idx) => (
-                            <th key={idx} className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider whitespace-nowrap">
+                            <th key={idx} className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
                               {chemName} {isKo ? '농도' : 'concentration'}
                             </th>
                       ));
                     })()
                   ) : (
-                    <th className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider whitespace-nowrap">
+                    <th className="px-4 py-2 text-center text-sm font-semibold text-black uppercase tracking-wider">
                       {t.concentration}
                     </th>
                   )}
@@ -1263,7 +1263,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             if (result.chemicalCount && result.chemicalCount >= 3 && result.concentrations) {
                               // 3개 이상의 화학물질인 경우 실제 데이터 사용
                               return result.concentrations.map((conc, idx) => (
-                                <td key={idx} className="px-3 py-1 text-sm text-black whitespace-nowrap text-center">
+                                <td key={idx} className="px-3 py-1 text-sm text-black text-center">
                                   {conc}
                                 </td>
                               ));
@@ -1271,10 +1271,10 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                               // 2개 화학물질인 경우 (기존 로직)
                               return (
                                 <>
-                                  <td className="px-3 py-1 text-sm text-black whitespace-nowrap text-center">
+                                  <td className="px-3 py-1 text-sm text-black text-center">
                                     {result.concentration1}
                                   </td>
-                                  <td className="px-3 py-1 text-sm text-black whitespace-nowrap text-center">
+                                  <td className="px-3 py-1 text-sm text-black text-center">
                                     {result.concentration2}
                                   </td>
                                 </>
@@ -1282,7 +1282,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             }
                           })()
                         ) : (
-                          <td className="px-3 py-1 text-sm text-black whitespace-nowrap text-center">
+                          <td className="px-3 py-1 text-sm text-black text-center">
                             {result.concentration}
                           </td>
                         )}
@@ -1524,7 +1524,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                           if (result.chemicalCount && result.chemicalCount >= 3 && result.concentrations) {
                             // 3개 이상의 화학물질인 경우 실제 데이터 사용
                             return result.concentrations.map((conc, idx) => (
-                              <td key={idx} className="min-w-[80px] px-2 py-1 text-sm text-black whitespace-nowrap text-center">
+                              <td key={idx} className="min-w-[80px] px-2 py-1 text-sm text-black text-center">
                                 {conc}
                               </td>
                             ));
@@ -1532,10 +1532,10 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                             // 2개 화학물질인 경우 (기존 로직)
                             return (
                               <>
-                                <td className="min-w-[80px] px-2 py-1 text-sm text-black whitespace-nowrap text-center">
+                                <td className="min-w-[80px] px-2 py-1 text-sm text-black text-center">
                                   {result.concentration1}
                                 </td>
-                                <td className="min-w-[80px] px-2 py-1 text-sm text-black whitespace-nowrap text-center">
+                                <td className="min-w-[80px] px-2 py-1 text-sm text-black text-center">
                                   {result.concentration2}
                                 </td>
                               </>
@@ -1543,7 +1543,7 @@ const CorrosionCompatibility: React.FC<CorrosionCompatibilityProps> = () => {
                           }
                         })()
                       ) : (
-                        <td className="min-w-[80px] px-2 py-1 text-sm text-black whitespace-nowrap text-center">
+                        <td className="min-w-[80px] px-2 py-1 text-sm text-black text-center">
                           {result.concentration}
                         </td>
                       )}

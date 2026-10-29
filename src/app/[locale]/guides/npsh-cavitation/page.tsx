@@ -8,8 +8,8 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
   return {
     title: isKo ? "NPSH·캐비테이션 가이드: 펌프가 망가지는 이유와 방지법" : "NPSH & Cavitation Guide: Why Pumps Fail and How to Prevent It",
     description: isKo
-      ? "NPSHa·NPSHr의 의미, 캐비테이션 발생 원리와 소음·진동·침식 방지 대책을 계산 예시와 함께 정리했습니다."
-      : "NPSHa vs NPSHr, why cavitation happens, and how to prevent noise, vibration and erosion — with worked examples.",
+      ? "NPSHa·NPSHr의 의미, 캐비테이션 발생 원리와 소음·진동·침식 방지 대책을 계산 예시와 함께 정리했습니다. NPSH 공식과 여유 기준 포함."
+      : "NPSHa vs NPSHr, why cavitation happens, and how to prevent noise, vibration and erosion — with formulas, margins and examples.",
   };
 }
 
@@ -40,6 +40,20 @@ export default function Page({ params }: { params: { locale: string } }) {
         "Friction loss scales roughly with velocity squared, so a larger bore drops velocity sharply, cutting head loss Hl and raising NPSHa. Compare diameters in the pipe friction calculator.",
       ),
     },
+    {
+      q: L("NPSHa와 NPSHr이 같으면 안전한가요?", "Is it safe when NPSHa equals NPSHr?"),
+      a: L(
+        "아닙니다. 0 여유는 캐비테이션 발생 직전 상태입니다. 실무에서는 최소 0.5~1.0m, 고온·휘발성 유체는 1.3배 이상의 여유를 권장합니다.",
+        "No — zero margin means cavitation is imminent. Practice recommends at least 0.5–1.0 m, or 1.3× or more for hot or volatile fluids.",
+      ),
+    },
+    {
+      q: L("증기압은 어디서 구하나요?", "Where do I get vapor pressure?"),
+      a: L(
+        "물은 온도별 증기압 표(또는 Antoine 식)로 구하고, 기타 유체는 제조사 데이터시트를 사용합니다. 물 밀도 계산기 페이지의 참고값도 활용할 수 있습니다.",
+        "For water, use vapor-pressure tables by temperature (or the Antoine equation); for other fluids, use manufacturer datasheets. The water density calculator page lists useful reference values.",
+      ),
+    },
   ];
 
   const jsonLd = {
@@ -67,7 +81,22 @@ export default function Page({ params }: { params: { locale: string } }) {
             )}
           </p>
           <p>
+            {L(
+              "NPSH 계산식: NPSHa = (P₀ − Pᵥ)/ρg + hₛ − hₗ",
+              "NPSH formula: NPSHa = (P₀ − Pᵥ)/ρg + hₛ − hₗ",
+            )}
+          </p>
+          <ul className="list-disc pl-5 space-y-1 text-sm">
+            <li><strong>P₀</strong> — {L("흡입 탱크 표면 압력 (대기압 또는 가압)", "Pressure on the suction-tank surface (atmospheric or pressurized)")}</li>
+            <li><strong>Pᵥ</strong> — {L("액체의 증기압 (온도 의존)", "Fluid vapor pressure (temperature-dependent)")}</li>
+            <li><strong>ρg</strong> — {L("액체의 비중량", "Specific weight of the fluid")}</li>
+            <li><strong>hₛ</strong> — {L("액면에서 펌프 중심까지의 높이 (양수=양정)", "Elevation from liquid surface to pump center (positive = lift)")}</li>
+            <li><strong>hₗ</strong> — {L("흡입 배관의 마찰·국부 손실 수두", "Friction and minor losses in the suction line")}</li>
+          </ul>
+          <p>
             <Link href={`${base}/npsh`} className="text-primary underline">NPSH {L("계산기", "Calculator")}</Link>
+            {L(" · ", " · ")}
+            <Link href={`${base}/pipe-friction`} className="text-primary underline">{L("배관 마찰 계산기", "Pipe Friction Calculator")}</Link>
             {L(" · ", " · ")}
             <Link href={`${base}/pump-power`} className="text-primary underline">{L("펌프 동력 계산기", "Pump Power Calculator")}</Link>
             .
@@ -81,7 +110,23 @@ export default function Page({ params }: { params: { locale: string } }) {
               "When suction pressure falls below the fluid's vapor pressure at that temperature, bubbles form and then collapse violently as pressure recovers in the impeller. Repeated collapse causes noise, vibration and efficiency loss — and eventually pits and destroys the impeller and casing.",
             )}
           </p>
-          <ul className="list-disc pl-5 space-y-2">
+          <div className="overflow-x-auto mt-3">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-muted/60">
+                  <th className="border p-2 text-left">{L("원인", "Cause")}</th>
+                  <th className="border p-2 text-left">{L("영향", "Effect on NPSHa")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td className="border p-2">{L("고온 유체", "Hot fluid")}</td><td className="border p-2">{L("증기압 상승 → NPSHa 감소", "Vapor pressure rises → NPSHa drops")}</td></tr>
+                <tr className="bg-muted/20"><td className="border p-2">{L("흡입 양정 과다", "Excess suction lift")}</td><td className="border p-2">{L("위치 수두 마이너스 → NPSHa 감소", "Position head negative → NPSHa drops")}</td></tr>
+                <tr><td className="border p-2">{L("흡입 배관 손실", "Suction-line loss")}</td><td className="border p-2">{L("마찰 손실 증가 → NPSHa 감소", "Friction loss rises → NPSHa drops")}</td></tr>
+                <tr className="bg-muted/20"><td className="border p-2">{L("흡입 탱크 저압", "Low tank pressure")}</td><td className="border p-2">{L("P₀ 감소 → NPSHa 감소", "P₀ drops → NPSHa drops")}</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <ul className="list-disc pl-5 space-y-2 mt-2">
             <li>{L("고온 유체: 온도가 오르면 증기압이 급상승해 NPSHa가 줄어듭니다.", "Hot fluids: higher temperature sharply raises vapor pressure, shrinking NPSHa.")}</li>
             <li>{L("흡입 양정 과다: 펌프보다 액면이 낮으면 위치 수두가 마이너스로 작용합니다.", "Excess suction lift: a liquid level below the pump subtracts position head.")}</li>
             <li>{L("흡입 배관 손실: 가늘고 긴 배관, 밸브·엘보가 많은 배치는 Hl을 키웁니다.", "Suction-line losses: thin, long runs with many valves and elbows raise Hl.")}</li>
@@ -96,9 +141,9 @@ export default function Page({ params }: { params: { locale: string } }) {
             <li>{L("여유 있게 선정: NPSHr이 작은 펌프를 고르고 운전점은 최고효율점 근처로 맞추세요.", "Select with margin: pick pumps with small NPSHr and operate near the best-efficiency point.")}</li>
           </ul>
           <p>
-            <Link href={`${base}/pipe-friction`} className="text-primary underline">{L("배관 마찰 계산기", "Pipe Friction Calculator")}</Link>
-            {L(" · ", " · ")}
             <Link href={`${base}/water-density`} className="text-primary underline">{L("물 밀도 계산기", "Water Density Calculator")}</Link>
+            {L(" · ", " · ")}
+            <Link href={`${base}/pump-affinity`} className="text-primary underline">{L("펌프 상사법칙 계산기", "Pump Affinity Calculator")}</Link>
             .
           </p>
         </ProseSection>
@@ -106,13 +151,22 @@ export default function Page({ params }: { params: { locale: string } }) {
         <ProseSection title={L("자주 묻는 질문", "Frequently Asked Questions")}>
           <div className="space-y-4">
             {faq.map((f, i) => (
-              <div key={i}>
+              <div key={i} className="rounded-xl border p-4">
                 <p className="font-semibold">{f.q}</p>
-                <p className="mt-1">{f.a}</p>
+                <p className="mt-2 text-muted-foreground">{f.a}</p>
               </div>
             ))}
           </div>
         </ProseSection>
+
+        <div className="rounded-xl border p-4 bg-muted/20">
+          <p className="text-sm text-muted-foreground">
+            {L(
+              "면책: 본 페이지의 예시와 설명은 일반적인 정보 제공 목적이며, 설계·시공 자문이 아닙니다. 실제 선정은 제조사 카탈로그와 현장 조건에 따릅니다.",
+              "Disclaimer: The examples and explanations here are for general information only and do not constitute design or construction advice. Actual selection follows manufacturer catalogs and site conditions.",
+            )}
+          </p>
+        </div>
 
         <AffiliateSlot placement="guide" />
       </ProsePage>

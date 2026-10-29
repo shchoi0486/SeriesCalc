@@ -13,6 +13,7 @@ import { notFound } from "next/navigation";
 import SiteStructuredData from "@/components/seo/SiteStructuredData";
 import HrefLangTags from "@/components/seo/HrefLangTags";
 import CookieConsent from "@/components/layout/CookieConsent";
+import FooterSection from "@/components/sections/FooterSection";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-DRNNY830QB";
 const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "ca-pub-7279511347629270";
@@ -93,6 +94,7 @@ export default function LocaleLayout({
         <Script
           id="consent-mode-v2"
           strategy="beforeInteractive"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{'ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','analytics_storage':'denied','wait_for_update':500},{'region':[${EEA_REGIONS.map((r) => `'${r}'`).join(',')}]});`,
           }}
@@ -126,6 +128,9 @@ export default function LocaleLayout({
               {children}
             </I18nProvider>
           </Layout>
+          <I18nProvider locale={locale} dict={dict}>
+            <FooterSection dict={dict} locale={locale} />
+          </I18nProvider>
           <CookieConsent locale={locale} />
           <Toaster richColors closeButton />
         </Providers>

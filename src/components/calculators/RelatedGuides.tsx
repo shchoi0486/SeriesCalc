@@ -55,14 +55,14 @@ export default function RelatedGuides() {
         <BookOpen className="w-5 h-5" />
         {isKo ? '함께 읽으면 좋은 가이드' : 'Guides to read next'}
       </h2>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 auto-rows-fr">
         {guides.slice(0, 4).map((g) => (
-          <li key={g.slug}>
+          <li key={g.slug} className="w-full min-w-0">
             <Link
               href={`/${locale}/guides/${g.slug}`}
-              className="flex items-center justify-between rounded-lg border px-4 py-2.5 text-sm hover:bg-accent transition-colors"
+              className="flex h-full w-full items-center justify-between rounded-lg border px-4 py-2.5 text-sm hover:bg-accent transition-colors"
             >
-              <span className="min-w-0 truncate">{isKo ? g.ko : g.en}</span>
+              <span className="min-w-0 truncate break-words [overflow-wrap:anywhere]">{isKo ? g.ko : g.en}</span>
               <span className="text-muted-foreground ml-2 shrink-0">→</span>
             </Link>
           </li>

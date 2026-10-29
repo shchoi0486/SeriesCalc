@@ -52,10 +52,10 @@ const CreditCardPayoffClient = ({ infoSection }: { infoSection: InfoSection }) =
       {base.months === Infinity && (
         <p className="text-sm text-destructive">{isKo ? '월 납부액이 발생 이자보다 작아 원금이 줄어들지 않습니다. 납부액을 늘리세요.' : 'Payment is below the monthly interest; increase it to pay off the balance.'}</p>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '상환 기간(현재)' : 'Payoff time (current)'}</p><p className="text-2xl font-bold mt-1">{base.months === Infinity ? '∞' : base.months + (isKo ? '개월' : ' mo')}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '총 이자(현재)' : 'Total interest (current)'}</p><p className="text-2xl font-bold mt-1">{fmt(base.interest)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '추가 납부 시 절약 이자' : 'Interest saved w/ extra'}</p><p className="text-2xl font-bold mt-1">{extra > 0 && withExtra.interest < base.interest ? fmt(base.interest - withExtra.interest) : fmt(0)}</p></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '상환 기간(현재)' : 'Payoff time (current)'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{base.months === Infinity ? '∞' : base.months + (isKo ? '개월' : ' mo')}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '총 이자(현재)' : 'Total interest (current)'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(base.interest)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '추가 납부 시 절약 이자' : 'Interest saved w/ extra'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{extra > 0 && withExtra.interest < base.interest ? fmt(base.interest - withExtra.interest) : fmt(0)}</p></div>
       </div>
       <p className="text-xs text-muted-foreground">
         {isKo ? '※ 리볼빙 최소 납부만 하면 이자 폭탄이 발생합니다. 가능한 한 잔액의 2~3% 이상을 꾸준히 갚으세요.' : '※ Paying only the minimum triggers a compounding interest spiral. Pay more than the minimum whenever possible.'}

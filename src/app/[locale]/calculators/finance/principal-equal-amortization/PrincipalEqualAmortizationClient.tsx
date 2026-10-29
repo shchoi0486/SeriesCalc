@@ -209,10 +209,10 @@ export default function PrincipalEqualAmortizationCalculator() {
               {calculationResults.repaymentSchedule.map((data: RepaymentDetail) => (
                 <TableRow key={data.month}>
                   <TableCell className="whitespace-nowrap w-[60px]">{data.month}</TableCell>
-                  <TableCell className="text-right whitespace-nowrap">{formatNumber(data.principalPayment)}</TableCell>
-                  <TableCell className="text-right whitespace-nowrap">{formatNumber(data.interestPayment)}</TableCell>
-                  <TableCell className="text-right whitespace-nowrap">{formatNumber(data.totalPayment)}</TableCell>
-                  <TableCell className="text-right whitespace-nowrap">{formatNumber(data.remainingBalance)}</TableCell>
+                  <TableCell className="text-right">{formatNumber(data.principalPayment)}</TableCell>
+                  <TableCell className="text-right">{formatNumber(data.interestPayment)}</TableCell>
+                  <TableCell className="text-right">{formatNumber(data.totalPayment)}</TableCell>
+                  <TableCell className="text-right">{formatNumber(data.remainingBalance)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

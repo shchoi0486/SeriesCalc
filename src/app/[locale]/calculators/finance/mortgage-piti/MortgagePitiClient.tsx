@@ -62,13 +62,13 @@ const MortgagePitiClient = ({ infoSection }: { infoSection: InfoSection }) => {
   const resultSection = (
     <div className="space-y-4">
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '월 PITI 합계' : 'Monthly PITI'}</p><p className="text-2xl font-bold mt-1">{fmt(piti)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '원리금(PI)' : 'Principal & Interest'}</p><p className="text-2xl font-bold mt-1">{fmt(monthlyPI)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '재산세' : 'Property tax'}</p><p className="text-2xl font-bold mt-1">{fmt(monthlyTax)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '주택보험' : 'Home insurance'}</p><p className="text-2xl font-bold mt-1">{fmt(monthlyIns)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">PMI</p><p className="text-2xl font-bold mt-1">{fmt(monthlyPmi)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '총 이자 지출' : 'Total interest'}</p><p className="text-2xl font-bold mt-1">{fmt(totalInterest)}</p></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '월 PITI 합계' : 'Monthly PITI'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(piti)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '원리금(PI)' : 'Principal & Interest'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(monthlyPI)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '재산세' : 'Property tax'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(monthlyTax)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '주택보험' : 'Home insurance'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(monthlyIns)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">PMI</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(monthlyPmi)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '총 이자 지출' : 'Total interest'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(totalInterest)}</p></div>
       </div>
       <p className="text-xs text-muted-foreground">
         {isKo ? '※ LTV(대출비율)가 80%를 초과하면 PMI가 추가되며, 통상 20% 이상 equity 확보 시 취소됩니다. 수치는 추정치입니다.' : '※ PMI applies when LTV exceeds 80% and typically cancels once you reach 20% equity. Figures are estimates.'}

@@ -282,11 +282,11 @@ const LoanInterestCalculator = ({ infoSection }: LoanInterestCalculatorProps) =>
           <TableBody>
             {activeData.repaymentSchedule.map((item) => (
               <TableRow key={item.month}>
-                <TableCell className="px-1 text-center whitespace-nowrap w-[35px] text-xs">{item.month}</TableCell>
-                <TableCell className="px-1 text-center whitespace-nowrap min-w-[65px] text-xs">{formatCurrency(item.totalPayment)}</TableCell>
-                <TableCell className="px-1 text-center whitespace-nowrap min-w-[65px] text-xs">{formatCurrency(item.principalPayment)}</TableCell>
-                <TableCell className="px-1 text-center whitespace-nowrap min-w-[65px] text-xs">{formatCurrency(item.interestPayment)}</TableCell>
-                <TableCell className="px-1 text-center whitespace-nowrap min-w-[85px] text-xs">{formatCurrency(item.remainingBalance)}</TableCell>
+                <TableCell className="px-1 text-center w-[35px] text-xs">{item.month}</TableCell>
+                <TableCell className="px-1 text-center min-w-[65px] text-xs">{formatCurrency(item.totalPayment)}</TableCell>
+                <TableCell className="px-1 text-center min-w-[65px] text-xs">{formatCurrency(item.principalPayment)}</TableCell>
+                <TableCell className="px-1 text-center min-w-[65px] text-xs">{formatCurrency(item.interestPayment)}</TableCell>
+                <TableCell className="px-1 text-center min-w-[85px] text-xs">{formatCurrency(item.remainingBalance)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

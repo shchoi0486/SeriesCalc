@@ -58,7 +58,10 @@ const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<typeof allCalculators>([]);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [navVisible, setNavVisible] = useState(true);
   const searchRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+  const isTransitioning = useRef(false);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -94,13 +97,52 @@ const Header: React.FC = () => {
     };
   }, [searchRef]);
 
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const current = window.scrollY;
+        if (isTransitioning.current) {
+          lastScrollY.current = current;
+          ticking = false;
+          return;
+        }
+        if (current < 120) {
+          if (!navVisible) {
+            setNavVisible(true);
+            isTransitioning.current = true;
+            setTimeout(() => { isTransitioning.current = false; }, 350);
+          }
+        } else if (current - lastScrollY.current > 12) {
+          if (navVisible) {
+            setNavVisible(false);
+            isTransitioning.current = true;
+            setTimeout(() => { isTransitioning.current = false; }, 350);
+          }
+        } else if (lastScrollY.current - current > 12) {
+          if (!navVisible) {
+            setNavVisible(true);
+            isTransitioning.current = true;
+            setTimeout(() => { isTransitioning.current = false; }, 350);
+          }
+        }
+        lastScrollY.current = current;
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [navVisible]);
+
   const handleResultClick = () => {
     setSearchQuery('');
     setIsSearchFocused(false);
   };
 
   return (
-    <header className="bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 z-40 w-full border-b">
+    <header className="sticky top-0 z-50 bg-background w-full border-b">
       {/* Top row: Logo, Search, Icons */}
       <div className="container mx-auto flex h-20 items-center justify-between px-4">
         {/* Logo */}
@@ -165,16 +207,22 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom row: Navigation */}
-      <div className="border-t">
-        <nav className="container mx-auto flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 sm:gap-5 py-2.5">
+      {/* Bottom row: Navigation (hides on scroll down, shows on scroll up) */}
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+          navVisible ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className={`border-t transition-opacity duration-300 ease-in-out ${navVisible ? 'opacity-100' : 'opacity-0'}`}>
+            <nav className="container mx-auto flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 sm:gap-5 py-2.5">
           {navigation.map((item) => {
             const isActive = pathname?.startsWith(`${localePrefix}${item.href}`);
             return (
               <Link
                 key={item.name}
                 href={`${localePrefix}${item.href}`}
-                className={`relative shrink-0 whitespace-nowrap text-base font-semibold tracking-tight px-3 sm:px-4 py-2 rounded-lg transition-all ${
+                className={`relative shrink-0 text-base font-semibold tracking-tight px-3 sm:px-4 py-2 rounded-lg transition-all ${
                   isActive
                     ? 'bg-primary text-primary-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -186,7 +234,9 @@ const Header: React.FC = () => {
           })}
         </nav>
       </div>
-
+      </div>
+      </div>
+ 
       {/* Mobile: Search bar below nav */}
       <div className="sm:hidden border-t" data-search-container>
         <div className="container mx-auto px-4 py-2.5">

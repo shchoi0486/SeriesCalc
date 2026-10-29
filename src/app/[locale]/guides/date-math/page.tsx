@@ -8,8 +8,8 @@ export function generateMetadata({ params }: { params: { locale: string } }): Me
   return {
     title: isKo ? "날짜 계산 가이드: 디데이·만나이·기념일 세는 법" : "Date Math Guide: D-Days, International Age and Anniversaries",
     description: isKo
-      ? "두 날짜 사이 일수, 만나이·세는나이 변환, 기념일·디데이 계산의 헷갈리는 기준을 정리했습니다."
-      : "Days between dates, counting vs international age, and the confusing rules behind anniversaries and D-days.",
+      ? "두 날짜 사이 일수, 만나이·세는나이 변환, 기념일·디데이 계산의 헷갈리는 기준과 자주 쓰는 기간표를 정리했습니다."
+      : "Days between dates, counting vs international age, common period tables, and the confusing rules behind anniversaries and D-days.",
   };
 }
 
@@ -40,6 +40,20 @@ export default function Page({ params }: { params: { locale: string } }) {
         "Legal interpretation often excludes the start day: a one-year term starting March 1 ends at the end of next February. When disputes are possible, the contract wording wins.",
       ),
     },
+    {
+      q: L("윤년은 날짜 계산에 어떻게 영향을 주나요?", "How do leap years affect date math?"),
+      a: L(
+        "2월 29일을 걸치는 기간은 하루가 추가됩니다. 4년마다 한 번(세기년은 400으로 나누어떨어질 때만) 윤년이므로, 장기 계약·대출 기간 계산 시 반드시 확인해야 합니다.",
+        "Periods crossing February 29 gain a day. Leap years occur every 4 years (century years only when divisible by 400), so long-term contracts and loans must account for them.",
+      ),
+    },
+    {
+      q: L("시간대가 다른 일정은 어떻게 계산하나요?", "How do I handle events across time zones?"),
+      a: L(
+        "출발지와 도착지 시간대를 각각 입력해 UTC 기준으로 변환한 뒤 일수를 셉니다. 비행기·화상회의처럼 날짜가 바뀌는 경우가 많으니 도착지 현지 날짜를 기준으로 D-day를 정하세요.",
+        "Convert both departure and arrival to UTC, then count days. Flights and video calls often cross midnight — set D-day based on the destination's local date.",
+      ),
+    },
   ];
 
   const jsonLd = {
@@ -66,6 +80,28 @@ export default function Page({ params }: { params: { locale: string } }) {
               "For projects, tenure or remaining leases, first fix whether the start day counts and whether weekends and holidays are excluded. Business-day and calendar-day counts diverge by several days within a single month.",
             )}
           </p>
+          <div className="overflow-x-auto mt-3">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-muted/60">
+                  <th className="border p-2 text-left">{L("기준", "Basis")}</th>
+                  <th className="border p-2 text-left">{L("설명", "Description")}</th>
+                  <th className="border p-2 text-right">{L("예시 (3/1~3/31)", "Example (Mar 1–31)")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td className="border p-2">{L("달력일", "Calendar days")}</td><td className="border p-2">{L("모든 날짜 포함", "All days included")}</td><td className="border p-2 text-right">31일</td></tr>
+                <tr className="bg-muted/20"><td className="border p-2">{L("영업일", "Business days")}</td><td className="border p-2">{L("주말 제외", "Weekends excluded")}</td><td className="border p-2 text-right">23일</td></tr>
+                <tr><td className="border p-2">{L("근무일", "Working days")}</td><td className="border p-2">{L("주말·공휴일 제외", "Weekends & holidays excluded")}</td><td className="border p-2 text-right">21~22일</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-muted-foreground mt-2">
+            {L(
+              "* 공휴일 수는 연도·국가에 따라 다릅니다. 한국 공휴일은 휴일 달력 페이지에서 확인하세요.",
+              "* Holiday counts vary by year and country. Check the holiday calendar page for Korean holidays.",
+            )}
+          </p>
           <p>
             <Link href={`${base}/date-difference`} className="text-primary underline">{L("날짜 차이 계산기", "Date Difference Calculator")}</Link>
             {L(" · ", " · ")}
@@ -81,6 +117,21 @@ export default function Page({ params }: { params: { locale: string } }) {
               "Legal and administrative standards use international age; anniversaries count elapsed months or years from the wedding or first day. A 1st anniversary is the same month-day one year later, while 100-day counts often treat the start as day 1 — align the rule with the other party.",
             )}
           </p>
+          <div className="overflow-x-auto mt-3">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-muted/60">
+                  <th className="border p-2 text-left">{L("나이 구분", "Age type")}</th>
+                  <th className="border p-2 text-left">{L("계산 방식", "How it's counted")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td className="border p-2">{L("만나이", "International age")}</td><td className="border p-2">{L("생일이 지난 횟수", "Number of birthdays passed")}</td></tr>
+                <tr className="bg-muted/20"><td className="border p-2">{L("세는나이", "Counting age")}</td><td className="border p-2">{L("태어난 해 1살 + 매년 1월 1일 +1", "1 at birth year, +1 every Jan 1")}</td></tr>
+                <tr><td className="border p-2">{L("연 나이", "Year age")}</td><td className="border p-2">{L("올해 연도 − 출생 연도", "Current year − birth year")}</td></tr>
+              </tbody>
+            </table>
+          </div>
           <p>
             <Link href={`${base}/korean-age`} className="text-primary underline">{L("만나이 계산기", "Korean Age Calculator")}</Link>
             {L(" · ", " · ")}
@@ -89,11 +140,22 @@ export default function Page({ params }: { params: { locale: string } }) {
           </p>
         </ProseSection>
 
+        <ProseSection title={L("자주 쓰는 기간 환산", "Common period conversions")}>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>{L("1년 = 365일 (윤년 366일)", "1 year = 365 days (366 in a leap year)")}</li>
+            <li>{L("1개월 ≈ 30.4일 (평균)", "1 month ≈ 30.4 days (average)")}</li>
+            <li>{L("1주 = 7일", "1 week = 7 days")}</li>
+            <li>{L("1분기 = 90~92일", "1 quarter = 90–92 days")}</li>
+            <li>{L("100일 = 약 3개월 10일", "100 days ≈ 3 months 10 days")}</li>
+          </ul>
+        </ProseSection>
+
         <ProseSection title={L("실수 방지 체크리스트", "Mistake-proof checklist")}>
           <ul className="list-disc pl-5 space-y-2">
             <li>{L("윤년 확인: 2월 29일을 걸치는 기간은 하루가 추가됩니다.", "Check leap years: periods crossing February 29 gain a day.")}</li>
             <li>{L("시간대 고정: 해외 일정은 출발지·도착지 시간대를 각각 입력하세요.", "Fix time zones: enter departure and arrival zones separately for overseas schedules.")}</li>
             <li>{L("마감 시각 명시: 'D-3'이 자정 기준인지 업무 종료 기준인지 합의하세요.", "State the cutoff: agree whether D-3 means midnight or end of business.")}</li>
+            <li>{L("시작일 불산입: 계약서는 시작일을 제외하고 세는 경우가 많습니다.", "Exclude start day: contracts often count from the day after start.")}</li>
           </ul>
           <p>
             <Link href={`${base}/time-calculator`} className="text-primary underline">{L("시간 계산기", "Time Calculator")}</Link>
@@ -106,13 +168,22 @@ export default function Page({ params }: { params: { locale: string } }) {
         <ProseSection title={L("자주 묻는 질문", "Frequently Asked Questions")}>
           <div className="space-y-4">
             {faq.map((f, i) => (
-              <div key={i}>
+              <div key={i} className="rounded-xl border p-4">
                 <p className="font-semibold">{f.q}</p>
-                <p className="mt-1">{f.a}</p>
+                <p className="mt-2 text-muted-foreground">{f.a}</p>
               </div>
             ))}
           </div>
         </ProseSection>
+
+        <div className="rounded-xl border p-4 bg-muted/20">
+          <p className="text-sm text-muted-foreground">
+            {L(
+              "면책: 본 페이지의 예시와 설명은 일반적인 정보 제공 목적이며, 법률·행정 자문이 아닙니다. 실제 계약·행정 기준은 관할 기관과 계약서 문구에 따릅니다.",
+              "Disclaimer: The examples and explanations here are for general information only and do not constitute legal or administrative advice. Actual standards follow the relevant authority and your contract wording.",
+            )}
+          </p>
+        </div>
 
         <AffiliateSlot placement="guide" />
       </ProsePage>

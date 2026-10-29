@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { locales } from "@/i18n/config";
-import ProsePage from "@/components/sections/ProsePage";
+import { ChevronLeft } from "lucide-react";
 
 export function generateMetadata({
   params,
@@ -22,6 +22,7 @@ export function generateStaticParams() {
 }
 
 const GUIDES: { slug: string; ko: string; en: string; descKo: string; descEn: string }[] = [
+  { slug: "salary-take-home-table", ko: "연봉별 실수령액 표 2026", en: "2026 Take-Home Pay Table by Gross Salary", descKo: "연봉 3,000만원~1억원 구간 월·연 실수령액, 공제율과 계산법", descEn: "Gross-to-net table for KRW 30M–100M with assumptions & tips" },
   { slug: "salary-take-home", ko: "연봉 실수령액 완전 가이드", en: "The Complete Take-Home Pay Guide", descKo: "세전·세후 차이, 4대보험·소득세 구조와 이직 체크리스트", descEn: "Gross vs net, insurance and tax structure, offer checklist" },
   { slug: "dti-dsr", ko: "DTI·DSR 완전 가이드", en: "The Complete DTI & DSR Guide", descKo: "대출 한도를 결정하는 비율의 계산과 한도 늘리는 법", descEn: "How the ratios work and how to raise your limit" },
   { slug: "deposit-savings", ko: "예금·적금 이자 완전 가이드", en: "The Complete Savings Interest Guide", descKo: "단리·복리·월복리 차이와 세후 수령액 비교법", descEn: "Simple vs compound vs monthly compounding, after tax" },
@@ -42,25 +43,35 @@ const GUIDES: { slug: string; ko: string; en: string; descKo: string; descEn: st
 export default function GuidesPage({ params }: { params: { locale: string } }) {
   const isKo = params.locale === "ko";
   return (
-    <ProsePage title={isKo ? "계산 가이드 모음" : "Calculation Guides"}>
-      <p className="text-muted-foreground">
-        {isKo
-          ? "계산기 사용법과 배경지식을 정리한 설명 글입니다. 도구를 돌리기 전에 읽으면 같은 숫자도 다르게 보입니다."
-          : "Explain how to use the calculators and the background behind them. Read before you calculate — the same numbers will look different."}
-      </p>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-        {GUIDES.map((g) => (
-          <li key={g.slug}>
-            <Link
-              href={`/${params.locale}/guides/${g.slug}`}
-              className="block rounded-xl border bg-card p-4 transition-colors hover:border-primary/40"
-            >
-              <p className="font-semibold text-foreground">{isKo ? g.ko : g.en}</p>
-              <p className="mt-1 text-sm text-muted-foreground">{isKo ? g.descKo : g.descEn}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </ProsePage>
+    <div className="bg-background min-h-[70vh]">
+      <div className="mx-auto w-full max-w-5xl px-4 py-12 sm:py-16">
+        <div className="mb-6 flex items-center gap-3">
+          <Link href={`/${params.locale}`} className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md border" aria-label="Back">
+            <ChevronLeft className="h-4 w-4" />
+          </Link>
+          <h1 className="text-3xl font-extrabold text-foreground sm:text-4xl break-keep">
+            {isKo ? "계산 가이드 모음" : "Calculation Guides"}
+          </h1>
+        </div>
+        <p className="mb-8 text-muted-foreground">
+          {isKo
+            ? "계산기 사용법과 배경지식을 정리한 설명 글입니다. 도구를 돌리기 전에 읽으면 같은 숫자도 다르게 보입니다."
+            : "Explain how to use the calculators and the background behind them. Read before you calculate — the same numbers will look different."}
+        </p>
+        <ul className="grid w-full grid-cols-1 sm:grid-cols-2 gap-3 auto-rows-fr">
+          {GUIDES.map((g) => (
+            <li key={g.slug} className="w-full min-w-0">
+              <Link
+                href={`/${params.locale}/guides/${g.slug}`}
+                className="flex h-full w-full min-w-0 flex-col rounded-xl border bg-card p-4 transition-colors hover:border-primary/40"
+              >
+                <p className="font-semibold text-foreground break-words [overflow-wrap:anywhere]">{isKo ? g.ko : g.en}</p>
+                <p className="mt-1 text-sm text-muted-foreground flex-1 break-words [overflow-wrap:anywhere]">{isKo ? g.descKo : g.descEn}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }

@@ -365,7 +365,7 @@ export default function AsmeB313Calculator() {
               </div>
 
               <div className="absolute bottom-4 right-[calc(50%-4rem)] w-4 border-t border-gray-800 dark:border-gray-200 flex justify-center">
-                <div className="absolute top-1 bg-gray-100 dark:bg-gray-700 px-1 text-[10px] font-mono whitespace-nowrap">t</div>
+                <div className="absolute top-1 bg-gray-100 dark:bg-gray-700 px-1 text-[10px] font-mono">t</div>
                 <div className="absolute -left-1 -top-1.5">|</div>
                 <div className="absolute -right-1 -top-1.5">|</div>
               </div>

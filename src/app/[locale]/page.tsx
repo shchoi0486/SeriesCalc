@@ -2,7 +2,7 @@ import AllCalculators from '@/components/AllCalculators';
 import CalculatorSearch from '@/components/calculators/CalculatorSearch';
 import CalculatorCategories from '@/components/calculators/CalculatorCategories';
 import ScientificCalculator from '@/components/calculators/ScientificCalculator';
-import FooterSection from '@/components/sections/FooterSection';
+
 import { Card, CardContent } from "@/components/ui/card";
 import CombinedUnitConverter from '@/components/calculators/CombinedUnitConverter';
 import AdUnit from '@/components/ads/AdUnit';
@@ -67,7 +67,7 @@ export default function Home({ params }: { params: { locale: string } }) {
           }).replace(/</g, '\\u003c'),
         }}
       />
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 break-keep">
         <section className="text-center">
           {/* 애드센스 광고 영역 (슬롯 ID는 .env의 NEXT_PUBLIC_ADSENSE_SLOT_HOME 에서 지정) */}
           <AdUnit slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_HOME} className="my-3" minHeight={100} />
@@ -95,7 +95,7 @@ export default function Home({ params }: { params: { locale: string } }) {
         </div>
         <CalculatorCategories />
 
-        <section className="max-w-3xl mx-auto rounded-2xl border bg-card p-6 sm:p-8 space-y-4 mt-10">
+        <section className="w-full max-w-5xl mx-auto rounded-2xl border bg-card p-6 sm:p-8 space-y-4 mt-10 break-keep">
           <h2 className="text-xl sm:text-2xl font-extrabold text-foreground">
             {locale === 'ko' ? 'SeriesCalc로 숫자를 결정하는 법' : 'How to decide with SeriesCalc'}
           </h2>
@@ -121,18 +121,18 @@ export default function Home({ params }: { params: { locale: string } }) {
           </ul>
         </section>
 
-        <section className="max-w-3xl mx-auto mt-6">
+        <section className="w-full max-w-5xl mx-auto mt-6 break-keep">
           <h2 className="text-xl sm:text-2xl font-extrabold text-foreground mb-4 text-center">
             {locale === 'ko' ? '계산 가이드' : 'Calculation guides'}
           </h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <ul className="grid w-full grid-cols-1 sm:grid-cols-2 gap-3 auto-rows-fr">
             {HOME_GUIDES.map((g) => (
-              <li key={g.slug}>
+              <li key={g.slug} className="w-full min-w-0">
                 <Link
                   href={`/${locale}/guides/${g.slug}`}
-                  className="block rounded-xl border bg-card p-4 transition-colors hover:border-primary/40"
+                  className="flex h-full w-full items-center rounded-xl border bg-card p-4 transition-colors hover:border-primary/40"
                 >
-                  <span className="font-semibold text-foreground">{locale === 'ko' ? g.ko : g.en}</span>
+                  <span className="font-semibold text-foreground break-words [overflow-wrap:anywhere]">{locale === 'ko' ? g.ko : g.en}</span>
                 </Link>
               </li>
             ))}
@@ -144,7 +144,7 @@ export default function Home({ params }: { params: { locale: string } }) {
           </p>
         </section>
 
-        <section className="max-w-3xl mx-auto rounded-2xl border bg-card p-6 sm:p-8 mt-6">
+        <section className="w-full max-w-5xl mx-auto rounded-2xl border bg-card p-6 sm:p-8 mt-6 break-keep">
           <h2 className="text-xl sm:text-2xl font-extrabold text-foreground mb-4">
             {locale === 'ko' ? '자주 묻는 질문' : 'Frequently asked questions'}
           </h2>
@@ -159,7 +159,6 @@ export default function Home({ params }: { params: { locale: string } }) {
         </section>
 
       </div>
-      <FooterSection dict={dict} locale={locale} />
     </>
   );
 }

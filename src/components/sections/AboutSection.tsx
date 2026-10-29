@@ -4,7 +4,7 @@ import Link from 'next/link';
 const AboutSection: React.FC = () => {
   return (
     <section className="py-12 md:py-16 lg:py-20 bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
           SeriesCalc에 오신 것을 환영합니다!
         </h2>

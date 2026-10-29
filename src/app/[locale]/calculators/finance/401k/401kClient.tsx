@@ -94,10 +94,10 @@ const Retire401kClient = ({ infoSection }: { infoSection: InfoSection }) => {
     <div className="space-y-4">
       {error && <p className="text-sm text-destructive">{error}</p>}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '예상 은퇴 적립금' : 'Projected balance'}</p><p className="text-2xl font-bold mt-1">{fmt(projected)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '총 납입 원금' : 'Total contributions'}</p><p className="text-2xl font-bold mt-1">{fmt(totalContrib)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '투자 수익(이자)' : 'Investment growth'}</p><p className="text-2xl font-bold mt-1">{fmt(growth)}</p></div>
-        <div className="rounded-xl border border-border p-4"><p className="text-sm text-muted-foreground">{isKo ? '세후 예상 수령액' : 'After-tax value'}</p><p className="text-2xl font-bold mt-1">{fmt(afterTax)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '예상 은퇴 적립금' : 'Projected balance'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(projected)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '총 납입 원금' : 'Total contributions'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(totalContrib)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '투자 수익(이자)' : 'Investment growth'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(growth)}</p></div>
+        <div className="rounded-xl border border-border p-4 min-w-0 overflow-hidden"><p className="text-sm text-muted-foreground break-keep">{isKo ? '세후 예상 수령액' : 'After-tax value'}</p><p className="text-sm sm:text-base font-bold mt-1 whitespace-nowrap tabular-nums">{fmt(afterTax)}</p></div>
       </div>
     </div>
   )
