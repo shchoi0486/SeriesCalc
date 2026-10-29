@@ -28,10 +28,17 @@ export default function HolidayCalendarPage({
 
   const faqs: { q: string; a: string }[] = [
     {
-      q: L("2026년 공휴일 데이터는 언제 추가되나요?", "When will 2026 holiday data be added?"),
+      q: L("내장된 공휴일 데이터는 어느 연도까지인가요?", "How far does the built-in holiday data go?"),
       a: L(
-        "이 계산기는 2024~2025년 공휴일 데이터를 내장하고 있습니다. 2026년 이후의 공휴일은 관계 법령(공공기관의 공휴일에 관한 규정)이 확정된 후 업데이트됩니다. 그 전에는 대법원이나 기획재정부의 공휴일LOPT 를 참고하세요.",
-        "The calculator has 2024–2025 holidays built in. Later years will be added once official designations (Regulations on Public Holidays) are published. Until then, refer to the National Court Administration or Ministry of Economy and Finance.",
+        "이 계산기는 2024~2026년 공휴일 데이터를 내장하고 있습니다. 이후 연도의 공휴일은 「관공서의 공휴일에 관한 규정」에 따라 확정되는 대로 업데이트합니다. 확정 전까지는 법원행정처의 공휴일 안내나 기획재정부가 공개하는 공휴일 자료를 참고하세요.",
+        "The calculator has 2024–2026 holidays built in. Later years will be added once official designations under the Regulations on Public Holidays are published. Until then, refer to the National Court Administration or Ministry of Economy and Finance.",
+      ),
+    },
+    {
+      q: L("2026년 공휴일은 예년과 무엇이 다른가요?", "What is different about the 2026 holidays?"),
+      a: L(
+        "2026년에는 근로자의 날(5월 1일)과 제헌절(7월 17일)이 법정 공휴일로 적용됩니다. 또 3월 1일·5월 24일·8월 15일·10월 3일이 주말과 겹쳐 대체공휴일이 4회(3/2, 5/25, 8/17, 10/5) 지정되었습니다. 2026년은 주말을 제외한 공휴일이 16일, 달력 기준 22일입니다.",
+        "In 2026, Workers' Day (May 1) and Constitution Day (July 17) are statutory public holidays. Because March 1, May 24, August 15 and October 3 fall on weekends, four substitute holidays apply (Mar 2, May 25, Aug 17, Oct 5). Excluding weekends, 2026 has 16 public holidays (22 dates on the calendar).",
       ),
     },
     {
@@ -75,7 +82,7 @@ export default function HolidayCalendarPage({
         {[
           [
             L("연도 선택", "Select year"),
-            L("조회할 연도를 드롭다운에서 선택합니다(현재 2024~2025 지원).", "Choose the year from the dropdown (currently 2024–2025)."),
+            L("조회할 연도를 선택합니다(현재 2024~2026 지원, 올해가 기본 선택).", "Choose the year (2024–2026 supported; the current year is selected by default)."),
           ],
           [
             L("월 선택", "Select month"),
@@ -103,20 +110,20 @@ export default function HolidayCalendarPage({
     workedExamples: (
       <div className="space-y-6 text-sm text-muted-foreground">
         <div>
-          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 2025년 설날 연휴", "Example 1 — 2025 Lunar New Year holiday")}</p>
+          <p className="font-semibold text-foreground mb-2">{L("예시 1 — 2026년 설날 연휴", "Example 1 — 2026 Lunar New Year holiday")}</p>
           <p>
             {L(
-              "2025년 설날은 양력 1월 29일(수)입니다. 전후 weekend 포함 시 1월 26일(일)~1월 30일(목)까지 5일간 연휴가形成될 수 있습니다(회사 내규에 따라 다름). 이 캘린더에서 해당 기간을 확인하면 정확한 공휴일·대체공휴일 위치를 파악할 수 있습니다.",
-              "2025 Lunar New Year falls on Jan 29 (Wed). Including the adjacent weekend, a 5-day break from Jan 26 (Sun) to Jan 30 (Thu) is possible (varies by company). Use this calendar to locate exact holiday and substitute holiday positions.",
+              "2026년 설날은 양력 2월 17일(화)이고, 연휴는 2월 16일(월)~2월 18일(수) 사흘입니다. 앞선 주말(2/14~2/15)까지 붙이면 2월 14일(토)~2월 18일(수) 5일간 쉴 수 있습니다(회사 내규에 따라 다름). 이 캘린더에서 해당 기간을 확인하면 정확한 공휴일·대체공휴일 위치를 파악할 수 있습니다.",
+              "2026 Lunar New Year falls on Feb 17 (Tue), with the holiday running Feb 16 (Mon)–Feb 18 (Wed). Adding the preceding weekend gives a 5-day break from Feb 14 (Sat) to Feb 18 (Wed) (varies by company). Use this calendar to locate exact holiday and substitute holiday positions.",
             )}
           </p>
         </div>
         <div>
-          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 휴가 계획 수립", "Example 2 — Planning time off")}</p>
+          <p className="font-semibold text-foreground mb-2">{L("예시 2 — 2026년 10월 연차 활용", "Example 2 — Using leave around October 2026")}</p>
           <p>
             {L(
-              "5월 어버이날(5월 8일, 목)이 포함된 주를 보면, 공휴일과 weekend를 조합해 유급휴가를 최소화하면서 4일 연속 쉴 수 있는 패턴이 보일 수 있습니다. 캘린더에서 공휴일 위치를 미리 파악하면 연차 사용 계획을 효율적으로 세울 수 있습니다.",
-              "Looking at the week containing Parents' Day (May 8, Thu): combining the holiday with the weekend can yield a 4-day break with minimal annual leave. Early calendar review helps plan efficient leave usage.",
+              "2026년 10월은 3일(토) 개천절과 5일(월) 대체공휴일, 9일(금) 한글날이 놓여 있습니다. 10월 6~8일 사흘에 연차를 쓰면 10월 3일(토)~10월 11일(일) 9일 연속 휴무가 가능합니다. 캘린더에서 공휴일 위치를 미리 파악하면 연차 사용 계획을 효율적으로 세울 수 있습니다.",
+              "October 2026 has National Foundation Day on Sat Oct 3, its substitute holiday on Mon Oct 5, and Hangul Day on Fri Oct 9. Taking three days of leave (Oct 6–8) yields a 9-day break from Oct 3 (Sat) to Oct 11 (Sun). Early calendar review helps plan efficient leave usage.",
             )}
           </p>
         </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { locales } from "@/i18n/config";
 import ProsePage, { ProseSection } from "@/components/sections/ProsePage";
 
@@ -80,6 +81,24 @@ export default function AboutPage({
             <li><strong>Accessibility</strong>: anyone can use the Service for free, no sign-up needed.</li>
             <li><strong>Transparency</strong>: we do not hide our fees or revenue model.</li>
           </ul>
+        )}
+      </ProseSection>
+
+      <ProseSection title={isKo ? "운영 주체와 콘텐츠 제작 방식" : "Who Runs SeriesCalc and How Content Is Made"}>
+        {isKo ? (
+          <div className="space-y-3">
+            <p>SeriesCalc는 소규모 독립 팀이 직접 기획·개발·운영하는 무료 계산기 서비스입니다. 계산기 설명, 공식, 예시, 주의사항은 외부 콘텐츠 대행사에 위탁하지 않고 운영자가 직접 작성하고 검토합니다.</p>
+            <p>각 계산기 페이지는 <strong>① 근거 공식·법령 확인 → ② 계산 로직 구현 → ③ 예시와 한계 서술 → ④ 결과 교차 검증</strong> 순서로 제작됩니다. 어떤 기준으로 콘텐츠를 쓰고 검토하는지는 <Link href={`/${params.locale}/editorial-policy`} className="text-primary underline">편집 정책</Link>에 공개하고 있습니다.</p>
+            <p>세율·보험료율·법정 공휴일처럼 시간에 따라 달라지는 값은 개정 시점에 맞춰 갱신하며, 각 페이지에 데이터 기준 연도를 함께 표시합니다. 오류를 발견하시면 <Link href={`/${params.locale}/contact`} className="text-primary underline">문의하기</Link>로 알려주세요. 확인되는 즉시 수정하고, 계산 결과에 영향을 주는 정정은 페이지에 반영합니다.</p>
+            <p>운영 비용은 광고 수익으로 충당합니다. 광고는 콘텐츠 영역과 분리되어 있으며, 광고주가 계산 로직이나 서술 내용에 개입할 수 없습니다. 수집하는 정보와 광고 쿠키에 대한 내용은 <Link href={`/${params.locale}/privacy-policy`} className="text-primary underline">개인정보처리방침</Link>에서 확인할 수 있습니다.</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <p>SeriesCalc is a free calculator service planned, built, and operated directly by a small independent team. The explanations, formulas, worked examples, and caveats on each page are written and reviewed by the operator — not outsourced to a content agency.</p>
+            <p>Every calculator page follows the same sequence: <strong>(1) confirm the underlying formula or regulation, (2) implement the calculation logic, (3) write examples and stated limits, (4) cross-check the results</strong>. The standards we apply are published in our <Link href={`/${params.locale}/editorial-policy`} className="text-primary underline">editorial policy</Link>.</p>
+            <p>Values that change over time — tax rates, insurance contribution rates, statutory holidays — are updated as rules are revised, and each page states the reference year of its data. If you spot an error, please tell us through <Link href={`/${params.locale}/contact`} className="text-primary underline">Contact</Link>. We fix confirmed errors promptly and note any correction that changes a calculation result.</p>
+            <p>Running costs are covered by advertising. Ads are kept separate from the content area, and no advertiser can influence our formulas or wording. Details on data collection and advertising cookies are in our <Link href={`/${params.locale}/privacy-policy`} className="text-primary underline">Privacy Policy</Link>.</p>
+          </div>
         )}
       </ProseSection>
 

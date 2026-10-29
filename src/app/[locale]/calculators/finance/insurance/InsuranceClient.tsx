@@ -59,19 +59,19 @@ const InsuranceCalculator: NextPage = () => {
       return;
     }
 
-    // 국민연금 (상한액 5,900,000원, 하한액 370,000원 적용)
-    const nationalPensionBase = Math.max(370000, Math.min(salary, 5900000));
-    const nationalPensionTotal = nationalPensionBase * 0.09;
+    // 국민연금 (2026.7~2027.6 기준: 상한 6,590,000원, 하한 410,000원)
+    const nationalPensionBase = Math.max(410000, Math.min(salary, 6590000));
+    const nationalPensionTotal = nationalPensionBase * 0.095;
     const nationalPensionEmployee = nationalPensionTotal / 2;
     const nationalPensionEmployer = nationalPensionTotal / 2;
 
     // 건강보험
-    const healthInsuranceTotal = salary * 0.0709;
+    const healthInsuranceTotal = salary * 0.0719;
     const healthInsuranceEmployee = healthInsuranceTotal / 2;
     const healthInsuranceEmployer = healthInsuranceTotal / 2;
 
-    // 장기요양보험
-    const longTermCareInsuranceTotal = healthInsuranceTotal * 0.1295;
+    // 장기요양보험 (건강보험료의 13.14%)
+    const longTermCareInsuranceTotal = healthInsuranceTotal * 0.1314;
     const longTermCareInsuranceEmployee = longTermCareInsuranceTotal / 2;
     const longTermCareInsuranceEmployer = longTermCareInsuranceTotal / 2;
 
@@ -232,7 +232,7 @@ const InsuranceCalculator: NextPage = () => {
     calculatorDescription: (
       <div className="text-base leading-relaxed space-y-6">
         <p>
-          {isKo ? <><strong>4대 사회보험 계산기</strong>는 대한민국 직장인이라면 누구나 매달 마주하는 '급여 공제 내역'의 비밀을 명쾌하게 풀어주는 필수 도구입니다. 내 소중한 월급에서 국민연금, 건강보험, 고용보험, 산재보험료가 각각 얼마씩, 왜 공제되는지, 그리고 회사는 나를 위해 얼마의 비용을 추가로 부담하고 있는지 <strong>2025년 최신 요율</strong>에 맞춰 정확하게 계산해 드립니다.</> : <>The <strong>Four Major Social Insurance Calculator</strong> is an essential tool that clearly unravels the secret of the 'salary deduction details' every Korean employee faces each month. It accurately calculates, based on the <strong>latest 2025 rates</strong>, how much and why the National Pension, Health Insurance, Employment Insurance, and Industrial Accident Insurance are deducted from your salary, and how much extra cost the company bears for you.</>}
+          {isKo ? <><strong>4대 사회보험 계산기</strong>는 대한민국 직장인이라면 누구나 매달 마주하는 '급여 공제 내역'의 비밀을 명쾌하게 풀어주는 필수 도구입니다. 내 소중한 월급에서 국민연금, 건강보험, 고용보험, 산재보험료가 각각 얼마씩, 왜 공제되는지, 그리고 회사는 나를 위해 얼마의 비용을 추가로 부담하고 있는지 <strong>2026년 최신 요율</strong>에 맞춰 정확하게 계산해 드립니다.</> : <>The <strong>Four Major Social Insurance Calculator</strong> is an essential tool that clearly unravels the secret of the 'salary deduction details' every Korean employee faces each month. It accurately calculates, based on the <strong>latest 2026 rates</strong>, how much and why the National Pension, Health Insurance, Employment Insurance, and Industrial Accident Insurance are deducted from your salary, and how much extra cost the company bears for you.</>}
         </p>
         <p>
           {isKo ? <>단순한 숫자 계산을 넘어, 이 계산기는 <strong>나의 사회적 안전망</strong>이 어떻게 구축되는지를 보여주는 바로미터입니다. 아플 때, 직장을 잃었을 때, 은퇴 후 노후를 맞이했을 때 든든한 버팀목이 되어주는 4대 보험의 가치를 이해하고, 나의 권리와 의무를 명확히 인지하는 계기가 될 것입니다. 또한, 예상 실수령액을 통해 보다 현실적인 재무 계획을 세우고, 합법적인 절세 전략(비과세 소득 활용 등)을 고민해볼 수 있는 출발점을 제공합니다.</> : <>Beyond simple number crunching, this calculator is a barometer showing how <strong>your social safety net</strong> is built. It helps you understand the value of the four insurances that support you when sick, unemployed, or retired, and clearly recognize your rights and obligations. It also provides a starting point to build more realistic financial plans through the estimated net pay and to consider legal tax-saving strategies (using non-taxable income, etc.).</>}
@@ -241,7 +241,7 @@ const InsuranceCalculator: NextPage = () => {
           {isKo ? '인사 담당자나 소규모 사업주에게는 직원 채용 시 발생하는 인건비 구조를 사전에 파악하고, 정확한 급여 책정을 위한 중요한 참고 자료로 활용될 수 있습니다. 지금 바로 당신의 월급과 미래를 스마트하게 관리해 보세요!' : 'For HR staff and small business owners, it can serve as important reference for understanding the labor cost structure of hiring in advance and for setting accurate salaries. Start managing your salary and future smartly right now!'}
         </p>        <TermGlossary items={[
           { term: isKo ? '4대 사회보험' : 'Four Major Social Insurances', desc: isKo ? '국민연금·건강보험·장기요양보험·고용보험을 묶어 이르는 말로, 근로자의 사회안전망을 위해 급여에서 공제됩니다.' : 'A collective term for National Pension, Health Insurance, Long-term Care Insurance, and Employment Insurance, deducted from salary for the worker\u2019s social safety net.' },
-          { term: isKo ? '기준소득월액' : 'Standard Monthly Income', desc: isKo ? '국민연금 보험료 산정 기준이 되는 월 소득으로, 매년 하한(39만 원)과 상한(617만 원) 범위 내에서 결정됩니다.' : 'The monthly income used as the basis for National Pension premiums, set within an annual lower (390K) and upper (6.17M) limit.' },
+          { term: isKo ? '기준소득월액' : 'Standard Monthly Income', desc: isKo ? '국민연금 보험료 산정 기준이 되는 월 소득으로, 매년 7월 하한(41만 원)과 상한(659만 원) 범위 내에서 결정됩니다.' : 'The monthly income used as the basis for National Pension premiums, set each July within a lower (410K) and upper (6.59M) limit.' },
           { term: isKo ? '보수월액' : 'Monthly Remuneration', desc: isKo ? '건강보험료 등을 산정할 때 기준이 되는 과세 대상 월 급여(비과세 소득 제외)입니다.' : 'The taxable monthly salary (excluding non-taxable income) used as the basis for Health Insurance premiums and more.' },
         ]} />
 
@@ -250,32 +250,32 @@ const InsuranceCalculator: NextPage = () => {
     calculationFormula: (
       <div className="text-base leading-relaxed space-y-8">
         <p className="text-sm text-muted-foreground">
-          {isKo ? <><strong>2025년 최신 요율 기준</strong>이며, 모든 보험료는 과세 대상 소득인 '보수월액'을 기준으로 산정됩니다. (비과세 소득 제외)</> : <>Based on the <strong>latest 2025 rates</strong>; all premiums are computed on the taxable 'monthly remuneration' (excluding non-taxable income).</>}
+          {isKo ? <><strong>2026년 최신 요율 기준</strong>이며, 모든 보험료는 과세 대상 소득인 '보수월액'을 기준으로 산정됩니다. (비과세 소득 제외)</> : <>Based on the <strong>latest 2026 rates</strong>; all premiums are computed on the taxable 'monthly remuneration' (excluding non-taxable income).</>}
         </p>
         
         <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
-          <h3 className="text-xl font-bold text-primary mb-3">{isKo ? '1. 국민연금 (총 9%) - 당신의 노후를 위한 최소한의 약속' : '1. National Pension (Total 9%) - A Minimum Promise for Your Retirement'}</h3>
+          <h3 className="text-xl font-bold text-primary mb-3">{isKo ? '1. 국민연금 (총 9.5%) - 당신의 노후를 위한 최소한의 약속' : '1. National Pension (Total 9.5%) - A Minimum Promise for Your Retirement'}</h3>
           <p className="mb-3">{isKo ? '국민연금은 노령, 장애, 사망과 같은 예기치 못한 상황이 발생했을 때, 본인이나 유족에게 연금을 지급하여 안정적인 삶을 지원하는 사회보장제도입니다.' : 'The National Pension is a social security system that supports a stable life by paying a pension to you or your survivors upon unexpected events like old age, disability, or death.'}</p>
-          <div className="overflow-x-auto p-4 bg-card rounded-md text-sm">{isKo ? <BlockMath math="\text{보험료} = \text{기준소득월액} \times 9\%" /> : <BlockMath math="\text{Premium} = \text{Standard Monthly Income} \times 9\%" />}</div>
+          <div className="overflow-x-auto p-4 bg-card rounded-md text-sm">{isKo ? <BlockMath math="\text{보험료} = \text{기준소득월액} \times 9.5\%" /> : <BlockMath math="\text{Premium} = \text{Standard Monthly Income} \times 9.5\%" />}</div>
           <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
-            <div><strong>{isKo ? '근로자 부담:' : 'Employee:'}</strong> 4.5%</div>
-            <div><strong>{isKo ? '사업주 부담:' : 'Employer:'}</strong> 4.5%</div>
+            <div><strong>{isKo ? '근로자 부담:' : 'Employee:'}</strong> 4.75%</div>
+            <div><strong>{isKo ? '사업주 부담:' : 'Employer:'}</strong> 4.75%</div>
           </div>
-          <p className="text-xs text-muted-foreground dark:text-muted-foreground mt-2">{isKo ? <>※ 2025년 기준소득월액: <strong>하한 390,000원 ~ 상한 6,170,000원</strong> 범위 내에서 적용됩니다. (변동 가능)</> : <>※ 2025 standard monthly income: applied within a range of <strong>390,000 KRW (lower) to 6,170,000 KRW (upper)</strong>. (subject to change)</>}</p>
+          <p className="text-xs text-muted-foreground dark:text-muted-foreground mt-2">{isKo ? <>※ 2026년 7월~2027년 6월 기준소득월액: <strong>하한 410,000원 ~ 상한 6,590,000원</strong> 범위 내에서 적용됩니다. (매년 7월 변동)</> : <>※ 2026.7–2027.6 standard monthly income: applied within <strong>410,000 KRW (lower) to 6,590,000 KRW (upper)</strong>. (adjusted each July)</>}</p>
         </div>
 
         <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
-          <h3 className="text-xl font-bold text-primary mb-3">{isKo ? '2. 건강보험 (총 7.09%) - 아플 때 기댈 수 있는 든든한 어깨' : '2. Health Insurance (Total 7.09%) - A Reliable Shoulder When Sick'}</h3>
+          <h3 className="text-xl font-bold text-primary mb-3">{isKo ? '2. 건강보험 (총 7.19%) - 아플 때 기댈 수 있는 든든한 어깨' : '2. Health Insurance (Total 7.19%) - A Reliable Shoulder When Sick'}</h3>
           <p className="mb-3">{isKo ? '질병이나 부상으로 인한 의료비 부담을 줄여주고, 정기적인 건강검진 서비스를 제공하여 국민의 건강을 지키는 핵심적인 사회보험입니다.' : 'A core social insurance that reduces medical cost burdens from illness or injury and provides regular health checkups to protect public health.'}</p>
-          <div className="overflow-x-auto p-4 bg-card rounded-md text-sm">{isKo ? <BlockMath math="\text{보험료} = \text{보수월액} \times 7.09\%" /> : <BlockMath math="\text{Premium} = \text{Monthly Remuneration} \times 7.09\%" />}</div>
+          <div className="overflow-x-auto p-4 bg-card rounded-md text-sm">{isKo ? <BlockMath math="\text{보험료} = \text{보수월액} \times 7.19\%" /> : <BlockMath math="\text{Premium} = \text{Monthly Remuneration} \times 7.19\%" />}</div>
           <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
-            <div><strong>{isKo ? '근로자 부담:' : 'Employee:'}</strong> 3.545%</div>
-            <div><strong>{isKo ? '사업주 부담:' : 'Employer:'}</strong> 3.545%</div>
+            <div><strong>{isKo ? '근로자 부담:' : 'Employee:'}</strong> 3.595%</div>
+            <div><strong>{isKo ? '사업주 부담:' : 'Employer:'}</strong> 3.595%</div>
           </div>
           <div className="mt-4 pt-4 border-t border-border">
-            <h4 className="font-semibold text-lg">{isKo ? '+ 장기요양보험 (건강보험료의 12.95%)' : '+ Long-term Care Insurance (12.95% of Health Insurance)'}</h4>
+            <h4 className="font-semibold text-lg">{isKo ? '+ 장기요양보험 (건강보험료의 13.14%)' : '+ Long-term Care Insurance (13.14% of Health Insurance)'}</h4>
             <p className="text-sm mt-1">{isKo ? '고령이나 노인성 질병으로 혼자 생활하기 어려운 어르신들에게 신체활동 또는 가사활동 지원 등의 요양 서비스를 제공합니다.' : 'Provides care services such as physical or household activity support to seniors who cannot live alone due to old age or geriatric illness.'}</p>
-            <div className="overflow-x-auto p-3 bg-card rounded-md text-xs mt-2">{isKo ? <BlockMath math="\text{보험료} = \text{건강보험료} \times 12.95\% \;(\text{근로자/사업주 절반씩 부담})" /> : <BlockMath math="\text{Premium} = \text{Health Insurance} \times 12.95\% \;(\text{split equally employee/employer})" />}</div>
+            <div className="overflow-x-auto p-3 bg-card rounded-md text-xs mt-2">{isKo ? <BlockMath math="\text{보험료} = \text{건강보험료} \times 13.14\% \;(\text{근로자/사업주 절반씩 부담})" /> : <BlockMath math="\text{Premium} = \text{Health Insurance} \times 13.14\% \;(\text{split equally employee/employer})" />}</div>
           </div>
         </div>
 
@@ -299,16 +299,16 @@ const InsuranceCalculator: NextPage = () => {
             </div>
           <div className="mt-6 p-4 bg-muted rounded-lg border border-border">
             <h4 className="font-semibold text-foreground mb-2">{isKo ? '계산 예시 (월 급여 450만 원, 사무직)' : 'Example (monthly salary 4.5M KRW, office job)'}</h4>
-            <p className="text-sm text-muted-foreground">{isKo ? '국민연금 405,000(근로자 202,500) · 건강보험 319,050(159,525)' : 'National Pension 405,000 (employee 202,500) · Health 319,050 (159,525)'}</p>
-            <p className="font-mono text-sm text-primary mt-1">{isKo ? '장기요양 41,316(20,658) · 고용보험 81,000(40,500) · 산재 31,500(0)' : 'Long-term care 41,316 (20,658) · Employment 81,000 (40,500) · Industrial 31,500 (0)'}</p>
-            <p className="font-mono text-sm text-primary">{isKo ? '근로자 총 부담 ≈ 423,183원 → 예상 실수령액 ≈ 4,076,817원' : 'Total employee burden ≈ 423,183 KRW → estimated net pay ≈ 4,076,817 KRW'}</p>
+            <p className="text-sm text-muted-foreground">{isKo ? '국민연금 427,500(근로자 213,750) · 건강보험 323,550(161,775)' : 'National Pension 427,500 (employee 213,750) · Health 323,550 (161,775)'}</p>
+            <p className="font-mono text-sm text-primary mt-1">{isKo ? '장기요양 42,514(21,257) · 고용보험 81,000(40,500) · 산재 31,500(0)' : 'Long-term care 42,514 (21,257) · Employment 81,000 (40,500) · Industrial 31,500 (0)'}</p>
+            <p className="font-mono text-sm text-primary">{isKo ? '근로자 총 부담 ≈ 437,282원 → 예상 실수령액 ≈ 4,062,718원' : 'Total employee burden ≈ 437,282 KRW → estimated net pay ≈ 4,062,718 KRW'}</p>
           </div>
         </div>
       </div>
     ),
     usefulTips: (
       <div className="text-base leading-relaxed space-y-8">
-        <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '💡 4대 보험, 200% 활용하는 스마트 직장인 되기 (2025년 Ver.)' : '💡 Become a Smart Employee Who Uses the Four Insurances to the Fullest (2025 Ver.)'}</h2>
+        <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '💡 4대 보험, 200% 활용하는 스마트 직장인 되기 (2026년 Ver.)' : '💡 Become a Smart Employee Who Uses the Four Insurances to the Fullest (2026 Ver.)'}</h2>
         <div className="space-y-6">
           <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
             <h4 className="font-bold text-lg text-primary">{isKo ? "1. '비과세 소득' 항목부터 꼼꼼히 챙기세요." : "1. Start by Carefully Managing 'Non-taxable Income' Items."}</h4>

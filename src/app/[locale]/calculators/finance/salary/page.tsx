@@ -64,15 +64,15 @@ export default function SalaryCalculatorPage({
     ),
     calculationFormula: (
       <div className="text-base leading-relaxed space-y-6">
-        <p className="font-semibold">{isKo ? '실수령액은 연봉에서 비과세 소득을 제외한 과세 대상 금액을 기준으로 각종 공제 항목을 뺀 금액입니다. 주요 공제 항목은 다음과 같습니다. (2025년 기준)' : 'Net take-home is the amount after subtracting various deductions from the taxable base (annual salary minus non-taxable income). Major deduction items are as follows. (as of 2025)'}</p>
+        <p className="font-semibold">{isKo ? '실수령액은 연봉에서 비과세 소득을 제외한 과세 대상 금액을 기준으로 각종 공제 항목을 뺀 금액입니다. 주요 공제 항목은 다음과 같습니다. (2026년 기준)' : 'Net take-home is the amount after subtracting various deductions from the taxable base (annual salary minus non-taxable income). Major deduction items are as follows. (as of 2026)'}</p>
 
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '1. 4대 사회보험' : '1. Four Social Insurances'}</h3>
           <ul className="list-disc list-inside space-y-2 text-sm">
-            <li>{isKo ? <><strong>국민연금 (근로자 4.5%):</strong> 월 소득액의 4.5%를 공제합니다. (월 소득 상한 617만원, 하한 39만원 적용)</> : <><strong>National Pension (employee 4.5%):</strong> 4.5% of monthly income is deducted. (monthly income capped at 6.17M, floored at 390K)</>}
+            <li>{isKo ? <><strong>국민연금 (근로자 4.75%):</strong> 기준소득월액의 4.75%를 공제합니다. (2026.7~2027.6 기준 상한 659만원, 하한 41만원)</> : <><strong>National Pension (employee 4.75%):</strong> 4.75% of standard monthly income is deducted. (range 410K–6.59M for Jul 2026–Jun 2027)</>}
             </li>
-            <li>{isKo ? <><strong>건강보험 (근로자 3.545%):</strong> 과세 대상 월 급여의 3.545%를 공제합니다.</> : <><strong>Health Insurance (employee 3.545%):</strong> 3.545% of taxable monthly pay is deducted.</>}</li>
-            <li>{isKo ? <><strong>장기요양보험:</strong> 산출된 건강보험료의 12.95%를 추가로 공제합니다. (요율은 매년 변동될 수 있습니다)</> : <><strong>Long-term Care Insurance:</strong> An additional 12.95% of the computed health insurance premium is deducted. (rate may change yearly)</>}</li>
+            <li>{isKo ? <><strong>건강보험 (근로자 3.595%):</strong> 과세 대상 월 급여의 3.595%를 공제합니다.</> : <><strong>Health Insurance (employee 3.595%):</strong> 3.595% of taxable monthly pay is deducted.</>}</li>
+            <li>{isKo ? <><strong>장기요양보험:</strong> 산출된 건강보험료의 13.14%를 추가로 공제합니다. (요율은 매년 변동될 수 있습니다)</> : <><strong>Long-term Care Insurance:</strong> An additional 13.14% of the computed health insurance premium is deducted. (rate may change yearly)</>}</li>
             <li>{isKo ? <><strong>고용보험 (근로자 0.9%):</strong> 전체 월 급여의 0.9%를 공제합니다.</> : <><strong>Employment Insurance (employee 0.9%):</strong> 0.9% of total monthly pay is deducted.</>}</li>
           </ul>
         </div>
@@ -80,7 +80,7 @@ export default function SalaryCalculatorPage({
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '2. 소득세 및 지방소득세' : '2. Income Tax and Local Income Tax'}</h3>
           <ul className="list-disc list-inside space-y-2 text-sm">
-            <li>{isKo ? <><strong>소득세:</strong> 과세 대상 월 급여와 부양가족 수에 따라 국세청의 '근로소득 간이세액표'를 기준으로 결정됩니다. 본 계산기는 이를 바탕으로 한 추정치를 제공합니다.</> : <><strong>Income Tax:</strong> Determined from taxable monthly pay and number of dependents using the NTS 'Earned Income Simplified Tax Table.' This calculator provides an estimate based on it.</>}</li>
+            <li>{isKo ? <><strong>소득세:</strong> 연간 과세소득에서 근로소득공제·기본공제(1인당 150만원)·연금보험료공제를 뺀 과세표준에 8단계 누진세율을 적용한 뒤, 근로소득세액공제를 반영해 월 원천징수액을 추정합니다. 국세청 간이세액표와는 공제 항목 차이로 ±5% 내외 차이가 날 수 있습니다.</> : <><strong>Income Tax:</strong> We estimate monthly withholding by applying the 8-bracket progressive rates to annual taxable income after the earned-income deduction, personal deduction (1.5M per dependent), and pension premium deduction, then applying the earned-income tax credit. Results may differ from the NTS table by roughly ±5%.</>}</li>
             <li>{isKo ? <><strong>지방소득세:</strong> 산출된 소득세의 10%를 공제합니다.</> : <><strong>Local Income Tax:</strong> 10% of the computed income tax is deducted.</>}</li>
           </ul>
         </div>

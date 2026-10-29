@@ -83,8 +83,8 @@ const Retire401kClient = ({ infoSection }: { infoSection: InfoSection }) => {
       </div>
       <Tabs value={accountType} onValueChange={(v) => setAccountType(v as 'traditional' | 'roth')}>
         <TabsList>
-          <TabsTrigger value="traditional">{isKo ? 'Traditional (세액공제型)' : 'Traditional (pre-tax)'}</TabsTrigger>
-          <TabsTrigger value="roth">{isKo ? 'Roth (세후型)' : 'Roth (after-tax)'}</TabsTrigger>
+          <TabsTrigger value="traditional">{isKo ? 'Traditional (세액공제형)' : 'Traditional (pre-tax)'}</TabsTrigger>
+          <TabsTrigger value="roth">{isKo ? 'Roth (세후형)' : 'Roth (after-tax)'}</TabsTrigger>
         </TabsList>
       </Tabs>
     </div>

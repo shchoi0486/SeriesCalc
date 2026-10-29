@@ -126,19 +126,19 @@ export default function NetSalaryCalculatorPage({
     ),
     calculationFormula: (
       <div className="text-base leading-relaxed space-y-6">
-        <p className="font-semibold">{isKo ? '실수령액 계산 공식 (2024년 기준)' : 'Net Salary Calculation Formula (2024)'}</p>
+        <p className="font-semibold">{isKo ? '실수령액 계산 공식 (2026년 기준)' : 'Net Salary Calculation Formula (2026)'}</p>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '1. 4대 사회보험' : '1. Four Social Insurances'}</h3>
           <ul className="list-disc list-inside space-y-2 text-sm">
-            <li>{isKo ? <><strong>국민연금:</strong> 기준소득월액의 4.5% (상한 590만원, 하한 37만원)</> : <><strong>National Pension:</strong> 4.5% of standard pension income (cap 5.9M, floor 370K)</>}</li>
-            <li>{isKo ? <><strong>건강보험:</strong> 보수월액의 3.545%</> : <><strong>Health Insurance:</strong> 3.545% of monthly remuneration</>}</li>
-            <li>{isKo ? <><strong>장기요양보험:</strong> 건강보험료의 12.81%</> : <><strong>Long-term Care Insurance:</strong> 12.81% of health insurance premium</>}</li>
+            <li>{isKo ? <><strong>국민연금:</strong> 기준소득월액의 4.75% (상한 659만원, 하한 41만원)</> : <><strong>National Pension:</strong> 4.75% of standard pension income (cap 6.59M, floor 410K)</>}</li>
+            <li>{isKo ? <><strong>건강보험:</strong> 보수월액의 3.595%</> : <><strong>Health Insurance:</strong> 3.595% of monthly remuneration</>}</li>
+            <li>{isKo ? <><strong>장기요양보험:</strong> 건강보험료의 13.14%</> : <><strong>Long-term Care Insurance:</strong> 13.14% of health insurance premium</>}</li>
             <li>{isKo ? <><strong>고용보험:</strong> 보수월액의 0.9%</> : <><strong>Employment Insurance:</strong> 0.9% of monthly remuneration</>}</li>
           </ul>
         </div>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '2. 소득세 및 지방소득세' : '2. Income Tax & Local Income Tax'}</h3>
-          <BlockMath math={isKo ? "\\text{소득세} = \\text{간이세표 적용}\\ (\\text{연간 과세소득 기준 누진세율})" : "\\text{Income Tax} = \\text{Simplified tax table (progressive, annual taxable income)}"} />
+          <BlockMath math={isKo ? "\\text{소득세} = \\text{과세표준} \\times \\text{세율} - \\text{누진공제}" : "\\text{Income Tax} = \\text{Tax Base} \\times \\text{Rate} - \\text{Progressive Deduction}"} />
           <BlockMath math={isKo ? "\\text{지방소득세} = \\text{소득세} \\times 10\\%" : "\\text{Local Income Tax} = \\text{Income Tax} \\times 10\\%"} />
         </div>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">

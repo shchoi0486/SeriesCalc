@@ -38,7 +38,7 @@ export default function DiscountCalculatorPage({
     {
       q: L("할인된 가격에서 원래 가격을 구하는 공식은?", "How do I find the original price from a sale price?"),
       a: L(
-        "원래가격 = 할인판매가 ÷ (1 − 할인율/100)입니다. 예: 77,000원에 30% 할인出售→ 원래가격 = 77,000 ÷ 0.70 = 110,000원. 이 계산기의 '역산' 모드가 이 공식을 자동으로 수행합니다.",
+        "원래가격 = 할인판매가 ÷ (1 − 할인율/100)입니다. 예: 77,000원에 30% 할인 판매 → 원래가격 = 77,000 ÷ 0.70 = 110,000원. 이 계산기의 '역산' 모드가 이 공식을 자동으로 수행합니다.",
         "Original = sale price ÷ (1 − rate/100). Example: ₩77,000 at 30% off → ₩77,000 ÷ 0.70 = ₩110,000. The calculator's reverse mode does this automatically.",
       ),
     },

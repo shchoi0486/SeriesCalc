@@ -266,7 +266,7 @@ export default function PrincipalEqualAmortizationCalculator() {
     ),
     usefulTips: (
       <div className="text-base leading-relaxed space-y-8">
-        <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '💡 이자를 가장 아끼는 상환법, 2025년 누가 선택해야 할까?' : '💡 The most interest-saving repayment: who should choose it in 2025?'}</h2>
+        <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '💡 이자를 가장 아끼는 상환법, 누가 선택해야 할까?' : '💡 The most interest-saving repayment: who should choose it?'}</h2>
         
         <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
           <h3 className="font-bold text-lg text-primary">{isKo ? '1. 원금 균등 vs 원리금 균등: 최종 승자는?' : '1. Equal principal vs equal payment: who wins?'}</h3>
@@ -305,7 +305,7 @@ export default function PrincipalEqualAmortizationCalculator() {
 
         <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
           <h3 className="font-bold text-lg text-primary">{isKo ? '2. DSR 계산 시 원금 균등 방식의 유불리' : '2. Pros and cons of equal principal under DSR'}</h3>
-          <p className="mt-2">{isKo ? 'DSR(총부채원리금상환비율)은 연 소득에서 모든 대출의 연간 원리금이 차지하는 비율을 의미합니다. 2025년 현재 은행권은 40%를 적용하고 있습니다.' : 'DSR (Debt Service Ratio) is the ratio of total annual principal and interest of all loans to annual income. As of 2025, banks apply 40%.'}</p>
+          <p className="mt-2">{isKo ? 'DSR(총부채원리금상환비율)은 연 소득에서 모든 대출의 연간 원리금이 차지하는 비율을 의미합니다. 현재 은행권은 40%, 제2금융권은 50%를 적용하고 있습니다.' : 'DSR (Debt Service Ratio) is the ratio of total annual principal and interest of all loans to annual income. Banks currently apply 40%, non-bank lenders 50%.'}</p>
           <ul className="mt-3 space-y-2 list-disc list-inside text-sm">
             <li><strong>{isKo ? 'DSR 산정 방식:' : 'DSR calculation:'}</strong> {isKo ? '원금 균등 상환은 초회차 상환액이 가장 높기 때문에, DSR 산정 시 이 첫해의 높은 상환액을 기준으로 계산합니다.' : 'With equal principal, the first payment is highest, so DSR is calculated based on this high first-year payment.'}</li>
             <li><strong>{isKo ? '결론:' : 'Conclusion:'}</strong> {isKo ? '동일한 대출 조건이라면, 원리금 균등 방식에 비해 DSR이 더 높게 산정되어 대출 한도가 더 적게 나올 수 있습니다.' : 'Under the same loan terms, DSR is calculated higher than with equal payment, so the loan limit may be lower.'}</li>

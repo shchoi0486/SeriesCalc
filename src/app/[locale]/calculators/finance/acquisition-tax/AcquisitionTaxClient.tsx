@@ -76,7 +76,7 @@ const AcquisitionTaxClient = ({ infoSection }: { infoSection: InfoSection }) => 
       resultSection={resultSection}
       fullWidthSection={
         <p className="text-xs text-muted-foreground">
-          {isKo ? '※ 본 계산은 2024~2025년 기준 간이화된 세율입니다. 다주택자 중과(8%/12%), 조정대상지역 가산, 생애최초 감면(12억 이하)을 반영하나 실제로는 취득가액 구간·감면 요건이 더 정밀하므로 관할 시청에 확인하세요.' : '※ Simplified 2024–2025 rates with multi-home surcharges (8%/12%), regulated-area addition, and first-time relief. Verify with your municipality.'}
+          {isKo ? '※ 본 계산은 2026년 기준 간이화된 세율입니다. 다주택자 중과(조정대상지역 2주택 8%·3주택 12%, 비조정 3주택 8%), 조정대상지역 가산, 생애최초 감면(12억 이하)을 반영하나 실제로는 취득가액 구간·감면 요건이 더 정밀하므로 관할 시청에 확인하세요.' : '※ Simplified 2026 rates with multi-home surcharges (2 homes in a regulated area 8%, 3+ homes 12%; 3+ homes outside regulated areas 8%), regulated-area addition, and first-time buyer relief. Verify details with your municipality.'}
         </p>
       }
       fullWidthTitle={isKo ? '안내' : 'Note'}

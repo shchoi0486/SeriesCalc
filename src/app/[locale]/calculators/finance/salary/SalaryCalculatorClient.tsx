@@ -22,31 +22,69 @@ interface SalaryCalculatorClientProps {
   infoSection: InfoSection;
 }
 
-// 2025년 근로소득 간이세액표 (일부, 1인 가구 기준)
-const incomeTaxTable: { max: number; tax: number }[] = [
-  { max: 1060000, tax: 0 },
-  { max: 1500000, tax: 6210 },
-  { max: 2000000, tax: 25380 },
-  { max: 2500000, tax: 61380 },
-  { max: 3000000, tax: 113380 },
-  { max: 3500000, tax: 187010 },
-  { max: 4000000, tax: 277010 },
-  { max: 4500000, tax: 382010 },
-  { max: 5000000, tax: 497140 },
-  { max: 6000000, tax: 737140 },
-  { max: 7000000, tax: 1012140 },
-  { max: 8000000, tax: 1322140 },
-  { max: Infinity, tax: 1662140 },
+// 소득세 과세표준 구간 (2026년 기준, 8단계 누진세율)
+const INCOME_TAX_BRACKETS: { max: number; rate: number; deduction: number }[] = [
+  { max: 14000000, rate: 0.06, deduction: 0 },
+  { max: 50000000, rate: 0.15, deduction: 1260000 },
+  { max: 88000000, rate: 0.24, deduction: 5760000 },
+  { max: 150000000, rate: 0.35, deduction: 15440000 },
+  { max: 300000000, rate: 0.38, deduction: 19940000 },
+  { max: 500000000, rate: 0.40, deduction: 25940000 },
+  { max: 1000000000, rate: 0.42, deduction: 35940000 },
+  { max: Infinity, rate: 0.45, deduction: 65940000 },
 ];
 
-const getIncomeTax = (monthlyTaxableIncome: number, dependents: number) => {
-  // 부양가족 수에 따른 공제 (단순화된 예시)
-  const deduction = (dependents - 1) * 20000;
-  const taxableIncomeAfterDependents = Math.max(0, monthlyTaxableIncome - deduction);
-
-  const matchedBracket = incomeTaxTable.find(bracket => taxableIncomeAfterDependents < bracket.max);
-  return matchedBracket ? matchedBracket.tax : incomeTaxTable[incomeTaxTable.length - 1].tax;
+// 근로소득공제 (소득세법 제47조)
+const earnedIncomeDeduction = (annualGross: number): number => {
+  if (annualGross <= 5000000) return annualGross * 0.7;
+  if (annualGross <= 15000000) return 3500000 + (annualGross - 5000000) * 0.4;
+  if (annualGross <= 45000000) return 7500000 + (annualGross - 15000000) * 0.15;
+  if (annualGross <= 100000000) return 12000000 + (annualGross - 45000000) * 0.05;
+  return Math.min(20000000, 14750000 + (annualGross - 100000000) * 0.02);
 };
+
+// 근로소득세액공제 한도 (총급여 기준)
+const taxCreditLimit = (annualGross: number): number => {
+  if (annualGross <= 33000000) return 740000;
+  if (annualGross <= 70000000) return 660000;
+  if (annualGross <= 120000000) return 500000;
+  return 200000;
+};
+
+/**
+ * 월 원천징수 소득세 근사값.
+ * 국세청 간이세액표를 그대로 옮기는 대신, 연말정산 구조(근로소득공제 → 인적공제·연금보험료공제
+ * → 누진세율 → 근로소득세액공제)로 계산한 뒤 12로 나눕니다. 실제 원천징수액과는
+ * 표준세액공제·부양가족 세부 요건 등에 따라 차이가 날 수 있습니다.
+ */
+const getIncomeTax = (
+  monthlyTaxableIncome: number,
+  dependents: number,
+  monthlyPensionEmployee: number
+) => {
+  const annualGross = Math.max(0, monthlyTaxableIncome * 12);
+  if (annualGross === 0) return 0;
+
+  const personalDeduction = 1500000 * Math.max(1, dependents);
+  const pensionDeduction = Math.max(0, monthlyPensionEmployee * 12);
+  const taxBase = Math.max(
+    0,
+    annualGross - earnedIncomeDeduction(annualGross) - personalDeduction - pensionDeduction
+  );
+
+  const bracket =
+    INCOME_TAX_BRACKETS.find((b) => taxBase <= b.max) ?? INCOME_TAX_BRACKETS[0];
+  const calculatedTax = Math.max(0, taxBase * bracket.rate - bracket.deduction);
+
+  const rawCredit =
+    calculatedTax <= 1300000
+      ? calculatedTax * 0.55
+      : 715000 + (calculatedTax - 1300000) * 0.3;
+  const credit = Math.min(rawCredit, taxCreditLimit(annualGross));
+
+  return Math.max(0, calculatedTax - credit) / 12;
+};
+
 
 export default function SalaryCalculatorClient({ infoSection }: SalaryCalculatorClientProps) {
   const { locale } = useI18n();
@@ -65,17 +103,17 @@ export default function SalaryCalculatorClient({ infoSection }: SalaryCalculator
     const monthlySalary = annual / 12;
     const monthlyTaxable = taxableAnnual / 12;
 
-    // 2025년 기준
-    const nationalPensionMin = 390000;
-    const nationalPensionMax = 6170000;
+    // 2026년 기준 (국민연금 9.5%, 건강보험 7.19%, 장기요양 건강보험료의 13.14%)
+    const nationalPensionMin = 410000;
+    const nationalPensionMax = 6590000;
     const monthlySalaryForPension = Math.max(nationalPensionMin, Math.min(monthlySalary, nationalPensionMax));
 
-    const nationalPension = monthlySalaryForPension * 0.045;
-    const healthInsurance = monthlyTaxable * 0.03545;
-    const longTermCareInsurance = healthInsurance * 0.1295; // 건강보험료의 12.95% (변동 가능)
+    const nationalPension = monthlySalaryForPension * 0.0475;
+    const healthInsurance = monthlyTaxable * 0.03595;
+    const longTermCareInsurance = healthInsurance * 0.1314;
     const employmentInsurance = monthlySalary * 0.009;
 
-    const incomeTax = getIncomeTax(monthlyTaxable, numDependents);
+    const incomeTax = getIncomeTax(monthlyTaxable, numDependents, nationalPension);
     const localIncomeTax = incomeTax * 0.1;
 
     const totalDeductions = nationalPension + healthInsurance + longTermCareInsurance + employmentInsurance + incomeTax + localIncomeTax;
@@ -153,11 +191,11 @@ export default function SalaryCalculatorClient({ infoSection }: SalaryCalculator
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell>{isKo ? '국민연금 (4.5%)' : 'National Pension (4.5%)'}</TableCell>
+          <TableCell>{isKo ? '국민연금 (4.75%)' : 'National Pension (4.75%)'}</TableCell>
           <TableCell className="text-right">{formatNumber(Math.round(result.deductions.nationalPension))}{isKo ? '원' : ' KRW'}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell>{isKo ? '건강보험 (3.545%)' : 'Health Insurance (3.545%)'}</TableCell>
+          <TableCell>{isKo ? '건강보험 (3.595%)' : 'Health Insurance (3.595%)'}</TableCell>
           <TableCell className="text-right">{formatNumber(Math.round(result.deductions.healthInsurance))}{isKo ? '원' : ' KRW'}</TableCell>
         </TableRow>
         <TableRow>
@@ -173,7 +211,7 @@ export default function SalaryCalculatorClient({ infoSection }: SalaryCalculator
           <TableCell className="text-right">{formatNumber(Math.round(result.deductions.nationalPension + result.deductions.healthInsurance + result.deductions.longTermCareInsurance + result.deductions.employmentInsurance))}{isKo ? '원' : ' KRW'}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell>{isKo ? '소득세 (간이세액)' : 'Income Tax (simplified)'}</TableCell>
+          <TableCell>{isKo ? '소득세 (연말정산 구조 추정)' : 'Income Tax (year-end settlement estimate)'}</TableCell>
           <TableCell className="text-right">{formatNumber(Math.round(result.deductions.incomeTax))}{isKo ? '원' : ' KRW'}</TableCell>
         </TableRow>
         <TableRow>

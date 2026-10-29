@@ -36,21 +36,60 @@ const holidays2024: Holiday[] = [
 
 const holidays2025: Holiday[] = [
   { date: '2025-01-01', name: '신정', month: 1, day: 1 },
+  { date: '2025-01-27', name: '설날 (임시공휴일)', month: 1, day: 27 },
   { date: '2025-01-28', name: '설날', month: 1, day: 28 },
   { date: '2025-01-29', name: '설날', month: 1, day: 29 },
   { date: '2025-01-30', name: '설날', month: 1, day: 30 },
   { date: '2025-03-01', name: '삼일절', month: 3, day: 1 },
+  { date: '2025-03-03', name: '삼일절 (대체공휴일)', month: 3, day: 3 },
   { date: '2025-05-05', name: '어린이날', month: 5, day: 5 },
   { date: '2025-05-06', name: '부처님 오신 날', month: 5, day: 6 },
+  { date: '2025-06-03', name: '제21대 대통령선거', month: 6, day: 3 },
   { date: '2025-06-06', name: '현충일', month: 6, day: 6 },
   { date: '2025-08-15', name: '광복절', month: 8, day: 15 },
+  { date: '2025-10-03', name: '개천절', month: 10, day: 3 },
   { date: '2025-10-05', name: '추석', month: 10, day: 5 },
   { date: '2025-10-06', name: '추석', month: 10, day: 6 },
   { date: '2025-10-07', name: '추석', month: 10, day: 7 },
-  { date: '2025-10-03', name: '개천절', month: 10, day: 3 },
+  { date: '2025-10-08', name: '추석 (대체공휴일)', month: 10, day: 8 },
   { date: '2025-10-09', name: '한글날', month: 10, day: 9 },
   { date: '2025-12-25', name: '크리스마스', month: 12, day: 25 },
 ];
+
+const holidays2026: Holiday[] = [
+  { date: '2026-01-01', name: '신정', month: 1, day: 1 },
+  { date: '2026-02-16', name: '설날 연휴', month: 2, day: 16 },
+  { date: '2026-02-17', name: '설날', month: 2, day: 17 },
+  { date: '2026-02-18', name: '설날 연휴', month: 2, day: 18 },
+  { date: '2026-03-01', name: '삼일절', month: 3, day: 1 },
+  { date: '2026-03-02', name: '삼일절 (대체공휴일)', month: 3, day: 2 },
+  { date: '2026-05-01', name: '근로자의 날', month: 5, day: 1 },
+  { date: '2026-05-05', name: '어린이날', month: 5, day: 5 },
+  { date: '2026-05-24', name: '부처님 오신 날', month: 5, day: 24 },
+  { date: '2026-05-25', name: '부처님 오신 날 (대체공휴일)', month: 5, day: 25 },
+  { date: '2026-06-03', name: '제9회 전국동시지방선거', month: 6, day: 3 },
+  { date: '2026-06-06', name: '현충일', month: 6, day: 6 },
+  { date: '2026-07-17', name: '제헌절', month: 7, day: 17 },
+  { date: '2026-08-15', name: '광복절', month: 8, day: 15 },
+  { date: '2026-08-17', name: '광복절 (대체공휴일)', month: 8, day: 17 },
+  { date: '2026-09-24', name: '추석 연휴', month: 9, day: 24 },
+  { date: '2026-09-25', name: '추석', month: 9, day: 25 },
+  { date: '2026-09-26', name: '추석 연휴', month: 9, day: 26 },
+  { date: '2026-10-03', name: '개천절', month: 10, day: 3 },
+  { date: '2026-10-05', name: '개천절 (대체공휴일)', month: 10, day: 5 },
+  { date: '2026-10-09', name: '한글날', month: 10, day: 9 },
+  { date: '2026-12-25', name: '크리스마스', month: 12, day: 25 },
+];
+
+const HOLIDAYS_BY_YEAR: Record<number, Holiday[]> = {
+  2024: holidays2024,
+  2025: holidays2025,
+  2026: holidays2026,
+};
+
+const SUPPORTED_YEARS = [2024, 2025, 2026] as const;
+type SupportedYear = (typeof SUPPORTED_YEARS)[number];
+
 
 interface InfoSection {
   calculatorDescription: React.ReactNode;
@@ -95,27 +134,58 @@ const HolidayCalendar = ({ infoSection }: HolidayCalendarProps) => {
     '2024-10-09': 'Hangul Day',
     '2024-12-25': 'Christmas',
     '2025-01-01': "New Year's Day",
+    '2025-01-27': 'Lunar New Year (Temporary Holiday)',
     '2025-01-28': 'Lunar New Year (Seollal)',
     '2025-01-29': 'Lunar New Year (Seollal)',
     '2025-01-30': 'Lunar New Year (Seollal)',
     '2025-03-01': 'Independence Movement Day',
+    '2025-03-03': 'Independence Movement Day (Substitute)',
     '2025-05-05': "Children's Day",
     '2025-05-06': "Buddha's Birthday",
+    '2025-06-03': '21st Presidential Election',
     '2025-06-06': 'Memorial Day',
     '2025-08-15': 'Liberation Day',
+    '2025-10-03': 'National Foundation Day',
     '2025-10-05': 'Chuseok (Harvest Festival)',
     '2025-10-06': 'Chuseok (Harvest Festival)',
-    '2025-10-07': 'Chuseok (Substitute)',
-    '2025-10-03': 'National Foundation Day',
+    '2025-10-07': 'Chuseok (Harvest Festival)',
+    '2025-10-08': 'Chuseok (Substitute)',
     '2025-10-09': 'Hangul Day',
     '2025-12-25': 'Christmas',
+    '2026-01-01': "New Year's Day",
+    '2026-02-16': 'Lunar New Year Holiday',
+    '2026-02-17': 'Lunar New Year (Seollal)',
+    '2026-02-18': 'Lunar New Year Holiday',
+    '2026-03-01': 'Independence Movement Day',
+    '2026-03-02': 'Independence Movement Day (Substitute)',
+    '2026-05-01': "Workers' Day",
+    '2026-05-05': "Children's Day",
+    '2026-05-24': "Buddha's Birthday",
+    '2026-05-25': "Buddha's Birthday (Substitute)",
+    '2026-06-03': '9th Local Election',
+    '2026-06-06': 'Memorial Day',
+    '2026-07-17': 'Constitution Day',
+    '2026-08-15': 'Liberation Day',
+    '2026-08-17': 'Liberation Day (Substitute)',
+    '2026-09-24': 'Chuseok Holiday',
+    '2026-09-25': 'Chuseok (Harvest Festival)',
+    '2026-09-26': 'Chuseok Holiday',
+    '2026-10-03': 'National Foundation Day',
+    '2026-10-05': 'National Foundation Day (Substitute)',
+    '2026-10-09': 'Hangul Day',
+    '2026-12-25': 'Christmas',
   };
 
   const holidayName = (h: Holiday): string => isKo ? h.name : (holidayNamesEn[h.date] ?? h.name);
-  const [selectedYear, setSelectedYear] = useState<2024 | 2025>(2024);
+  const [selectedYear, setSelectedYear] = useState<SupportedYear>(() => {
+    const current = new Date().getFullYear();
+    return (SUPPORTED_YEARS as readonly number[]).includes(current)
+      ? (current as SupportedYear)
+      : 2026;
+  });
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
-  const holidays = selectedYear === 2024 ? holidays2024 : holidays2025;
+  const holidays = HOLIDAYS_BY_YEAR[selectedYear];
 
   const isHoliday = (month: number, day: number): Holiday | undefined => {
     return holidays.find((h) => h.month === month && h.day === day);
@@ -147,18 +217,15 @@ const HolidayCalendar = ({ infoSection }: HolidayCalendarProps) => {
       <div className="flex items-center space-x-4">
         <label className="w-16">{t.yearLabel}</label>
         <div className="flex space-x-2">
-          <Button
-            variant={selectedYear === 2024 ? 'default' : 'outline'}
-            onClick={() => setSelectedYear(2024)}
-          >
-            {isKo ? '2024년' : '2024'}
-          </Button>
-          <Button
-            variant={selectedYear === 2025 ? 'default' : 'outline'}
-            onClick={() => setSelectedYear(2025)}
-          >
-            {isKo ? '2025년' : '2025'}
-          </Button>
+          {SUPPORTED_YEARS.map((year) => (
+            <Button
+              key={year}
+              variant={selectedYear === year ? 'default' : 'outline'}
+              onClick={() => setSelectedYear(year)}
+            >
+              {isKo ? `${year}년` : `${year}`}
+            </Button>
+          ))}
         </div>
       </div>
 

@@ -4,6 +4,8 @@ import React, { ReactNode } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { useI18n } from '@/i18n/I18nProvider';
+import CalculatorFaq from '@/components/calculators/CalculatorFaq';
+import RelatedGuides from '@/components/calculators/RelatedGuides';
 
 interface CalculatorLayoutProps {
   title: string;
@@ -100,6 +102,9 @@ export default function CalculatorLayout({
           </div>
         </div>
       )}
+
+      <CalculatorFaq />
+      <RelatedGuides />
     </div>
   );
 }

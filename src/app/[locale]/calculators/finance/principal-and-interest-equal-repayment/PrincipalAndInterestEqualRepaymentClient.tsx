@@ -270,7 +270,7 @@ export default function LevelPaymentPage() {
     ),
     usefulTips: (
       <div className="text-base leading-relaxed space-y-8">
-        <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '🏠 내 집 마련, 2025년 대출 전략 가이드' : '🏠 Buying a home: 2025 loan strategy guide'}</h2>
+        <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '🏠 내 집 마련, 2026년 대출 전략 가이드' : '🏠 Buying a home: 2026 loan strategy guide'}</h2>
         
         <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
           <h3 className="font-bold text-lg text-primary">{isKo ? '1. 원리금 균등 vs 원금 균등, 나에게 맞는 방식은?' : '1. Equal payment vs equal principal: which fits you?'}</h3>
@@ -296,8 +296,8 @@ export default function LevelPaymentPage() {
         </div>
 
         <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
-          <h3 className="font-bold text-lg text-primary">{isKo ? '2. 2025년 강화된 DSR 규제와 스트레스 DSR 이해하기' : '2. Tighter 2025 DSR rules and stress DSR'}</h3>
-          <p className="mt-2">{isKo ? '2025년부터는 대출 심사가 더 깐깐해집니다. 특히 스트레스 DSR 제도가 핵심입니다.' : 'From 2025, loan screening becomes stricter. The stress DSR system is key.'}</p>
+          <h3 className="font-bold text-lg text-primary">{isKo ? '2. 강화된 DSR 규제와 스트레스 DSR 이해하기' : '2. Tighter DSR rules and stress DSR'}</h3>
+          <p className="mt-2">{isKo ? '2025년 7월부터 스트레스 DSR 3단계가 시행되어 대출 심사가 더 깐깐해졌습니다. 특히 수도권 주택담보대출에서 체감 한도가 눈에 띄게 줄었습니다.' : 'Stress DSR phase 3 took effect in July 2025, making loan screening stricter — metro-area mortgage limits dropped noticeably.'}</p>
           <ul className="mt-3 space-y-2 list-disc list-inside text-sm">
             <li><strong>{isKo ? 'DSR (총부채원리금상환비율):' : 'DSR (Debt Service Ratio):'}</strong> {isKo ? '연 소득 대비 모든 대출의 연간 원리금 상환액 비율. 현재 은행권 40% 적용.' : 'The ratio of total annual principal and interest of all loans to annual income. Banks currently apply 40%.'}</li>
             <li><strong>{isKo ? '스트레스 DSR:' : 'Stress DSR:'}</strong> {isKo ? '미래 금리 인상 가능성을 대비해, 실제 대출금리에 가산금리(스트레스 금리)를 더해 DSR을 산정하는 방식입니다.' : 'A method that adds a stress rate to the actual loan rate to calculate DSR, preparing for future rate hikes.'}</li>

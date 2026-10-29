@@ -9,11 +9,19 @@ const SITE_URL =
 // 각 언어 동일 콘텐츠의 중복 판정을 막기 위해 canonical + hreflang을 출력.
 // locales/config.localeMeta 에서 자동 생성되므로 새 언어 추가 시 코드 수정 불필요.
 // 클라이언트 컴포넌트로 둬서 정적 생성(SSG)을 유지한다.
+//
+// 주의: /calculators 이하 페이지는 buildCalculatorMetadata / buildCategoryMetadata가
+// 시장 제한(isMarketAllowed)을 반영한 canonical·hreflang을 이미 생성한다.
+// 여기서 또 출력하면 head에 canonical 2개, hreflang 6개가 중복되므로 건너뛴다.
 export default function HrefLangTags() {
   const pathname = usePathname() || `/${defaultLocale}`;
   const match = pathname.match(/^\/(en|ko)(\/.*)?$/);
   const locale = (match?.[1] as (typeof locales)[number]) ?? defaultLocale;
   const rest = match?.[2] ?? "";
+
+  if (/^\/calculators(\/|$)/.test(rest)) {
+    return null;
+  }
 
   const canonical = `${SITE_URL}/${locale}${rest}`;
 

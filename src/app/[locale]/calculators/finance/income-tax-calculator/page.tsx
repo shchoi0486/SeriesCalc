@@ -23,7 +23,7 @@ export default function IncomeTaxCalculatorPage({
     calculatorDescription: (
       <div className="text-base leading-relaxed space-y-4">
         <p>
-          {isKo ? '소득세 계산기는 종합소득금액을 입력하면 기본공제와 인적공제를 차감한 과세표준에 대해 누진세율이 적용된 소득세와 지방소득세를 계산해주는 도구입니다. 2024년 기준 8단계 누진세율이 적용됩니다.' : 'The Income Tax Calculator computes income tax and local income tax by applying progressive tax rates (8 brackets as of 2024) on the taxable income after basic and dependent deductions from your gross income.'}</p>
+          {isKo ? '소득세 계산기는 종합소득금액을 입력하면 기본공제와 인적공제를 차감한 과세표준에 대해 누진세율이 적용된 소득세와 지방소득세를 계산해주는 도구입니다. 2026년 기준 8단계 누진세율이 적용됩니다.' : 'The Income Tax Calculator computes income tax and local income tax by applying progressive tax rates (8 brackets as of 2026) on the taxable income after basic and dependent deductions from your gross income.'}</p>
         <TermGlossary items={[
           { term: isKo ? '종합소득금액' : 'Gross Income', desc: isKo ? '근로소득, 사업소득, 이자소득, 배당소득 등을 모두 합산한 연간 총소득입니다.' : 'Total annual income combining earned income, business income, interest, dividends, etc.' },
           { term: isKo ? '과세표준' : 'Taxable Income', desc: isKo ? '종합소득금액에서 각종 공제(기본공제, 인적공제 등)를 차감한 금액으로, 세율이 적용되는 기준 금액입니다.' : 'The amount after subtracting deductions (basic, dependent, etc.) from gross income; the base for applying tax rates.' },
@@ -34,7 +34,7 @@ export default function IncomeTaxCalculatorPage({
     ),
     calculationFormula: (
       <div className="text-base leading-relaxed space-y-6">
-        <p className="font-semibold">{isKo ? '소득세 계산 공식 (2024년 기준)' : 'Income Tax Formula (2024)'}</p>
+        <p className="font-semibold">{isKo ? '소득세 계산 공식 (2026년 기준)' : 'Income Tax Formula (2026)'}</p>
         <div className="p-4 bg-muted rounded-lg border-l-4 border-primary">
           <h3 className="text-lg font-bold text-primary mb-3">{isKo ? '1. 과세표준 산출' : '1. Taxable Income'}</h3>
           <BlockMath math={isKo ? "\\text{과세표준} = \\text{종합소득금액} - \\text{기본공제}(150\\text{만원}) - \\text{인적공제}(1\\text{인당 } 150\\text{만원})" : "\\text{Taxable Income} = \\text{Gross Income} - \\text{Basic Ded. (1.5M)} - \\text{Dependent Ded. (1.5M each)}"} />

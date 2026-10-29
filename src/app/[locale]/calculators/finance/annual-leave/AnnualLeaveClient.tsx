@@ -137,7 +137,7 @@ export default function AnnualLeaveCalculator() {
                   <strong>{isKo ? '1개월 개근 시 → 1일의 유급휴가 발생' : '1 month perfect attendance → 1 day paid leave'}</strong>
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {isKo ? '예를 들어, 2024년 1월 1일에 입사했다면, 1월 한 달을 개근했을 경우 2월 1일에 1일의 연차가 발생합니다. 이런 방식으로 1년(12개월) 동안 최대 ' : 'For example, if you joined on Jan 1, 2024 and had perfect attendance in January, 1 day of leave accrues on Feb 1. This way you can receive up to '}<strong>{isKo ? '11일' : '11 days'}</strong>{isKo ? '의 연차를 받을 수 있습니다. 이 휴가는 발생일로부터 1년간 사용 가능합니다.' : ' of leave over a year (12 months). This leave is usable for 1 year from its accrual date.'}
+                  {isKo ? '예를 들어, 2026년 1월 1일에 입사했다면, 1월 한 달을 개근했을 경우 2월 1일에 1일의 연차가 발생합니다. 이런 방식으로 1년(12개월) 동안 최대 ' : 'For example, if you joined on Jan 1, 2026 and had perfect attendance in January, 1 day of leave accrues on Feb 1. This way you can receive up to '}<strong>{isKo ? '11일' : '11 days'}</strong>{isKo ? '의 연차를 받을 수 있습니다. 이 휴가는 발생일로부터 1년간 사용 가능합니다.' : ' of leave over a year (12 months). This leave is usable for 1 year from its accrual date.'}
                 </p>
               </div>
 
@@ -150,7 +150,7 @@ export default function AnnualLeaveCalculator() {
                   <strong>{isKo ? '1년간 80% 이상 출근 시 → 15일의 유급휴가 발생' : '80%+ attendance in a year → 15 days paid leave'}</strong>
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {isKo ? '2024년 1월 1일에 입사하여 2024년 12월 31일까지 80% 이상 출근했다면, 2025년 1월 1일에 15일의 연차가 발생합니다. 이는 1년 미만일 때 발생한 11일의 휴가와는 별개로 주어지는 것입니다.' : 'If you joined Jan 1, 2024 and attended 80%+ through Dec 31, 2024, 15 days accrue on Jan 1, 2025. This is given separately from the 11 days accrued under 1 year.'}
+                  {isKo ? '2026년 1월 1일에 입사하여 2026년 12월 31일까지 80% 이상 출근했다면, 2027년 1월 1일에 15일의 연차가 발생합니다. 이는 1년 미만일 때 발생한 11일의 휴가와는 별개로 주어지는 것입니다.' : 'If you joined Jan 1, 2026 and attended 80%+ through Dec 31, 2026, 15 days accrue on Jan 1, 2027. This is given separately from the 11 days accrued under 1 year.'}
                 </p>
               </div>
 

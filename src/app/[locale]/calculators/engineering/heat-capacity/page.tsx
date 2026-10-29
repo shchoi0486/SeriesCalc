@@ -140,7 +140,7 @@ export default function HeatCapacityPage({
           </p>
         </div>
         <p className="text-xs opacity-80">
-          * {L("상기 수치는 상온 근처의 대표 Cp值 기준이며, 실제 Cp는 온도·압력에 따라 변할 수 있습니다.", "Values use room-temperature representative Cp; actual Cp may shift with temperature and pressure.")}
+          * {L("상기 수치는 상온 근처의 대표 Cp 값 기준이며, 실제 Cp는 온도·압력에 따라 변할 수 있습니다.", "Values use room-temperature representative Cp; actual Cp may shift with temperature and pressure.")}
         </p>
       </div>
     ),

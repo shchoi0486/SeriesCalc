@@ -146,7 +146,7 @@ export default function SpecificGravityPage({
           {
             title: L("③ 해수(ρ ≈ 1,025 kg/m³) 기준 20℃", "③ Seawater (≈1,025 kg/m³) at 20 ℃"),
             body: L(
-              "SG = 1,025 / 998.19 = 1.0269 → 약 1.027. 해수는 소금 성분으로 물보다 약간 무거워, 기선의 흘수(水線 깊이) 계산이나 해양배관·탱크의 압력 계산에서 이 차이가 결정적입니다.",
+              "SG = 1,025 / 998.19 = 1.0269 → 약 1.027. 해수는 소금 성분으로 물보다 약간 무거워, 기선의 흘수(수선 깊이) 계산이나 해양배관·탱크의 압력 계산에서 이 차이가 결정적입니다.",
               "SG = 1025 / 998.19 ≈ 1.0269. The slight extra weight of salt matters greatly in ship draft calculations and the pressure ratings of marine tanks and piping.",
             ),
           },

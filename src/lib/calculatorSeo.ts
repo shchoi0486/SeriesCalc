@@ -2,6 +2,7 @@
 import { en } from "@/i18n/dictionaries/en";
 import { ko } from "@/i18n/dictionaries/ko";
 import { localeMeta, type Locale } from "@/i18n/config";
+import { isMarketAllowed } from "@/data/calculatorMarkets";
 
 type DictShape = typeof en;
 
@@ -779,6 +780,24 @@ function openGraphFor(
   };
 }
 
+const ALL_LOCALES: Locale[] = ["ko", "en"];
+
+/**
+ * hreflang용 언어 대체 링크. 시장 제한이 걸린 계산기는
+ * 실제로 노출되는 로케일만 hreflang에 포함한다.
+ */
+function alternatesFor(calcPath: string) {
+  const languages: Record<string, string> = {};
+  ALL_LOCALES.forEach((l) => {
+    if (isMarketAllowed(calcPath, l)) {
+      languages[l] = `/${l}${calcPath}`;
+    }
+  });
+  const fallback = languages.en ?? languages.ko;
+  if (fallback) languages["x-default"] = fallback;
+  return { languages };
+}
+
 export function buildCalculatorMetadata(
   locale: string,
   calcPath: string,
@@ -811,6 +830,10 @@ export function buildCalculatorMetadata(
   return {
     title,
     description,
+    alternates: {
+      canonical: `/${loc}${calcPath}`,
+      ...alternatesFor(calcPath),
+    },
     openGraph: openGraphFor(locale, calcPath, title, description),
   };
 }
@@ -836,6 +859,14 @@ export function buildCategoryMetadata(
   return {
     title,
     description,
+    alternates: {
+      canonical: `/${loc}/calculators/${category}`,
+      languages: {
+        ko: `/ko/calculators/${category}`,
+        en: `/en/calculators/${category}`,
+        "x-default": `/en/calculators/${category}`,
+      },
+    },
     openGraph: openGraphFor(
       locale,
       `/calculators/${category}`,

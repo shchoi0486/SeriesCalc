@@ -58,7 +58,7 @@ export default function FreeInstallmentSavingsPage({
         <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '💰 자유적금 이자, 어떻게 계산될까요?' : '💰 How is free savings interest calculated?'}</h2>
         <p className="text-base leading-relaxed mb-6">
           {isKo
-            ? '자유적금 이자 계산의 핵심 원리는 \'각각의 입금 건을 별개의 정기예금처럼 취급\'하는 것입니다. 즉, 모든 납입금에 동일한 이자가 붙는 것이 아니라, 돈을 \'일찍\', 그리고 \'많이\' 넣을수록 더 많은 이자를 받게 됩니다. 이자는 \'일(日) 단위\'로 계산되는 것이 가장 큰 특징입니다.'
+            ? '자유적금 이자 계산의 핵심 원리는 \'각각의 입금 건을 별개의 정기예금처럼 취급\'하는 것입니다. 즉, 모든 납입금에 동일한 이자가 붙는 것이 아니라, 돈을 \'일찍\', 그리고 \'많이\' 넣을수록 더 많은 이자를 받게 됩니다. 이자는 \'일 단위\'로 계산되는 것이 가장 큰 특징입니다.'
             : "The core principle of free savings interest is to 'treat each deposit as a separate time deposit'. That is, the same interest is not applied to every deposit; the earlier and the more you deposit, the more interest you earn. The biggest feature is that interest is calculated on a daily basis."}
         </p>
         <div className="mt-4 p-6 bg-muted rounded-lg text-center shadow-inner overflow-x-auto">
@@ -68,11 +68,11 @@ export default function FreeInstallmentSavingsPage({
           <h4 className="font-bold text-lg mb-3">{isKo ? '💡 실제 계산 예시로 이해하기' : '💡 Understanding with a real example'}</h4>
           <p className="text-base">
             {isKo ? '- 약정 이율: 연 3.5% (단리)' : '- Agreed rate: 3.5% annual (simple)'}<br />
-            {isKo ? '- 만기일: 2025년 12월 31일' : '- Maturity: Dec 31, 2025'}<br />
+            {isKo ? '- 만기일: 2026년 12월 31일' : '- Maturity: Dec 31, 2026'}<br />
             {isKo ? '- 납입 내역:' : '- Deposits:'}
               <ul className="list-disc list-inside ml-4 mt-2">
-                <li>{isKo ? '2025년 1월 1일: 100만원 납입 (예치일수: 364일)' : 'Jan 1, 2025: 1,000,000 deposited (364 days on deposit)'}</li>
-                <li>{isKo ? '2025년 7월 1일: 50만원 납입 (예치일수: 183일)' : 'Jul 1, 2025: 500,000 deposited (183 days on deposit)'}</li>
+                <li>{isKo ? '2026년 1월 1일: 100만원 납입 (예치일수: 364일)' : 'Jan 1, 2026: 1,000,000 deposited (364 days on deposit)'}</li>
+                <li>{isKo ? '2026년 7월 1일: 50만원 납입 (예치일수: 183일)' : 'Jul 1, 2026: 500,000 deposited (183 days on deposit)'}</li>
               </ul>
           </p>
           <p className="mt-4 font-mono bg-card p-4 rounded-md text-sm">
@@ -131,10 +131,10 @@ export default function FreeInstallmentSavingsPage({
             </p>
           </div>
           <div className="p-4 rounded-md bg-muted">
-            <h4 className="font-bold text-lg text-primary">{isKo ? '4. 비과세 및 세금우대 혜택, 놓치면 손해! (2025년 기준)' : '4. Don\'t miss non-taxable and preferential tax benefits! (as of 2025)'}</h4>
+            <h4 className="font-bold text-lg text-primary">{isKo ? '4. 비과세 및 세금우대 혜택, 놓치면 손해! (2026년 기준)' : '4. Don\'t miss non-taxable and preferential tax benefits! (as of 2026)'}</h4>
             <p className="mt-2 text-base">
               {isKo
-                ? '이자소득에 대한 세금(일반과세 15.4%)은 생각보다 큽니다. 2025년 현재, 만 65세 이상 거주자, 장애인, 독립유공자 등은 비과세 종합저축 한도(최대 5천만원) 내에서 세금 없이 이자를 모두 받을 수 있습니다. 또한, ISA(개인종합자산관리계좌)를 통해 가입하면 별도의 비과세 혜택을 누릴 수 있습니다. 가입 요건이 된다면 이러한 절세 상품을 최우선으로 고려하여 만기 수령액을 극대화하세요.'
+                ? '이자소득에 대한 세금(일반과세 15.4%)은 생각보다 큽니다. 현재 만 65세 이상 거주자, 장애인, 독립유공자 등은 비과세 종합저축 한도(최대 5천만원) 내에서 세금 없이 이자를 모두 받을 수 있습니다. 또한, ISA(개인종합자산관리계좌)를 통해 가입하면 별도의 비과세 혜택을 누릴 수 있습니다. 가입 요건이 된다면 이러한 절세 상품을 최우선으로 고려하여 만기 수령액을 극대화하세요.'
                 : 'The tax on interest income (15.4% general) is larger than you might think. As of 2025, residents aged 65 or older, persons with disabilities, and independence activists can receive all interest tax-free within the non-taxable comprehensive savings limit (up to 50 million KRW). Also, subscribing via an ISA (Individual Comprehensive Asset Management Account) grants separate non-taxable benefits. If you qualify, prioritize these tax-saving products to maximize your maturity amount.'}
             </p>
           </div>

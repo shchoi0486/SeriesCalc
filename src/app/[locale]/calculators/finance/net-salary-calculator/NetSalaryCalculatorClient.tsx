@@ -11,22 +11,22 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatNumber, parseNumber } from '@/utils/formatNumber';
 
-const NATIONAL_PENSION_RATE = 0.045;
-const NATIONAL_PENSION_MIN = 370000;
-const NATIONAL_PENSION_MAX = 5900000;
-const HEALTH_INSURANCE_RATE = 0.03545;
-const LONG_TERM_CARE_RATE = 0.1281;
+const NATIONAL_PENSION_RATE = 0.0475;
+const NATIONAL_PENSION_MIN = 410000;
+const NATIONAL_PENSION_MAX = 6590000;
+const HEALTH_INSURANCE_RATE = 0.03595;
+const LONG_TERM_CARE_RATE = 0.1314;
 const EMPLOYMENT_INSURANCE_RATE = 0.009;
 
 const INCOME_TAX_BRACKETS: { max: number; rate: number; deduction: number }[] = [
   { max: 14000000, rate: 0.06, deduction: 0 },
   { max: 50000000, rate: 0.15, deduction: 1260000 },
   { max: 88000000, rate: 0.24, deduction: 5760000 },
-  { max: 150000000, rate: 0.35, deduction: 14960000 },
-  { max: 300000000, rate: 0.38, deduction: 19460000 },
-  { max: 500000000, rate: 0.40, deduction: 25460000 },
-  { max: 1000000000, rate: 0.42, deduction: 35460000 },
-  { max: Infinity, rate: 0.45, deduction: 65460000 },
+  { max: 150000000, rate: 0.35, deduction: 15440000 },
+  { max: 300000000, rate: 0.38, deduction: 19940000 },
+  { max: 500000000, rate: 0.40, deduction: 25940000 },
+  { max: 1000000000, rate: 0.42, deduction: 35940000 },
+  { max: Infinity, rate: 0.45, deduction: 65940000 },
 ];
 
 function calcIncomeTax(annualTaxableIncome: number): number {
@@ -164,17 +164,17 @@ export default function NetSalaryCalculator({ infoSection }: NetSalaryCalculator
       <TableBody>
         <TableRow>
           <TableCell>{isKo ? '국민연금' : 'National Pension'}</TableCell>
-          <TableCell className="text-right">4.5%</TableCell>
+          <TableCell className="text-right">4.75%</TableCell>
           <TableCell className="text-right">{formatNumber(Math.round(result.nationalPension))}{isKo ? '원' : ' KRW'}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>{isKo ? '건강보험' : 'Health Insurance'}</TableCell>
-          <TableCell className="text-right">3.545%</TableCell>
+          <TableCell className="text-right">3.595%</TableCell>
           <TableCell className="text-right">{formatNumber(Math.round(result.healthInsurance))}{isKo ? '원' : ' KRW'}</TableCell>
         </TableRow>
         <TableRow>
           <TableCell>{isKo ? '장기요양보험' : 'Long-term Care Insurance'}</TableCell>
-          <TableCell className="text-right">12.81%<span className="text-xs text-muted-foreground">{isKo ? '(건강보험 대비)' : '(of health ins.)'}</span></TableCell>
+          <TableCell className="text-right">13.14%<span className="text-xs text-muted-foreground">{isKo ? '(건강보험 대비)' : '(of health ins.)'}</span></TableCell>
           <TableCell className="text-right">{formatNumber(Math.round(result.longTermCare))}{isKo ? '원' : ' KRW'}</TableCell>
         </TableRow>
         <TableRow>

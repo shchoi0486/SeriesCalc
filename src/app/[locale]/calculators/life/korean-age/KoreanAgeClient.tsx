@@ -414,7 +414,7 @@ const KoreanAgeCalculator = () => {
           <p class="text-muted-foreground">
             청소년 보호법에서는 청소년을 "'연 나이' 19세 미만인 사람"으로 규정합니다.
             따라서 '연 나이'로 19세가 되는 해의 1월 1일부터 술과 담배 구매가 가능합니다.
-            예를 들어, 2005년생은 생일과 관계없이 2024년 1월 1일부터 성인으로 인정받습니다.
+            예를 들어, 2006년생은 생일과 관계없이 2026년 1월 1일부터 성인으로 인정받습니다.
           </p>
         </div>
         <div class="p-4 rounded-lg border-l-4 border-primary bg-muted">

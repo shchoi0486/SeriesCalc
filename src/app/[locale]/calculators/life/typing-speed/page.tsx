@@ -36,7 +36,7 @@ export default function TypingSpeedPage({
     {
       q: L("정확도는 어떻게 측정하나요?", "How is accuracy measured?"),
       a: L(
-        "정확도(%) = ((총 입력字符 - 오타 수) ÷ 총 입력字符) × 100입니다. 오타는 목표 텍스트와 다른 문자를 입력했을 때 카운트됩니다. 대소문자·공백도 오타에 포함됩니다. 95% 이상이면 보통, 98% 이상이면 우수, 99% 이상이면 전문가 수준입니다.",
+        "정확도(%) = ((총 입력 문자 - 오타 수) ÷ 총 입력 문자) × 100입니다. 오타는 목표 텍스트와 다른 문자를 입력했을 때 카운트됩니다. 대소문자·공백도 오타에 포함됩니다. 95% 이상이면 보통, 98% 이상이면 우수, 99% 이상이면 전문가 수준입니다.",
         "Accuracy % = ((total chars − errors) ÷ total chars) × 100. Errors include wrong characters (case-sensitive, spaces included). 95%+ is average, 98%+ is good, 99%+ is expert.",
       ),
     },

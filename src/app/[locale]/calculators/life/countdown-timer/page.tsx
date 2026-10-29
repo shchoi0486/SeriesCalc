@@ -41,9 +41,9 @@ export default function CountdownTimerPage({
       ),
     },
     {
-      q: L("最大 타이머 시간은 얼마인가요?", "What is the maximum timer duration?"),
+      q: L("최대 타이머 시간은 얼마인가요?", "What is the maximum timer duration?"),
       a: L(
-        "이 계산기는 시간·분·초를 각각 독립적으로 설정할 수 있으므로,理屈上 23시간 59분 59초까지 가능합니다. 하루 이상의 긴 타이머가 필요한 경우 여러 번 나누어 설정하거나, 스마트폰 알람을 활용하는 것이 실용적입니다.",
+        "이 계산기는 시간·분·초를 각각 독립적으로 설정할 수 있으므로, 이론상 23시간 59분 59초까지 가능합니다. 하루 이상의 긴 타이머가 필요한 경우 여러 번 나누어 설정하거나, 스마트폰 알람을 활용하는 것이 실용적입니다.",
         "Hours, minutes, and seconds are set independently, so up to 23h 59m 59s is possible. For longer durations, use multiple timers or a phone alarm.",
       ),
     },

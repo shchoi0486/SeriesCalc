@@ -31,11 +31,11 @@ export default function CurrencyConverterPage({
   const faqs = [
     {
       q: L('환율은 어디에서 가져오며 얼마나 자주 갱신되나요?', 'Where does the exchange rate come from and how often is it updated?'),
-      a: L('이 계산기는 참고용 환율을 사용합니다. 실제 시장 환율은 경제 상황, 금리, 수급 등 다양한 요인으로 실시간으로 변동되므로, 실제 거래 전에는 은행이나 금융기관이 제공하는 최신 환율을 확인하세요.', 'This calculator uses reference exchange rates. Real market rates fluctuate in real time due to factors such as economic conditions, interest rates, and supply and demand, so check the latest rate from a bank or financial institution before an actual transaction.'),
+      a: L('이 계산기는 중간환율(시장 기준 환율)을 실시간으로 조회해 사용하며, 조회에 실패하면 내장된 기준 환율로 계산합니다. 환율은 하루에 한 번 갱신되며 결과 화면에 기준 시각이 표시됩니다. 실제 거래 전에는 은행이나 금융기관이 제공하는 최신 환율을 확인하세요.', 'This calculator fetches mid-market rates and displays the update time with the result. If the lookup fails, it falls back to built-in reference rates. Rates refresh once a day, so check the latest rate from a bank or financial institution before an actual transaction.'),
     },
     {
       q: L('환율이 고정값인가요, 실시간인가요?', 'Is the exchange rate static or live?'),
-      a: L('이 계산기의 환율은 예시용 고정값입니다. 실시간 시장 환율을 반영하지 않으므로, 변환 결과는 대략적인 참고용으로만 사용해 주세요.', 'The rates in this calculator are static sample values. They do not reflect real-time market rates, so the conversion result should only be used as an approximate reference.'),
+      a: L('시장 중간환율을 실시간으로 조회하며, 네트워크 문제로 조회가 안 되면 내장 기준 환율로 대체합니다. 어느 쪽인지는 결과 아래 안내 문구로 확인할 수 있습니다.', 'The calculator fetches live mid-market rates and falls back to built-in reference rates when the network request fails. The caption under the results tells you which one is in use.'),
     },
     {
       q: L('반대 방향 환율은 어떻게 구하나요?', 'How do I get the inverse exchange rate?'),
@@ -140,7 +140,7 @@ export default function CurrencyConverterPage({
           <li>{L('변환할 통화(출발 통화)를 선택하세요 (예: USD).', 'Select the source currency you want to convert from (e.g., USD).')}</li>
           <li>{L('변환 후의 통화(도착 통화)를 선택하세요 (예: KRW).', 'Select the target currency you want to convert to (e.g., KRW).')}</li>
           <li>{L('변환할 금액을 입력하세요.', 'Enter the amount to convert.')}</li>
-          <li>{L('변환 버튼을 누르면 결과가 표시됩니다. 환율은 참고용 고정값일 수 있습니다.', 'Press convert to see the result. Note that rates may be static sample values.')}</li>
+          <li>{L('변환 버튼을 누르면 결과가 표시됩니다. 결과 아래에서 환율 기준 시각을 확인하세요.', 'Press convert to see the result. The rate timestamp is shown under the results.')}</li>
         </ol>
       </div>
     ),

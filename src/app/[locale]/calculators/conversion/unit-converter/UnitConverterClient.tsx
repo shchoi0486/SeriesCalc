@@ -151,9 +151,10 @@ const UnitConverterPage = () => {
       <div className="space-y-4">
         <p dangerouslySetInnerHTML={{ __html: t.calculatorDescription.p1 }} />
         <p>{t.calculatorDescription.p2}</p>
-        <p>{t.calculatorDescription.p3}</p>
+        <p>{t.calculatorDescription.p4}</p>
+        <p>{t.calculatorDescription.p5}</p>
         <p className="p-4 bg-muted rounded-lg border-l-4 border-primary">
-          {t.calculatorDescription.note}
+          {t.calculatorDescription.note2}
         </p>
         <TermGlossary items={t.glossary} />
       </div>
@@ -267,12 +268,20 @@ const UnitConverterPage = () => {
             a: L('변환 결과는 소수점 두 자리까지 표시됩니다. 계산은 정의된 변환 계수를 사용하므로 반올림 오차가 작습니다.', 'Conversion results are shown to two decimal places. Calculations use defined conversion factors, so rounding errors are minimal.'),
           },
           {
+            q: L('온도 변환은 왜 다른 방식인가요?', 'Why is temperature conversion different?'),
+            a: L('섭씨/화씨/켈빈은 절대영점이 다르기 때문에 단순 곱셈이 아닌 오프셋이 있는 공식으로 변환합니다. 이 계산기는 °C↔°F↔K 간 정확한 변환 공식을 적용합니다.', 'Celsius, Fahrenheit, and Kelvin have different zero points, so they require offset formulas rather than simple multiplication. This tool uses correct conversion formulas between °C, °F, and K.'),
+          },
+          {
             q: L('복합 단위는 지원되나요?', 'Are compound units supported?'),
             a: L('이 변환기는 단순 단위 간 변환에 중점을 둡니다. m/s 같은 복합 단위나 복잡한 조합 단위는 이 도구에서 직접 지원되지 않을 수 있습니다.', 'This converter focuses on converting between simple units. Compound units like m/s or complex combined units may not be directly supported here.'),
           },
           {
             q: L('과학적 표기법은 어떻게 처리되나요?', 'How is scientific notation handled?'),
             a: L('매우 크거나 작은 값은 과학적 표기법(예: 1.23e+6)으로 표시되어 자릿수를 명확하게 표현합니다. 이를 통해 극단적인 값을 쉽게 읽을 수 있습니다.', 'Very large or small values are shown in scientific notation (e.g., 1.23e+6) to express magnitude clearly, making extreme values easy to read.'),
+          },
+          {
+            q: L('영국식/미국식 갤런 차이는 고려되나요?', 'Are UK and US gallons different?'),
+            a: L('일부 범주에서는 미국식(gallon) 기준을 적용합니다. 정확한 정의가 필요한 경우 해당 분야의 표준을 확인하세요.', 'In some categories, US gallons are used. If you need the exact definition for a specific field, check the relevant standard.'),
           },
         ].map((f, i) => (
           <FaqItem key={i} q={f.q} a={f.a} />

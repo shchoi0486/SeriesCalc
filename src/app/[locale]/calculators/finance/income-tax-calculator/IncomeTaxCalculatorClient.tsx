@@ -15,11 +15,11 @@ const TAX_BRACKETS: { max: number; rate: number; deduction: number }[] = [
   { max: 14000000, rate: 0.06, deduction: 0 },
   { max: 50000000, rate: 0.15, deduction: 1260000 },
   { max: 88000000, rate: 0.24, deduction: 5760000 },
-  { max: 150000000, rate: 0.35, deduction: 14960000 },
-  { max: 300000000, rate: 0.38, deduction: 19460000 },
-  { max: 500000000, rate: 0.40, deduction: 25460000 },
-  { max: 1000000000, rate: 0.42, deduction: 35460000 },
-  { max: Infinity, rate: 0.45, deduction: 65460000 },
+  { max: 150000000, rate: 0.35, deduction: 15440000 },
+  { max: 300000000, rate: 0.38, deduction: 19940000 },
+  { max: 500000000, rate: 0.40, deduction: 25940000 },
+  { max: 1000000000, rate: 0.42, deduction: 35940000 },
+  { max: Infinity, rate: 0.45, deduction: 65940000 },
 ];
 
 const BASIC_DEDUCTION = 1500000;

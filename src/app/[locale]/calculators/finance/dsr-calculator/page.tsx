@@ -74,8 +74,8 @@ export default function DsrCalculatorPage({
         </p>
         <p>
           {isKo
-            ? '2018년 주택담보대출에 먼저 도입되었고, 2022년 1월부터 전체 가계대출(신용대출, 전세자금대출, 자동차대출 등)로 확대 적용되었습니다. 2024년 현재 총대출 1억원 이상인 모든 차입자에게 적용됩니다.'
-            : 'Introduced for mortgages in 2018, expanded to all household loans (credit, jeonse, auto, etc.) from January 2022. As of 2024, it applies to all borrowers with total loans exceeding 100 million won.'}
+            ? '2018년 주택담보대출에 먼저 도입되었고, 2022년 1월부터 전체 가계대출(신용대출, 전세자금대출, 자동차대출 등)로 확대 적용되었습니다. 현재 총대출 1억원을 초과하는 모든 차입자에게 적용되며, 2025년 7월부터는 수도권 가계대출에 스트레스 DSR 3단계가 적용되어 실제 한도가 더 줄어듭니다.'
+            : 'Introduced for mortgages in 2018, expanded to all household loans (credit, jeonse, auto, etc.) from January 2022. It now applies to all borrowers with total loans over 100 million won, and since July 2025 the third phase of stress DSR further reduces actual limits on household loans in the Seoul metropolitan area.'}
         </p>
         <div className="mt-3 p-3 bg-muted rounded-lg">
           <p className="font-semibold text-foreground mb-1">{isKo ? 'DSR 40% 규제 요약' : 'DSR 40% Regulation Summary'}</p>
@@ -83,7 +83,7 @@ export default function DsrCalculatorPage({
             <li>{isKo ? '총대출 1억원 초과 시 전체 가계대출에 DSR 40% 적용' : 'Applies to all household loans when total loans exceed 100M won'}</li>
             <li>{isKo ? '2018년: 주택담보대출에 먼저 도입' : '2018: Initially introduced for mortgages'}</li>
             <li>{isKo ? '2022년 1월: 전체 가계대출로 확대' : '2022 Jan: Expanded to all household loans'}</li>
-            <li>{isKo ? '2024년: 총대출 1억원 이상 모든 차입자에게 적용' : '2024: Applies to all borrowers with total loans over 100M won'}</li>
+            <li>{isKo ? '2025년 7월: 수도권 가계대출에 스트레스 DSR 3단계 적용' : 'July 2025: Stress DSR phase 3 applied to metro-area household loans'}</li>
             <li>{isKo ? 'DSR 40% 이하여야 정상 대출 가능' : 'Must be under 40% DSR for normal loan approval'}</li>
           </ul>
         </div>

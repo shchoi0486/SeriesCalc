@@ -57,7 +57,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'timezone-converter': Globe,
   'korean-shoe-size-converter': Ruler,
   'korean-clothing-size-converter': Ruler,
-  // ?�상
+  // 건강
   'bmi-calculator': Heart,
   'bmr-calculator': Heart,
   'weight-loss-calculator': Heart,
@@ -99,7 +99,8 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'fraction-calculator': Divide,
   'triangle-calculator': Triangle,
   'standard-deviation-calculator': Sigma,
-  // ?��??�어�?  'free-fall': ArrowLeftRight,
+  // 물리·역학
+  'free-fall': ArrowLeftRight,
   'beam-deflection': Ruler,
   'spring-rate': Ruler,
   'gear-ratio': Cpu,
@@ -160,7 +161,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'heat-capacity': Flame,
   'dew-point': Cloud,
   'convection-heat-transfer': Flame,
-  // AI ?�구
+  // AI 도구
   'text-summarizer': FileText,
   'lorem-ipsum-generator': FileText,
   'image-resizer': Image,
@@ -180,7 +181,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
   'meeting-notes': FileText,
   // 게임
   'dps-calculator': Gamepad2,
-  // 기�?
+  // 기타
   'random-number-generator': Dice5,
   'random-string-generator': Hash,
   'random-email-generator': Mail,
@@ -191,6 +192,7 @@ const CALCULATOR_ICONS: Record<string, React.ElementType> = {
 };
 
 import { useI18n } from '@/i18n/I18nProvider';
+import CategoryEditorial from '@/components/calculators/CategoryEditorial';
 
 interface Calculator {
   id: string;
@@ -208,6 +210,7 @@ interface Subcategory {
 
 interface CategoryPageLayoutProps {
   category: {
+    id?: string;
     name: string;
     description: string;
     subcategories: Subcategory[];
@@ -344,6 +347,8 @@ const CategoryPageLayout: React.FC<CategoryPageLayoutProps> = ({ category }) => 
             );
           })}
         </div>
+
+        {category.id && <CategoryEditorial categoryId={category.id} locale={locale} />}
       </div>
     </div>
   );

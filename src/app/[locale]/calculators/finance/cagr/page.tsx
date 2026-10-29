@@ -52,7 +52,7 @@ export default function CagrPage({
         </div>
         <div className="mt-6 p-4 border-l-4 border-primary bg-muted">
           <h4 className="font-semibold text-md mb-2">{isKo ? '계산 예시)' : 'Example)'}</h4>
-          <p>{isKo ? '2020년 초에 1,000만 원으로 시작한 투자가 2025년 초에 2,500만 원이 되었다면, 투자 기간은 5년입니다.' : 'If an investment starting at 10M KRW in early 2020 became 25M KRW in early 2025, the period is 5 years.'}</p>
+          <p>{isKo ? '2021년 초에 1,000만 원으로 시작한 투자가 2026년 초에 2,500만 원이 되었다면, 투자 기간은 5년입니다.' : 'If an investment starting at 10M KRW in early 2020 became 25M KRW in early 2025, the period is 5 years.'}</p>
           <ul className="list-decimal list-inside mt-2 space-y-1">
             <li>{isKo ? '총 성장 배수: 2,500만 원 / 1,000만 원 = 2.5배' : 'Total growth multiple: 25M / 10M = 2.5x'}</li>
             <li>{isKo ? '연평균 성장률 환산: 2.5 ^ (1/5) ≈ 1.2011' : 'Annual growth conversion: 2.5 ^ (1/5) ≈ 1.2011'}</li>

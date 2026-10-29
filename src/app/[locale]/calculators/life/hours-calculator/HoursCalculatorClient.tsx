@@ -46,7 +46,7 @@ export default function HoursCalculatorPage({ infoSection }: HoursCalculatorPage
   const [holidayHours, setHolidayHours] = useState('');
   const [nightStart, setNightStart] = useState('22:00');
   const [nightEnd, setNightEnd] = useState('06:00');
-  const [baseHourlyWage, setBaseHourlyWage] = useState('10030');
+  const [baseHourlyWage, setBaseHourlyWage] = useState('10320');
   const [result, setResult] = useState<any>(null);
 
   const calculate = useCallback(() => {
@@ -56,7 +56,7 @@ export default function HoursCalculatorPage({ infoSection }: HoursCalculatorPage
     const days = parseInt(workDays) || 0;
     const nightS = timeToMinutes(nightStart);
     const nightE = timeToMinutes(nightEnd);
-    const hourlyWage = parseFloat(baseHourlyWage) || 10030;
+    const hourlyWage = parseFloat(baseHourlyWage) || 10320;
     const holidayMinInput = parseFloat(holidayHours) || 0;
 
     if (isNaN(inMin) || isNaN(outMin) || days <= 0) { setResult(null); return; }
@@ -169,7 +169,7 @@ export default function HoursCalculatorPage({ infoSection }: HoursCalculatorPage
       </div>
       <div>
         <Label>{L('기본 시급 (원)', 'Base Hourly Wage (KRW)')}</Label>
-        <Input type="number" value={baseHourlyWage} onChange={e => setBaseHourlyWage(e.target.value)} placeholder="10030" />
+        <Input type="number" value={baseHourlyWage} onChange={e => setBaseHourlyWage(e.target.value)} placeholder="10320" />
       </div>
       <div className="flex space-x-2">
         <Button onClick={calculate} className="flex-1">{L('계산', 'Calculate')}</Button>

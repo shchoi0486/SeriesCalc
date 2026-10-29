@@ -68,7 +68,7 @@ export default function VatPage({
     usefulTips: (
       <div className="space-y-6">
         <div>
-          <h4 className="font-semibold text-lg border-l-4 border-primary pl-3 mb-2">{isKo ? '1. 부가세 신고 및 납부, 언제까지 해야 할까? (2025년 기준)' : '1. VAT Filing & Payment Deadlines (as of 2025)'}</h4>
+          <h4 className="font-semibold text-lg border-l-4 border-primary pl-3 mb-2">{isKo ? '1. 부가세 신고 및 납부, 언제까지 해야 할까? (2026년 기준)' : '1. VAT Filing & Payment Deadlines (as of 2026)'}</h4>
           <p>{isKo ? '부가세 신고는 사업자 유형에 따라 다릅니다. 미리 달력에 표시해두고 기한을 놓치지 않도록 주의해야 합니다.' : 'VAT filing varies by business type. Mark the calendar in advance and take care not to miss the deadline.'}</p>
           <ul className="list-disc pl-5 space-y-2 mt-2">
             <li>{isKo ? <><strong>법인사업자:</strong> 1년에 4번, 분기별로 신고 및 납부합니다. (4월 25일, 7월 25일, 10월 25일, 다음 해 1월 25일)</> : <><strong>Corporations:</strong> 4 times a year, quarterly (Apr 25, Jul 25, Oct 25, next-year Jan 25).</>}</li>

@@ -14,6 +14,8 @@ import {
 import { useI18n } from '@/i18n/I18nProvider';
 import UnitSystemToggle from '@/components/calculators/UnitSystemToggle';
 import RelatedCalculators from '@/components/calculators/RelatedCalculators';
+import RelatedGuides from '@/components/calculators/RelatedGuides';
+import CalculatorFaq from '@/components/calculators/CalculatorFaq';
 import AffiliateSlot from '@/components/sections/AffiliateSlot';
 
 type LayoutVariant = 'split' | 'single' | 'grouped';
@@ -244,6 +246,10 @@ const CalculatorsLayout: React.FC<CalculatorsLayoutProps> = ({
           </AccordionItem>
         ))}
       </Accordion>
+
+      <CalculatorFaq hasOwnFaq={Boolean(infoSection.faq)} />
+
+      <RelatedGuides />
 
       <RelatedCalculators />
     </div>

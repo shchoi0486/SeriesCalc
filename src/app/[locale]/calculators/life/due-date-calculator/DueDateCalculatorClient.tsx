@@ -270,12 +270,12 @@ const DueDateCalculator = () => {
       workedExamples: (
         <div className="space-y-3 text-sm">
           <div className="p-3 bg-muted rounded-lg">
-            <p className="font-semibold">마지막 생리 첫날: 2025-01-01</p>
-            <p className="text-muted-foreground mt-1">출산 예정일 = 2025-01-01 + 280일 = 2025년 10월 8일</p>
+            <p className="font-semibold">마지막 생리 첫날: 2026-01-01</p>
+            <p className="text-muted-foreground mt-1">출산 예정일 = 2026-01-01 + 280일 = 2026년 10월 8일</p>
           </div>
           <div className="p-3 bg-muted rounded-lg">
-            <p className="font-semibold">마지막 생리 첫날: 2025-06-15</p>
-            <p className="text-muted-foreground mt-1">출산 예정일 = 2025-06-15 + 280일 = 2026년 3월 22일</p>
+            <p className="font-semibold">마지막 생리 첫날: 2026-06-15</p>
+            <p className="text-muted-foreground mt-1">출산 예정일 = 2026-06-15 + 280일 = 2027년 3월 22일</p>
           </div>
         </div>
       ),
@@ -286,7 +286,7 @@ const DueDateCalculator = () => {
             { q: '나겔 규칙(Naegele\'s Rule)의 한계는?', a: '불규칙한 월경 주기, 배란일 불확실, 다태 임신 등에서는 정확도가 떨어집니다. 초음파 측정이 더 정확할 수 있습니다.' },
             { q: '임신 주수는 어떻게 계산하나요?', a: '마지막 생리 첫날(LMP)로부터 경과된 일수를 7로 나눕니다. 의학적으로 임신 1주는 마지막 생리 첫날이 1주 0일이 됩니다.' },
             { q: '조산의 기준은 몇 주인가요?', a: '임신 37주 미만 출산을 조산(Preterm)으로 정의합니다. 32주 미만은 고위험 조산, 24~37주는 중기 조산에 해당합니다.' },
-            { q: '만산(42주 이후)의 위험은 무엇인가요?', a: '42주 이후에는 태盘 기능 저하, 양수 감소, 거대아, 제대 사고 등 합병증 위험이 증가합니다. 일반적으로 41~42주 사이에 유도 분만을 고려합니다.' },
+            { q: '만삭(42주 이후)의 위험은 무엇인가요?', a: '42주 이후에는 태반 기능 저하, 양수 감소, 거대아, 제대 사고 등 합병증 위험이 증가합니다. 일반적으로 41~42주 사이에 유도 분만을 고려합니다.' },
           ].map((f, i) => <FaqItem key={i} q={f.q} a={f.a} />)}
         </div>
       ),

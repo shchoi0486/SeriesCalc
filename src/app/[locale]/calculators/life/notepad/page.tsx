@@ -57,7 +57,7 @@ export default function NotepadPage({
     {
       q: L("localStorage 용량 제한은?", "Is there a localStorage size limit?"),
       a: L(
-        "대부분의 브라우저에서 localStorage는 도메인당 약 5~10MB입니다. 일반적인 메모(수천 줄)는 이 제한에 걸리지 않지만, 매우 긴 텍스트나 이미지를 텍스트로 인코딩한 경우 한도에 도달할 수 있습니다. 한도 초과 시最早的 저장된 데이터가 잘립니다.",
+        "대부분의 브라우저에서 localStorage는 도메인당 약 5~10MB입니다. 일반적인 메모(수천 줄)는 이 제한에 걸리지 않지만, 매우 긴 텍스트나 이미지를 텍스트로 인코딩한 경우 한도에 도달할 수 있습니다. 한도 초과 시 가장 오래된 저장된 데이터가 잘립니다.",
         "Most browsers allow ~5–10 MB per domain for localStorage. Normal notes won't hit this, but very long text may. Exceeding the limit truncates the earliest data.",
       ),
     },

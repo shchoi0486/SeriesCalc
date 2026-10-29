@@ -87,18 +87,43 @@ export default function PrivacyPolicyPage({
             <p>회사는 서비스 품질 향상과 광고 게재를 위해 쿠키를 사용합니다. 주요 제3자 서비스는 다음과 같습니다.</p>
             <ul className="list-disc list-inside space-y-1">
               <li><strong>Google Analytics</strong>: 비식별화된 이용 통계 수집</li>
-              <li><strong>Google AdSense</strong>: 맞춤형 광고 제공 및 광고 쿠키 사용</li>
+              <li><strong>Google AdSense</strong>: 광고 게재 및 광고 쿠키 사용</li>
             </ul>
-            <p>사용자는 브라우저 설정을 통해 쿠키를 거부할 수 있으며, <a className="text-primary underline" href="https://www.google.com/ads/preferences" target="_blank" rel="noopener noreferrer">Google 광고 설정</a>에서 맞춤 광고를 관리할 수 있습니다. 다만 쿠키 거부 시 일부 기능 이용에 제약이 있을 수 있습니다.</p>
+            <p>
+              <strong>제3자 광고 사업자 고지</strong>: Google을 포함한 제3자 광고 사업자는 쿠키(예: DoubleClick 쿠키)를 사용하여
+              이용자가 본 웹사이트 또는 다른 웹사이트를 이전에 방문한 기록에 기반한 광고를 게재할 수 있습니다. Google이 광고
+              쿠키를 사용함으로써 Google과 파트너는 이용자의 본 사이트 및/또는 인터넷상 다른 사이트 방문 기록을 바탕으로
+              광고를 게재합니다. 이용자는{" "}
+              <a className="text-primary underline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">Google 광고 설정</a>
+              에서 맞춤 광고를 사용 중지할 수 있으며,{" "}
+              <a className="text-primary underline" href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">aboutads.info</a>
+              에서 제3자 광고 사업자의 맞춤 광고 쿠키를 일괄적으로 거부할 수 있습니다. Google이 파트너 사이트의 정보를 어떻게
+              이용하는지는{" "}
+              <a className="text-primary underline" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google 파트너 사이트 정책</a>
+              에서 확인할 수 있습니다.
+            </p>
+            <p>사용자는 브라우저 설정을 통해 쿠키를 거부할 수 있습니다. 다만 쿠키를 거부하면 광고가 이용자의 관심사와 무관하게 표시될 수 있고, 일부 기능 이용에 제약이 있을 수 있습니다. 유럽경제지역(EEA)·영국 이용자의 경우 동의 관리 배너에서 선택하기 전까지 광고·분석 쿠키가 기본적으로 비활성화됩니다.</p>
           </>
         ) : (
           <>
             <p>We use cookies to improve the Service and to serve advertisements. Key third-party services include:</p>
             <ul className="list-disc list-inside space-y-1">
               <li><strong>Google Analytics</strong>: collection of non-identifying usage statistics</li>
-              <li><strong>Google AdSense</strong>: delivery of personalized ads and use of advertising cookies</li>
+              <li><strong>Google AdSense</strong>: ad delivery and use of advertising cookies</li>
             </ul>
-            <p>You can refuse cookies through your browser settings and manage personalized ads via <a className="text-primary underline" href="https://www.google.com/ads/preferences" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>. Refusing cookies may limit certain features.</p>
+            <p>
+              <strong>Third-party vendors disclosure</strong>: Third-party vendors, including Google, use cookies (such as the
+              DoubleClick cookie) to serve ads based on your prior visits to this website or other websites. Google&apos;s use of
+              advertising cookies enables it and its partners to serve ads to you based on your visit to this site and/or other
+              sites on the Internet. You may opt out of personalized advertising by visiting{" "}
+              <a className="text-primary underline" href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>
+              , and you can opt out of third-party vendors&apos; use of cookies for personalized advertising at{" "}
+              <a className="text-primary underline" href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">aboutads.info</a>
+              . For details on how Google uses information from partner sites, see{" "}
+              <a className="text-primary underline" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">How Google uses information from sites or apps that use our services</a>
+              .
+            </p>
+            <p>You can also refuse cookies through your browser settings. If you do, ads may be less relevant to your interests and some features may be limited. For visitors in the EEA and the UK, advertising and analytics cookies remain disabled by default until you choose otherwise in our consent banner.</p>
           </>
         )}
       </ProseSection>
@@ -173,7 +198,7 @@ export default function PrivacyPolicyPage({
       </ProseSection>
 
       <p className="text-sm text-muted-foreground pt-4 border-t border-border">
-        {isKo ? "시행일자: 2025년 1월 1일" : "Effective date: January 1, 2025"}
+        {isKo ? "시행일자: 2026년 1월 1일" : "Effective date: January 1, 2026"}
       </p>
     </ProsePage>
   );

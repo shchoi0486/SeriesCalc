@@ -114,7 +114,7 @@ export default function TermsOfServicePage({
       </ProseSection>
 
       <p className="text-sm text-muted-foreground pt-4 border-t border-border">
-        {isKo ? "시행일자: 2025년 1월 1일" : "Effective date: January 1, 2025"}
+        {isKo ? "시행일자: 2026년 1월 1일" : "Effective date: January 1, 2026"}
       </p>
     </ProsePage>
   );

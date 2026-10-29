@@ -33,17 +33,17 @@ export default function HoursCalculatorPage({
       ),
     },
     {
-      q: L("2024년 최저시급은 얼마인가요?", "What is the 2024 minimum wage?"),
+      q: L("2026년 최저시급은 얼마인가요?", "What is the 2026 minimum wage?"),
       a: L(
-        "2024년 기준 최저시급은 ₩10,030입니다. 주 40시간 근무 기준 월 약 2,099,220원(소정근로 209시간 기준)이며, 여기에 주휴수당이 별도로 붙습니다. 이 계산기의 시급 입력란에 현재 적용받는 시급을 넣으면 정확한 월급여를 계산할 수 있습니다.",
-        "The 2024 minimum hourly wage is ₩10,030. At 40h/week, monthly pay is approximately ₩2,099,220 (209 hours), with weekly holiday allowance added separately. Enter your applicable hourly wage in the calculator for accurate monthly totals.",
+        "2026년 적용 최저시급은 ₩10,320입니다(2025년 ₩10,030 대비 2.9% 인상). 주 40시간 근무 기준 월 환산액은 2,156,880원(소정근로 209시간 기준)이며, 여기에 주휴수당이 별도로 붙습니다. 이 계산기의 시급 입력란에 현재 적용받는 시급을 넣으면 정확한 월급여를 계산할 수 있습니다.",
+        "The 2026 minimum hourly wage is ₩10,320 (up 2.9% from ₩10,030 in 2025). At 40h/week the monthly equivalent is ₩2,156,880 (209 hours), with weekly holiday allowance added separately. Enter your applicable hourly wage in the calculator for accurate monthly totals.",
       ),
     },
     {
       q: L("주휴수당은 어떻게 계산하나요?", "How is the weekly holiday allowance calculated?"),
       a: L(
-        "주 15시간 이상 근무하고 주 1회 유급휴일이 보장되면, 시급 × 유급휴일 근무시간(보통 8시간)이 주휴수당으로 지급됩니다. 예: 시급 ₩10,030 × 8시간 = ₩80,240/주. 월 4.3주 기준 약 ₩345,032가 월급에 추가됩니다. 이 계산기는 주휴수당을 별도 항목으로 포함하고 있지 않으므로, 월 총급여 산정 시 별도로 더해야 합니다.",
-        "If you work 15+ hours per week with at least one paid day off, weekly holiday pay = hourly wage × paid holiday hours (typically 8). E.g., ₩10,030 × 8 = ₩80,240/week ≈ ₩345,032/month. This calculator does not include weekly holiday pay separately — add it manually for total monthly compensation.",
+        "주 15시간 이상 근무하고 주 1회 유급휴일이 보장되면, 시급 × 유급휴일 근무시간(보통 8시간)이 주휴수당으로 지급됩니다. 예: 시급 ₩10,320 × 8시간 = ₩82,560/주. 월 4.345주 기준 약 ₩358,723가 월급에 추가됩니다. 이 계산기는 주휴수당을 별도 항목으로 포함하고 있지 않으므로, 월 총급여 산정 시 별도로 더해야 합니다.",
+        "If you work 15+ hours per week with at least one paid day off, weekly holiday pay = hourly wage × paid holiday hours (typically 8). E.g., ₩10,320 × 8 = ₩82,560/week ≈ ₩358,723/month (4.345 weeks). This calculator does not include weekly holiday pay separately — add it manually for total monthly compensation.",
       ),
     },
     {
@@ -115,10 +115,10 @@ export default function HoursCalculatorPage({
           </div>
         </div>
         <div>
-          <h4 className="font-bold text-lg mb-2 border-l-4 border-purple-500 pl-3">{L('2024년 최저시급', '2024 Minimum Wage')}</h4>
+          <h4 className="font-bold text-lg mb-2 border-l-4 border-purple-500 pl-3">{L('2026년 최저시급', '2026 Minimum Wage')}</h4>
           <div className="my-4 p-4 bg-muted rounded-lg text-center">
-            <p className="text-2xl font-bold">₩10,030</p>
-            <p className="text-xs text-muted-foreground mt-1">{L('시간당 최저임금 (2024년 기준)', 'Hourly minimum wage (2024 standard)')}</p>
+            <p className="text-2xl font-bold">₩10,320</p>
+            <p className="text-xs text-muted-foreground mt-1">{L('시간당 최저임금 (2026년 기준, 월 환산 2,156,880원)', 'Hourly minimum wage (2026; ₩2,156,880 monthly equivalent)')}</p>
           </div>
         </div>
       </div>
@@ -193,8 +193,8 @@ export default function HoursCalculatorPage({
           <p className="font-semibold text-foreground mb-2">{L("예시 1 — 일반 사무직 (기본 8시간)", "Example 1 — Standard office work (8 hours)")}</p>
           <p>
             {L(
-              "출근 09:00, 퇴근 18:00, 휴게 60분, 시급 ₩10,030 → 총 9시간 - 휴게 1시간 = 기본 8시간, 연장 0시간. 기본급 = 8 × 10,030 = ₩80,240/일. 월 22일 기준 약 ₩1,765,280입니다(주휴수당 별도).",
-              "Clock in 09:00, out 18:00, 60-min break, wage ₩10,030 → 8 regular hours, 0 overtime. Daily: ₩80,240; monthly (22 days): ≈₩1,765,280 (weekly holiday pay not included).",
+              "출근 09:00, 퇴근 18:00, 휴게 60분, 시급 ₩10,320 → 총 9시간 - 휴게 1시간 = 기본 8시간, 연장 0시간. 기본급 = 8 × 10,320 = ₩82,560/일. 월 22일 기준 약 ₩1,816,320입니다(주휴수당 별도).",
+              "Clock in 09:00, out 18:00, 60-min break, wage ₩10,320 → 8 regular hours, 0 overtime. Daily: ₩82,560; monthly (22 days): ≈₩1,816,320 (weekly holiday pay not included).",
             )}
           </p>
         </div>
@@ -202,8 +202,8 @@ export default function HoursCalculatorPage({
           <p className="font-semibold text-foreground mb-2">{L("예시 2 — 야간 포함 연장근무", "Example 2 — Overtime with night shift")}</p>
           <p>
             {L(
-              "출근 14:00, 퇴근 24:00, 휴게 60분, 시급 ₩10,030 → 총 10시간 - 휴게 1시간 = 9시간. 기본 8시간 + 연장 1시간, 야간(22:00~24:00) 2시간. 기본급 8×10,030=₩80,240, 연장 1×10,030×1.5=₩15,045, 야간 2×10,030×0.5=₩10,030 → 일 합계 ₩105,315.",
-              "14:00–24:00, 60-min break, ₩10,030/hr → 9 working hours: 8 regular + 1 overtime; night (22:00–24:00) = 2h. Base ₩80,240 + OT ₩15,045 + night ₩10,030 = ₩105,315/day.",
+              "출근 14:00, 퇴근 24:00, 휴게 60분, 시급 ₩10,320 → 총 10시간 - 휴게 1시간 = 9시간. 기본 8시간 + 연장 1시간, 야간(22:00~24:00) 2시간. 기본급 8×10,320=₩82,560, 연장 1×10,320×1.5=₩15,480, 야간 2×10,320×0.5=₩10,320 → 일 합계 ₩108,360.",
+              "14:00–24:00, 60-min break, ₩10,320/hr → 9 working hours: 8 regular + 1 overtime; night (22:00–24:00) = 2h. Base ₩82,560 + OT ₩15,480 + night ₩10,320 = ₩108,360/day.",
             )}
           </p>
         </div>

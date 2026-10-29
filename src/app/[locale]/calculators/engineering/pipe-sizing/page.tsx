@@ -125,7 +125,7 @@ export default function PipeSizingPage({
           <p className="font-semibold text-foreground mb-2">{L("예시 1 — 급수 배관 (SI)", "Example 1 — Cold water supply (SI)")}</p>
           <p>
             {L(
-              "Q = 50 m³/h, v_max = 3 m/s → Q = 0.013889 m³/s → D = √(4 × 0.013889 / (π × 3)) = 0.07678 m = 76.78 mm. KS 규격으로는 DN80(以内径 약 80mm)을 선택하며, 이때 실제 유속은 약 2.76 m/s로 허용 범위 내입니다. 레이놀즈 수 Re = 1000 × 3 × 0.0768 / 0.001 = 약 230,340 → 난류 유동.",
+              "Q = 50 m³/h, v_max = 3 m/s → Q = 0.013889 m³/s → D = √(4 × 0.013889 / (π × 3)) = 0.07678 m = 76.78 mm. KS 규격으로는 DN80(내경 약 80mm)을 선택하며, 이때 실제 유속은 약 2.76 m/s로 허용 범위 내입니다. 레이놀즈 수 Re = 1000 × 3 × 0.0768 / 0.001 = 약 230,340 → 난류 유동.",
               "Q = 50 m³/h, v_max = 3 m/s → Q = 0.013889 m³/s → D = √(4 × 0.013889 / (π × 3)) ≈ 76.8 mm. Select DN80 (ID ≈ 80 mm) per KS; actual velocity ≈ 2.76 m/s, Re ≈ 230,000 — turbulent.",
             )}
           </p>

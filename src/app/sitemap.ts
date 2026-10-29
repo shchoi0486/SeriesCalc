@@ -7,11 +7,23 @@ const SITE_URL =
   (process.env.NEXT_PUBLIC_SITE_URL || "https://seriescalc.com").replace(/\/$/, "");
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticPaths = ["", "/calculators", "/about", "/privacy-policy", "/terms-of-service", "/contact"];
+  const staticPaths = ["", "/calculators", "/guides", "/about", "/editorial-policy", "/privacy-policy", "/terms-of-service", "/contact"];
   const guidePaths = [
     "/guides/compound-interest-power",
     "/guides/jeonse-vs-wolse",
     "/guides/mortgage-repayment-types",
+    "/guides/salary-take-home",
+    "/guides/dti-dsr",
+    "/guides/deposit-savings",
+    "/guides/npsh-cavitation",
+    "/guides/pump-selection",
+    "/guides/bmi-weight",
+    "/guides/date-math",
+    "/guides/metric-imperial",
+    "/guides/percentage-mastery",
+    "/guides/heat-insulation",
+    "/guides/electrical-basics",
+    "/guides/data-storage",
   ];
 
   const calcHrefs: string[] = [];

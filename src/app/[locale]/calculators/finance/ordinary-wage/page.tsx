@@ -71,7 +71,7 @@ export default function OrdinaryWagePage({
     ),
     usefulTips: (
       <div className="text-base leading-relaxed space-y-8">
-        <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '💼 통상임금, 2025년 기준 이것만은 꼭 알아두세요!' : '💼 Ordinary Wage: What You Must Know in 2025!'}</h2>
+        <h2 className="text-2xl font-bold text-foreground mt-10 mb-4">{isKo ? '💼 통상임금, 2026년 기준 이것만은 꼭 알아두세요!' : '💼 Ordinary Wage: What You Must Know in 2026!'}</h2>
 
         <div className="p-5 rounded-lg bg-muted border-l-4 border-primary">
           <h3 className="font-bold text-lg text-primary">{isKo ? '1. 통상임금 판단의 3대 원칙: 정기성, 일률성, 고정성' : '1. Three Principles for Determining Ordinary Wage: Regularity, Uniformity, Fixedness'}</h3>
